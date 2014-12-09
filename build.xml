@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<project name="${project.name}" default="jar" xmlns:ivy="antlib:org.apache.ivy.ant"  basedir=".">
+
+<property file="build.properties"/>
+
+<path id="classpath">
+  <fileset dir="${lib.dir}">
+    <include name="**/*.jar"/>
+    <exclude name="**/*javadoc*"/>
+    <exclude name="**/*source*"/>
+    <exclude name="**/*test*"/>
+  </fileset>
+</path>
+
+<ivy:settings file="ivysettings.xml"/>
+
+<target name="clean">
+<echo>Cleaning the ${build.dir}</echo>
+<delete dir="${build.dir}"/>
+<delete dir="${dist.dir}"/>
+</target>
+	
+<target name="flush">
+  <echo>Cleaning the ${lib.dir}</echo>
+  <delete dir="${lib.dir}"/>
+</target>
+	
+<target name="cleancache" depends="flush">
+  <echo>Cleaning the lib cache</echo>
+  <ivy:cleancache/>
+</target>
+
+<target name="resolve" description="--> retrieve dependencies with ivy" depends="clean, flush">
+	<ivy:retrieve pattern="${ivy.lib.dir}/[conf]/[artifact](-[classifier]).[ext]" conf="default,sources,javadoc"/>
+	<ivy:retrieve pattern="${ivy.lib.dir}/test/[conf]/[artifact](-[classifier]).[ext]" conf="testDefault,testSources,testJavadoc"/>
+</target>
+	
+<target name="init" depends="resolve">
+<echo>Creating the build directory</echo>
+<mkdir dir="${lib.dir}"/>
+<mkdir dir="${build.dir}"/>
+<mkdir dir="${dist.dir}"/>
+</target>
+
+<target name="compile" depends="init">
+  <echo>Compile the source files</echo>
+  <javac srcdir="${src.dir}" destdir="${build.dir}" debug="true" includeantruntime="false">
+  <classpath refid="classpath"/>
+  </javac>
+</target>
+
+<target name="jar" depends="compile">
+<echo>Jar the compiled files</echo>
+<pathconvert property="manifest.classpath" pathsep=" ">
+  <path refid="classpath"/>
+  <mapper>
+    <chainedmapper>
+      <flattenmapper/>
+      <globmapper from="*.jar" to="lib/default/*.jar"/>
+    </chainedmapper>
+  </mapper>
+</pathconvert>	
+<jar basedir="${build.dir}" destfile="${dist.dir}/${project.name}.jar">
+  <manifest>
+    <attribute name="Specification-Title" value="${project.name}" />
+    <attribute name="Specification-Version" value="${version.major}.${version.minor}.${version.revision}"/>
+    <attribute name="Specification-Vendor" value="dstevens"/>
+    <attribute name="Implementation-Title" value="common"/>
+    <attribute name="Implementation-Version" value="${version.major}.${version.minor}.${version.revision}"/> 
+    <attribute name="Implementation-Vendor" value="dstevens"/>
+    <attribute name="Class-Path" value="${manifest.classpath}"/>
+  </manifest>
+</jar>
+</target>
+	
+<target name="sources-jar" depends="compile">
+<echo>Jar the source files</echo>
+<jar basedir="${src.dir}" destfile="${dist.dir}/${project.name}-sources.jar" />
+</target>
+
+<target name="publish" depends="jar, sources-jar" description="Publish this build into repository">
+	<property name="revision" value="${version.major}.${version.minor}.${version.revision}" />
+    <ivy:publish 
+      artifactspattern="${dist.dir}/[artifact].[ext]"
+      overwrite="true"
+      resolver="local"
+      pubrevision="${revision}"
+      status="release" />
+</target>
+
+<target name="copy" depends="compile">
+	<copy todir="${war.dir}/WEB-INF">
+		<fileset dir="${web.dir}/WEB-INF"/>
+	</copy>
+	<copy todir="${war.dir}/WEB-INF">
+		<fileset dir="${src.dir}/resources"/>
+	</copy>
+	<copy todir="${war.dir}/WEB-INF/classes">
+		<fileset dir="${build.dir}"/>
+	</copy>
+	<copy todir="${war.dir}">
+		<fileset dir="${web.dir}"/>
+	</copy>
+	<copy todir="${war.dir}/WEB-INF/lib" flatten="true">
+	  <fileset dir="${lib.dir}">
+	    <include name="**/*.jar"/>
+	  	<exclude name="**/servlet-api.jar"/>
+	    <exclude name="**/*javadoc*"/>
+	    <exclude name="**/*source*"/>
+	    <exclude name="**/*test*"/>
+	  </fileset>
+	</copy>
+</target>
+
+<target name="war" depends="copy">
+	<echo>Building the war file</echo>
+	<war destfile="${dist.dir}/${project.name}.war" needxmlfile='false'>
+	    <manifest>
+	      <attribute name="Specification-Title" value="${project.name}" />
+	      <attribute name="Specification-Version" value="${version.major}.${version.minor}.${version.revision}"/>
+	      <attribute name="Specification-Vendor" value="dstevens"/>
+	      <attribute name="Implementation-Title" value="common"/>
+	      <attribute name="Implementation-Version" value="${version.major}.${version.minor}.${version.revision}"/> 
+	      <attribute name="Implementation-Vendor" value="dstevens"/>
+	      <attribute name="Class-Path" value="${manifest.classpath}"/>
+	    </manifest>	
+		<fileset dir="${war.dir}"/>
+	</war>
+</target>
+
+<target name="schemaexport">
+	<ant antfile="build-schema.xml" target="schemaexport" />
+</target>
+	
+</project>
