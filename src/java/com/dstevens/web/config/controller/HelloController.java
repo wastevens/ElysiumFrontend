@@ -16,19 +16,28 @@ public class HelloController {
 		model.addObject("message", "This is welcome page!");
 		model.setViewName("hello");
 		return model;
- 
 	}
  
-	@RequestMapping(value = "/admin**", method = RequestMethod.GET)
-	public ModelAndView adminPage() {
+	@RequestMapping(value = "/admin/**", method = RequestMethod.GET)
+	public ModelAndView mainPage() {
  
 		ModelAndView model = new ModelAndView();
-		model.addObject("title", "Spring Security Custom Login Form");
-		model.addObject("message", "This is protected page!");
-		model.setViewName("admin");
+		model.addObject("title", "Spring Security Custom Login Form - Admin Page");
+		model.addObject("message", "This is such a protected page!");
+		model.setViewName("admin/main");
  
 		return model;
- 
+	}
+	
+	@RequestMapping(value = "/user/**", method = RequestMethod.GET)
+	public ModelAndView userPage() {
+		
+		ModelAndView model = new ModelAndView();
+		model.addObject("title", "Spring Security Custom Login Form - User Page");
+		model.addObject("message", "This is such a protected page!");
+		model.setViewName("user/main");
+		
+		return model;
 	}
  
 	//Spring Security see this :
