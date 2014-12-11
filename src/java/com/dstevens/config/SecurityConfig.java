@@ -29,12 +29,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
  
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		System.out.println("Wat");
-	    http.authorizeRequests()
-		.antMatchers("/**").access("hasRole('ROLE_USER')").and().
-		    formLogin().successHandler(new ElysiumAuthenticationSuccessHandler()).loginPage("/login").failureUrl("/login?error").permitAll().and().
-		    logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout").addLogoutHandler(logoutHandler()).and().
-		    csrf(); 
+	    http.
+	         authorizeRequests().antMatchers("/user/**").hasRole("USER").and().
+	         authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN").and().
+	    	 formLogin().loginPage("/login").successHandler(new ElysiumAuthenticationSuccessHandler()).permitAll().and().
+	    	 logout().logoutUrl("/logout").addLogoutHandler(logoutHandler()).permitAll().and().
+		     csrf(); 
  
 	}
 
@@ -42,7 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return new LogoutHandler() {
 			@Override
 			public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-				System.out.println(authentication.getName() + " is logged out");
 				authentication.setAuthenticated(false);
 			}
 		};

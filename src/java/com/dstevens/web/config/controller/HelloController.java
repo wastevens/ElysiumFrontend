@@ -10,7 +10,6 @@ public class HelloController {
  
 	@RequestMapping(value = { "/", "/welcome**" }, method = RequestMethod.GET)
 	public ModelAndView welcomePage() {
- 
 		ModelAndView model = new ModelAndView();
 		model.addObject("title", "Spring Security Custom Login Form");
 		model.addObject("message", "This is welcome page!");
@@ -20,7 +19,6 @@ public class HelloController {
  
 	@RequestMapping(value = "/admin/**", method = RequestMethod.GET)
 	public ModelAndView mainPage() {
- 
 		ModelAndView model = new ModelAndView();
 		model.addObject("title", "Spring Security Custom Login Form - Admin Page");
 		model.addObject("message", "This is such a protected page!");
@@ -31,7 +29,6 @@ public class HelloController {
 	
 	@RequestMapping(value = "/user/**", method = RequestMethod.GET)
 	public ModelAndView userPage() {
-		
 		ModelAndView model = new ModelAndView();
 		model.addObject("title", "Spring Security Custom Login Form - User Page");
 		model.addObject("message", "This is such a protected page!");
@@ -45,7 +42,6 @@ public class HelloController {
 	public ModelAndView login(
 		@RequestParam(value = "error", required = false) String error,
 		@RequestParam(value = "logout", required = false) String logout) {
- 
 		ModelAndView model = new ModelAndView();
 		if (error != null) {
 			model.addObject("error", "Invalid username and password!");
@@ -57,7 +53,5 @@ public class HelloController {
 		model.setViewName("login");
  
 		return model;
- 
 	}
- 
 }
