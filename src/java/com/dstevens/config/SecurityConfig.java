@@ -18,13 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 @EnableWebMvcSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
  
+	@Autowired private ElysiumUserDetailsService userDetailService;
+
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-	  auth.inMemoryAuthentication().withUser("admin").password("password").roles("USER", "ADMIN").and()
-	                               .withUser("lead_storyteller").password("password").roles("USER", "PATRON", "AST", "LST").and()
-	                               .withUser("assistant_storyteller").password("password").roles("USER", "PATRON", "AST").and()
-	                               .withUser("patron").password("password").roles("USER", "PATRON").and()
-	                               .withUser("user").password("password").roles("USER");
+		auth.userDetailsService(userDetailService);
 	}
  
 	@Override

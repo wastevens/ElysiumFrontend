@@ -63,7 +63,7 @@
 	<classpathentry kind="lib" path="lib/default/spring-instrument.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-jdbc.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-orm.jar"/>
-	<classpathentry kind="lib" path="lib/default/spring-security-core.jar"/>
+	<classpathentry kind="lib" path="lib/default/spring-security-core.jar" sourcepath="lib/sources/spring-security-core-sources.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-security-web.jar" sourcepath="lib/sources/spring-security-web-sources.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-tx.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-web.jar"/>
@@ -80,5 +80,6 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/ElysiumFrontend/lib/javadoc/spring-security-config-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/default/ElysiumUsers.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
