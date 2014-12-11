@@ -7,6 +7,10 @@
 	<div id="login-box">
 		<h3>Enter your email address, username and password</h3>
 		<form name="f" action="/createAccount" method="post">
+			<c:if test="${not empty error}">
+				<div style="color:red,font-style:bold">${error}</div>
+			</c:if>
+			<h1>Title : ${title}</h1>	
 		    <table>
 		    <tr><td>Email:</td><td><input type='text' name='email' value=''></td></tr>
 			<tr><td>Username:</td><td><input type='text' name='username' value=''></td></tr>

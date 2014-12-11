@@ -7,13 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import com.dstevens.users.ElysiumUserDetailsService;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
  
 @Configuration
 @EnableWebSecurity
@@ -34,18 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	         authorizeRequests().antMatchers("/resetPassword/**").permitAll().and().
 	         authorizeRequests().antMatchers("/user/**").hasRole("USER").and().
 	         authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN").and().
-	    	 formLogin().loginPage("/login").successHandler(new ElysiumAuthenticationSuccessHandler()).permitAll().and().
-	    	 logout().logoutUrl("/logout").addLogoutHandler(logoutHandler()).permitAll().and().
+	    	 formLogin().loginPage("/login").successHandler(new ElysiumAuthenticationSuccessHandler()).failureUrl("/login?error").permitAll().and().
+	    	 logout().logoutUrl("/logout").permitAll().and().
 		     csrf(); 
  
-	}
-
-	private LogoutHandler logoutHandler() {
-		return new LogoutHandler() {
-			@Override
-			public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-				authentication.setAuthenticated(false);
-			}
-		};
 	}
 }

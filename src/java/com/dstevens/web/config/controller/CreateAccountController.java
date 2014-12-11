@@ -1,13 +1,49 @@
 package com.dstevens.web.config.controller;
+import static com.dstevens.collections.Sets.set;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.dstevens.users.Role;
+import com.dstevens.users.User;
+import com.dstevens.users.UserDao;
  
 @Controller
 public class CreateAccountController {
+	
+	private UserDao userDao;
+
+	@Autowired
+	public CreateAccountController(UserDao userDao) {
+		this.userDao = userDao;
+	}
+	
 	@RequestMapping(value = { "/createAccount"}, method = RequestMethod.GET)
 	public ModelAndView createAccountPage() {
 		return new ModelAndView("createAccount");
+	}
+	
+	@RequestMapping(value = { "/createAccount"}, method = RequestMethod.POST)
+	public ModelAndView createAccount(@RequestParam(value = "email") String email,
+			                          @RequestParam(value = "username") String username,
+			                          @RequestParam(value = "password") String password) {
+		if(userDao.findWithEmail(email) != null) {
+			ModelAndView model = new ModelAndView("createAccount");
+			model.addObject("error", "An account already exists for user with email address " + email);
+			return model;
+		}
+		if(userDao.findWithName(username) != null) {
+			ModelAndView model = new ModelAndView("createAccount");
+			model.addObject("error", "An account already exists for user with name " + username);
+			return model;
+		}
+		ModelAndView model = new ModelAndView("createAccount");
+		userDao.save(new User(username, email, password, set(Role.USER)));
+		model.addObject("message", "Account successfully created!");
+		return new ModelAndView("login");
 	}
 }
