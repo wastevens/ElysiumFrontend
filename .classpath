@@ -80,6 +80,5 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/ElysiumFrontend/lib/javadoc/spring-security-config-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/default/ElysiumUsers.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

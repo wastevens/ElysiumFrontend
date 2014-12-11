@@ -6,7 +6,7 @@
 	<h1>Spring Security Custom Login Form (Annotation)</h1>
 	<div id="login-box">
 		<h3>Login with Username and Password</h3>
-		<form name="f" th:action="/login" method="post">
+		<form name="f" action="/login" method="post">
  
 		    <table>
 			<tr>
