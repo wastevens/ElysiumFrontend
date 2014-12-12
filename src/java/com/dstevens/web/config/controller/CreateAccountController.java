@@ -5,11 +5,14 @@ import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.dstevens.users.Role;
 import com.dstevens.users.User;
@@ -51,9 +54,10 @@ public class CreateAccountController {
 			model.addObject("error", "An account already exists for user with name " + username);
 			return model;
 		}
-		userDao.save(new User(username, email, password, set(Role.USER)));
+		User newUser = userDao.save(new User(username, email, password, set(Role.USER)));
 		sendConfirmatoryEmailTo(email);
-		return new ModelAndView("/user/main");
+		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(newUser, null, newUser.getAuthorities()));
+		return new ModelAndView(new RedirectView("/user/main"));
 	}
 
 	private void sendConfirmatoryEmailTo(String email) {
