@@ -33,6 +33,8 @@
     	
     	<dependency org="javax.servlet" name="jstl" rev="1.2" conf="default;sources;javadoc"/>
     	<dependency org="taglibs" name="standard" rev="1.1.2" conf="default;sources;javadoc"/>
+    	<dependency org="com.sun.mail" name="all" rev="1.5.2" conf="default;sources;javadoc"/>
+        <dependency org="com.sun.mail" name="javax.mail" rev="1.5.2" conf="default;sources;javadoc"/>
     	
     	<dependency org="org.springframework" name="spring-expression" rev="4.0.3.RELEASE" conf="default;sources;javadoc"/>
     	<dependency org="org.springframework" name="spring-instrument" rev="4.0.3.RELEASE" conf="default;sources;javadoc"/>
