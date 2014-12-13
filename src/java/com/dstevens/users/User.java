@@ -46,11 +46,15 @@ public class User implements UserDetails {
     @SuppressWarnings("unused")
     @Deprecated
 	private User() {
-    	this(null, null, null, set());
+    	this(null, null, null, null, set());
     }
     
     public User(String name, String email, String password, Set<Role> roles) {
-		this.id = new IdSupplier().get();
+    	this(new IdSupplier().get(), name, email, password, roles);
+    }
+    
+    private User(String id, String name, String email, String password, Set<Role> roles) {
+		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
@@ -73,6 +77,10 @@ public class User implements UserDetails {
 		return roles;
 	}
 
+	public User withPassword(String password) {
+		return new User(id, name, email, password, roles);
+	}
+    
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.getRoles().stream().map((Role r) -> new SimpleGrantedAuthority("ROLE_" + r.name())).collect(Collectors.toSet());

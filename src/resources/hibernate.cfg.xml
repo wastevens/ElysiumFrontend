@@ -1,0 +1,14 @@
+
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <mapping package="com.dstevens"/>
+    
+    <mapping class="com.dstevens.users.User"/>
+    <mapping class="com.dstevens.users.UserPasswordResetToken"/>
+    
+  </session-factory>
+</hibernate-configuration>

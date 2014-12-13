@@ -24,7 +24,7 @@
 		   </table>
 		   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		</form>
-		<p><a href="/resetPassword">Reset your Password</a></h2>
+		<p><a href="/requestPasswordReset">Reset your Password</a></h2>
 		<p><a href="/createAccount">Create new Account</a></h2>
 	</div>
  
