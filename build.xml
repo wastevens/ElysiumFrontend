@@ -12,12 +12,10 @@
   </fileset>
 </path>
 
-<ivy:settings file="ivysettings.xml"/>
+<mkdir dir="${user.home}/.ant/lib"/>
+<get dest="${user.home}/.ant/lib/ivy.jar" src="http://search.maven.org/remotecontent?filepath=org/apache/ivy/ivy/2.3.0/ivy-2.3.0.jar"/>
 
-<target name="bootstrap">
-   <mkdir dir="${user.home}/.ant/lib"/>
-   <get dest="${user.home}/.ant/lib/ivy.jar" src="http://search.maven.org/remotecontent?filepath=org/apache/ivy/ivy/2.3.0/ivy-2.3.0.jar"/>
-</target>
+<ivy:settings file="ivysettings.xml"/>
 
 <target name="clean">
 <echo>Cleaning the ${build.dir}</echo>
@@ -35,7 +33,7 @@
   <ivy:cleancache/>
 </target>
 
-<target name="resolve" description="--> retrieve dependencies with ivy" depends="bootstrap, clean, flush">
+<target name="resolve" description="--> retrieve dependencies with ivy" depends="clean, flush">
 	<ivy:retrieve pattern="${ivy.lib.dir}/[conf]/[artifact](-[classifier]).[ext]" conf="default,sources,javadoc"/>
 	<ivy:retrieve pattern="${ivy.lib.dir}/test/[conf]/[artifact](-[classifier]).[ext]" conf="testDefault,testSources,testJavadoc"/>
 </target>
