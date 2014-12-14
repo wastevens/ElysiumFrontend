@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.dstevens.mail.ElysiumMessageFactory;
+import com.dstevens.mail.MailMessageFactory;
 import com.dstevens.users.Role;
 import com.dstevens.users.User;
 import com.dstevens.users.UserDao;
@@ -20,10 +20,10 @@ import com.dstevens.users.UserDao;
 public class CreateAccountController {
 	
 	private UserDao userDao;
-	private ElysiumMessageFactory messageFactory;
+	private MailMessageFactory messageFactory;
 
 	@Autowired
-	public CreateAccountController(UserDao userDao, ElysiumMessageFactory messageFactory) {
+	public CreateAccountController(UserDao userDao, MailMessageFactory messageFactory) {
 		this.userDao = userDao;
 		this.messageFactory = messageFactory;
 	}

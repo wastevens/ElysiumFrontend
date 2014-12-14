@@ -9,7 +9,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class ElysiumMessage {
+public class MailMessage {
 
 	private Session session;
 	private String fromAddress;
@@ -18,27 +18,27 @@ public class ElysiumMessage {
 	private String subject;
 	private String body;
 
-	public ElysiumMessage(Session session) {
+	public MailMessage(Session session) {
 		this.session = session;
 	}
 	
-	public ElysiumMessage from(String fromAddress, String fromName) {
+	public MailMessage from(String fromAddress, String fromName) {
 		this.fromAddress = fromAddress;
 		this.fromName = fromName;
 		return this;
 	}
 	
-	public ElysiumMessage to(String toAddress) {
+	public MailMessage to(String toAddress) {
 		this.toAddress = toAddress;
 		return this;
 	}
 	
-	public ElysiumMessage subject(String subject) {
+	public MailMessage subject(String subject) {
 		this.subject = subject;
 		return this;
 	}
 	
-	public ElysiumMessage body(String body) {
+	public MailMessage body(String body) {
 		this.body = body;
 		return this;
 	}

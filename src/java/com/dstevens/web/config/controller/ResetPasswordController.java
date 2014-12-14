@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.dstevens.mail.ElysiumMessageFactory;
+import com.dstevens.mail.MailMessageFactory;
 import com.dstevens.users.User;
 import com.dstevens.users.UserDao;
 import com.dstevens.users.security.UserPasswordResetTokenService;
@@ -19,11 +19,11 @@ import com.dstevens.users.security.UserPasswordResetTokenService;
 public class ResetPasswordController {
 
 	private final UserDao userDao;
-	private final ElysiumMessageFactory messageFactory;
+	private final MailMessageFactory messageFactory;
 	private final UserPasswordResetTokenService passwordResetTokenService;
 
 	@Autowired
-	public ResetPasswordController(UserDao userDao, ElysiumMessageFactory messageFactory, UserPasswordResetTokenService passwordResetTokenService) {
+	public ResetPasswordController(UserDao userDao, MailMessageFactory messageFactory, UserPasswordResetTokenService passwordResetTokenService) {
 		this.userDao = userDao;
 		this.messageFactory = messageFactory;
 		this.passwordResetTokenService = passwordResetTokenService;
