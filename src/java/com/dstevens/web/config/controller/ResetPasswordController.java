@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.dstevens.mail.ElysiumMessageFactory;
 import com.dstevens.users.User;
 import com.dstevens.users.UserDao;
-import com.dstevens.users.UserPasswordResetTokenService;
+import com.dstevens.users.security.UserPasswordResetTokenService;
 
 @Controller
 public class ResetPasswordController {

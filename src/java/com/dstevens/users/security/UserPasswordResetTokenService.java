@@ -1,4 +1,4 @@
-package com.dstevens.users;
+package com.dstevens.users.security;
 
 import static java.util.UUID.randomUUID;
 
