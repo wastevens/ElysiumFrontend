@@ -16,16 +16,6 @@ public class HelloController {
 		return model;
 	}
  
-	@RequestMapping(value = "/admin/**", method = RequestMethod.GET)
-	public ModelAndView mainPage() {
-		ModelAndView model = new ModelAndView();
-		model.addObject("title", "Admin Page");
-		model.addObject("message", "This is a page for administrators");
-		model.setViewName("admin/main");
- 
-		return model;
-	}
-	
 	@RequestMapping(value = "/user/**", method = RequestMethod.GET)
 	public ModelAndView userPage() {
 		ModelAndView model = new ModelAndView();

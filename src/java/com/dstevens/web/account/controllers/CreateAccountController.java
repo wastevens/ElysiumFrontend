@@ -1,4 +1,4 @@
-package com.dstevens.web.config.controller;
+package com.dstevens.web.account.controllers;
 import static com.dstevens.collections.Sets.set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class CreateAccountController {
 	
 	@RequestMapping(value = { "/createAccount"}, method = RequestMethod.GET)
 	public ModelAndView createAccountPage() {
-		return new ModelAndView("createAccount");
+		return new ModelAndView("/account/createAccount");
 	}
 	
 	@RequestMapping(value = { "/createAccount"}, method = RequestMethod.POST)
@@ -38,12 +38,12 @@ public class CreateAccountController {
 			                          @RequestParam(value = "username") String username,
 			                          @RequestParam(value = "password") String password) {
 		if(userDao.findWithEmail(email) != null) {
-			ModelAndView model = new ModelAndView("createAccount");
+			ModelAndView model = new ModelAndView("/account/createAccount");
 			model.addObject("error", "An account already exists for user with email address " + email);
 			return model;
 		}
 		if(userDao.findWithName(username) != null) {
-			ModelAndView model = new ModelAndView("createAccount");
+			ModelAndView model = new ModelAndView("/account/createAccount");
 			model.addObject("error", "An account already exists for user with name " + username);
 			return model;
 		}

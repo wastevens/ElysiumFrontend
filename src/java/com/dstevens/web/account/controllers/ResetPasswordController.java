@@ -1,4 +1,4 @@
-package com.dstevens.web.config.controller;
+package com.dstevens.web.account.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -29,7 +29,8 @@ public class UserPasswordResetTokenService {
 	}
 	
 	public boolean isResetPasswordTokenValid(String email, String token) {
-		return dao.findToken(email, token).isExpiredAsOf(clockSupplier.get());
+		UserPasswordResetToken userPasswordResetToken = dao.findToken(email, token);
+		return userPasswordResetToken != null ? userPasswordResetToken.isExpiredAsOf(clockSupplier.get()) : false;
 	}
 	
 }
