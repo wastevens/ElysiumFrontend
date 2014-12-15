@@ -16,6 +16,7 @@
 
 <target name="clean">
 <echo>Cleaning the ${build.dir}</echo>
+<delete dir="${war.dir}"/>
 <delete dir="${build.dir}"/>
 <delete dir="${dist.dir}"/>
 </target>

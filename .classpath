@@ -84,5 +84,6 @@
 	<classpathentry kind="lib" path="lib/default/standard.jar"/>
 	<classpathentry kind="lib" path="lib/default/activation.jar"/>
 	<classpathentry kind="lib" path="lib/default/javax.mail.jar"/>
+	<classpathentry kind="lib" path="lib/default/Courier.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
