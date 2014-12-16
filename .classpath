@@ -19,7 +19,7 @@
 	<classpathentry kind="lib" path="lib/default/CommonServices.jar"/>
 	<classpathentry kind="lib" path="lib/default/contenttype.jar"/>
 	<classpathentry kind="lib" path="lib/default/dom4j.jar"/>
-	<classpathentry kind="lib" path="lib/default/Elysium.jar"/>
+	<classpathentry kind="lib" path="lib/default/Elysium.jar" sourcepath="lib/sources/Elysium-sources.jar"/>
 	<classpathentry kind="lib" path="lib/default/freemarker.jar"/>
 	<classpathentry kind="lib" path="lib/default/gson.jar"/>
 	<classpathentry kind="lib" path="lib/default/guava.jar"/>
