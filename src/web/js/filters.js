@@ -1,5 +1,4 @@
-angular.module('elysiumFilters', []).
-
+angular.module('filters.setting', []).
 	filter('setting', function() {
 	  return function(input) {
 		switch(input) {
@@ -10,5 +9,4 @@ angular.module('elysiumFilters', []).
 		return 'No setting found for ' + input;
 	  };
 	}
-
 );

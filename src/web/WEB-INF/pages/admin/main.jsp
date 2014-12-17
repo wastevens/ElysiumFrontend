@@ -16,7 +16,7 @@
 		
         <p><a href="/admin/troupes">Manage troupes</a></h2>
         
-        <p><a href="javascript:formSubmit()" >Logout</a></h2>  
+        <p><a href="javascript:formSubmit()">Logout</a></h2>  
 	</c:if>
 </body>
 </html>

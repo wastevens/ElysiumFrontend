@@ -2,17 +2,20 @@
 <head>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
 <script src="/js/filters.js"></script>
+<script src="/js/http.js"></script>
+<script src="/js/admin/troupe.js"></script>
 </head>
-<body ng-app="elysiumFilters">
+<body ng-app="admin.troupe" ng-controller="deleteUrl">
 
-<div ng-init='troupes = ${troupes}'>
+<div id="showTroupes" ng-init='troupes = ${troupes}'>
 
 <table>
-  <tr><th>Name</th><th>Setting</th><th>Number of players</th></tr>
+  <tr><th>Name</th><th>Setting</th><th>Number of players</th><th>Delete this troupe?</th></tr>
   <tr ng-repeat="troupe in troupes">
     <td>{{troupe.name}}</td>
     <td>{{troupe.setting|setting}}</td>
     <td>{{troupe.numberOfPlayers}}</td>
+    <td><a href ng-click="deleteUrl('/admin/troupes/', troupe.id, '${_csrf.headerName}', '${_csrf.token}')">Delete troupe</a></td>
   </tr>
 </table>
 </div>
