@@ -31,7 +31,6 @@ public class TroupeController {
 	@RequestMapping(value = "/admin/page/troupes", method = RequestMethod.GET)
 	public ModelAndView getTroupesPage() {
 		ModelAndView modelAndView = new ModelAndView("/admin/troupes");
-		modelAndView.addObject("troupes", getTroupes());
 		return modelAndView;
 	}
 	

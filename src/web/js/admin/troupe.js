@@ -7,8 +7,13 @@ directive('listTroupes', function() {
 return {
   restrict: 'E',
   scope: {
-    troupes: '=',
     csrf: '='
+  },
+  controller: ['$scope', 'Troupes', function($scope, Troupes) {
+	 $scope.troupesSource = Troupes;
+  }],
+  link: function(scope, iElement, iAttrs, ctrl) {
+      scope.troupes = scope.troupesSource.query();
   },
   templateUrl: '/js/admin/troupes.html'
 };

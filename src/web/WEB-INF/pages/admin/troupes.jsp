@@ -12,8 +12,7 @@
 		<button ng-click="callNotify('Hello world');">NOTIFY</button>
 	</div>
 	<p>
-		<list-troupes troupes='${troupes}'
-			csrf='{"header": "${_csrf.headerName}", "token": "${_csrf.token}"}'></list-troupes>
+		<list-troupes csrf='{"header": "${_csrf.headerName}", "token": "${_csrf.token}"}'></list-troupes>
 	</div>
 
 	<div id="addTroupe">
