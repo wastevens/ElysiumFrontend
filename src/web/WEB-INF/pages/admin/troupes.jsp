@@ -5,22 +5,11 @@
 <script src="/js/http.js"></script>
 <script src="/js/admin/troupe.js"></script>
 </head>
-<body ng-app="admin.troupe" ng-controller="deleteUrl">
+<body ng-app="admin.troupe">
 
-<div id="showTroupes" ng-init='troupes = ${troupes}'>
-
-<table>
-  <tr><th>Name</th><th>Setting</th><th>Number of players</th><th>Delete this troupe?</th></tr>
-  <tr ng-repeat="troupe in troupes">
-    <td>{{troupe.name}}</td>
-    <td>{{troupe.setting|setting}}</td>
-    <td>{{troupe.numberOfPlayers}}</td>
-    <td><a href ng-click="deleteUrl('/admin/troupes/', troupe.id, '${_csrf.headerName}', '${_csrf.token}')">Delete troupe</a></td>
-  </tr>
-</table>
+<div id="showTroupes">
+<p><list-troupes troupes='${troupes}' csrf='{"header": "${_csrf.headerName}", "token": "${_csrf.token}"}'></list-troupes>
 </div>
-
-<p><my-customer info="{'name': 'Bob', 'address': 'Somewhere'}"></my-customer>
 
 <div id="addTroupe">
 <p><h2>Add a new troupe</h2>
