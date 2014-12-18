@@ -7,7 +7,7 @@
 </head>
 <body ng-app="admin.troupe">
 
-<div id="showTroupes">
+<div>
 <p><list-troupes troupes='${troupes}' csrf='{"header": "${_csrf.headerName}", "token": "${_csrf.token}"}'></list-troupes>
 </div>
 

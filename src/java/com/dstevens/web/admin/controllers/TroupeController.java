@@ -27,7 +27,7 @@ public class TroupeController {
 		this.troupeRepository = troupeRepository;
 	}
 	
-	@RequestMapping(value = "/admin/troupes", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/page/troupes", method = RequestMethod.GET)
 	public ModelAndView getTroupesPage() {
 		ModelAndView modelAndView = new ModelAndView("/admin/troupes");
 		modelAndView.addObject("troupes", getTroupes());
@@ -51,7 +51,8 @@ public class TroupeController {
 		}
 	}
 	
-	private String getTroupes() {
+	@RequestMapping(value = "/admin/troupes", method = RequestMethod.GET)
+	public String getTroupes() {
 		List<DisplayableTroupe> collect = StreamSupport.stream(troupeRepository.findAllUndeleted().spliterator(), false).
 				             map(DisplayableTroupe.fromTroupes()).
 				             sorted().
