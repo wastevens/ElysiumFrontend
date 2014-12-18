@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.players.Setting;
@@ -52,7 +53,8 @@ public class TroupeController {
 	}
 	
 	@RequestMapping(value = "/admin/troupes", method = RequestMethod.GET)
-	public String getTroupes() {
+	public @ResponseBody String getTroupes() {
+		System.out.println("Getting troupes");
 		List<DisplayableTroupe> collect = StreamSupport.stream(troupeRepository.findAllUndeleted().spliterator(), false).
 				             map(DisplayableTroupe.fromTroupes()).
 				             sorted().

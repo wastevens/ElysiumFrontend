@@ -6,4 +6,9 @@ angular.module('controllers.http', []).
 			var config = {'headers': headers};
 			$http.delete(url + id, config); 
 		};
+	}]).
+	controller('getUrl', ['$scope', '$http', 'Troupes', function($scope, $http, Troupes) {
+		console.log("getUrl");
+		$scope.troupes = Troupes.query();
+		console.log($scope.log);
 	}]);
