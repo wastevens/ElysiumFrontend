@@ -20,6 +20,8 @@
 </table>
 </div>
 
+<p><my-customer info="{'name': 'Bob', 'address': 'Somewhere'}"></my-customer>
+
 <div id="addTroupe">
 <p><h2>Add a new troupe</h2>
 	<form name="f" action="/admin/troupes" method="post">

@@ -31,6 +31,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/js/**").addResourceLocations("/js/").setCachePeriod(31556926);
+        registry.addResourceHandler("/**/*.html").addResourceLocations("/", "/js/").setCachePeriod(31556926);
     }
 	
 	@Override

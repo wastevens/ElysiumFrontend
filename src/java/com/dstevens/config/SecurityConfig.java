@@ -25,13 +25,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 	    http.
-	         authorizeRequests().antMatchers("/createAccount/**").permitAll().and().
-	         authorizeRequests().antMatchers("/resetPassword/**").permitAll().and().
-	         authorizeRequests().antMatchers("/user/**").hasRole("USER").and().
-	         authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN").and().
-	    	 formLogin().loginPage("/login").successHandler(new ElysiumAuthenticationSuccessHandler()).failureUrl("/login?error").permitAll().and().
-	    	 logout().logoutUrl("/logout").permitAll().and().
-		     csrf(); 
+	    	formLogin().loginPage("/login").successHandler(new ElysiumAuthenticationSuccessHandler()).failureUrl("/login?error").permitAll().and().
+	    	logout().logoutUrl("/logout").permitAll().and().
+	        authorizeRequests().antMatchers("/createAccount/**").permitAll().and().
+	        authorizeRequests().antMatchers("/resetPassword/**").permitAll().and().
+	    	authorizeRequests().antMatchers("/user/**").hasRole("USER").and().
+	    	authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN").and().
+		    csrf(); 
  
 	}
 }
