@@ -10,21 +10,26 @@ return {
     csrf: '='
   },
   controller: ['$scope', 'Troupes', function($scope, Troupes) {
-	 $scope.troupesSource = Troupes;
+	 $scope.troupeSource = Troupes;
   }],
-  link: function(scope, iElement, iAttrs, ctrl) {
-      scope.troupes = scope.troupesSource.query();
+  link: function(scope, iElement, iAttrs) {
+	  scope.troupes = scope.troupeSource.query();
+	  scope.$on('troupesUpdated', function(event) {
+		  console.log("directive heard troupes updated " + event);
+		  scope.troupes = scope.troupeSource.query();  
+	  });
   },
   templateUrl: '/js/admin/troupes.html'
 };
 });
 
 angular.module('services.troupes', ['ngResource']).
-controller('MyController', ['$scope','Troupes', function ($scope, Troupes) {
-	   $scope.callNotify = function(msg) {
-		   var troupes = Troupes.query();
-		   console.log(troupes);
-	   };
+controller('MyController', ['$rootScope','Troupes', function ($rootScope, Troupes) {
+			$rootScope.$on('troupesUpdated', function(event) {console.log("controller heard troupes updated " + event)});
+			$rootScope.callNotify = function(msg) {
+	   		   $rootScope.$broadcast('troupesUpdated');
+	   		   console.log("notify troupes");
+	   	   };
 	 }]).
 factory('Troupes', ['$resource', function($resource){
 	return $resource('/admin/troupes/:troupeId', {}, {
