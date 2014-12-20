@@ -14,7 +14,7 @@ factory('TroupeRepository', ['$resource', 'csrfResource', function($resource, cs
 	};
 }]);
 
-angular.module('admin.troupe.controllers', ['admin.troupe.services']).
+angular.module('admin.troupe.controllers', ['admin.troupe.services', 'sources.settings']).
 controller('deleteTroupe', ['$scope', '$rootScope', 'TroupeRepository', function($scope, $rootScope, TroupeRepository) {
 	$scope.deleteTroupe = function(id, csrfHeader, csrfToken) {
 		TroupeRepository.deleteTroupe(id, csrfHeader, csrfToken).
@@ -22,12 +22,11 @@ controller('deleteTroupe', ['$scope', '$rootScope', 'TroupeRepository', function
 			error(function(data, status, headers, config) {console.log("deleteTroupe failed")});
 	};
 }]).
-controller('addTroupe', ['$scope', '$rootScope', 'TroupeRepository', function($scope, $rootScope, TroupeRepository) {
-	$scope.settings = [
-	             	  {label: 'Camarilla', value: 0}, 
-	             	  {label: 'Anarch', value: 1}, 
-	             	  {label: 'Sabbat', value: 2}
-	             	  ];
+controller('addTroupe', ['$scope', '$rootScope', 'TroupeRepository', 'settingsSource', function($scope, $rootScope, TroupeRepository, settingsSource) {
+	$scope.settings = [];
+	for(var key in settingsSource.get().keysToValues) {
+		$scope.settings[key] = {label: settingsSource.get().valueFor(key), value: key};
+	}
  	$scope.setting = $scope.settings[0];
 	$scope.submit = function(csrfHeader, csrfToken) {
 		TroupeRepository.addTroupe({'name': $scope.name, 'setting': $scope.setting.value}, csrfHeader, csrfToken).
