@@ -22,12 +22,13 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+@SuppressWarnings("deprecation")
 @Entity
 @Table(name="User")
-@SuppressWarnings("deprecation")
 public class User implements UserDetails {
 
 	private static final long serialVersionUID = -7180299088295506267L;
@@ -46,8 +47,9 @@ public class User implements UserDetails {
     private final Set<Role> roles;
 
 	@OneToMany(cascade={CascadeType.ALL})
-    @JoinColumn(name="troupe_id", referencedColumnName="id")
-    @ForeignKey(name="User_PlayerCharacters_FK")
+	@JoinTable(name="User_PlayerCharacters", joinColumns = @JoinColumn(name="user_id"), 
+	           inverseJoinColumns = @JoinColumn(name="playerCharacter_id"))
+	@ForeignKey(name="User_PlayerCharacters_FK", inverseName="PlayerCharacters_User_FK")
     private final Set<PlayerCharacter> characters;
 	
     @Column(name="firstName")

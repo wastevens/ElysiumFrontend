@@ -13,6 +13,7 @@ import org.hibernate.annotations.ForeignKey;
 
 import com.dstevens.characters.PlayerCharacter;
 import com.dstevens.players.Setting;
+import com.dstevens.users.User;
 import com.dstevens.utilities.ObjectExtensions;
 
 import javax.persistence.CascadeType;
@@ -20,6 +21,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -37,10 +39,17 @@ public class Troupe implements Comparable<Troupe> {
     @Column(name="setting")
     private Setting setting;
     
-	@OneToMany(cascade={CascadeType.ALL})
-    @JoinColumn(name="troupe_id", referencedColumnName="id")
-    @ForeignKey(name="Troupe_PlayerCharacters_FK")
+    @OneToMany(cascade={CascadeType.ALL})
+	@JoinTable(name="Troupe_PlayerCharacters", joinColumns = @JoinColumn(name="troupe_id"), 
+	           inverseJoinColumns = @JoinColumn(name="playerCharacter_id"))
+	@ForeignKey(name="Troupe_PlayerCharacters_FK", inverseName="PlayerCharacters_Troupe_FK")
     private final Set<PlayerCharacter> characters;
+    
+	@OneToMany(cascade={CascadeType.ALL})
+	@JoinTable(name="Troupe_StorytellerUsers", joinColumns = @JoinColumn(name="user_id"), 
+	           inverseJoinColumns = @JoinColumn(name="user_id"))
+	@ForeignKey(name="Troupe_StorytellerUsers_FK", inverseName="StorytellerUsers_Troupe_FK")
+    private final Set<User> storytellers;
 
     @Column(name="deleted_at")
     private final Date deleteTimestamp;
@@ -49,18 +58,19 @@ public class Troupe implements Comparable<Troupe> {
     @SuppressWarnings("unused")
 	@Deprecated
     private Troupe() {
-        this(null, null, null, set(), null);
+        this(null, null, null, set(), set(), null);
     }
     
     Troupe(String id, String name, Setting setting) {
-        this(id, name, setting, set(), null);
+        this(id, name, setting, set(), set(), null);
     }
     
-    private Troupe(String id, String name, Setting setting, Set<PlayerCharacter> characters, Date deleteTimestamp) {
+    private Troupe(String id, String name, Setting setting, Set<PlayerCharacter> characters, Set<User> storytellers, Date deleteTimestamp) {
         this.id = id;
         this.name = name;
         this.setting = setting;
         this.characters = characters;
+		this.storytellers = storytellers;
         this.deleteTimestamp = deleteTimestamp;
     }
     
@@ -87,23 +97,35 @@ public class Troupe implements Comparable<Troupe> {
     }
 
     public Troupe withCharacter(PlayerCharacter character) {
-        return new Troupe(id, name, setting, setWith(characters, character), deleteTimestamp);
+        return new Troupe(id, name, setting, setWith(characters, character), storytellers, deleteTimestamp);
     }
     
     public Troupe withoutCharacter(PlayerCharacter character) {
-        return new Troupe(id, name, setting, setWithout(characters, character), deleteTimestamp);
+        return new Troupe(id, name, setting, setWithout(characters, character), storytellers, deleteTimestamp);
     }
     
     public Set<PlayerCharacter> getCharacters() {
         return characters;
     }
+    
+    public Troupe withStoryteller(User storyteller) {
+    	return new Troupe(id, name, setting, characters, setWith(storytellers, storyteller), deleteTimestamp);
+    }
+    
+    public Troupe withoutStoryteller(User storyteller) {
+    	return new Troupe(id, name, setting, characters, setWithout(storytellers, storyteller), deleteTimestamp);
+    }
+    
+    public Set<User> getStorytellers() {
+    	return storytellers;
+    }
 
     public Troupe delete(Date deleteTimestamp) {
-        return new Troupe(id, name, setting, characters, deleteTimestamp);
+        return new Troupe(id, name, setting, characters, storytellers, deleteTimestamp);
     }
     
     public Troupe undelete() {
-        return new Troupe(id, name, setting, characters, null);
+        return new Troupe(id, name, setting, characters, storytellers, null);
     }
     
     @Override
