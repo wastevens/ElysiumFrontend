@@ -23,6 +23,12 @@ controller('deleteTroupe', ['$scope', '$rootScope', 'TroupeRepository', function
 	};
 }]).
 controller('addTroupe', ['$scope', '$rootScope', 'TroupeRepository', function($scope, $rootScope, TroupeRepository) {
+	$scope.settings = [
+	             	  {label: 'Camarilla', value: 0}, 
+	             	  {label: 'Anarch', value: 1}, 
+	             	  {label: 'Sabbat', value: 2}
+	             	  ];
+ 	$scope.setting = $scope.settings[0];
 	$scope.submit = function(csrfHeader, csrfToken) {
 		TroupeRepository.addTroupe({'name': $scope.name, 'setting': $scope.setting.value}, csrfHeader, csrfToken).
 			success(function(data, status, headers, config) {$rootScope.$broadcast('troupesUpdated')}).

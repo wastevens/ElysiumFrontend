@@ -3,12 +3,12 @@
 <table>
 	<tr>
 		<td>Name:</td>
-		<td><input type='text' ng-model='name' name='name' value='' /></td>
+		<td><input type='text' ng-model='name' name='name' required='true' value='' /></td>
 	</tr>
 	<tr>
 		<td>Setting:</td>
-		<td ng-init="settings = [{label: 'Camarilla', value: 0}, {label: 'Anarch', value: 1}, {label: 'Sabbat', value: 2}]" >
-			<select ng-model='setting' name='setting' ng-options="setting.label for setting in settings track by setting.value" />
+		<td>
+			<select ng-model='setting' name='setting' required='true' ng-options="setting.label for setting in settings track by setting.value"></select>
 		</td>
 	</tr>
 	<tr>

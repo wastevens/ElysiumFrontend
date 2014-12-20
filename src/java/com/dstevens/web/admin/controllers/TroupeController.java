@@ -39,9 +39,7 @@ public class TroupeController {
 	@ResponseStatus(value=HttpStatus.CREATED)
 	@RequestMapping(value = "/admin/troupes", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody void  addTroupe(@RequestBody final RawTroupe troupe) {
-		if(troupe.name != null && troupe.setting != null) {
-			troupeRepository.ensureExists(troupe.name, Setting.values()[troupe.setting]);
-		}
+		troupeRepository.ensureExists(troupe.name, troupe.setting);
 	}
 	
 	@ResponseStatus(value=HttpStatus.NO_CONTENT)
@@ -65,7 +63,7 @@ public class TroupeController {
 	private static class RawTroupe {
 
 		public String name;
-		public Integer setting;
+		public Setting setting;
 		
 	}
 }
