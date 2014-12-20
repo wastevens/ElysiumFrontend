@@ -47,7 +47,7 @@ public class User implements UserDetails {
 
 	@OneToMany(cascade={CascadeType.ALL})
     @JoinColumn(name="troupe_id", referencedColumnName="id")
-    @ForeignKey(name="Troupe_PlayerCharacters_FK")
+    @ForeignKey(name="User_PlayerCharacters_FK")
     private final Set<PlayerCharacter> characters;
 	
     @Column(name="firstName")
