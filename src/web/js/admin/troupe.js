@@ -24,8 +24,8 @@ controller('deleteTroupe', ['$scope', '$rootScope', 'TroupeRepository', function
 }]).
 controller('addTroupe', ['$scope', '$rootScope', 'TroupeRepository', 'settingsSource', function($scope, $rootScope, TroupeRepository, settingsSource) {
 	$scope.settings = [];
-	for(var key in settingsSource.get().keysToValues) {
-		$scope.settings[key] = {label: settingsSource.get().valueFor(key), value: key};
+	for(var i = 0; i< settingsSource.get().length; i++) {
+		$scope.settings[i] = {label: settingsSource.get()[i], value: i};
 	}
  	$scope.setting = $scope.settings[0];
 	$scope.submit = function(csrfHeader, csrfToken) {
