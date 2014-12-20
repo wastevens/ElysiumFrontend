@@ -1,11 +1,6 @@
-angular.module('filters.setting', []).
-filter('setting', function() {
+angular.module('filters.setting', ['sources.settings']).
+filter('setting', ['settingsSource', function(settingsSource) {
 	return function(input) {
-		switch(input) {
-			case 0: return 'Camarilla';
-			case 1: return 'Anarch';
-			case 2: return 'Sabbat';
-		}
-		return 'No setting found for ' + input;
+		return settingsSource.get().valueFor(input);
 	};
-});
+}]);
