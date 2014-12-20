@@ -7,8 +7,26 @@
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <mapping package="com.dstevens"/>
     
+    <mapping class="com.dstevens.characters.PlayerCharacter"/>
+    <mapping class="com.dstevens.characters.traits.changes.TraitChange"/>
+    <mapping class="com.dstevens.characters.traits.changes.RemoveTrait"/>
+    <mapping class="com.dstevens.characters.traits.attributes.AttributeValue"/>
+    <mapping class="com.dstevens.characters.traits.experience.Experience"/>
+    
+    <mapping class="com.dstevens.characters.traits.backgrounds.CharacterBackground"/>
+    <mapping class="com.dstevens.characters.traits.skills.CharacterSkill"/>
+    <mapping class="com.dstevens.characters.traits.powers.disciplines.CharacterDiscipline"/>
+    <mapping class="com.dstevens.characters.traits.powers.magic.thaumaturgy.CharacterThaumaturgy"/>
+    <mapping class="com.dstevens.characters.traits.powers.magic.necromancy.CharacterNecromancy"/>
+    <mapping class="com.dstevens.characters.traits.distinctions.flaws.CharacterFlaw"/>
+    <mapping class="com.dstevens.characters.traits.distinctions.merits.CharacterMerit"/>
+    <mapping class="com.dstevens.characters.traits.status.CharacterStatus"/>
+    <mapping class="com.dstevens.characters.traits.attributes.focuses.SetPhysicalFocus"/>
+    <mapping class="com.dstevens.characters.traits.attributes.SetAttributeValue"/>
+    
+    <mapping class="com.dstevens.troupes.Troupe"/>
     <mapping class="com.dstevens.users.User"/>
-    <mapping class="com.dstevens.users.UserPasswordResetToken"/>
+    <mapping class="com.dstevens.users.security.UserPasswordResetToken"/>
     
   </session-factory>
 </hibernate-configuration>
