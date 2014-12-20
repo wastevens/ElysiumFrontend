@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.players.Setting;
-import com.dstevens.players.Troupe;
-import com.dstevens.players.TroupeRepository;
+import com.dstevens.troupes.Troupe;
+import com.dstevens.troupes.TroupeRepository;
 import com.google.gson.Gson;
 
 @Controller

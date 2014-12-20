@@ -1,9 +1,8 @@
 <table>
-  <tr><th>Name</th><th>Setting</th><th>Number of players</th><th>Delete this troupe?</th></tr>
+  <tr><th>Name</th><th>Setting</th><th>Delete this troupe?</th></tr>
   <tr ng-repeat="troupe in troupes">
     <td>{{troupe.name}}</td>
     <td>{{troupe.setting|setting}}</td>
-    <td>{{troupe.numberOfPlayers}}</td>
     <td ng-controller="deleteTroupe"><a href ng-click="deleteTroupe(troupe.id, csrf.header, csrf.token)">Delete troupe</a></td>
   </tr>
 </table>

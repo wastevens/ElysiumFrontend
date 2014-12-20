@@ -22,7 +22,7 @@ public class TroupeRepository {
         if (troupe != null) {
             return troupe;
         }
-        return factory.createTroupe(troupeName, setting);
+        return dao.save(factory.createTroupe(troupeName, setting));
     }
 
     public Troupe findWithId(String id) {

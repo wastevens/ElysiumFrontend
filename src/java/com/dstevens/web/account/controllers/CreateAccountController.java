@@ -35,16 +35,10 @@ public class CreateAccountController {
 	
 	@RequestMapping(value = { "/createAccount"}, method = RequestMethod.POST)
 	public ModelAndView createAccount(@RequestParam(value = "email") String email,
-			                          @RequestParam(value = "username") String username,
 			                          @RequestParam(value = "password") String password) {
 		if(userDao.findWithEmail(email) != null) {
 			ModelAndView model = new ModelAndView("/account/createAccount");
 			model.addObject("error", "An account already exists for user with email address " + email);
-			return model;
-		}
-		if(userDao.findWithName(username) != null) {
-			ModelAndView model = new ModelAndView("/account/createAccount");
-			model.addObject("error", "An account already exists for user with name " + username);
 			return model;
 		}
 		User newUser = userDao.save(new User(email, password, set(Role.USER)));

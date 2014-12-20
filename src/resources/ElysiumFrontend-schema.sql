@@ -91,7 +91,7 @@ create table TraitChange_focuses (TraitChange_id varchar(255) not null, focuses 
 create table TraitChanges (trait_change_type varchar(31) not null, id varchar(255) not null, ordinal integer, rating integer, specialization varchar(255), status integer, child_id varchar(255), traitToRemove_id varchar(255), primary key (id));
 create table Troupe (id varchar(255) not null, deleted_at datetime, name varchar(255), setting integer, primary key (id));
 create table Troupe_PlayerCharacters (troupe_id varchar(255) not null, playerCharacter_id varchar(255) not null, primary key (troupe_id, playerCharacter_id));
-create table Troupe_StorytellerUsers (user_id varchar(255) not null);
+create table Troupe_StorytellerUsers (troupe_id varchar(255) not null, user_id varchar(255) not null, primary key (troupe_id, user_id));
 create table User (id varchar(255) not null, email varchar(255), firstName varchar(255), lastName varchar(255), password varchar(255), primary key (id));
 create table UserPasswordResetToken (id varchar(255) not null, email varchar(255), expiresAt datetime, resetToken varchar(255), primary key (id));
 create table User_PlayerCharacters (user_id varchar(255) not null, playerCharacter_id varchar(255) not null, primary key (user_id, playerCharacter_id));
@@ -128,7 +128,7 @@ alter table TraitChanges add constraint TraitChange_TraitToRemove_FK foreign key
 alter table Troupe_PlayerCharacters add constraint PlayerCharacters_Troupe_FK foreign key (playerCharacter_id) references PlayerCharacter (id);
 alter table Troupe_PlayerCharacters add constraint Troupe_PlayerCharacters_FK foreign key (troupe_id) references Troupe (id);
 alter table Troupe_StorytellerUsers add constraint StorytellerUsers_Troupe_FK foreign key (user_id) references User (id);
-alter table Troupe_StorytellerUsers add constraint Troupe_StorytellerUsers_FK foreign key (user_id) references Troupe (id);
+alter table Troupe_StorytellerUsers add constraint Troupe_StorytellerUsers_FK foreign key (troupe_id) references Troupe (id);
 alter table User_PlayerCharacters add constraint PlayerCharacters_User_FK foreign key (playerCharacter_id) references PlayerCharacter (id);
 alter table User_PlayerCharacters add constraint User_PlayerCharacters_FK foreign key (user_id) references User (id);
 alter table User_roles add constraint User_Roles_FK foreign key (User_id) references User (id);

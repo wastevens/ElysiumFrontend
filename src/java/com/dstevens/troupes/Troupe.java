@@ -46,7 +46,7 @@ public class Troupe implements Comparable<Troupe> {
     private final Set<PlayerCharacter> characters;
     
 	@OneToMany(cascade={CascadeType.ALL})
-	@JoinTable(name="Troupe_StorytellerUsers", joinColumns = @JoinColumn(name="user_id"), 
+	@JoinTable(name="Troupe_StorytellerUsers", joinColumns = @JoinColumn(name="troupe_id"), 
 	           inverseJoinColumns = @JoinColumn(name="user_id"))
 	@ForeignKey(name="Troupe_StorytellerUsers_FK", inverseName="StorytellerUsers_Troupe_FK")
     private final Set<User> storytellers;

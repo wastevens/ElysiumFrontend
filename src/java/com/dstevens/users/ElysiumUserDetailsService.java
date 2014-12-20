@@ -17,10 +17,10 @@ public class ElysiumUserDetailsService implements UserDetailsService {
 	}
 	
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userDao.findWithName(username);
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		User user = userDao.findWithEmail(email);
 		if(user == null) {
-			throw new UsernameNotFoundException("Could not find user named " + username);
+			throw new UsernameNotFoundException("Could not find user with email " + email);
 		}
 		return user;
 	}
