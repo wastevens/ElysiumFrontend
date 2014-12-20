@@ -1,43 +1,42 @@
-angular.module('admin.troupe.filters', ['filters.setting']);
-
-angular.module('admin.troupe.controllers', ['controllers.http']);
-
-angular.module('directive.troupes', ['ngResource']).
-directive('listTroupes', function() {
-return {
-  restrict: 'E',
-  scope: {
-    csrf: '='
-  },
-  controller: ['$scope', '$resource', function($scope, $resource) {
-	 $scope.troupeSource = $resource('/admin/troupes/:troupeId', {});
-  }],
-  link: function(scope, iElement, iAttrs) {
-	  scope.troupes = scope.troupeSource.query();
-	  scope.$on('troupesUpdated', function(event) {
-		  scope.troupes = scope.troupeSource.query();  
-	  });
-  },
-  templateUrl: '/js/admin/troupes.html'
-};
-});
-
-angular.module('services.troupes', []).
-controller('deleteTroupe', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
-	$scope.deleteTroupe = function(url, id, csrfHeader, csrfToken) {
-		var headers = {};
-		headers[csrfHeader] = csrfToken;
-		var config = {'headers': headers};
-		$http.delete(url + id, config).
-			  success(function(data, status, headers, config) {
-				$rootScope.$broadcast('troupesUpdated');
-			  }).
-			  error(function(data, status, headers, config) {console.log("deleteTroupe failed")});
+angular.module('admin.troupe.services', ['ngResource', 'services.csrfResource']).
+factory('TroupeRepository', ['$resource', 'csrfResource', function($resource, csrfResource) {
+	return {
+		url: '/admin/troupes',
+		getTroupes: function() {
+			return $resource(this.url, {}).query();
+		},
+		deleteTroupe: function(id, csrfHeader, csrfToken) {
+			return csrfResource.delete(this.url + '/' + id, csrfHeader, csrfToken);
+		}
 	};
 }]);
 
-angular.module('admin.troupe.directives', ['directive.troupes']);
+angular.module('admin.troupe.controllers', ['admin.troupe.services']).
+controller('deleteTroupe', ['$scope', '$rootScope', 'TroupeRepository', function($scope, $rootScope, TroupeRepository) {
+	$scope.deleteTroupe = function(id, csrfHeader, csrfToken) {
+		TroupeRepository.deleteTroupe(id, csrfHeader, csrfToken).
+			success(function(data, status, headers, config) {$rootScope.$broadcast('troupesUpdated')}).
+			error(function(data, status, headers, config) {console.log("deleteTroupe failed")});
+	};
+}]);
 
-angular.module('admin.troupe.services', ['services.troupes']);
+angular.module('admin.troupe.directives', ['admin.troupe.services']).
+directive('listTroupes', ['TroupeRepository', function(TroupeRepository) {
+	return {
+		restrict: 'E',
+		scope: {
+			csrf: '='
+		},
+		link: function(scope, iElement, iAttrs) {
+			scope.troupes = TroupeRepository.getTroupes();
+			scope.$on('troupesUpdated', function(event) {
+				scope.troupes = TroupeRepository.getTroupes();  
+			});
+		},
+		templateUrl: '/js/admin/troupes.html'
+	};
+}]);
+
+angular.module('admin.troupe.filters', ['filters.setting']);
 
 angular.module('admin.troupe', ['admin.troupe.filters', 'admin.troupe.controllers', 'admin.troupe.directives', 'admin.troupe.services']);

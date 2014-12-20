@@ -45,12 +45,9 @@ public class TroupeController {
 	@ResponseStatus(value=HttpStatus.NO_CONTENT)
 	@RequestMapping(value = "/admin/troupes/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody void deleteTroupe(@PathVariable String id) {
-		System.out.println("Troupe id to delete: " + id);
 		Troupe troupeToDelete = troupeRepository.findWithId(id);
-		System.out.println("Troupe to delete: " + troupeToDelete);
 		if(troupeToDelete != null) {
 			troupeRepository.delete(troupeToDelete);
-			System.out.println("deleted");
 		}
 	}
 	
