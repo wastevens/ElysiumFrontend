@@ -3,7 +3,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-resource.js"></script>
 <script src="/js/filters.js"></script>
-<script src="/js/http.js"></script>
+<script src="/js/services.js"></script>
 <script src="/js/admin/troupe.js"></script>
 </head>
 <body ng-app="admin.troupe">
