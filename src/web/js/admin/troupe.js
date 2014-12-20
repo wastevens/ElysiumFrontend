@@ -2,15 +2,15 @@ angular.module('admin.troupe.filters', ['filters.setting']);
 
 angular.module('admin.troupe.controllers', ['controllers.http']);
 
-angular.module('directive.troupes', []).
+angular.module('directive.troupes', ['ngResource']).
 directive('listTroupes', function() {
 return {
   restrict: 'E',
   scope: {
     csrf: '='
   },
-  controller: ['$scope', 'Troupes', function($scope, Troupes) {
-	 $scope.troupeSource = Troupes;
+  controller: ['$scope', '$resource', function($scope, $resource) {
+	 $scope.troupeSource = $resource('/admin/troupes/:troupeId', {});
   }],
   link: function(scope, iElement, iAttrs) {
 	  scope.troupes = scope.troupeSource.query();
@@ -22,7 +22,7 @@ return {
 };
 });
 
-angular.module('services.troupes', ['ngResource']).
+angular.module('services.troupes', []).
 controller('deleteTroupe', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
 	$scope.deleteTroupe = function(url, id, csrfHeader, csrfToken) {
 		var headers = {};
@@ -34,11 +34,6 @@ controller('deleteTroupe', ['$scope', '$rootScope', '$http', function($scope, $r
 			  }).
 			  error(function(data, status, headers, config) {console.log("deleteTroupe failed")});
 	};
-}]).
-factory('Troupes', ['$resource', function($resource){
-	return $resource('/admin/troupes/:troupeId', {}, {
-		query: {method:'GET', isArray:true}
-	});
 }]);
 
 angular.module('admin.troupe.directives', ['directive.troupes']);
