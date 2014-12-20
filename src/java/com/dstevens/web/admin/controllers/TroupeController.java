@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.dstevens.players.Setting;
 import com.dstevens.troupes.Troupe;
 import com.dstevens.troupes.TroupeRepository;
+import com.dstevens.troupes.UnknownTroupeException;
 import com.google.gson.Gson;
 
 @Controller
@@ -34,6 +35,15 @@ public class TroupeController {
 	@RequestMapping(value = "/admin/page/troupes", method = RequestMethod.GET)
 	public ModelAndView getTroupesPage() {
 		return new ModelAndView("/admin/troupes");
+	}
+	
+	@RequestMapping(value = "/admin/page/troupes/{id}", method = RequestMethod.GET)
+	public @ResponseBody String getManageTroupePage(@PathVariable String id) {
+		Troupe troupeToManager = troupeRepository.findWithId(id);
+		if(troupeToManager == null) {
+			throw new UnknownTroupeException("Could not find troupe with id " + id);
+		}
+		return "";
 	}
 	
 	@ResponseStatus(value=HttpStatus.CREATED)

@@ -95,6 +95,10 @@ public class User implements UserDetails {
 		return roles;
 	}
 
+    public Set<PlayerCharacter> getCharacters() {
+    	return characters;
+    }
+    
 	public String getFirstName() {
 		return firstName;
 	}
@@ -117,6 +121,10 @@ public class User implements UserDetails {
 	
 	public User withCharacter(PlayerCharacter character) {
 		return new User(id, email, password, roles, setWith(characters, character), firstName, lastName);
+	}
+	
+	public User withoutCharacter(PlayerCharacter character) {
+		return new User(id, email, password, roles, setWithout(characters, character), firstName, lastName);
 	}
 	
 	public User withFirstName(String firstName) {
