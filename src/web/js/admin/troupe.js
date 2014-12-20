@@ -5,6 +5,9 @@ factory('TroupeRepository', ['$resource', 'csrfResource', function($resource, cs
 		getTroupes: function() {
 			return $resource(this.url, {}).query();
 		},
+		addTroupe: function(troupeToPost, csrfHeader, csrfToken) {
+			return csrfResource.post(this.url, troupeToPost, csrfHeader, csrfToken);
+		},
 		deleteTroupe: function(id, csrfHeader, csrfToken) {
 			return csrfResource.delete(this.url + '/' + id, csrfHeader, csrfToken);
 		}
@@ -17,6 +20,13 @@ controller('deleteTroupe', ['$scope', '$rootScope', 'TroupeRepository', function
 		TroupeRepository.deleteTroupe(id, csrfHeader, csrfToken).
 			success(function(data, status, headers, config) {$rootScope.$broadcast('troupesUpdated')}).
 			error(function(data, status, headers, config) {console.log("deleteTroupe failed")});
+	};
+}]).
+controller('addTroupe', ['$scope', '$rootScope', 'TroupeRepository', function($scope, $rootScope, TroupeRepository) {
+	$scope.submit = function(csrfHeader, csrfToken) {
+		TroupeRepository.addTroupe({'name': $scope.name, 'setting': $scope.setting.value}, csrfHeader, csrfToken).
+			success(function(data, status, headers, config) {$rootScope.$broadcast('troupesUpdated')}).
+			error(function(data, status, headers, config) {console.log("addTroupe failed")});
 	};
 }]);
 
@@ -34,6 +44,15 @@ directive('listTroupes', ['TroupeRepository', function(TroupeRepository) {
 			});
 		},
 		templateUrl: '/js/admin/troupes/display.html'
+	};
+}]).
+directive('addTroupe', [function() {
+	return {
+		restrict: 'E',
+		scope: {
+			csrf: '='
+		},
+		templateUrl: '/js/admin/troupes/add.html'
 	};
 }]);
 

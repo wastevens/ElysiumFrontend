@@ -36,10 +36,13 @@ public class TroupeController {
 		return modelAndView;
 	}
 	
+	@ResponseStatus(value=HttpStatus.CREATED)
 	@RequestMapping(value = "/admin/troupes", method = RequestMethod.POST)
-	public ModelAndView addTroupe(@RequestParam(value = "name") String name, @RequestParam(value = "setting") int setting) {
-		troupeRepository.ensureExists(name, Setting.values()[setting]);
-		return getTroupesPage();
+	public @ResponseBody void  addTroupe(@RequestParam(value = "name", required=false) String name, @RequestParam(value = "setting", required=false) Integer setting) {
+		System.out.println("setting is int, name: " + name +", " + "setting: " + setting);
+		if(name != null && setting != null) {
+			troupeRepository.ensureExists(name, Setting.values()[setting]);
+		}
 	}
 	
 	@ResponseStatus(value=HttpStatus.NO_CONTENT)
