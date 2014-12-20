@@ -15,7 +15,6 @@ return {
   link: function(scope, iElement, iAttrs) {
 	  scope.troupes = scope.troupeSource.query();
 	  scope.$on('troupesUpdated', function(event) {
-		  console.log("directive heard troupes updated " + event);
 		  scope.troupes = scope.troupeSource.query();  
 	  });
   },
@@ -24,13 +23,18 @@ return {
 });
 
 angular.module('services.troupes', ['ngResource']).
-controller('MyController', ['$rootScope','Troupes', function ($rootScope, Troupes) {
-			$rootScope.$on('troupesUpdated', function(event) {console.log("controller heard troupes updated " + event)});
-			$rootScope.callNotify = function(msg) {
-	   		   $rootScope.$broadcast('troupesUpdated');
-	   		   console.log("notify troupes");
-	   	   };
-	 }]).
+controller('deleteTroupe', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
+	$scope.deleteTroupe = function(url, id, csrfHeader, csrfToken) {
+		var headers = {};
+		headers[csrfHeader] = csrfToken;
+		var config = {'headers': headers};
+		$http.delete(url + id, config).
+			  success(function(data, status, headers, config) {
+				$rootScope.$broadcast('troupesUpdated');
+			  }).
+			  error(function(data, status, headers, config) {console.log("deleteTroupe failed")});
+	};
+}]).
 factory('Troupes', ['$resource', function($resource){
 	return $resource('/admin/troupes/:troupeId', {}, {
 		query: {method:'GET', isArray:true}

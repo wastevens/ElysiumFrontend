@@ -5,12 +5,14 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.players.Setting;
@@ -40,8 +42,9 @@ public class TroupeController {
 		return getTroupesPage();
 	}
 	
+	@ResponseStatus(value=HttpStatus.NO_CONTENT)
 	@RequestMapping(value = "/admin/troupes/{id}", method = RequestMethod.DELETE)
-	public void deleteTroupe(@PathVariable String id) {
+	public @ResponseBody void deleteTroupe(@PathVariable String id) {
 		System.out.println("Troupe id to delete: " + id);
 		Troupe troupeToDelete = troupeRepository.findWithId(id);
 		System.out.println("Troupe to delete: " + troupeToDelete);

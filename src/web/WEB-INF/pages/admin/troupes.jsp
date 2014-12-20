@@ -8,12 +8,7 @@
 </head>
 <body ng-app="admin.troupe">
 
-	<div ng-controller="MyController">
-		<button ng-click="callNotify('Hello world');">NOTIFY</button>
-	</div>
-	<p>
-		<list-troupes csrf='{"header": "${_csrf.headerName}", "token": "${_csrf.token}"}'></list-troupes>
-	</div>
+	<list-troupes csrf='{"header": "${_csrf.headerName}", "token": "${_csrf.token}"}'></list-troupes>
 
 	<div id="addTroupe">
 		<p>
