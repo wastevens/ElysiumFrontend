@@ -39,23 +39,35 @@ public class User implements UserDetails {
     @ForeignKey(name="User_Roles_FK")
     private final Set<Role> roles;
 
+    @Column(name="firstName")
+    private final String firstName;
+    
+    @Column(name="lastName")
+    private final String lastName;
+	
     //Hibernate only
     @SuppressWarnings("unused")
     @Deprecated
 	private User() {
-    	this(null, null, null, set());
+    	this(null, null, null, set(), null, null);
     }
     
     public User(String email, String password, Set<Role> roles) {
-    	this(new IdSupplier().get(), email, password, roles);
+    	this(new IdSupplier().get(), email, password, roles, null, null);
     }
     
-    private User(String id, String email, String password, Set<Role> roles) {
+    private User(String id, String email, String password, Set<Role> roles, String firstName, String lastName) {
 		this.id = id;
 		this.email = email;
 		this.password = password;
 		this.roles = roles;
+		this.firstName = firstName;
+		this.lastName = lastName;
     }
+
+	public String getId() {
+		return id;
+	}
     
     public String getEmail() {
 		return email;
@@ -69,8 +81,24 @@ public class User implements UserDetails {
 		return roles;
 	}
 
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
 	public User withPassword(String password) {
-		return new User(id, email, password, roles);
+		return new User(id, email, password, roles, firstName, lastName);
+	}
+	
+	public User withFirstName(String firstName) {
+		return new User(id, email, password, roles, firstName, lastName);
+	}
+	
+	public User withLastName(String lastName) {
+		return new User(id, email, password, roles, firstName, lastName);
 	}
     
 	@Override
