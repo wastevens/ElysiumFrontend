@@ -29,9 +29,6 @@ public class User implements UserDetails {
 	@Id
     private final String id;
     
-    @Column(name="name")
-    private final String name;
-    
     @Column(name="email")
     private final String email;
     
@@ -46,24 +43,19 @@ public class User implements UserDetails {
     @SuppressWarnings("unused")
     @Deprecated
 	private User() {
-    	this(null, null, null, null, set());
+    	this(null, null, null, set());
     }
     
-    public User(String name, String email, String password, Set<Role> roles) {
-    	this(new IdSupplier().get(), name, email, password, roles);
+    public User(String email, String password, Set<Role> roles) {
+    	this(new IdSupplier().get(), email, password, roles);
     }
     
-    private User(String id, String name, String email, String password, Set<Role> roles) {
+    private User(String id, String email, String password, Set<Role> roles) {
 		this.id = id;
-		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.roles = roles;
     }
-    
-    public String getName() {
-		return name;
-	}
     
     public String getEmail() {
 		return email;
@@ -78,7 +70,7 @@ public class User implements UserDetails {
 	}
 
 	public User withPassword(String password) {
-		return new User(id, name, email, password, roles);
+		return new User(id, email, password, roles);
 	}
     
 	@Override
@@ -88,7 +80,7 @@ public class User implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return name;
+		return email;
 	}
 
 	@Override

@@ -47,7 +47,7 @@ public class CreateAccountController {
 			model.addObject("error", "An account already exists for user with name " + username);
 			return model;
 		}
-		User newUser = userDao.save(new User(username, email, password, set(Role.USER)));
+		User newUser = userDao.save(new User(email, password, set(Role.USER)));
 		sendConfirmatoryEmailTo(email);
 		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(newUser, null, newUser.getAuthorities()));
 		return new ModelAndView(new RedirectView("/user/main"));
