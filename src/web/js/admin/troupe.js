@@ -33,7 +33,7 @@ directive('listTroupes', ['TroupeRepository', function(TroupeRepository) {
 				scope.troupes = TroupeRepository.getTroupes();  
 			});
 		},
-		templateUrl: '/js/admin/troupes.html'
+		templateUrl: '/js/admin/troupes/display.html'
 	};
 }]);
 
