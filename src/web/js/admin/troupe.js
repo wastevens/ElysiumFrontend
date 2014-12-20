@@ -48,7 +48,7 @@ directive('listTroupes', ['TroupeRepository', function(TroupeRepository) {
 				scope.troupes = TroupeRepository.getTroupes();  
 			});
 		},
-		templateUrl: '/js/admin/troupes/display.html'
+		templateUrl: '/js/admin/troupe/display.html'
 	};
 }]).
 directive('addTroupe', [function() {
@@ -57,7 +57,7 @@ directive('addTroupe', [function() {
 		scope: {
 			csrf: '='
 		},
-		templateUrl: '/js/admin/troupes/add.html'
+		templateUrl: '/js/admin/troupe/add.html'
 	};
 }]);
 
