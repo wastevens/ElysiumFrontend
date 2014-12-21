@@ -3,7 +3,7 @@
   <tr ng-repeat="user in users">
     <td>{{user.firstName}} {{user.lastName}}</td>
     <td>{{user.email}}</td>
-    <td>{{user.roles|role|joinBy:','}}</td>
+    <td>{{user.roles|roles|joinBy:', '}}</td>
     <td>ADD ROLE GOES HERE</td>
   </tr>
 </table>
