@@ -1,4 +1,4 @@
-package com.dstevens.web.admin.controllers;
+package com.dstevens.troupes;
 
 import java.util.Comparator;
 import java.util.Set;
@@ -6,7 +6,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.dstevens.characters.DisplayablePlayerCharacter;
-import com.dstevens.troupes.Troupe;
 import com.dstevens.users.DisplayableUser;
 import com.dstevens.utilities.ObjectExtensions;
 

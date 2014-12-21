@@ -1,12 +1,13 @@
 package com.dstevens.users;
 
+import java.util.Comparator;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.dstevens.characters.DisplayablePlayerCharacter;
 
-public class DisplayableUser {
+public class DisplayableUser implements Comparable<DisplayableUser> {
 
 	public String id;
 	public String firstName;
@@ -28,6 +29,15 @@ public class DisplayableUser {
 		return (User t) -> new DisplayableUser(t.getId(), t.getFirstName(), t.getLastName(), t.getEmail(), 
 				                               t.getRoles().stream().map((Role r) -> r.ordinal()).collect(Collectors.toSet()), 
 				                               t.getCharacters().stream().map(DisplayablePlayerCharacter.fromCharacter()).collect(Collectors.toSet()));
+	}
+
+	@Override
+	public int compareTo(DisplayableUser that) {
+		return Comparator.comparing((DisplayableUser t) -> t.lastName == null ? "" : t.lastName).
+			thenComparing(Comparator.comparing((DisplayableUser t) -> t.firstName == null ? "" : t.firstName)).
+			thenComparing(Comparator.comparing((DisplayableUser t) -> t.email == null ? "" : t.email)).
+			thenComparing(Comparator.comparing((DisplayableUser t) -> t.id)).
+			compare(this, that);
 	}
 	
 }

@@ -1,0 +1,9 @@
+<table>
+  <tr><th>Name</th><th>Email</th><th>Roles</th><th>Add role</th></tr>
+  <tr ng-repeat="user in users">
+    <td>{{user.firstName}} {{user.lastName}}</td>
+    <td>{{user.email}}</td>
+    <td>{{user.roles|role|joinBy:','}}</td>
+    <td>ADD ROLE GOES HERE</td>
+  </tr>
+</table>

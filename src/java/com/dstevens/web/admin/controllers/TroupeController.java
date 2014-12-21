@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.players.Setting;
+import com.dstevens.troupes.DisplayableTroupe;
 import com.dstevens.troupes.Troupe;
 import com.dstevens.troupes.TroupeRepository;
 import com.dstevens.troupes.UnknownTroupeException;

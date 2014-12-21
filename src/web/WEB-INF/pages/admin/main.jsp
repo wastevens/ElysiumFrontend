@@ -14,6 +14,7 @@
 	<c:if test="${pageContext.request.userPrincipal.name != null}">
 		<h2>Welcome : ${pageContext.request.userPrincipal.name}
 		
+		<p><a href="/admin/page/users">Manage users</a></h2>
         <p><a href="/admin/page/troupes">Manage troupes</a></h2>
         
         <p><a href="javascript:formSubmit()">Logout</a></h2>  
