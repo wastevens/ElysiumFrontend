@@ -1,7 +1,6 @@
 package com.dstevens.web.admin.controllers;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.users.DisplayableUser;
-import com.dstevens.users.Role;
 import com.dstevens.users.UnknownUserException;
 import com.dstevens.users.User;
 import com.dstevens.users.UserRepository;
@@ -37,12 +35,12 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/admin/users/{id}", method = RequestMethod.PUT)
-	public @ResponseBody void updateUser(@PathVariable String id, @RequestBody final RawUser userWrapper) {
+	public @ResponseBody void updateUser(@PathVariable String id, @RequestBody final DisplayableUser userWrapper) {
 		User user = userRepository.findUser(id);
 		if(user == null) {
 			throw new UnknownUserException("Could not find user with id " + id);
 		}
-		userRepository.save(user.withEmail(userWrapper.email).withFirstName(userWrapper.firstName).withLastName(userWrapper.lastName).withRoles(userWrapper.roles));
+		userRepository.save(user.withEmail(userWrapper.email).withFirstName(userWrapper.firstName).withLastName(userWrapper.lastName).withRoles(userWrapper.roles()));
 	}
 	
 	@RequestMapping(value = "/admin/users/{id}", method = RequestMethod.GET)
@@ -57,15 +55,5 @@ public class UserController {
 				                                      sorted().
 				                                      collect(Collectors.toList());
 		return new Gson().toJson(collect);
-	}
-	
-	private static class RawUser {
-
-		public String id;
-		public String email;
-		public String firstName;
-		public String lastName;
-		public Set<Role> roles;
-		
 	}
 }

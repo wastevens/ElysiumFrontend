@@ -25,6 +25,10 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 		this.characters = characters;
 	}
 	
+	public Set<Role> roles() {
+		return roles.stream().map((Integer i) -> Role.values()[i]).collect(Collectors.toSet());
+	}
+	
 	public static Function<User, DisplayableUser> fromUser() {
 		return (User t) -> new DisplayableUser(t.getId(), t.getFirstName(), t.getLastName(), t.getEmail(), 
 				                               t.getRoles().stream().map((Role r) -> r.ordinal()).collect(Collectors.toSet()), 

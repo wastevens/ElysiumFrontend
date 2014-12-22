@@ -65,9 +65,14 @@ directive('modifyUser', ['userRepository', function(userRepository) {
 					success(function(data, status, headers, config) {
 						scope.user = data;
 						scope.roles = [];
+						//roleSource
 						for(var i=0;i<scope.user.roles.length;i++) {scope.roles[scope.user.roles[i]] = true}
 					}).
 					error(function(data, status, headers, config) {console.log("fetch user failed")});
+			});
+			scope.$on('userUpdated', function(event) {
+				scope.user = {};
+				scope.roles = [];
 			});
 		},
 		templateUrl: '/js/admin/user/manage.html'
