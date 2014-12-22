@@ -23,12 +23,12 @@ controller('manageUser', ['$scope', '$rootScope', function($scope, $rootScope) {
 }]).
 controller('updateUser', ['$scope', '$rootScope', 'userRepository', function($scope, $rootScope, userRepository) {
 	$scope.submit = function(csrfHeader, csrfToken) {
-		var roles = [];
+		$scope.user.roles = [];
 		for(var i=0;i<$scope.roles.length;i++) {
-			if($scope.roles[i]) { roles.push(i) }
+			if($scope.roles[i]) { $scope.user.roles.push(i) }
 		}
 		
-		userRepository.updateUser({'id': $scope.user.id, 'email': $scope.user.email, 'firstName': $scope.user.firstName, 'lastName': $scope.user.lastName, 'roles': roles}, csrfHeader, csrfToken).
+		userRepository.updateUser($scope.user, csrfHeader, csrfToken).
 			success(function(data, status, headers, config) {$rootScope.$broadcast('userUpdated')}).
 			error(function(data, status, headers, config) {console.log("user update failed")});
 	};
