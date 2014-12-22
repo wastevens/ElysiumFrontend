@@ -4,11 +4,35 @@ factory('userRepository', ['$resource', 'csrfResource', function($resource, csrf
 		url: '/admin/users',
 		getUsers: function() {
 			return $resource(this.url, {}).query();
+		},
+		getUserWithId: function(id) {
+			return csrfResource.get(this.url + '/' + id);
+		},
+		updateUser: function(userToUpdate, csrfHeader, csrfToken) {
+			return csrfResource.put(this.url + '/' + userToUpdate.id, userToUpdate, csrfHeader, csrfToken);
 		}
 	};
 }]);
 
-angular.module('admin.user.controllers', []);
+angular.module('admin.user.controllers', ['admin.user.services']).
+controller('manageUser', ['$scope', '$rootScope', function($scope, $rootScope) {
+	$scope.manageUser = function(id, csrfHeader, csrfToken) {
+		console.log("manage user with id " + id);
+		$rootScope.$broadcast('userSelected', id);
+	};
+}]).
+controller('updateUser', ['$scope', '$rootScope', 'userRepository', function($scope, $rootScope, userRepository) {
+	$scope.submit = function(csrfHeader, csrfToken) {
+		var roles = [];
+		for(var i=0;i<$scope.roles.length;i++) {
+			if($scope.roles[i]) { roles.push(i) }
+		}
+		
+		userRepository.updateUser({'id': $scope.user.id, 'email': $scope.user.email, 'firstName': $scope.user.firstName, 'lastName': $scope.user.lastName, 'roles': roles}, csrfHeader, csrfToken).
+			success(function(data, status, headers, config) {$rootScope.$broadcast('userUpdated')}).
+			error(function(data, status, headers, config) {console.log("user update failed")});
+	};
+}]);
 
 angular.module('admin.user.directives', ['admin.user.services']).
 directive('listUsers', ['userRepository', function(userRepository) {
@@ -24,6 +48,29 @@ directive('listUsers', ['userRepository', function(userRepository) {
 			});
 		},
 		templateUrl: '/js/admin/user/display.html'
+	};
+}]).
+directive('modifyUser', ['userRepository', function(userRepository) {
+	console.log("modify user directive");
+	return {
+		restrict: 'E',
+		scope: {
+			csrf: '='
+		},
+		link: function(scope, iElement, iAttrs) {
+			console.log('modify user directive link');
+			scope.$on('userSelected', function(event, id) {
+				console.log('modify user action heard! ' + id);
+				userRepository.getUserWithId(id).
+					success(function(data, status, headers, config) {
+						scope.user = data;
+						scope.roles = [];
+						for(var i=0;i<scope.user.roles.length;i++) {scope.roles[scope.user.roles[i]] = true}
+					}).
+					error(function(data, status, headers, config) {console.log("fetch user failed")});
+			});
+		},
+		templateUrl: '/js/admin/user/manage.html'
 	};
 }]);
 

@@ -107,7 +107,16 @@ public class User implements UserDetails {
 		return lastName;
 	}
 
+
+	public User withEmail(String email) {
+		return new User(id, email, password, roles, characters, firstName, lastName);
+	}
+	
 	public User withPassword(String password) {
+		return new User(id, email, password, roles, characters, firstName, lastName);
+	}
+	
+	public User withRoles(Set<Role> roles) {
 		return new User(id, email, password, roles, characters, firstName, lastName);
 	}
 	

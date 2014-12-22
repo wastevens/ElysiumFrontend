@@ -1,9 +1,8 @@
 <table>
-  <tr><th>Name</th><th>Email</th><th>Roles</th><th>Add role</th></tr>
+  <tr><th>Email</th><th>Name</th><th>Roles</th></tr>
   <tr ng-repeat="user in users">
+    <td ng-controller="manageUser"><a href ng-click="manageUser(user.id, csrf.header, csrf.token)">{{user.email}}</a></td>
     <td>{{user.firstName}} {{user.lastName}}</td>
-    <td>{{user.email}}</td>
     <td>{{user.roles|roles|joinBy:', '}}</td>
-    <td>ADD ROLE GOES HERE</td>
   </tr>
 </table>

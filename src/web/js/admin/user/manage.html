@@ -1,0 +1,15 @@
+<form ng-submit="submit(csrf.header, csrf.token)" ng-controller="updateUser">
+<table>
+  <tr><th>Email</th><td><input type='text' ng-model='user.email' required='true' /></td></tr>
+  <tr><th>First Name</th><td><input type='text' ng-model='user.firstName' /></td></tr>
+  <tr><th>Last Name</th><td><input type='text' ng-model='user.lastName' /></td></tr>
+  <tr><th colspan=2>Roles</th></tr>
+  <tr><th>Admin?</th><td><input type='checkbox' ng-model='roles[0]' name='admin' /></td></tr>
+  <tr><th>Lead Storyteller?</th><td><input type='checkbox' ng-model='roles[1]' name='lst' /></td></tr>
+  <tr><th>Assistant Storyteller?</th><td><input type='checkbox' ng-model='roles[2]' name='ast' /></td></tr>
+  <tr><th>Narrator?</th><td><input type='checkbox' ng-model='roles[3]' name='narrator' /></td></tr>
+  <tr><th>Patron?</th><td><input type='checkbox' ng-model='roles[4]' name='patron' /></td></tr>
+  <tr><th>User?</th><td><input type='checkbox' ng-model='roles[5]' name='user' /></td></tr>
+  <tr><td colspan='2'><input name="submit" type="submit" value="submit" /></td></tr>
+</table>
+</form>

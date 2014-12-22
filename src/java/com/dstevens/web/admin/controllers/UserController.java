@@ -1,6 +1,7 @@
 package com.dstevens.web.admin.controllers;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -35,13 +36,18 @@ public class UserController {
 		return new ModelAndView("/admin/users");
 	}
 	
-	@RequestMapping(value = "/admin/users/{id}/roles", method = RequestMethod.POST)
-	public void addRoleToUser(@PathVariable String id, @RequestBody final RawRole roleWrapper) {
+	@RequestMapping(value = "/admin/users/{id}", method = RequestMethod.PUT)
+	public @ResponseBody void updateUser(@PathVariable String id, @RequestBody final RawUser userWrapper) {
 		User user = userRepository.findUser(id);
 		if(user == null) {
 			throw new UnknownUserException("Could not find user with id " + id);
 		}
-		userRepository.save(user.withRole(roleWrapper.role));
+		userRepository.save(user.withEmail(userWrapper.email).withFirstName(userWrapper.firstName).withLastName(userWrapper.lastName).withRoles(userWrapper.roles));
+	}
+	
+	@RequestMapping(value = "/admin/users/{id}", method = RequestMethod.GET)
+	public @ResponseBody String getUser(@PathVariable String id) {
+		return new Gson().toJson(DisplayableUser.fromUser().apply(userRepository.findUser(id)));
 	}
 	
 	@RequestMapping(value = "/admin/users", method = RequestMethod.GET)
@@ -53,9 +59,13 @@ public class UserController {
 		return new Gson().toJson(collect);
 	}
 	
-	private static class RawRole {
+	private static class RawUser {
 
-		public Role role;
+		public String id;
+		public String email;
+		public String firstName;
+		public String lastName;
+		public Set<Role> roles;
 		
 	}
 }
