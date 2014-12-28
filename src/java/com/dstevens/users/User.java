@@ -9,9 +9,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.hibernate.annotations.ForeignKey;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import com.dstevens.characters.PlayerCharacter;
 import com.dstevens.suppliers.IdSupplier;
@@ -29,6 +31,8 @@ import javax.persistence.Table;
 @SuppressWarnings("deprecation")
 @Entity
 @Table(name="User")
+@Component
+@Scope("session")
 public class User implements UserDetails {
 
 	private static final long serialVersionUID = -7180299088295506267L;

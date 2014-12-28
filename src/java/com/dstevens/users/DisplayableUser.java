@@ -43,6 +43,30 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 				                               t.getCharacters().stream().map(DisplayablePlayerCharacter.fromCharacter()).collect(Collectors.toSet()));
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public Set<Integer> getRoles() {
+		return roles;
+	}
+
+	public Set<DisplayablePlayerCharacter> getCharacters() {
+		return characters;
+	}
+
 	@Override
 	public int compareTo(DisplayableUser that) {
 		return Comparator.comparing((DisplayableUser t) -> t.lastName == null ? "" : t.lastName).
