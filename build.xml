@@ -130,7 +130,10 @@
 </target>
 
 <target name="schemaexport">
-	<ant antfile="build-schema.xml" target="schemaexport" />
+	<ant antfile="build-schema.xml">
+	  <target name="schemaexport" />
+	  <target name="create-default-users" />
+	</ant>
 </target>
 	
 </project>
