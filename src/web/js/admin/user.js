@@ -1,18 +1,4 @@
-angular.module('admin.user.services', ['ngResource', 'services.csrfResource']).
-factory('userRepository', ['$resource', 'csrfResource', function($resource, csrfResource) {
-	return {
-		url: '/admin/users',
-		getUsers: function() {
-			return $resource(this.url, {}).query();
-		},
-		getUserWithId: function(id) {
-			return csrfResource.get(this.url + '/' + id);
-		},
-		updateUser: function(userToUpdate, csrfHeader, csrfToken) {
-			return csrfResource.put(this.url + '/' + userToUpdate.id, userToUpdate, csrfHeader, csrfToken);
-		}
-	};
-}]);
+angular.module('admin.user.services', ['admin.services.users']);
 
 angular.module('admin.user.controllers', ['admin.user.services']).
 controller('manageUser', ['$scope', '$rootScope', function($scope, $rootScope) {

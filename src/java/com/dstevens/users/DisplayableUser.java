@@ -1,5 +1,7 @@
 package com.dstevens.users;
 
+import static com.dstevens.collections.Sets.set;
+
 import java.util.Comparator;
 import java.util.Set;
 import java.util.function.Function;
@@ -9,12 +11,18 @@ import com.dstevens.characters.DisplayablePlayerCharacter;
 
 public class DisplayableUser implements Comparable<DisplayableUser> {
 
-	public String id;
-	public String firstName;
-	public String lastName;
-	public String email;
-	public Set<Integer> roles;
-	public Set<DisplayablePlayerCharacter> characters;
+	public final String id;
+	public final String firstName;
+	public final String lastName;
+	public final String email;
+	public final Set<Integer> roles;
+	public final Set<DisplayablePlayerCharacter> characters;
+	
+	//Jackson only
+    @Deprecated
+	private DisplayableUser() {
+		this(null, null, null, null, set(), set());
+	}
 	
 	private DisplayableUser(String id, String firstName, String lastName, String email, Set<Integer> roles, Set<DisplayablePlayerCharacter> characters) {
 		this.id = id;
