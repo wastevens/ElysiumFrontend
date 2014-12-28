@@ -29,8 +29,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    	logout().logoutUrl("/logout").permitAll().and().
 	        authorizeRequests().antMatchers("/createAccount/**").permitAll().and().
 	        authorizeRequests().antMatchers("/resetPassword/**").permitAll().and().
+	        authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN").and().
+	        authorizeRequests().antMatchers("/troupes/**").hasRole("USER").and().
+	        authorizeRequests().antMatchers("/characters/**").hasRole("USER").and().
 	    	authorizeRequests().antMatchers("/user/**").hasRole("USER").and().
-	    	authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN").and().
 		    csrf(); 
  
 	}

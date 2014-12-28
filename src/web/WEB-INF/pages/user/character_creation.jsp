@@ -5,12 +5,13 @@
 <script src="/js/sources/settings.js"></script>
 <script src="/js/filters/setting.js"></script>
 <script src="/js/services/csrfResource.js"></script>
-<script src="/js/user/character.js"></script>
+<script src="/js/services/troupeRepository.js"></script>
+<script src="/js/services/characterRepository.js"></script>
 <script src="/js/user/character_creation.js"></script>
 </head>
 <body ng-app="user.character.creation">
 
-	Character creation will go here
+	<create-character csrf='{"header": "${_csrf.headerName}", "token": "${_csrf.token}"}'></create-character>
 
 </body>
 </html>

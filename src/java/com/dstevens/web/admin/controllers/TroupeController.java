@@ -48,13 +48,13 @@ public class TroupeController {
 	}
 	
 	@ResponseStatus(value=HttpStatus.CREATED)
-	@RequestMapping(value = "/admin/troupes", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/troupes", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody void  addTroupe(@RequestBody final RawTroupe troupe) {
 		troupeRepository.ensureExists(troupe.name, troupe.setting);
 	}
 	
 	@ResponseStatus(value=HttpStatus.NO_CONTENT)
-	@RequestMapping(value = "/admin/troupes/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/troupes/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody void deleteTroupe(@PathVariable String id) {
 		Troupe troupeToDelete = troupeRepository.findWithId(id);
 		if(troupeToDelete != null) {
@@ -62,7 +62,7 @@ public class TroupeController {
 		}
 	}
 	
-	@RequestMapping(value = "/admin/troupes", method = RequestMethod.GET)
+	@RequestMapping(value = "/troupes", method = RequestMethod.GET)
 	public @ResponseBody String getTroupes() {
 		List<DisplayableTroupe> collect = StreamSupport.stream(troupeRepository.findAllUndeleted().spliterator(), false).
 				             map(DisplayableTroupe.fromTroupes()).

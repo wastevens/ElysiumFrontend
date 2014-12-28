@@ -1,51 +1,37 @@
-angular.module('admin.troupe.services', ['ngResource', 'services.csrfResource']).
-factory('TroupeRepository', ['$resource', 'csrfResource', function($resource, csrfResource) {
-	return {
-		url: '/admin/troupes',
-		getTroupes: function() {
-			return $resource(this.url, {}).query();
-		},
-		addTroupe: function(troupeToPost, csrfHeader, csrfToken) {
-			return csrfResource.post(this.url, troupeToPost, csrfHeader, csrfToken);
-		},
-		deleteTroupe: function(id, csrfHeader, csrfToken) {
-			return csrfResource.delete(this.url + '/' + id, csrfHeader, csrfToken);
-		}
-	};
-}]);
+angular.module('admin.troupe.services', ['services.troupes']);
 
 angular.module('admin.troupe.controllers', ['admin.troupe.services', 'sources.settings']).
-controller('deleteTroupe', ['$scope', '$rootScope', 'TroupeRepository', function($scope, $rootScope, TroupeRepository) {
+controller('deleteTroupe', ['$scope', '$rootScope', 'troupeRepository', function($scope, $rootScope, troupeRepository) {
 	$scope.deleteTroupe = function(id, csrfHeader, csrfToken) {
-		TroupeRepository.deleteTroupe(id, csrfHeader, csrfToken).
+		troupeRepository.deleteTroupe(id, csrfHeader, csrfToken).
 			success(function(data, status, headers, config) {$rootScope.$broadcast('troupesUpdated')}).
 			error(function(data, status, headers, config) {console.log("deleteTroupe failed")});
 	};
 }]).
-controller('addTroupe', ['$scope', '$rootScope', 'TroupeRepository', 'settingsSource', function($scope, $rootScope, TroupeRepository, settingsSource) {
+controller('addTroupe', ['$scope', '$rootScope', 'troupeRepository', 'settingsSource', function($scope, $rootScope, troupeRepository, settingsSource) {
 	$scope.settings = [];
 	for(var i = 0; i< settingsSource.get().length; i++) {
 		$scope.settings[i] = {label: settingsSource.get()[i], value: i};
 	}
  	$scope.setting = $scope.settings[0];
 	$scope.submit = function(csrfHeader, csrfToken) {
-		TroupeRepository.addTroupe({'name': $scope.name, 'setting': $scope.setting.value}, csrfHeader, csrfToken).
+		troupeRepository.addTroupe({'name': $scope.name, 'setting': $scope.setting.value}, csrfHeader, csrfToken).
 			success(function(data, status, headers, config) {$rootScope.$broadcast('troupesUpdated')}).
 			error(function(data, status, headers, config) {console.log("addTroupe failed")});
 	};
 }]);
 
 angular.module('admin.troupe.directives', ['admin.troupe.services']).
-directive('listTroupes', ['TroupeRepository', function(TroupeRepository) {
+directive('listTroupes', ['troupeRepository', function(troupeRepository) {
 	return {
 		restrict: 'E',
 		scope: {
 			csrf: '='
 		},
 		link: function(scope, iElement, iAttrs) {
-			scope.troupes = TroupeRepository.getTroupes();
+			scope.troupes = troupeRepository.getTroupes();
 			scope.$on('troupesUpdated', function(event) {
-				scope.troupes = TroupeRepository.getTroupes();  
+				scope.troupes = troupeRepository.getTroupes();  
 			});
 		},
 		templateUrl: '/js/admin/troupe/display.html'
