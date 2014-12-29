@@ -1,5 +1,7 @@
 package com.dstevens.troupes;
 
+import static com.dstevens.collections.Sets.set;
+
 import java.util.Comparator;
 import java.util.Set;
 import java.util.function.Function;
@@ -16,6 +18,12 @@ public class DisplayableTroupe implements Comparable<DisplayableTroupe> {
 	public int setting;
 	public Set<DisplayableUser> storytellers;
 	public Set<DisplayablePlayerCharacter> characters;
+	
+	//Jackson only
+    @Deprecated
+	private DisplayableTroupe() {
+		this(null, null, -1, set(), set());
+	}
 	
 	private DisplayableTroupe(String id, String name, int setting, Set<DisplayableUser> storytellers, Set<DisplayablePlayerCharacter> characters) {
 		this.id = id;

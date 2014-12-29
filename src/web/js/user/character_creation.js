@@ -5,7 +5,9 @@ controller('addCharacter', ['$scope', '$rootScope', 'characterRepository', 'trou
 	$scope.troupes = troupeRepository.getTroupes();
  	$scope.troupe = $scope.troupes[0];
 	$scope.submit = function(csrfHeader, csrfToken) {
-		console.log('submit');
+		characterRepository.addCharacter({'name': $scope.name, 'troupeId': $scope.troupe.id}, csrfHeader, csrfToken).
+			success(function(data, status, headers, config) {$rootScope.$broadcast('addCharacter success')}).
+			error(function(data, status, headers, config) {console.log("addCharacter failed")});
 	};
 }]);
 

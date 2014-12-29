@@ -40,4 +40,8 @@ public class TroupeRepository {
 	public void delete(Troupe troupe) {
 		dao.delete(troupe);
 	}
+	
+	public Troupe save(Troupe troupe) {
+		return dao.save(troupe);
+	}
 }
