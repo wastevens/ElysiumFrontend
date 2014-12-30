@@ -1,0 +1,16 @@
+<form ng-submit="submit(troupe, csrf.header, csrf.token)" ng-controller="updateTroupe">
+<table>
+  <tr><th>Name</th><td><input type='text' ng-model='troupe.name' required='true' /></td></tr>
+  <tr><th>Setting</th><td><select ng-model='setting' name='setting' required='true' ng-options="setting.label for setting in settings track by setting.value"></select></tr>
+  
+  <tr><th colspan='3'>Storytellers</th></tr>
+  <tr><td>Available</td>
+  <td><div style="display:table-cell; vertical-align:middle">
+  	<input name="assignAvailable" type="submit" value="->" />
+  	<input name="removeAssigned" type="submit" value="<-" />
+  </div></td>
+  <td>Assigned</td></tr>
+  
+  <tr><td colspan='3'><input name="submit" type="submit" value="submit" /></td></tr>
+</table>
+</form>

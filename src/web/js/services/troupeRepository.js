@@ -5,6 +5,9 @@ factory('troupeRepository', ['$resource', 'csrfResource', function($resource, cs
 		getTroupes: function() {
 			return $resource(this.url, {}).query();
 		},
+		getTroupe: function(id) {
+			return $resource(this.url + '/' + id, {}).get();
+		},
 		addTroupe: function(troupeToPost, csrfHeader, csrfToken) {
 			return csrfResource.post(this.url, troupeToPost, csrfHeader, csrfToken);
 		},

@@ -45,7 +45,7 @@ public class TroupeController {
 			throw new UnknownTroupeException("Could not find troupe with id " + id);
 		}
 		ModelAndView modelAndView = new ModelAndView("/admin/troupe/manage");
-		modelAndView.addObject("troupeId", troupe.getId());
+		modelAndView.addObject("troupe", getTroupe(troupe.getId()));
 		return modelAndView;
 	}
 	
@@ -62,6 +62,11 @@ public class TroupeController {
 		if(troupeToDelete != null) {
 			troupeRepository.delete(troupeToDelete);
 		}
+	}
+	
+	private String getTroupe(@PathVariable String id) {
+		Troupe troupe = troupeRepository.findWithId(id);
+		return new Gson().toJson(DisplayableTroupe.fromTroupes().apply(troupe));
 	}
 	
 	@RequestMapping(value = "/troupes", method = RequestMethod.GET)

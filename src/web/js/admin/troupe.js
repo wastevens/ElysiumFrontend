@@ -1,6 +1,17 @@
 angular.module('admin.troupe.services', ['services.troupes']);
 
 angular.module('admin.troupe.controllers', ['admin.troupe.services', 'sources.settings']).
+controller('updateTroupe', ['$scope', '$rootScope', 'troupeRepository', 'settingsSource', function($scope, $rootScope, troupeRepository, settingsSource) {
+	$scope.settings = [];
+	for(var i = 0; i< settingsSource.get().length; i++) {
+		$scope.settings[i] = {label: settingsSource.get()[i], value: i};
+	}
+	$scope.setting = $scope.settings[$scope.troupe.setting];
+	$scope.updateTroupe = function(csrfHeader, csrfToken) {
+		console.log('Update troupe ' + $scope.troupe);
+	};
+}]).
+
 controller('deleteTroupe', ['$scope', '$rootScope', 'troupeRepository', function($scope, $rootScope, troupeRepository) {
 	$scope.deleteTroupe = function(id, csrfHeader, csrfToken) {
 		troupeRepository.deleteTroupe(id, csrfHeader, csrfToken).
@@ -22,6 +33,18 @@ controller('addTroupe', ['$scope', '$rootScope', 'troupeRepository', 'settingsSo
 }]);
 
 angular.module('admin.troupe.directives', ['admin.troupe.services']).
+directive('manageTroupe', ['troupeRepository', function(troupeRepository) {
+	return {
+		restrict: 'E',
+		scope: {
+			csrf: '=',
+			troupe: '='
+		},
+		link: function(scope, iElement, iAttrs) {
+		},
+		templateUrl: '/js/admin/troupe/manage.html'
+	};
+}]).
 directive('listTroupes', ['troupeRepository', function(troupeRepository) {
 	return {
 		restrict: 'E',
