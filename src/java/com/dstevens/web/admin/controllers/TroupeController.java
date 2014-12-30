@@ -35,16 +35,18 @@ public class TroupeController {
 	
 	@RequestMapping(value = "/admin/page/troupes", method = RequestMethod.GET)
 	public ModelAndView getTroupesPage() {
-		return new ModelAndView("/admin/troupes");
+		return new ModelAndView("/admin/troupe/troupes");
 	}
 	
 	@RequestMapping(value = "/admin/page/troupes/{id}", method = RequestMethod.GET)
-	public @ResponseBody String getManageTroupePage(@PathVariable String id) {
-		Troupe troupeToManager = troupeRepository.findWithId(id);
-		if(troupeToManager == null) {
+	public ModelAndView getManageTroupePage(@PathVariable String id) {
+		Troupe troupe = troupeRepository.findWithId(id);
+		if(troupe == null) {
 			throw new UnknownTroupeException("Could not find troupe with id " + id);
 		}
-		return "";
+		ModelAndView modelAndView = new ModelAndView("/admin/troupe/manage");
+		modelAndView.addObject("troupeId", troupe.getId());
+		return modelAndView;
 	}
 	
 	@ResponseStatus(value=HttpStatus.CREATED)
