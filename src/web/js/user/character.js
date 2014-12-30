@@ -16,6 +16,6 @@ directive('listCharacters', ['characterRepository', function(characterRepository
 	};
 }]);
 
-angular.module('user.character.filters', ['filters.setting']);
+angular.module('user.character.filters', ['filters.setting', 'filters.status.player', 'filters.status.approval']);
 
 angular.module('user.character', ['user.character.filters', 'user.character.controllers', 'user.character.directives', 'user.character.services']);

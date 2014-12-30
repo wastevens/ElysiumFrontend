@@ -1,7 +1,9 @@
 <table>
-  <tr><th>Name</th><th>Setting</th></tr>
+  <tr><th>Name</th><th>Setting</th><th>Status</th><th>Approved</th></tr>
   <tr ng-repeat="character in characters">
     <td>{{character.name}}</td>
     <td>{{character.setting|setting}}</td>
+    <td>{{character.status|player_status}}</td>
+    <td>{{character.approval|approval_status}}</td>
   </tr>
 </table>
