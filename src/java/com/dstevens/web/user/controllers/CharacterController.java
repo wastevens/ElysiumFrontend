@@ -1,7 +1,5 @@
 package com.dstevens.web.user.controllers;
 
-import java.time.Clock;
-import java.util.Date;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -15,32 +13,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.characters.DisplayablePlayerCharacter;
-import com.dstevens.characters.PlayerCharacter;
-import com.dstevens.characters.PlayerCharacterRepository;
-import com.dstevens.characters.status.PlayerStatus;
-import com.dstevens.characters.status.PlayerStatusChange;
+import com.dstevens.characters.PlayerCharacterService;
 import com.dstevens.troupes.Troupe;
 import com.dstevens.troupes.TroupeRepository;
 import com.dstevens.users.User;
-import com.dstevens.users.UserRepository;
 import com.google.gson.Gson;
 
 @Controller
 public class CharacterController {
 
-	private final Supplier<Clock> clockSupplier;
+	private final PlayerCharacterService playerCharacterService;
 	private final Supplier<User> requestingUserSupplier;
-	private final PlayerCharacterRepository characterRepository;
-	private final UserRepository userRepository;
 	private final TroupeRepository troupeRepository;
 
 	@Autowired
-	public CharacterController(Supplier<User> requestingUserSupplier, Supplier<Clock> clockSupplier,
-							   PlayerCharacterRepository characterRepository, UserRepository userRepository, TroupeRepository troupeRepository) {
+	public CharacterController(Supplier<User> requestingUserSupplier, PlayerCharacterService playerCharacterService,
+							   TroupeRepository troupeRepository) {
 		this.requestingUserSupplier = requestingUserSupplier;
-		this.clockSupplier = clockSupplier;
-		this.characterRepository = characterRepository;
-		this.userRepository = userRepository;
+		this.playerCharacterService = playerCharacterService;
 		this.troupeRepository = troupeRepository;
 	}
 	
@@ -66,14 +56,7 @@ public class CharacterController {
 	public ModelAndView createCharacter(@RequestBody final RawCharacter rawCharacter) {
 		User user = requestingUserSupplier.get();
 		Troupe troupe = troupeRepository.findWithId(rawCharacter.troupeId);
-		
-		PlayerCharacter character = characterRepository.ensureExists(rawCharacter.name, troupe.getSetting()).
-				                                        changeActivityStatus(new PlayerStatusChange(PlayerStatus.SECONDARY, Date.from(clockSupplier.get().instant()))).requestApproval();
-		character = characterRepository.update(character);
-		user.getCharacters().add(character);
-		userRepository.save(user);
-		troupe.getCharacters().add(character);
-		troupeRepository.save(troupe);
+		playerCharacterService.createCharacter(user, troupe, rawCharacter.name);
 		
 		return new ModelAndView("/user/characters");
 	}
