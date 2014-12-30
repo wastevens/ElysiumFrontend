@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.users.DisplayableUser;
+import com.dstevens.users.Role;
 import com.dstevens.users.UnknownUserException;
 import com.dstevens.users.User;
 import com.dstevens.users.UserRepository;
@@ -54,6 +55,16 @@ public class UserController {
 				                                      map(DisplayableUser.fromUser()).
 				                                      sorted().
 				                                      collect(Collectors.toList());
+		return new Gson().toJson(collect);
+	}
+	
+	@RequestMapping(value = "/admin/users/role/{roleId}", method = RequestMethod.GET)
+	public @ResponseBody String getUsersWithRole(@PathVariable int roleId) {
+		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
+				filter((User t) -> t.getRoles().contains(Role.values()[roleId])).
+				map(DisplayableUser.fromUser()).
+				sorted().
+				collect(Collectors.toList());
 		return new Gson().toJson(collect);
 	}
 }

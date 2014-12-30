@@ -6,6 +6,7 @@
 <script src="/js/filters/setting.js"></script>
 <script src="/js/services/csrfResource.js"></script>
 <script src="/js/services/troupeRepository.js"></script>
+<script src="/js/admin/services/userRepository.js"></script>
 <script src="/js/admin/troupe.js"></script>
 </head>
 <body ng-app="admin.troupe">

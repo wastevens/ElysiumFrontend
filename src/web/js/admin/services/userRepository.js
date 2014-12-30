@@ -6,10 +6,7 @@ factory('userRepository', ['$resource', 'csrfResource', function($resource, csrf
 			return $resource(this.url, {}).query();
 		},
 		getUsersWithRole: function(role) {
-			var users = this.getUsers();
-			return users.filter(function(user) {
-				return (user.roles.indexOf(role) > -1);
-			});
+			return $resource(this.url + '/role/' + role, {}).query();
 		},
 		getUserWithId: function(id) {
 			return csrfResource.get(this.url + '/' + id);

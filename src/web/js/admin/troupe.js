@@ -1,12 +1,17 @@
-angular.module('admin.troupe.services', ['services.troupes']);
+angular.module('admin.troupe.services', ['services.troupes', 'admin.services.users']);
 
 angular.module('admin.troupe.controllers', ['admin.troupe.services', 'sources.settings']).
-controller('updateTroupe', ['$scope', '$rootScope', 'troupeRepository', 'settingsSource', function($scope, $rootScope, troupeRepository, settingsSource) {
+controller('updateTroupe', ['$scope', '$rootScope', 'troupeRepository', 'userRepository', 'settingsSource', function($scope, $rootScope, troupeRepository, userRepository, settingsSource) {
 	$scope.settings = [];
 	for(var i = 0; i< settingsSource.get().length; i++) {
 		$scope.settings[i] = {label: settingsSource.get()[i], value: i};
 	}
 	$scope.setting = $scope.settings[$scope.troupe.setting];
+	
+	$scope.all_storytellers = userRepository.getUsersWithRole(1);
+		
+	$scope.storytellers = $scope.troupe.storytellers;
+	
 	$scope.updateTroupe = function(csrfHeader, csrfToken) {
 		console.log('Update troupe ' + $scope.troupe);
 	};
@@ -39,8 +44,6 @@ directive('manageTroupe', ['troupeRepository', function(troupeRepository) {
 		scope: {
 			csrf: '=',
 			troupe: '='
-		},
-		link: function(scope, iElement, iAttrs) {
 		},
 		templateUrl: '/js/admin/troupe/manage.html'
 	};
