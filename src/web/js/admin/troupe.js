@@ -12,7 +12,11 @@ controller('updateTroupe', ['$scope', '$rootScope', 'troupeRepository', 'userRep
 		
 	$scope.storytellers = $scope.troupe.storytellers;
 	
-	$scope.updateTroupe = function(csrfHeader, csrfToken) {
+	$scope.submit = function(csrfHeader, csrfToken) {
+		$scope.troupe.storytellers = $scope.storytellers;
+		troupeRepository.updateTroupe($scope.troupe, csrfHeader, csrfToken).
+			success(function(data, status, headers, config) {$rootScope.$broadcast('troupesUpdated')}).
+			error(function(data, status, headers, config) {console.log("addTroupe failed")});
 		console.log('Update troupe ' + $scope.troupe);
 	};
 }]).

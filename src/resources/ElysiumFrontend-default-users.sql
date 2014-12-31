@@ -25,3 +25,7 @@ insert into User_roles(user_id, roles) values ('patron-id', 4);
 insert into User_roles(user_id, roles) values ('patron-id', 5);
 
 insert into User_roles(user_id, roles) values ('user-id', 5);
+
+insert into Troupe(id, name, setting) values('Cam-game-id', 'Cam Troupe', 0);
+insert into Troupe(id, name, setting) values('Anarch-game-id', 'Anarch Troupe', 1);
+insert into Troupe(id, name, setting) values('Sabbat-game-id', 'Sabbat Troupe', 2);

@@ -1,6 +1,7 @@
 package com.dstevens.web.admin.controllers;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -21,16 +22,21 @@ import com.dstevens.troupes.DisplayableTroupe;
 import com.dstevens.troupes.Troupe;
 import com.dstevens.troupes.TroupeRepository;
 import com.dstevens.troupes.UnknownTroupeException;
+import com.dstevens.users.DisplayableUser;
+import com.dstevens.users.User;
+import com.dstevens.users.UserRepository;
 import com.google.gson.Gson;
 
 @Controller
 public class TroupeController {
 
 	private final TroupeRepository troupeRepository;
+	private final UserRepository userRepository;
 
 	@Autowired
-	public TroupeController(TroupeRepository troupeRepository) {
+	public TroupeController(TroupeRepository troupeRepository, UserRepository userRepository) {
 		this.troupeRepository = troupeRepository;
+		this.userRepository = userRepository;
 	}
 	
 	@RequestMapping(value = "/admin/page/troupes", method = RequestMethod.GET)
@@ -64,6 +70,16 @@ public class TroupeController {
 		}
 	}
 	
+	@RequestMapping(value = "/troupes/{id}", method = RequestMethod.PUT)
+	public ModelAndView updateTroupe(@PathVariable String id, @RequestBody final RawTroupe rawTroupe) {
+		Troupe troupe = troupeRepository.findWithId(id);
+		if(troupe == null) {
+			throw new UnknownTroupeException("Could not find troupe with id " + id);
+		}
+		troupeRepository.save(troupe.withName(rawTroupe.name).withSetting(rawTroupe.setting).withStorytellers(rawTroupe.storytellers(userRepository)));
+		return new ModelAndView("/admin/troupe/troupes");
+	}
+	
 	private String getTroupe(@PathVariable String id) {
 		Troupe troupe = troupeRepository.findWithId(id);
 		return new Gson().toJson(DisplayableTroupe.fromTroupes().apply(troupe));
@@ -80,8 +96,14 @@ public class TroupeController {
 	
 	private static class RawTroupe {
 
+		public String id;
 		public String name;
 		public Setting setting;
+		public Set<DisplayableUser> storytellers; 
+		
+		public Set<User> storytellers(UserRepository userRepository) {
+			return storytellers.stream().map((DisplayableUser t) -> userRepository.findUser(t.id)).collect(Collectors.toSet());
+		}
 		
 	}
 }

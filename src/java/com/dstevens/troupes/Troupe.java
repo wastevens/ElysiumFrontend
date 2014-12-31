@@ -22,8 +22,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @SuppressWarnings("deprecation")
 @Entity
@@ -39,14 +40,15 @@ public class Troupe implements Comparable<Troupe> {
     @Column(name="setting")
     private Setting setting;
     
-    @OneToMany(cascade={CascadeType.ALL})
+    @ManyToMany(cascade={CascadeType.ALL})
 	@JoinTable(name="Troupe_PlayerCharacters", joinColumns = @JoinColumn(name="troupe_id"), 
 	           inverseJoinColumns = @JoinColumn(name="playerCharacter_id"))
 	@ForeignKey(name="Troupe_PlayerCharacters_FK", inverseName="PlayerCharacters_Troupe_FK")
     private final Set<PlayerCharacter> characters;
     
-	@OneToMany(cascade={CascadeType.ALL})
-	@JoinTable(name="Troupe_StorytellerUsers", joinColumns = @JoinColumn(name="troupe_id"), 
+    @ManyToMany(cascade={CascadeType.ALL})
+	@JoinTable(name="Troupe_StorytellerUsers", 
+	           joinColumns = @JoinColumn(name="troupe_id"), 
 	           inverseJoinColumns = @JoinColumn(name="user_id"))
 	@ForeignKey(name="Troupe_StorytellerUsers_FK", inverseName="StorytellerUsers_Troupe_FK")
     private final Set<User> storytellers;
@@ -106,6 +108,10 @@ public class Troupe implements Comparable<Troupe> {
     
     public Set<PlayerCharacter> getCharacters() {
         return characters;
+    }
+    
+    public Troupe withStorytellers(Set<User> storytellers) {
+    	return new Troupe(id, name, setting, characters, storytellers, deleteTimestamp);
     }
     
     public Troupe withStoryteller(User storyteller) {
