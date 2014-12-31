@@ -12,7 +12,7 @@ factory('troupeRepository', ['$resource', 'csrfResource', function($resource, cs
 			return csrfResource.post(this.url, troupeToPost, csrfHeader, csrfToken);
 		},
 		updateTroupe: function(troupe, csrfHeader, csrfToken) {
-			return csrfResource.put(this.url + '/' + troupe.id, troupe, csrfHeader, csrfToken);
+			return csrfResource.post(this.url + '/' + troupe.id, troupe, csrfHeader, csrfToken);
 		},
 		deleteTroupe: function(id, csrfHeader, csrfToken) {
 			return csrfResource.delete(this.url + '/' + id, csrfHeader, csrfToken);

@@ -70,14 +70,13 @@ public class TroupeController {
 		}
 	}
 	
-	@RequestMapping(value = "/troupes/{id}", method = RequestMethod.PUT)
-	public ModelAndView updateTroupe(@PathVariable String id, @RequestBody final RawTroupe rawTroupe) {
+	@RequestMapping(value = "/troupes/{id}", method = RequestMethod.POST)
+	public @ResponseBody void updateTroupe(@PathVariable String id, @RequestBody final RawTroupe rawTroupe) {
 		Troupe troupe = troupeRepository.findWithId(id);
 		if(troupe == null) {
 			throw new UnknownTroupeException("Could not find troupe with id " + id);
 		}
 		troupeRepository.save(troupe.withName(rawTroupe.name).withSetting(rawTroupe.setting).withStorytellers(rawTroupe.storytellers(userRepository)));
-		return new ModelAndView("/admin/troupe/troupes");
 	}
 	
 	private String getTroupe(@PathVariable String id) {
@@ -96,7 +95,6 @@ public class TroupeController {
 	
 	private static class RawTroupe {
 
-		public String id;
 		public String name;
 		public Setting setting;
 		public Set<DisplayableUser> storytellers; 

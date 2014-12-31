@@ -7,8 +7,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.dstevens.characters.DisplayablePlayerCharacter;
-
 public class DisplayableUser implements Comparable<DisplayableUser> {
 
 	public final String id;
@@ -16,21 +14,19 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 	public final String lastName;
 	public final String email;
 	public final Set<Integer> roles;
-	public final Set<DisplayablePlayerCharacter> characters;
 	
 	//Jackson only
     @Deprecated
 	private DisplayableUser() {
-		this(null, null, null, null, set(), set());
+		this(null, null, null, null, set());
 	}
 	
-	private DisplayableUser(String id, String firstName, String lastName, String email, Set<Integer> roles, Set<DisplayablePlayerCharacter> characters) {
+	private DisplayableUser(String id, String firstName, String lastName, String email, Set<Integer> roles) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.roles = roles;
-		this.characters = characters;
 	}
 	
 	public Set<Role> roles() {
@@ -39,8 +35,7 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 	
 	public static Function<User, DisplayableUser> fromUser() {
 		return (User t) -> new DisplayableUser(t.getId(), t.getFirstName(), t.getLastName(), t.getEmail(), 
-				                               t.getRoles().stream().map((Role r) -> r.ordinal()).collect(Collectors.toSet()), 
-				                               t.getCharacters().stream().map(DisplayablePlayerCharacter.fromCharacter()).collect(Collectors.toSet()));
+				                               t.getRoles().stream().map((Role r) -> r.ordinal()).collect(Collectors.toSet()));
 	}
 
 	public String getId() {
@@ -61,10 +56,6 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 
 	public Set<Integer> getRoles() {
 		return roles;
-	}
-
-	public Set<DisplayablePlayerCharacter> getCharacters() {
-		return characters;
 	}
 
 	@Override
