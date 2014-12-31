@@ -1,10 +1,7 @@
-angular.module('admin.troupe.configuration', []).
-config(function($locationProvider) { $locationProvider.html5Mode(true) });
-
-angular.module('admin.troupe.services', ['admin.troupe.configuration', 'services.troupes', 'admin.services.users'])
+angular.module('admin.troupe.services', ['services.redirection', 'services.troupes', 'admin.services.users'])
 
 angular.module('admin.troupe.controllers', ['admin.troupe.services', 'sources.settings']).
-controller('updateTroupe', ['$scope', '$rootScope', '$location', '$window', 'troupeRepository', 'userRepository', 'settingsSource', function($scope, $rootScope, $location, $window, troupeRepository, userRepository, settingsSource) {
+controller('updateTroupe', ['$scope', '$rootScope', 'redirect', 'troupeRepository', 'userRepository', 'settingsSource', function($scope, $rootScope, redirect, troupeRepository, userRepository, settingsSource) {
 	$scope.settings = [];
 	for(var i = 0; i< settingsSource.get().length; i++) {
 		$scope.settings[i] = {label: settingsSource.get()[i], value: i};
@@ -18,11 +15,7 @@ controller('updateTroupe', ['$scope', '$rootScope', '$location', '$window', 'tro
 	$scope.submit = function(csrfHeader, csrfToken) {
 		$scope.troupe.storytellers = $scope.storytellers;
 		troupeRepository.updateTroupe($scope.troupe, csrfHeader, csrfToken).
-			success(function(data, status, headers, config) {
-				$location.path('/admin/page/troupes');
-				$location.replace();
-				$window.location.reload();
-			}).
+			success(function(data, status, headers, config) {redirect.toUrl('/admin/page/troupes')}).
 			error(function(data, status, headers, config) {console.log("addTroupe failed")});
 		console.log('Update troupe ' + $scope.troupe);
 	};

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.characters.DisplayablePlayerCharacter;
+import com.dstevens.characters.PlayerCharacter;
 import com.dstevens.characters.PlayerCharacterService;
 import com.dstevens.troupes.Troupe;
 import com.dstevens.troupes.TroupeRepository;
@@ -47,7 +48,8 @@ public class CharacterController {
 	@RequestMapping(value = "/characters", method = RequestMethod.GET)
 	public @ResponseBody String getCharacters() {
 		User user = requestingUserSupplier.get();
-		Set<DisplayablePlayerCharacter> characters = user.getCharacters().stream().map(DisplayablePlayerCharacter.fromCharacter()).collect(Collectors.toSet());
+		Set<PlayerCharacter> characters2 = user.getCharacters();
+		Set<DisplayablePlayerCharacter> characters = characters2.stream().map(DisplayablePlayerCharacter.fromCharacter()).collect(Collectors.toSet());
 		
 		return new Gson().toJson(characters);
 	}
