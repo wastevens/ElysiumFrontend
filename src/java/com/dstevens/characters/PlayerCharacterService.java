@@ -47,4 +47,8 @@ public class PlayerCharacterService {
 		return new PlayerStatusChange(PlayerStatus.SECONDARY, Date.from(clockSupplier.get().instant()));
 	}
 	
+	public PlayerCharacter getCharacter(String id) {
+		return repository.findWithId(id);
+	}
+	
 }

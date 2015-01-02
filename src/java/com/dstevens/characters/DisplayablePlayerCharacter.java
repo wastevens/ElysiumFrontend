@@ -2,6 +2,8 @@ package com.dstevens.characters;
 
 import java.util.function.Function;
 
+import com.google.gson.Gson;
+
 public class DisplayablePlayerCharacter {
 
 	public final String id;
@@ -26,6 +28,10 @@ public class DisplayablePlayerCharacter {
 	
 	public static Function<PlayerCharacter, DisplayablePlayerCharacter> fromCharacter() {
 		return (PlayerCharacter t) -> new DisplayablePlayerCharacter(t.getId(), t.getName(), t.getSetting().ordinal(), t.getCurrentStatus().status().ordinal(), t.getApprovalStatus().ordinal());
+	}
+	
+	public String serialized() {
+		return new Gson().toJson(this);
 	}
 	
 }

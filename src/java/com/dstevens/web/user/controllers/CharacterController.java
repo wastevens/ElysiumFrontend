@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.dstevens.characters.DisplayablePlayerCharacter;
 import com.dstevens.characters.PlayerCharacter;
 import com.dstevens.characters.PlayerCharacterService;
+import com.dstevens.characters.UnknownCharacterException;
 import com.dstevens.troupes.Troupe;
 import com.dstevens.troupes.TroupeRepository;
 import com.dstevens.users.User;
@@ -40,6 +42,17 @@ public class CharacterController {
 		return new ModelAndView("/user/characters");
 	}
 	
+	@RequestMapping(value = "/user/page/characters/{id}", method = RequestMethod.GET)
+	public ModelAndView getCharacterPage(@PathVariable String id) {
+		PlayerCharacter character = playerCharacterService.getCharacter(id);
+		if(character == null) {
+			throw new UnknownCharacterException("Could not find character with id " + id);
+		}
+		ModelAndView modelAndView = new ModelAndView("/user/character/manage");
+		modelAndView.addObject("character", DisplayablePlayerCharacter.fromCharacter().apply(character).serialized());
+		return modelAndView;
+	}
+	
 	@RequestMapping(value = "/user/page/character/create", method = RequestMethod.GET)
 	public ModelAndView getCharacterCreationPage() {
 		return new ModelAndView("/user/character_creation");
@@ -48,8 +61,7 @@ public class CharacterController {
 	@RequestMapping(value = "/characters", method = RequestMethod.GET)
 	public @ResponseBody String getCharacters() {
 		User user = requestingUserSupplier.get();
-		Set<PlayerCharacter> characters2 = user.getCharacters();
-		Set<DisplayablePlayerCharacter> characters = characters2.stream().map(DisplayablePlayerCharacter.fromCharacter()).collect(Collectors.toSet());
+		Set<DisplayablePlayerCharacter> characters = user.getCharacters().stream().map(DisplayablePlayerCharacter.fromCharacter()).collect(Collectors.toSet());
 		
 		return new Gson().toJson(characters);
 	}
