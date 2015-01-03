@@ -1,7 +1,9 @@
 angular.module('user.character.manage.services', ['ngResource', 'services.redirection', 'services.csrfResource', 'services.troupes', 'services.characters']);
 
-angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings']).
-controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', function($scope, $rootScope, redirect, characterRepository) {
+angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans']).
+controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', function($scope, $rootScope, redirect, characterRepository, clanSource) {
+	$scope.clans = clanSource.get();
+	$scope.clan = $scope.clans[$scope.character.clan];
 //	$scope.submit = function(csrfHeader, csrfToken) {
 //		characterRepository.addCharacter({'name': $scope.name, 'troupeId': $scope.troupe.id}, csrfHeader, csrfToken).
 //			success(function(data, status, headers, config) {redirect.toUrl('/user/page/characters')}).

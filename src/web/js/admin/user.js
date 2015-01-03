@@ -44,14 +44,12 @@ directive('modifyUser', ['userRepository', function(userRepository) {
 			csrf: '='
 		},
 		link: function(scope, iElement, iAttrs) {
-			console.log('modify user directive link');
 			scope.$on('userSelected', function(event, id) {
 				console.log('modify user action heard! ' + id);
 				userRepository.getUserWithId(id).
 					success(function(data, status, headers, config) {
 						scope.user = data;
 						scope.roles = [];
-						//roleSource
 						for(var i=0;i<scope.user.roles.length;i++) {scope.roles[scope.user.roles[i]] = true}
 					}).
 					error(function(data, status, headers, config) {console.log("fetch user failed")});

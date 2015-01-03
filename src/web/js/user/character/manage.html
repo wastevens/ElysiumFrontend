@@ -6,7 +6,9 @@
 	<tr>
 		<td>Clan:</td><td>
 		<td>
-			<select ng-model='clan' ng-change="clanChange()" name='clan' required='true' ng-options="clan.name for clan in clans track by clan.id"></select>
+			<select ng-model='clan' ng-change="clanChange()" name='clan' required='true' ng-options="clan.name for clan in clans">
+				<option value="">-- Choose Clan --</option>
+			</select>
 		</td>
 	</tr>
 	<tr>
