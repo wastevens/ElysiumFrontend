@@ -50,5 +50,9 @@ public class PlayerCharacterService {
 	public PlayerCharacter getCharacter(String id) {
 		return repository.findWithId(id);
 	}
+
+	public void save(PlayerCharacter character) {
+		repository.update(character);
+	}
 	
 }

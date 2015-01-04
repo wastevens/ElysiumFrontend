@@ -7,6 +7,9 @@ factory('characterRepository', ['$resource', 'csrfResource', function($resource,
 		},
 		addCharacter: function(characterToPost, csrfHeader, csrfToken) {
 			return csrfResource.post(this.url, characterToPost, csrfHeader, csrfToken);
+		},
+		addRequestsToCharacter: function(characterId, requests, csrfHeader, csrfToken) {
+			return csrfResource.post(this.url + "/" + characterId, requests, csrfHeader, csrfToken);
 		}
 	};
 }]);
