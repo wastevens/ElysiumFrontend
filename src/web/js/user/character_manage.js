@@ -16,6 +16,10 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		if($scope.clan) {
 			$scope.requests.push({"trait": 0, "value": $scope.clan.id});
 			$scope.bloodlines = $scope.clan.bloodlines
+			if($scope.bloodlines.length == 1) {
+				$scope.bloodline = $scope.bloodlines[0];
+				$scope.bloodlineChange();
+			}
 		} else {
 			$scope.bloodlines = [];
 		}
