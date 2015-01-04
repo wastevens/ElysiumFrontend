@@ -13,20 +13,22 @@ public class DisplayablePlayerCharacter {
 	public final int status;
 	public final int approval;
 	public final Integer clan;
+	public final Integer bloodline;
 	
 	//Jackson only
     @Deprecated
 	private DisplayablePlayerCharacter() {
-		this(null, null, -1, -1, -1, null);
+		this(null, null, -1, -1, -1, null, null);
 	}
     
-    private DisplayablePlayerCharacter(String id, String name, int setting, int status, int approval, Integer clan) {
+    private DisplayablePlayerCharacter(String id, String name, int setting, int status, int approval, Integer clan, Integer bloodline) {
 		this.id = id;
 		this.name = name;
 		this.setting = setting;
 		this.status = status;
 		this.approval = approval;
 		this.clan = clan;
+		this.bloodline = bloodline;
     }
 	
 	public static Function<PlayerCharacter, DisplayablePlayerCharacter> fromCharacter() {
@@ -34,7 +36,8 @@ public class DisplayablePlayerCharacter {
 																	 t.getSetting().ordinal(), 
 				                                                     t.getCurrentStatus().status().ordinal(), 
 				                                                     t.getApprovalStatus().ordinal(), 
-				                                                     Optional.ofNullable(t.getClan()).map((Enum<?> e) -> e.ordinal()).orElse(null));
+				                                                     Optional.ofNullable(t.getClan()).map((Enum<?> e) -> e.ordinal()).orElse(null),
+				                                                     Optional.ofNullable(t.getBloodline()).map((Enum<?> e) -> e.ordinal()).orElse(null));
 	}
 	
 	public String serialized() {

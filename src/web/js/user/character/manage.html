@@ -12,6 +12,15 @@
 		</td>
 	</tr>
 	<tr>
+		<td>Bloodline:</td><td>
+		<td>
+			<select ng-model='bloodline' ng-change="bloodlineChange()" name='bloodline' required='true' ng-options="bloodline.name for bloodline in bloodlines">
+				<option value="">-- Choose Bloodline --</option>
+			</select>
+		</td>
+	</tr>
+	
+	<tr>
 		<td colspan='2'><input name="submit" type="submit" value="committ" /></td>
 	</tr>
 </table>
