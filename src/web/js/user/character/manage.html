@@ -10,7 +10,7 @@
 			</select>
 		</td>
 	</tr>
-	<tr>
+	<tr ng-show="bloodlines.length > 1">
 		<td>Bloodline:</td>
 		<td><select ng-model='bloodline' ng-change="bloodlineChange()" name='bloodline' required='true' ng-options="bloodline.name for bloodline in bloodlines">
 				<option value="">-- Choose Bloodline --</option>
@@ -18,8 +18,8 @@
 		</td>
 	</tr>
 	<tr ng-repeat="disciplines in disciplineOptions">
-		<td>Discipline {{$index +1}}</td>
-		<td><select-in-clan-discipline disciplines="disciplines" discipline-change="disciplineChange($index)"></select-in-clan-discipline></td>
+		<td ng-show="disciplines.length > 1">Discipline</td>
+		<td ng-show="disciplines.length > 1"><select-in-clan-discipline disciplines="disciplines" discipline-change="disciplineChange($index)"></select-in-clan-discipline></td>
 	</tr>
 	
 	<tr>
