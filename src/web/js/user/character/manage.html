@@ -4,7 +4,7 @@
 		<td>Name:</td><td>{{character.name}}</td>
 	</tr>
 	<tr>
-		<td>Clan:</td><td>
+		<td>Clan:</td>
 		<td>
 			<select ng-model='clan' ng-change="clanChange()" name='clan' required='true' ng-options="clan.name for clan in clans">
 				<option value="">-- Choose Clan --</option>
@@ -12,10 +12,17 @@
 		</td>
 	</tr>
 	<tr>
-		<td>Bloodline:</td><td>
+		<td>Bloodline:</td>
 		<td>
 			<select ng-model='bloodline' ng-change="bloodlineChange()" name='bloodline' required='true' ng-options="bloodline.name for bloodline in bloodlines">
 				<option value="">-- Choose Bloodline --</option>
+			</select>
+		</td>
+	</tr>
+	<tr ng-repeat="disciplines in disciplineOptions">
+		<td>Discipline {{$index +1}}</td>
+		<td><select ng-model="inClanDiscipline[$index]" ng-change="disciplineChange($index)" ng-options="discipline.name for discipline in disciplines">
+				<option value="">-- Choose Discipline --</option>
 			</select>
 		</td>
 	</tr>
