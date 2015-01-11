@@ -5,10 +5,7 @@
 	</tr>
 	<tr>
 		<td>Clan:</td>
-		<td><select ng-model='clan' ng-change="clanChange()" name='clan' required='true' ng-options="clan.name for clan in clans">
-				<option value="">-- Choose Clan --</option>
-			</select>
-		</td>
+		<td><select-clan clans="clans" change="clanChange()"></select-clan></td>
 	</tr>
 	<tr ng-show="bloodlines.length > 1">
 		<td>Bloodline:</td>

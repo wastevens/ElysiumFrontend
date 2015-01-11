@@ -7,14 +7,18 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	//--------------------------------------------
 	$scope.requests = [];
 	
-	$scope.clans = clanSource.get();
+	$scope.clans = {
+        list: clanSource.get(),
+		clan: clanSource.get()[$scope.character.clan]
+	}
+	
 	$scope.bloodlines = [];
 	$scope.disciplineOptions = [];
 	$scope.inClanDisciplines = [];
 	
 	$scope.clan = $scope.clans[$scope.character.clan];
 	if(!isNaN($scope.character.clan)) {
-		$scope.bloodlines = $scope.clan.bloodlines
+		$scope.bloodlines = $scope.clans.clan.bloodlines
 	}
 	
 	if(!isNaN($scope.character.bloodline)) {
@@ -33,9 +37,9 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	$scope.clanChange = function() {
 		$scope.bloodline = null;
 		$scope.bloodlines = [];
-		if($scope.clan) {
-			$scope.requests.push({"trait": 0, "value": $scope.clan.id});
-			$scope.bloodlines = $scope.clan.bloodlines;
+		if($scope.clans.clan) {
+			$scope.requests.push({"trait": 0, "value": $scope.clans.clan.id});
+			$scope.bloodlines = $scope.clans.clan.bloodlines;
 			if($scope.bloodlines.length == 1) {
 				$scope.bloodline = $scope.bloodlines[0];
 			}
@@ -82,6 +86,16 @@ directive('manageCharacter', ['characterRepository', function(characterRepositor
 			csrf: '='
 		},
 		templateUrl: '/js/user/character/manage.html'
+	};
+}]).
+directive('selectClan', [function() {
+	return {
+		restrict: 'E',
+		scope: {
+			clans: '=',
+			change: '&change'
+		},
+		templateUrl: '/js/user/character/selectClan.html'
 	};
 }]).
 directive('selectInClanDiscipline', [function() {
