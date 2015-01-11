@@ -41,8 +41,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 			$scope.disciplineOptions = $scope.bloodline.disciplines;
 		}
 	}
-	$scope.disciplineChange = function(disciplineIndex) {
-		console.log(disciplineIndex);
+	$scope.disciplineChange = function() {
 		console.log(this);
 	}
 	$scope.submit = function(csrfHeader, csrfToken) {
@@ -62,6 +61,15 @@ directive('manageCharacter', ['characterRepository', function(characterRepositor
 			csrf: '='
 		},
 		templateUrl: '/js/user/character/manage.html'
+	};
+}]).
+directive('selectInClanDiscipline', ['characterRepository', function(characterRepository) {
+	return {
+		restrict: 'E',
+		scope: {
+			disciplines: '='
+		},
+		templateUrl: '/js/user/character/inClanDiscipline.html'
 	};
 }]);
 

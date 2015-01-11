@@ -19,10 +19,7 @@
 	</tr>
 	<tr ng-repeat="disciplines in disciplineOptions">
 		<td>Discipline {{$index +1}}</td>
-		<td><select ng-model="inClanDiscipline[$index]" ng-change="disciplineChange($index)" ng-options="discipline.name for discipline in disciplines">
-				<option value="">-- Choose Discipline --</option>
-			</select>
-		</td>
+		<td><select-in-clan-discipline disciplines="disciplineOptions[$index]"></select-in-clan-discipline></td>
 	</tr>
 	
 	<tr>
