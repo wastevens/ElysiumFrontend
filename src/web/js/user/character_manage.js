@@ -7,67 +7,70 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	//--------------------------------------------
 	$scope.requests = [];
 	
+	$scope.disciplineOptions = [];
+	
 	$scope.clans = {
         list: clanSource.get(),
 		clan: clanSource.get()[$scope.character.clan]
 	}
 	
-	$scope.bloodlines = [];
-	$scope.disciplineOptions = [];
-	$scope.inClanDisciplines = [];
+	$scope.bloodlines = {
+	    list: [],
+	    bloodline: null
+	}
 	
-	$scope.clan = $scope.clans[$scope.character.clan];
 	if(!isNaN($scope.character.clan)) {
-		$scope.bloodlines = $scope.clans.clan.bloodlines
+		$scope.bloodlines.list = $scope.clans.clan.bloodlines;
 	}
 	
 	if(!isNaN($scope.character.bloodline)) {
-		$scope.bloodline = bloodlineSource.get()[$scope.character.bloodline];
-		$scope.disciplineOptions = $scope.bloodline.disciplines;
+		$scope.bloodlines.bloodline = bloodlineSource.get()[$scope.character.bloodline];
+		$scope.disciplineOptions = $scope.bloodlines.bloodline.disciplines;
 	}
 
 	if($scope.character.inClanDisciplines) {
 		$scope.character.inClanDisciplines.forEach(function(discipline, index, array) {
-			$scope.disciplineOptions[index].inClanDiscipline  = disciplineSource.get()[discipline];
+			$scope.disciplineOptions[index].discipline  = disciplineSource.get()[discipline];
 		});
 	}
 	
 	//----------------------------------------------
 	
 	$scope.clanChange = function() {
-		$scope.bloodline = null;
-		$scope.bloodlines = [];
 		if($scope.clans.clan) {
 			$scope.requests.push({"trait": 0, "value": $scope.clans.clan.id});
-			$scope.bloodlines = $scope.clans.clan.bloodlines;
-			if($scope.bloodlines.length == 1) {
-				$scope.bloodline = $scope.bloodlines[0];
+			$scope.bloodlines.list = $scope.clans.clan.bloodlines;
+			$scope.bloodlines.bloodline = null;
+			if($scope.bloodlines.list.length == 1) {
+				$scope.bloodlines.bloodline = $scope.bloodlines.list[0];
 			}
 		}
 		$scope.bloodlineChange();
 	}
+	
 	$scope.bloodlineChange = function() {
-		if($scope.bloodline) {
-			$scope.requests.push({"trait": 1, "value": $scope.bloodline.id});
+		if($scope.bloodlines.bloodline) {
+			$scope.requests.push({"trait": 1, "value": $scope.bloodlines.bloodline.id});
 			
 			$scope.disciplineOptions.forEach(function(disciplines, index, array) {
-				if(disciplines.inClanDiscipline) {
-					$scope.requests.push({"trait": 3, "value": disciplines.inClanDiscipline.id});
+				if(disciplines.discipline) {
+					$scope.requests.push({"trait": 3, "value": disciplines.discipline.id});
 				}
 			});
 			
-			$scope.disciplineOptions = $scope.bloodline.disciplines;
+			$scope.disciplineOptions = $scope.bloodlines.bloodline.disciplines;
 			$scope.disciplineOptions.forEach(function(disciplines, index, array) {
+				$scope.disciplineOptions[index].discipline = null;
 				if(disciplines.length == 1) {
-					$scope.disciplineOptions[index].inClanDiscipline = disciplines[0];
-					$scope.disciplineChange(index);
+					$scope.disciplineOptions[index].discipline = disciplines[0];
 				}
+				$scope.disciplineChange(index);
 			});
 		}
 	}
 	$scope.disciplineChange = function(index) {
-		if($scope.disciplineOptions[index].inClanDiscipline) {
-			$scope.requests.push({"trait": 2, "value": $scope.disciplineOptions[index].inClanDiscipline.id});
+		if($scope.disciplineOptions[index].discipline) {
+			$scope.requests.push({"trait": 2, "value": $scope.disciplineOptions[index].discipline.id});
 		}
 	}
 	$scope.submit = function(csrfHeader, csrfToken) {
@@ -98,12 +101,22 @@ directive('selectClan', [function() {
 		templateUrl: '/js/user/character/selectClan.html'
 	};
 }]).
+directive('selectBloodline', [function() {
+	return {
+		restrict: 'E',
+		scope: {
+			bloodlines: '=',
+			change: '&change'
+		},
+		templateUrl: '/js/user/character/selectBloodline.html'
+	};
+}]).
 directive('selectInClanDiscipline', [function() {
 	return {
 		restrict: 'E',
 		scope: {
 			disciplines: '=',
-			disciplineChange: '&disciplineChange'
+			change: '&change'
 		},
 		templateUrl: '/js/user/character/inClanDiscipline.html'
 	};
