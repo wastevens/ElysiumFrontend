@@ -2,6 +2,9 @@ angular.module('user.character.manage.services', ['ngResource', 'services.redire
 
 angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans']).
 controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', function($scope, $rootScope, redirect, characterRepository, clanSource, bloodlineSource) {
+	//--------------------------------------------
+	// Setup
+	//--------------------------------------------
 	$scope.requests = [];
 	$scope.clans = clanSource.get();
 	$scope.clan = $scope.clans[$scope.character.clan];
@@ -16,9 +19,8 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	if($scope.bloodline) {
 		$scope.disciplineOptions = $scope.bloodline.disciplines;
 	}
-	if(!$scope.disciplineOptions) {
-		$scope.disciplineOptions = bloodlineSource.get()[0].disciplines;
-	}
+
+	//----------------------------------------------
 	
 	$scope.clanChange = function() {
 		$scope.bloodline = null;
@@ -41,7 +43,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	$scope.disciplineChange = function(disciplineIndex) {
 		console.log(disciplineIndex);
-		console.log(this.characterDisciplines[disciplineIndex].id);
+		console.log(this);
 	}
 	$scope.submit = function(csrfHeader, csrfToken) {
 		characterRepository.addRequestsToCharacter($scope.character.id, $scope.requests, csrfHeader, csrfToken).

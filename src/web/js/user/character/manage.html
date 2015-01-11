@@ -5,16 +5,14 @@
 	</tr>
 	<tr>
 		<td>Clan:</td>
-		<td>
-			<select ng-model='clan' ng-change="clanChange()" name='clan' required='true' ng-options="clan.name for clan in clans">
+		<td><select ng-model='clan' ng-change="clanChange()" name='clan' required='true' ng-options="clan.name for clan in clans">
 				<option value="">-- Choose Clan --</option>
 			</select>
 		</td>
 	</tr>
 	<tr>
 		<td>Bloodline:</td>
-		<td>
-			<select ng-model='bloodline' ng-change="bloodlineChange()" name='bloodline' required='true' ng-options="bloodline.name for bloodline in bloodlines">
+		<td><select ng-model='bloodline' ng-change="bloodlineChange()" name='bloodline' required='true' ng-options="bloodline.name for bloodline in bloodlines">
 				<option value="">-- Choose Bloodline --</option>
 			</select>
 		</td>
