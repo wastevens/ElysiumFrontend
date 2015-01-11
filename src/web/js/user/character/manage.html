@@ -19,7 +19,7 @@
 	</tr>
 	<tr ng-repeat="disciplines in disciplineOptions">
 		<td>Discipline {{$index +1}}</td>
-		<td><select-in-clan-discipline disciplines="disciplineOptions[$index]"></select-in-clan-discipline></td>
+		<td><select-in-clan-discipline disciplines="disciplines" discipline-change="disciplineChange($index)"></select-in-clan-discipline></td>
 	</tr>
 	
 	<tr>

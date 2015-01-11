@@ -6,11 +6,13 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	// Setup
 	//--------------------------------------------
 	$scope.requests = [];
-	$scope.clans = clanSource.get();
-	$scope.clan = $scope.clans[$scope.character.clan];
 	
+	$scope.clans = clanSource.get();
 	$scope.bloodlines = [];
 	$scope.disciplineOptions = [];
+	$scope.inClanDisciplines = [];
+	
+	$scope.clan = $scope.clans[$scope.character.clan];
 	if($scope.clan) {
 		$scope.bloodlines = $scope.clan.bloodlines
 		$scope.bloodline = bloodlineSource.get()[$scope.character.bloodline];
@@ -41,8 +43,9 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 			$scope.disciplineOptions = $scope.bloodline.disciplines;
 		}
 	}
-	$scope.disciplineChange = function() {
-		console.log(this);
+	$scope.disciplineChange = function(index) {
+		console.log($scope.disciplineOptions[index]);
+		console.log($scope.disciplineOptions[index].inClanDiscipline);
 	}
 	$scope.submit = function(csrfHeader, csrfToken) {
 		characterRepository.addRequestsToCharacter($scope.character.id, $scope.requests, csrfHeader, csrfToken).
@@ -63,11 +66,12 @@ directive('manageCharacter', ['characterRepository', function(characterRepositor
 		templateUrl: '/js/user/character/manage.html'
 	};
 }]).
-directive('selectInClanDiscipline', ['characterRepository', function(characterRepository) {
+directive('selectInClanDiscipline', [function() {
 	return {
 		restrict: 'E',
 		scope: {
-			disciplines: '='
+			disciplines: '=',
+			disciplineChange: '&disciplineChange'
 		},
 		templateUrl: '/js/user/character/inClanDiscipline.html'
 	};
