@@ -2,6 +2,7 @@ package com.dstevens.characters;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -20,15 +21,19 @@ public class DisplayablePlayerCharacter {
 	public final int physicalAttribute;
 	public final int socialAttribute;
 	public final int mentalAttribute;
+	public final Set<Integer> physicalAttributeFocuses;
+	public final Set<Integer> socialAttributeFocuses;
+	public final Set<Integer> mentalAttributeFocuses;
 	
 	//Jackson only
     @Deprecated
 	private DisplayablePlayerCharacter() {
-		this(null, null, -1, -1, -1, null, null, null, 0, 0, 0);
+		this(null, null, -1, -1, -1, null, null, null, 0, 0, 0, null, null, null);
 	}
     
     private DisplayablePlayerCharacter(String id, String name, int setting, int status, int approval, Integer clan, Integer bloodline, List<Integer> inClanDisciplines,
-    		                           int physicalAttribute, int socialAttribute, int mentalAttribute) {
+    		                           int physicalAttribute, int socialAttribute, int mentalAttribute,
+    		                           Set<Integer> physicalAttributeFocuses, Set<Integer> socialAttributeFocuses, Set<Integer> mentalAttributeFocuses) {
 		this.id = id;
 		this.name = name;
 		this.setting = setting;
@@ -40,6 +45,9 @@ public class DisplayablePlayerCharacter {
 		this.physicalAttribute = physicalAttribute;
 		this.socialAttribute = socialAttribute;
 		this.mentalAttribute = mentalAttribute;
+		this.physicalAttributeFocuses = physicalAttributeFocuses;
+		this.socialAttributeFocuses = socialAttributeFocuses;
+		this.mentalAttributeFocuses = mentalAttributeFocuses;
     }
 	
 	public static Function<PlayerCharacter, DisplayablePlayerCharacter> fromCharacter() {
@@ -52,7 +60,10 @@ public class DisplayablePlayerCharacter {
 				                                                     t.getInClanDisciplines().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toList()),
 				                                                     t.getPhysicalAttribute(),
 				                                                     t.getSocialAttribute(),
-				                                                     t.getMentalAttribute());
+				                                                     t.getMentalAttribute(),
+				                                                     t.getPhysicalAttributeFocuses().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toSet()),
+				                                                     t.getSocialAttributeFocuses().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toSet()),
+				                                                     t.getMentalAttributeFocuses().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toSet()));
 	}
 	
 	public String serialized() {

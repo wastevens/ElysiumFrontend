@@ -40,22 +40,32 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	attributePriority[5] = attributePriorities[1];
 	attributePriority[7] = attributePriorities[0];
 	
+	$scope.physicalAttributeFocuses = $scope.character.physicalAttributeFocuses;
+	$scope.socialAttributeFocuses = $scope.character.socialAttributeFocuses;
+	$scope.mentalAttributeFocuses = $scope.character.mentalAttributeFocuses;
+	
 	$scope.physical = {
 		priorities: attributePriorities,
 	    value: $scope.character.physicalAttribute,
-	    priority: attributePriority[$scope.character.physicalAttribute]
+	    priority: attributePriority[$scope.character.physicalAttribute],
+	    focuses: physicalFocusSource.get(),
+	    focus: physicalFocusSource.get()[$scope.character.physicalAttributeFocuses[0]]
 	}
 	
 	$scope.social = {
 		priorities: attributePriorities,
 		value: $scope.character.socialAttribute,
-		priority: attributePriority[$scope.character.socialAttribute]
+		priority: attributePriority[$scope.character.socialAttribute],
+		focuses: socialFocusSource.get(),
+	    focus: socialFocusSource.get()[$scope.character.socialAttributeFocuses[0]]
 	}
 	
 	$scope.mental = {
 		priorities: attributePriorities,
 		value: $scope.character.mentalAttribute,
-		priority: attributePriority[$scope.character.mentalAttribute]
+		priority: attributePriority[$scope.character.mentalAttribute],
+		focuses: mentalFocusSource.get(),
+	    focus: mentalFocusSource.get()[$scope.character.mentalAttributeFocuses[0]]
 	}
 	
 	//----------------------------------------------
@@ -116,6 +126,42 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		}
 	}
 	
+	$scope.physicalFocusChange = function() {
+		if($scope.physicalAttributeFocuses) {
+			$scope.physicalAttributeFocuses.forEach(function(focus, index, array) {
+				$scope.requests.push({"trait": 10, "value": focus});	
+			});
+			$scope.physicalAttributeFocuses = [];
+		}
+		if($scope.physical.focus) {
+			$scope.requests.push({"trait": 7, "value": $scope.physical.focus.id});
+		}
+	}
+	
+	$scope.socialFocusChange = function() {
+		if($scope.socialAttributeFocuses) {
+			$scope.socialAttributeFocuses.forEach(function(focus, index, array) {
+				$scope.requests.push({"trait": 11, "value": focus});	
+			});
+			$scope.socialAttributeFocuses = [];
+		}
+		if($scope.social.focus) {
+			$scope.requests.push({"trait": 8, "value": $scope.social.focus.id});
+		}
+	}
+	
+	$scope.mentalFocusChange = function() {
+		if($scope.mentalAttributeFocuses) {
+			$scope.mentalAttributeFocuses.forEach(function(focus, index, array) {
+				$scope.requests.push({"trait": 12, "value": focus});	
+			});
+			$scope.mentalAttributeFocuses = [];
+		}
+		if($scope.mental.focus) {
+			$scope.requests.push({"trait": 9, "value": $scope.mental.focus.id});
+		}
+	}
+	
 	$scope.submit = function(csrfHeader, csrfToken) {
 		characterRepository.addRequestsToCharacter($scope.character.id, $scope.requests, csrfHeader, csrfToken).
 			success(function(data, status, headers, config) {redirect.toUrl('/user/page/characters')}).
@@ -172,6 +218,16 @@ directive('selectAttribute', [function() {
 			change: '&change'
 		},
 		templateUrl: '/js/user/character/selectAttributeValue.html'
+	};
+}]).
+directive('selectAttributeFocus', [function() {
+	return {
+		restrict: 'E',
+		scope: {
+			attributes: '=',
+			change: '&change'
+		},
+		templateUrl: '/js/user/character/selectAttributeFocus.html'
 	};
 }]);
 

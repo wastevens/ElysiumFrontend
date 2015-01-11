@@ -62,24 +62,45 @@ public enum TraitChanges {
 		}
 	},
 	// 7
-	SET_PHYSICAL_ATTRIBUTE_FOCUS {
+	WITH_PHYSICAL_ATTRIBUTE_FOCUS {
 		@Override
 		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int value) {
 			return traitChangeFactory.focus(PhysicalAttributeFocus.values()[value]);
 		}
 	},
 	// 8
-	SET_SOCIAL_ATTRIBUTE_FOCUS {
+	WITH_SOCIAL_ATTRIBUTE_FOCUS {
 		@Override
 		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int value) {
 			return traitChangeFactory.focus(SocialAttributeFocus.values()[value]);
 		}
 	},
 	// 9
-	SET_MENTAL_ATTRIBUTE_FOCUS {
+	WITH_MENTAL_ATTRIBUTE_FOCUS {
 		@Override
 		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int value) {
 			return traitChangeFactory.focus(MentalAttributeFocus.values()[value]);
+		}
+	},
+	// 10
+	WITHOUT_PHYSICAL_ATTRIBUTE_FOCUS {
+		@Override
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int value) {
+			return traitChangeFactory.focus(PhysicalAttributeFocus.values()[value]).remove();
+		}
+	},
+	// 11
+	WITHOUT_SOCIAL_ATTRIBUTE_FOCUS {
+		@Override
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int value) {
+			return traitChangeFactory.focus(SocialAttributeFocus.values()[value]).remove();
+		}
+	},
+	// 12
+	WITHOUT_MENTAL_ATTRIBUTE_FOCUS {
+		@Override
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int value) {
+			return traitChangeFactory.focus(MentalAttributeFocus.values()[value]).remove();
 		}
 	},
 	;
