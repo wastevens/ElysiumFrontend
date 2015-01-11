@@ -1,7 +1,8 @@
 angular.module('user.character.manage.services', ['ngResource', 'services.redirection', 'services.csrfResource', 'services.troupes', 'services.characters']);
 
-angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans']).
-controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', function($scope, $rootScope, redirect, characterRepository, clanSource, bloodlineSource, disciplineSource) {
+angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses']).
+controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 
+                       function($scope, $rootScope, redirect, characterRepository, clanSource, bloodlineSource, disciplineSource, physicalFocusSource, socialFocusSource, mentalFocusSource) {
 	//--------------------------------------------
 	// Setup
 	//--------------------------------------------
@@ -13,25 +14,48 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
         list: clanSource.get(),
 		clan: clanSource.get()[$scope.character.clan]
 	}
-	
 	$scope.bloodlines = {
 	    list: [],
 	    bloodline: null
 	}
-	
 	if(!isNaN($scope.character.clan)) {
 		$scope.bloodlines.list = $scope.clans.clan.bloodlines;
 	}
-	
 	if(!isNaN($scope.character.bloodline)) {
 		$scope.bloodlines.bloodline = bloodlineSource.get()[$scope.character.bloodline];
 		$scope.disciplineOptions = $scope.bloodlines.bloodline.disciplines;
 	}
-
 	if($scope.character.inClanDisciplines) {
 		$scope.character.inClanDisciplines.forEach(function(discipline, index, array) {
 			$scope.disciplineOptions[index].discipline  = disciplineSource.get()[discipline];
 		});
+	}
+	
+	var attributePriorities = [{priority: "Primary (7)", value: 7}, 
+	                           {priority: "Secondary (5)", value: 5}, 
+	                           {priority: "Tertiary (3)", value: 3}];
+	
+	var attributePriority = [];
+	attributePriority[3] = attributePriorities[2];
+	attributePriority[5] = attributePriorities[1];
+	attributePriority[7] = attributePriorities[0];
+	
+	$scope.physical = {
+		priorities: attributePriorities,
+	    value: $scope.character.physicalAttribute,
+	    priority: attributePriority[$scope.character.physicalAttribute]
+	}
+	
+	$scope.social = {
+		priorities: attributePriorities,
+		value: $scope.character.socialAttribute,
+		priority: attributePriority[$scope.character.socialAttribute]
+	}
+	
+	$scope.mental = {
+		priorities: attributePriorities,
+		value: $scope.character.mentalAttribute,
+		priority: attributePriority[$scope.character.mentalAttribute]
 	}
 	
 	//----------------------------------------------
@@ -73,6 +97,25 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 			$scope.requests.push({"trait": 2, "value": $scope.disciplineOptions[index].discipline.id});
 		}
 	}
+	
+	$scope.physicalChange = function() {
+		if($scope.physical.priority.value) {
+			$scope.requests.push({"trait": 4, "value": $scope.physical.priority.value});
+		}
+	}
+	
+	$scope.socialChange = function() {
+		if($scope.social.priority.value) {
+			$scope.requests.push({"trait": 5, "value": $scope.social.priority.value});
+		}
+	}
+	
+	$scope.mentalChange = function() {
+		if($scope.mental.priority.value) {
+			$scope.requests.push({"trait": 6, "value": $scope.mental.priority.value});
+		}
+	}
+	
 	$scope.submit = function(csrfHeader, csrfToken) {
 		characterRepository.addRequestsToCharacter($scope.character.id, $scope.requests, csrfHeader, csrfToken).
 			success(function(data, status, headers, config) {redirect.toUrl('/user/page/characters')}).
@@ -119,6 +162,16 @@ directive('selectInClanDiscipline', [function() {
 			change: '&change'
 		},
 		templateUrl: '/js/user/character/inClanDiscipline.html'
+	};
+}]).
+directive('selectAttribute', [function() {
+	return {
+		restrict: 'E',
+		scope: {
+			attributes: '=',
+			change: '&change'
+		},
+		templateUrl: '/js/user/character/selectAttributeValue.html'
 	};
 }]);
 

@@ -15,6 +15,19 @@
 		<td ng-show="disciplines.length > 1">Discipline</td>
 		<td ng-show="disciplines.length > 1"><select-in-clan-discipline disciplines="disciplines" change="disciplineChange($index)"></select-in-clan-discipline></td>
 	</tr>
+	<tr>
+		<td>Physical:</td>
+		<td><select-attribute attributes="physical" change="physicalChange()"></select-attribute></td>
+	</tr>
+	<tr>
+		<td>Social:</td>
+		<td><select-attribute attributes="social" change="socialChange()"></select-attribute></td>
+	</tr>
+	<tr>
+		<td>Mental:</td>
+		<td><select-attribute attributes="mental" change="mentalChange()"></select-attribute></td>
+	</tr>
+	
 	
 	<tr>
 		<td colspan='2'><input name="submit" type="submit" value="committ" /></td>
