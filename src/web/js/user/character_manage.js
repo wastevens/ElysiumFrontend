@@ -1,7 +1,7 @@
 angular.module('user.character.manage.services', ['ngResource', 'services.redirection', 'services.csrfResource', 'services.troupes', 'services.characters']);
 
 angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans']).
-controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', function($scope, $rootScope, redirect, characterRepository, clanSource, bloodlineSource) {
+controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', function($scope, $rootScope, redirect, characterRepository, clanSource, bloodlineSource, disciplineSource) {
 	//--------------------------------------------
 	// Setup
 	//--------------------------------------------
@@ -20,6 +20,10 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	
 	if($scope.bloodline) {
 		$scope.disciplineOptions = $scope.bloodline.disciplines;
+		//Populate with the character's already selected disciplines
+		$scope.disciplineOptions[0].inClanDiscipline  = disciplineSource.get()[1];
+		$scope.disciplineOptions[1].inClanDiscipline  = disciplineSource.get()[7];
+		$scope.disciplineOptions[2].inClanDiscipline  = disciplineSource.get()[10];
 	}
 
 	//----------------------------------------------
@@ -52,7 +56,6 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 			success(function(data, status, headers, config) {redirect.toUrl('/user/page/characters')}).
 			error(function(data, status, headers, config) {console.log("addRequestsToCharacter failed")});
 	};
-	
 }]);
 
 angular.module('user.character.manage.directives', ['user.character.manage.services']).
