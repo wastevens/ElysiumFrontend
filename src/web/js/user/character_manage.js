@@ -7,13 +7,12 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	$scope.clan = $scope.clans[$scope.character.clan];
 	
 	$scope.bloodlines = [];
+	$scope.disciplineOptions = [];
 	if($scope.clan) {
 		$scope.bloodlines = $scope.clan.bloodlines
 		$scope.bloodline = bloodlineSource.get()[$scope.character.bloodline];
 	}
 	
-	$scope.disciplineOptions = [];
-	$scope.inClanDiscipline = [];
 	if($scope.bloodline) {
 		$scope.disciplineOptions = $scope.bloodline.disciplines;
 	}
@@ -22,18 +21,19 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	$scope.clanChange = function() {
+		$scope.bloodline = null;
+		$scope.bloodlines = [];
 		if($scope.clan) {
 			$scope.requests.push({"trait": 0, "value": $scope.clan.id});
 			$scope.bloodlines = $scope.clan.bloodlines;
 			if($scope.bloodlines.length == 1) {
 				$scope.bloodline = $scope.bloodlines[0];
-				$scope.bloodlineChange();
 			}
-		} else {
-			$scope.bloodlines = [];
 		}
+		$scope.bloodlineChange();
 	}
 	$scope.bloodlineChange = function() {
+		$scope.disciplineOptions = [];
 		if($scope.bloodline) {
 			$scope.requests.push({"trait": 1, "value": $scope.bloodline.id});
 			$scope.disciplineOptions = $scope.bloodline.disciplines;
