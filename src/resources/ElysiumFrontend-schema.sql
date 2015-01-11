@@ -86,7 +86,7 @@ create table Skills (id varchar(255) not null, rating integer, specialization va
 create table Skills_Focuses (CharacterSkill_id varchar(255) not null, focuses varchar(255));
 create table Status (id varchar(255) not null, specialization varchar(255), trait integer not null, character_id varchar(255), primary key (id));
 create table TraitChange_focuses (TraitChange_id varchar(255) not null, focuses varchar(255));
-create table TraitChanges (trait_change_type varchar(31) not null, id varchar(255) not null, cost integer, ordinal integer, rating integer, specialization varchar(255), child_id varchar(255), primary key (id));
+create table TraitChanges (trait_change_type varchar(31) not null, id varchar(255) not null, cost integer, ordinal integer, rating integer, remove bit, specialization varchar(255), child_id varchar(255), primary key (id));
 create table Troupe (id varchar(255) not null, deleted_at datetime, name varchar(255), setting integer, primary key (id));
 create table Troupe_PlayerCharacters (troupe_id varchar(255) not null, playerCharacter_id varchar(255) not null, primary key (troupe_id, playerCharacter_id));
 create table Troupe_StorytellerUsers (troupe_id varchar(255) not null, user_id varchar(255) not null, primary key (troupe_id, user_id));

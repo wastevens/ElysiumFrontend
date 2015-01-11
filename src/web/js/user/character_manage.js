@@ -13,19 +13,21 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	$scope.inClanDisciplines = [];
 	
 	$scope.clan = $scope.clans[$scope.character.clan];
-	if($scope.clan) {
+	if(!isNaN($scope.character.clan)) {
 		$scope.bloodlines = $scope.clan.bloodlines
-		$scope.bloodline = bloodlineSource.get()[$scope.character.bloodline];
 	}
 	
-	if($scope.bloodline) {
+	if(!isNaN($scope.character.bloodline)) {
+		$scope.bloodline = bloodlineSource.get()[$scope.character.bloodline];
 		$scope.disciplineOptions = $scope.bloodline.disciplines;
-		//Populate with the character's already selected disciplines
-		$scope.disciplineOptions[0].inClanDiscipline  = disciplineSource.get()[1];
-		$scope.disciplineOptions[1].inClanDiscipline  = disciplineSource.get()[7];
-		$scope.disciplineOptions[2].inClanDiscipline  = disciplineSource.get()[10];
 	}
 
+	if($scope.character.inClanDisciplines) {
+		$scope.character.inClanDisciplines.forEach(function(discipline, index, array) {
+			$scope.disciplineOptions[index].inClanDiscipline  = disciplineSource.get()[discipline];
+		});
+	}
+	
 	//----------------------------------------------
 	
 	$scope.clanChange = function() {
@@ -41,15 +43,28 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		$scope.bloodlineChange();
 	}
 	$scope.bloodlineChange = function() {
-		$scope.disciplineOptions = [];
 		if($scope.bloodline) {
 			$scope.requests.push({"trait": 1, "value": $scope.bloodline.id});
+			
+			$scope.disciplineOptions.forEach(function(disciplines, index, array) {
+				if(disciplines.inClanDiscipline) {
+					$scope.requests.push({"trait": 3, "value": disciplines.inClanDiscipline.id});
+				}
+			});
+			
 			$scope.disciplineOptions = $scope.bloodline.disciplines;
+			$scope.disciplineOptions.forEach(function(disciplines, index, array) {
+				if(disciplines.length == 1) {
+					$scope.disciplineOptions[index].inClanDiscipline = disciplines[0];
+					$scope.disciplineChange(index);
+				}
+			});
 		}
 	}
 	$scope.disciplineChange = function(index) {
-		console.log($scope.disciplineOptions[index]);
-		console.log($scope.disciplineOptions[index].inClanDiscipline);
+		if($scope.disciplineOptions[index].inClanDiscipline) {
+			$scope.requests.push({"trait": 2, "value": $scope.disciplineOptions[index].inClanDiscipline.id});
+		}
 	}
 	$scope.submit = function(csrfHeader, csrfToken) {
 		characterRepository.addRequestsToCharacter($scope.character.id, $scope.requests, csrfHeader, csrfToken).
