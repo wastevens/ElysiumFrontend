@@ -74,7 +74,7 @@ create table PlayerCharacter_AppliedTraitChanges (PlayerCharacter_id varchar(255
 create table PlayerCharacter_ExperienceAward (PlayerCharacter_id varchar(255) not null, experienceAwards_id varchar(255) not null);
 create table PlayerCharacter_RequestedTraitChanges (PlayerCharacter_id varchar(255) not null, requesedTraitChanges_id varchar(255) not null, order_by integer not null, primary key (PlayerCharacter_id, order_by));
 create table PlayerCharacter_elderPowers (PlayerCharacter_id varchar(255) not null, elderPowers integer);
-create table PlayerCharacter_inClanDisciplines (PlayerCharacter_id varchar(255) not null, inClanDisciplines integer);
+create table PlayerCharacter_inClanDisciplines (PlayerCharacter_id varchar(255) not null, inClanDisciplines integer, order_by integer not null, primary key (PlayerCharacter_id, order_by));
 create table PlayerCharacter_mentalAttrbuteFocuses (PlayerCharacter_id varchar(255) not null, mentalAttrbuteFocuses integer);
 create table PlayerCharacter_necromanticRituals (PlayerCharacter_id varchar(255) not null, necromanticRituals integer);
 create table PlayerCharacter_physicalAttributeFocuses (PlayerCharacter_id varchar(255) not null, physicalAttributeFocuses integer);
