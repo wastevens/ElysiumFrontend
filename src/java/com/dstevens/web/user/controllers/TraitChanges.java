@@ -127,11 +127,14 @@ public enum TraitChanges {
 	public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal) {
 		return using(traitChangeFactory, ordinal, -1, null, null);
 	}
+	public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal, int rating) {
+		return using(traitChangeFactory, ordinal, rating, null, null);
+	}
 	public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal, int rating, String specialization) {
-		return using(traitChangeFactory, ordinal, -1, specialization, null);
+		return using(traitChangeFactory, ordinal, rating, specialization, null);
 	}
 	public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal, int rating, Set<String> focuses) {
-		return using(traitChangeFactory, ordinal, -1, null, focuses);
+		return using(traitChangeFactory, ordinal, rating, null, focuses);
 	}
 	public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal, int rating, String specialization, Set<String> focuses) {
 		throw new IllegalStateException("Not implemented for " + this);

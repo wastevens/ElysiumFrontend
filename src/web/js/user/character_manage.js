@@ -101,22 +101,21 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	$scope.bloodlineChange = function() {
+		$scope.disciplineOptions.forEach(function(disciplines, index, array) {
+			if(disciplines.discipline) {
+				$scope.requests.push({"trait": 3, "value": disciplines.discipline.id});
+			}
+		});
+		
 		if($scope.bloodlines.bloodline) {
 			$scope.requests.push({"trait": 1, "value": $scope.bloodlines.bloodline.id});
-			
-			$scope.disciplineOptions.forEach(function(disciplines, index, array) {
-				if(disciplines.discipline) {
-					$scope.requests.push({"trait": 3, "value": disciplines.discipline.id});
-				}
-			});
-			
 			$scope.disciplineOptions = $scope.bloodlines.bloodline.disciplines;
 			$scope.disciplineOptions.forEach(function(disciplines, index, array) {
 				$scope.disciplineOptions[index].discipline = null;
 				if(disciplines.length == 1) {
 					$scope.disciplineOptions[index].discipline = disciplines[0];
+					$scope.disciplineChange(index);
 				}
-				$scope.disciplineChange(index);
 			});
 		} else {
 			$scope.disciplineOptions = [];
