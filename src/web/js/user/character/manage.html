@@ -1,40 +1,46 @@
 <form ng-submit="submit(csrf.header, csrf.token)" ng-controller="manageCharacter">
+Name: {{character.name}}
 <table>
-	<tr>
-		<td>Name:</td><td>{{character.name}}</td>
-	</tr>
-	<tr>
-		<td>Clan:</td>
-		<td><select-clan clans="clans" change="clanChange()"></select-clan></td>
-	</tr>
-	<tr ng-show="bloodlines.list.length > 1">
-		<td>Bloodline:</td>
-		<td><select-bloodline bloodlines="bloodlines" change="bloodlineChange()"></select-bloodline>
-	</tr>
-	<tr ng-repeat="disciplines in disciplineOptions">
-		<td ng-show="disciplines.length > 1">Discipline</td>
-		<td ng-show="disciplines.length > 1"><select-in-clan-discipline disciplines="disciplines" change="disciplineChange($index)"></select-in-clan-discipline></td>
-	</tr>
-	<tr>
-		<td>Physical:</td>
-		<td><select-attribute attributes="physical" change="physicalChange()"></select-attribute></td>
-		<td><select-attribute-focus attributes="physical" change="physicalFocusChange()"></select-attribute-focus></td>
-	</tr>
-	<tr>
-		<td>Social:</td>
-		<td><select-attribute attributes="social" change="socialChange()"></select-attribute></td>
-		<td><select-attribute-focus attributes="social" change="socialFocusChange()"></select-attribute-focus></td>
-	</tr>
-	<tr>
-		<td>Mental:</td>
-		<td><select-attribute attributes="mental" change="mentalChange()"></select-attribute></td>
-		<td><select-attribute-focus attributes="mental" change="mentalFocusChange()"></select-attribute-focus></td>
-	</tr>
+	<tr><td colspan=5><table>
+		<tr>
+			<td>Clan</td>
+			<td ng-show="bloodlines.list.length > 1">Bloodline</td>
+		</tr>
+		<tr>
+			<td><select-clan clans="clans" change="clanChange()"></select-clan></td>
+			<td ng-show="bloodlines.list.length > 1"><select-bloodline bloodlines="bloodlines" change="bloodlineChange()"></select-bloodline>
+		</tr>
+	</table></td></tr>
 	
+	<tr><td colspan=5 ng-show="disciplineOptions.length > 1">In Clan Disciplines</td></tr>
+	<tr><td ng-repeat="disciplines in disciplineOptions">
+		<select-in-clan-discipline disciplines="disciplines" change="disciplineChange($index)"></select-in-clan-discipline>
+	</td></tr>
 	
-	<tr>
-		<td colspan='2'><input name="submit" type="submit" value="committ" /></td>
-	</tr>
+	<tr><td colspan=5><table>
+		<tr>
+			<td>Physical</td>
+			<td>Social</td>
+			<td>Mental</td></tr>
+		<tr>
+			<td><select-attribute attributes="physical" change="physicalChange()"></select-attribute></td>
+			<td><select-attribute attributes="social" change="socialChange()"></select-attribute></td>
+			<td><select-attribute attributes="mental" change="mentalChange()"></select-attribute></td>
+		</tr>
+		<tr>
+			<td><select-attribute-focus attributes="physical" change="physicalFocusChange()"></select-attribute-focus></td>
+			<td><select-attribute-focus attributes="social" change="socialFocusChange()"></select-attribute-focus></td>
+			<td><select-attribute-focus attributes="mental" change="mentalFocusChange()"></select-attribute-focus></td>
+		</tr>
+	</table></td></tr>
+	
+	<tr><td ng-repeat="skills in chunkedSkills" colspan=2>
+		<table>
+			<tr ng-repeat="skill in skills"><td >{{skill}}</td></tr>
+		</table>
+	</td></tr>
+	
+	<tr><td colspan='2'><input name="submit" type="submit" value="committ" /></td></tr>
 </table>
 {{character}}
 </form>

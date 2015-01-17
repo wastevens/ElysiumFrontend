@@ -1,8 +1,16 @@
 angular.module('user.character.manage.services', ['ngResource', 'services.redirection', 'services.csrfResource', 'services.troupes', 'services.characters']);
 
-angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses']).
-controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 
-                       function($scope, $rootScope, redirect, characterRepository, clanSource, bloodlineSource, disciplineSource, physicalFocusSource, socialFocusSource, mentalFocusSource) {
+function chunk(arr, size) {
+	var newArr = [];
+	for (var i=0; i<arr.length; i+=size) {
+		newArr.push(arr.slice(i, i+size));
+	}
+	return newArr;
+}
+
+angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills']).
+controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource',
+                       function($scope, $rootScope, redirect, characterRepository, clanSource, bloodlineSource, disciplineSource, physicalFocusSource, socialFocusSource, mentalFocusSource, skillSource) {
 	//--------------------------------------------
 	// Setup
 	//--------------------------------------------
@@ -68,6 +76,16 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	    focus: mentalFocusSource.get()[$scope.character.mentalAttributeFocuses[0]]
 	}
 	
+	var skillsPerColumn = 9;
+	$scope.chunkedSkills = chunk(skillSource.get(), skillsPerColumn);
+	$scope.characterSkills = [];
+	
+	var skillLevels = [{name: "4", value: 4}, 
+	                   {name: "3", value: 3}, 
+	                   {name: "2", value: 2},
+	                   {name: "1", value: 1},
+	                   {name: "Remove", value: 0},];
+	
 	//----------------------------------------------
 	
 	$scope.clanChange = function() {
@@ -100,6 +118,8 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 				}
 				$scope.disciplineChange(index);
 			});
+		} else {
+			$scope.disciplineOptions = [];
 		}
 	}
 	$scope.disciplineChange = function(index) {
@@ -159,6 +179,22 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		}
 		if($scope.mental.focus) {
 			$scope.requests.push({"trait": 9, "value": $scope.mental.focus.id});
+		}
+	}
+	
+	$scope.addSkill = function(index) {
+		$scope.setSkill(index);
+	}
+	
+	$scope.setSkill = function(index) {
+		if($scope.skillOptions[index].skill) {
+			$scope.requests.push({"trait": 13, "value": $scope.skillOptions[index].skill.id, "rating": $scope.skillOptions[index].skill.rating, "specialization": $scope.skillOptions[index].skill.specialization});
+		}
+	}
+	
+	$scope.removeSkill = function(index) {
+		if($scope.skillOptions[index].skill) {
+			$scope.requests.push({"trait": 14, "value": $scope.characterSkills[index].skill.id, "rating": $scope.characterSkills[index].skill.rating, "specialization": $scope.characterSkills[index].skill.specialization});
 		}
 	}
 	
@@ -228,6 +264,16 @@ directive('selectAttributeFocus', [function() {
 			change: '&change'
 		},
 		templateUrl: '/js/user/character/selectAttributeFocus.html'
+	};
+}]).
+directive('selectSkills', [function() {
+	return {
+		restrict: 'E',
+		scope: {
+			skills: '=',
+			change: '&change'
+		},
+		templateUrl: '/js/user/character/selectSkills.html'
 	};
 }]);
 

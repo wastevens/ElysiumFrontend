@@ -9,9 +9,11 @@ public class RawTraitChange {
 
 	public int trait;
 	public int value;
+	public Integer rating;
+	public String specialization;
 	
 	public static Function<RawTraitChange, TraitChange<?>> toTraitChangeUsing(final TraitChangeFactory traitChangeFactory) {
-		return (RawTraitChange t) -> TraitChanges.values()[t.trait].using(traitChangeFactory, t.value);
+		return (RawTraitChange t) -> TraitChanges.values()[t.trait].using(traitChangeFactory, t.value, t.rating, t.specialization);
 	}
 	
 }
