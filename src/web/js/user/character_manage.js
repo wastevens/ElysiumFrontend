@@ -76,15 +76,14 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	    focus: mentalFocusSource.get()[$scope.character.mentalAttributeFocuses[0]]
 	}
 	
-	var skillsPerColumn = 9;
-	$scope.chunkedSkills = chunk(skillSource.get(), skillsPerColumn);
-	$scope.characterSkills = [];
-	
-	var skillLevels = [{name: "4", value: 4}, 
-	                   {name: "3", value: 3}, 
-	                   {name: "2", value: 2},
-	                   {name: "1", value: 1},
-	                   {name: "Remove", value: 0},];
+	var skillsPerColumn = 10;
+	var skills = [];
+	skillSource.get().forEach(function(skill, index, array){
+		skill.rating = 0;
+		skill.specialization = "";
+		skills.push(skill);
+	});
+	$scope.skillGroups = chunk(skills, skillsPerColumn);
 	
 	//----------------------------------------------
 	
@@ -265,14 +264,22 @@ directive('selectAttributeFocus', [function() {
 		templateUrl: '/js/user/character/selectAttributeFocus.html'
 	};
 }]).
-directive('selectSkills', [function() {
+directive('selectSkill', [function() {
 	return {
 		restrict: 'E',
 		scope: {
-			skills: '=',
+			skillGroups: '=',
 			change: '&change'
 		},
-		templateUrl: '/js/user/character/selectSkills.html'
+		link: function (scope) {
+		      scope.ratings = [{value: 5, name: "5"},
+		                       {value: 4, name: "4"},
+		                       {value: 3, name: "3"},
+		                       {value: 2, name: "2"},
+		                       {value: 1, name: "1"},
+		                       {value: 0, name: "Remove"}];
+	    },
+		templateUrl: '/js/user/character/selectSkill.html'
 	};
 }]);
 

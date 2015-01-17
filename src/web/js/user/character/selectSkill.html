@@ -1,3 +1,13 @@
-<select ng-model="skills.skill" ng-change="change()" ng-options="skill.name for skill in skills">
-	<option value="">-- Choose Skill --</option>
-</select>
+<table><tr>
+	<td ng-repeat="skills in skillGroups">
+	<table><tr ng-repeat="skill in skills">
+		<td>{{skill}}</td>
+		<td ng-show="skill.requiresSpecialization"><input type=text ng-model="skill.specialization"></td>	
+		<td><select ng-model="skill.rating" ng-change="change()" ng-options="rating.name for rating in ratings">
+			<option value="">-- Rating --</option>
+			</select></td>
+	</tr></table>
+	</td>
+</tr></table>
+
+

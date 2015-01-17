@@ -13,9 +13,12 @@ Name: {{character.name}}
 	</table></td></tr>
 	
 	<tr><td colspan=5 ng-show="disciplineOptions.length > 1">In Clan Disciplines</td></tr>
-	<tr><td ng-repeat="disciplines in disciplineOptions">
-		<select-in-clan-discipline disciplines="disciplines" change="disciplineChange($index)"></select-in-clan-discipline>
-	</td></tr>
+	<tr><td coslpan=5>
+		<table><tr>
+			<td ng-repeat="disciplines in disciplineOptions">
+				<select-in-clan-discipline disciplines="disciplines" change="disciplineChange($index)"></select-in-clan-discipline>
+			</td>
+		</tr></table>
 	
 	<tr><td colspan=5><table>
 		<tr>
@@ -34,10 +37,19 @@ Name: {{character.name}}
 		</tr>
 	</table></td></tr>
 	
-	<tr><td ng-repeat="skills in chunkedSkills" colspan=2>
-		<table>
-			<tr ng-repeat="skill in skills"><td >{{skill}}</td></tr>
-		</table>
+	<tr><td colspan=5>
+	<table><tr>
+	<td ng-repeat="skills in skillGroups">
+	<table><tr ng-repeat="skill in skills">
+		<td>{{skill.name}}</td>
+		<td ng-show="skill.requiresSpecialization"><input type=text ng-model="skill.specialization"></td>	
+		<td><select ng-model="skill.rating" ng-change="change()" ng-options="rating.name for rating in ratings">
+			<option value="">-- Rating --</option>
+			</select></td>
+	</tr></table>
+	</td>
+	</tr></table>
+		<!-- <select-skill skillGroups="skillGroups"></select-skill> -->
 	</td></tr>
 	
 	<tr><td colspan='2'><input name="submit" type="submit" value="committ" /></td></tr>
