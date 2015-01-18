@@ -96,17 +96,12 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	$scope.character.skills.forEach(function(characterSkill, index, array){
 		for(var i=0;i<skills.length;i++) {
 			if(skills[i].ordinal == characterSkill.ordinal) {
-				if(!skills[i].requiresSpecialization) {
-					skills[i].rating = ratings[characterSkill.rating];
-				} else {
-					var copyOfSkill = {};
-					copyOfSkill.name = skills[i].name;
-					copyOfSkill.ordinal = skills[i].ordinal;
-					copyOfSkill.requiresSpecialization = true;
-					copyOfSkill.rating = ratings[characterSkill.rating];
+				if(skills[i].requiresSpecialization) {
+					var copyOfSkill = JSON.parse(JSON.stringify(skills[i]));
 					copyOfSkill.specialization = characterSkill.specialization;
 					skills.splice(i, 0, copyOfSkill);
 				}
+				skills[i].rating = ratings[characterSkill.rating];
 				break;
 			}
 		}
