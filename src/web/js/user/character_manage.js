@@ -79,10 +79,16 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	var skillsPerColumn = 10;
 	var skills = [];
 	skillSource.get().forEach(function(skill, index, array){
-		skill.rating = 0;
 		skill.specialization = "";
 		skills.push(skill);
 	});
+	
+	skills.forEach(function(skill, index, array) {
+		if(skill.id == 3) {
+			skill.rating = 3;
+		}
+	});
+	
 	$scope.skillGroups = chunk(skills, skillsPerColumn);
 	
 	//----------------------------------------------
@@ -268,7 +274,7 @@ directive('selectSkill', [function() {
 	return {
 		restrict: 'E',
 		scope: {
-			skillGroups: '=',
+			skillgroups: '=',
 			change: '&change'
 		},
 		link: function (scope) {
