@@ -83,7 +83,6 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	    focus: mentalFocusSource.get()[$scope.character.mentalAttributeFocuses[0]]
 	}
 	
-	var skillsPerColumn = 9;
 	var skills = [];
 	$scope.character.skills = [];
 	$scope.character.skills.push({"ordinal": 3, "rating": 1});
@@ -106,6 +105,10 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 			}
 		}
 	});
+	while(skills.length % 3 != 0) {
+		skills.push({});
+	}
+	var skillsPerColumn = skills.length / 3;
 	$scope.skillGroups = chunk(skills, skillsPerColumn);
 	
 	//----------------------------------------------
