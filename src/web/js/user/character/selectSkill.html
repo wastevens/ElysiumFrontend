@@ -1,9 +1,9 @@
 <table><tr>
 	<td ng-repeat="skills in skillgroups">
 	<table><tr ng-repeat="skill in skills">
-		<td>{{skill.name}} {{skill.rating}}</td>
-		<td ng-show="skill.requiresSpecialization"><input type=text ng-model="skill.specialization"></td>	
-		<td><select ng-model="skill.rating" ng-change="change()" ng-options="rating.name for rating in ratings">
+		<td>{{skill.name}} {{$parent.$index}} {{$index}}</td>
+		<td ng-show="skill.requiresSpecialization"><input type=text size="9" ng-model="skill.specialization"></td>	
+		<td><select ng-model="skill.rating" ng-change="change()" ng-options="rating.display for rating in ratings track by rating.value">
 			<option value="">-- Rating --</option>
 			</select></td>
 	</tr></table>

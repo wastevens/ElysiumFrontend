@@ -1,5 +1,12 @@
 angular.module('user.character.manage.services', ['ngResource', 'services.redirection', 'services.csrfResource', 'services.troupes', 'services.characters']);
 
+var ratings = [{value: 0, display: "Remove"},
+               {value: 1, display: "1"},
+               {value: 2, display: "2"},
+               {value: 3, display: "3"},
+               {value: 4, display: "4"},
+               {value: 5, display: "5"}];
+
 function chunk(arr, size) {
 	var newArr = [];
 	for (var i=0; i<arr.length; i+=size) {
@@ -85,7 +92,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	
 	skills.forEach(function(skill, index, array) {
 		if(skill.id == 3) {
-			skill.rating = 3;
+			skill.rating = ratings[3];
 		}
 	});
 	
@@ -278,12 +285,7 @@ directive('selectSkill', [function() {
 			change: '&change'
 		},
 		link: function (scope) {
-		      scope.ratings = [{value: 5, name: "5"},
-		                       {value: 4, name: "4"},
-		                       {value: 3, name: "3"},
-		                       {value: 2, name: "2"},
-		                       {value: 1, name: "1"},
-		                       {value: 0, name: "Remove"}];
+		      scope.ratings = ratings;
 	    },
 		templateUrl: '/js/user/character/selectSkill.html'
 	};
