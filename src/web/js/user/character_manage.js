@@ -83,19 +83,34 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	    focus: mentalFocusSource.get()[$scope.character.mentalAttributeFocuses[0]]
 	}
 	
-	var skillsPerColumn = 10;
+	var skillsPerColumn = 9;
 	var skills = [];
-	skillSource.get().forEach(function(skill, index, array){
-		skill.specialization = "";
-		skills.push(skill);
-	});
+	$scope.character.skills = [];
+	$scope.character.skills.push({"ordinal": 3, "rating": 1});
+	$scope.character.skills.push({"ordinal": 6, "specialization": "Pottery", "rating": 2, });
+	$scope.character.skills.push({"ordinal": 7, "rating": 3});
+	$scope.character.skills.push({"ordinal": 6, "specialization": "Painting", "rating": 4, });
+
+	var skills = skillSource.get();
 	
-	skills.forEach(function(skill, index, array) {
-		if(skill.id == 3) {
-			skill.rating = ratings[3];
+	$scope.character.skills.forEach(function(characterSkill, index, array){
+		for(var i=0;i<skills.length;i++) {
+			if(skills[i].ordinal == characterSkill.ordinal) {
+				if(!skills[i].requiresSpecialization) {
+					skills[i].rating = ratings[characterSkill.rating];
+				} else {
+					var copyOfSkill = {};
+					copyOfSkill.name = skills[i].name;
+					copyOfSkill.ordinal = skills[i].ordinal;
+					copyOfSkill.requiresSpecialization = true;
+					copyOfSkill.rating = ratings[characterSkill.rating];
+					copyOfSkill.specialization = characterSkill.specialization;
+					skills.splice(i, 0, copyOfSkill);
+				}
+				break;
+			}
 		}
 	});
-	
 	$scope.skillGroups = chunk(skills, skillsPerColumn);
 	
 	//----------------------------------------------
