@@ -15,6 +15,25 @@ function chunk(arr, size) {
 	return newArr;
 }
 
+function copyTrait(traitToCopy) {
+	return {
+		"name": traitToCopy.name,
+		"ordinal": traitToCopy.ordinal,
+		"rating": traitToCopy.rating,
+		"requiresSpecialization": traitToCopy.requiresSpecialization,
+		"specialization": traitToCopy.specialization
+	};
+}
+
+function displaySkillsInGroups(scope) {
+	var numberOfColumns = 3;
+	var skillsToDisplay = scope.skills.slice(0);
+	while(skillsToDisplay.length % numberOfColumns != 0) {
+		skillsToDisplay.push({});
+	}
+	scope.skillGroups = chunk(skillsToDisplay, skillsToDisplay.length / numberOfColumns);
+}
+
 angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills']).
 controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource',
                        function($scope, $rootScope, redirect, characterRepository, clanSource, bloodlineSource, disciplineSource, physicalFocusSource, socialFocusSource, mentalFocusSource, skillSource) {
@@ -83,33 +102,24 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	    focus: mentalFocusSource.get()[$scope.character.mentalAttributeFocuses[0]]
 	}
 	
-	var skills = [];
-	$scope.character.skills = [];
-	$scope.character.skills.push({"ordinal": 3, "rating": 1});
-	$scope.character.skills.push({"ordinal": 6, "specialization": "Pottery", "rating": 2, });
-	$scope.character.skills.push({"ordinal": 7, "rating": 3});
-	$scope.character.skills.push({"ordinal": 6, "specialization": "Painting", "rating": 4, });
-
-	var skills = skillSource.get();
+	$scope.skills = [];
+	skillSource.get().forEach(function(skill, index, array) {
+		$scope.skills.push(skill);
+	});
 	
 	$scope.character.skills.forEach(function(characterSkill, index, array){
-		for(var i=0;i<skills.length;i++) {
-			if(skills[i].ordinal == characterSkill.ordinal) {
-				if(skills[i].requiresSpecialization) {
-					var copyOfSkill = JSON.parse(JSON.stringify(skills[i]));
-					copyOfSkill.specialization = characterSkill.specialization;
-					skills.splice(i, 0, copyOfSkill);
+		for(var i=0;i<$scope.skills.length;i++) {
+			if($scope.skills[i].ordinal == characterSkill.ordinal) {
+				if($scope.skills[i].requiresSpecialization) {
+					$scope.skills.splice(i, 0, copyTrait($scope.skills[i]));
+					$scope.skills[i].specialization = characterSkill.specialization;
 				}
-				skills[i].rating = ratings[characterSkill.rating];
+				$scope.skills[i].rating = ratings[characterSkill.rating];
 				break;
 			}
 		}
 	});
-	while(skills.length % 3 != 0) {
-		skills.push({});
-	}
-	var skillsPerColumn = skills.length / 3;
-	$scope.skillGroups = chunk(skills, skillsPerColumn);
+	displaySkillsInGroups($scope);
 	
 	//----------------------------------------------
 	
@@ -207,24 +217,40 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	$scope.skillChange = function(groupIndex, skillIndex) {
-		console.log("Skill change!");
-		console.log(groupIndex);
-		console.log(skillIndex);
+		var skill = $scope.skillGroups[groupIndex][skillIndex];
+		
+		if(skill.rating.value == 0) {
+			$scope.removeSkill(skill);
+		} else {
+			$scope.setSkill(skill);
+		}
+		
+		displaySkillsInGroups($scope);
 	}
 	
-	$scope.addSkill = function(index) {
-		$scope.setSkill(index);
-	}
-	
-	$scope.setSkill = function(index) {
-		if($scope.skillOptions[index].skill) {
-			$scope.requests.push({"trait": 13, "value": $scope.skillOptions[index].skill.id, "rating": $scope.skillOptions[index].skill.rating, "specialization": $scope.skillOptions[index].skill.specialization});
+	$scope.setSkill = function(skill) {
+		$scope.requests.push({"trait": 13, "value": skill.ordinal, "rating": skill.rating.value, "specialization": skill.specialization});
+		if(skill.specialization) {
+			for(var i=0;i<$scope.skills.length;i++) {
+				if($scope.skills[i].ordinal == skill.ordinal && $scope.skills[i].specialization == skill.specialization) {
+					$scope.skills.splice(i+1, 0, copyTrait(skill));
+					$scope.skills[i+1].rating = "";
+					$scope.skills[i+1].specialization = "";
+					break;
+				}
+			}
 		}
 	}
 	
-	$scope.removeSkill = function(index) {
-		if($scope.skillOptions[index].skill) {
-			$scope.requests.push({"trait": 14, "value": $scope.characterSkills[index].skill.id, "rating": $scope.characterSkills[index].skill.rating, "specialization": $scope.characterSkills[index].skill.specialization});
+	$scope.removeSkill = function(skill) {
+		$scope.requests.push({"trait": 14, "value": skill.ordinal, "specialization": skill.specialization});
+		if(skill.specialization) {
+			for(var i=0;i<$scope.skills.length;i++) {
+				if($scope.skills[i].ordinal == skill.ordinal && $scope.skills[i].specialization == skill.specialization) {
+					$scope.skills.splice(i, 1);
+					break;
+				}
+			}
 		}
 	}
 	

@@ -13,13 +13,7 @@ public class RawTraitChange {
 	public String specialization;
 	
 	public static Function<RawTraitChange, TraitChange<?>> toTraitChangeUsing(final TraitChangeFactory traitChangeFactory) {
-		return (RawTraitChange t) -> {
-			if(t.rating == null)
-				return TraitChanges.values()[t.trait].using(traitChangeFactory, t.value);
-			else {
-				return TraitChanges.values()[t.trait].using(traitChangeFactory, t.value, t.rating, t.specialization);
-			}
-		};
+		return (RawTraitChange t) -> TraitChanges.values()[t.trait].using(traitChangeFactory, t);
 	}
 	
 }

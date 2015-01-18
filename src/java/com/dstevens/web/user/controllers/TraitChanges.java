@@ -1,6 +1,6 @@
 package com.dstevens.web.user.controllers;
 
-import java.util.Set;
+import java.util.Optional;
 
 import com.dstevens.characters.clans.Bloodline;
 import com.dstevens.characters.clans.Clan;
@@ -20,124 +20,111 @@ public enum TraitChanges {
 	// 0
 	CLAN {
 		@Override
-		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal) {
-			return traitChangeFactory.clan(Clan.values()[ordinal]);
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.clan(Clan.values()[trait.value]);
 		}
 	},
 	// 1
 	BLOODLINE {
 		@Override
-		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal) {
-			return traitChangeFactory.bloodline(Bloodline.values()[ordinal]);
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.bloodline(Bloodline.values()[trait.value]);
 		}
 	},
 	// 2
 	IN_CLAN_DISCIPLINE {
 		@Override
-		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal) {
-			return traitChangeFactory.inClanPower(Discipline.values()[ordinal]);
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.inClanPower(Discipline.values()[trait.value]);
 		}
 	},
 	// 3
 	REMOVE_IN_CLAN_DISCIPLINE {
 		@Override
-		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal) {
-			return traitChangeFactory.inClanPower(Discipline.values()[ordinal]).remove();
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.inClanPower(Discipline.values()[trait.value]).remove();
 		}
 	},
 	// 4
 	SET_PHYSICAL_ATTRIBUTE {
 		@Override
-		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal) {
-			return traitChangeFactory.attribute(Attribute.PHYSICAL, ordinal);
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.attribute(Attribute.PHYSICAL, trait.value);
 		}
 	},
 	// 5
 	SET_SOCIAL_ATTRIBUTE {
 		@Override
-		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal) {
-			return traitChangeFactory.attribute(Attribute.SOCIAL, ordinal);
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.attribute(Attribute.SOCIAL, trait.value);
 		}
 	},
 	// 6
 	SET_MENTAL_ATTRIBUTE {
 		@Override
-		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal) {
-			return traitChangeFactory.attribute(Attribute.MENTAL, ordinal);
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.attribute(Attribute.MENTAL, trait.value);
 		}
 	},
 	// 7
 	WITH_PHYSICAL_ATTRIBUTE_FOCUS {
 		@Override
-		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal) {
-			return traitChangeFactory.focus(PhysicalAttributeFocus.values()[ordinal]);
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.focus(PhysicalAttributeFocus.values()[trait.value]);
 		}
 	},
 	// 8
 	WITH_SOCIAL_ATTRIBUTE_FOCUS {
 		@Override
-		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal) {
-			return traitChangeFactory.focus(SocialAttributeFocus.values()[ordinal]);
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.focus(SocialAttributeFocus.values()[trait.value]);
 		}
 	},
 	// 9
 	WITH_MENTAL_ATTRIBUTE_FOCUS {
 		@Override
-		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal) {
-			return traitChangeFactory.focus(MentalAttributeFocus.values()[ordinal]);
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.focus(MentalAttributeFocus.values()[trait.value]);
 		}
 	},
 	// 10
 	WITHOUT_PHYSICAL_ATTRIBUTE_FOCUS {
 		@Override
-		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal) {
-			return traitChangeFactory.focus(PhysicalAttributeFocus.values()[ordinal]).remove();
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.focus(PhysicalAttributeFocus.values()[trait.value]).remove();
 		}
 	},
 	// 11
 	WITHOUT_SOCIAL_ATTRIBUTE_FOCUS {
 		@Override
-		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal) {
-			return traitChangeFactory.focus(SocialAttributeFocus.values()[ordinal]).remove();
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.focus(SocialAttributeFocus.values()[trait.value]).remove();
 		}
 	},
 	// 12
 	WITHOUT_MENTAL_ATTRIBUTE_FOCUS {
 		@Override
-		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal) {
-			return traitChangeFactory.focus(MentalAttributeFocus.values()[ordinal]).remove();
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.focus(MentalAttributeFocus.values()[trait.value]).remove();
 		}
 	},
 	// 13
 	WITH_SKILL {
 		@Override
-		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal, int rating, String specialization) {
-			return traitChangeFactory.skill(Skill.values()[ordinal], rating, specialization, set());
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.skill(Skill.values()[trait.value], Optional.ofNullable(trait.rating).orElse(0), trait.specialization, set());
 		}
 	},
 	// 14
 	REMOVE_SKILL {
 		@Override
-		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal, int rating, String specialization) {
-			return traitChangeFactory.skill(Skill.values()[ordinal], rating, specialization, set()).remove();
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			int value = trait.value;
+			return traitChangeFactory.skill(Skill.values()[value], Optional.ofNullable(trait.rating).orElse(0), trait.specialization, set()).remove();
 		}
 	},
 	;
 	
-	public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal) {
-		return using(traitChangeFactory, ordinal, -1, null, null);
-	}
-	public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal, int rating) {
-		return using(traitChangeFactory, ordinal, rating, null, null);
-	}
-	public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal, int rating, String specialization) {
-		return using(traitChangeFactory, ordinal, rating, specialization, null);
-	}
-	public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal, int rating, Set<String> focuses) {
-		return using(traitChangeFactory, ordinal, rating, null, focuses);
-	}
-	public TraitChange<?> using(TraitChangeFactory traitChangeFactory, int ordinal, int rating, String specialization, Set<String> focuses) {
-		throw new IllegalStateException("Not implemented for " + this);
-	}
+	public abstract TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait);
 	
 }
