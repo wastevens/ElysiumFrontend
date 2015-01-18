@@ -206,6 +206,12 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		}
 	}
 	
+	$scope.skillChange = function(groupIndex, skillIndex) {
+		console.log("Skill change!");
+		console.log(groupIndex);
+		console.log(skillIndex);
+	}
+	
 	$scope.addSkill = function(index) {
 		$scope.setSkill(index);
 	}
