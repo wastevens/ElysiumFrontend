@@ -7,6 +7,7 @@
 <script src="/js/sources/clans.js"></script>
 <script src="/js/sources/disciplines.js"></script>
 <script src="/js/sources/skills.js"></script>
+<script src="/js/sources/backgrounds.js"></script>
 <script src="/js/sources/settings.js"></script>
 <script src="/js/filters/setting.js"></script>
 <script src="/js/services/redirection.js"></script>

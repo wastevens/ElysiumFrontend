@@ -34,9 +34,9 @@ function displaySkillsInGroups(scope) {
 	scope.skillGroups = chunk(skillsToDisplay, skillsToDisplay.length / numberOfColumns);
 }
 
-angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills']).
-controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource',
-                       function($scope, $rootScope, redirect, characterRepository, clanSource, bloodlineSource, disciplineSource, physicalFocusSource, socialFocusSource, mentalFocusSource, skillSource) {
+angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds']).
+controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 
+                       function($scope, $rootScope, redirect, characterRepository, clanSource, bloodlineSource, disciplineSource, physicalFocusSource, socialFocusSource, mentalFocusSource, skillSource, backgroundSource) {
 	//--------------------------------------------
 	// Setup
 	//--------------------------------------------
@@ -120,6 +120,24 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		}
 	});
 	displaySkillsInGroups($scope);
+	
+	$scope.backgrounds = [];
+	backgroundSource.get().forEach(function(background, index, array) {
+		$scope.backgrounds.push(background);
+	});
+	
+	$scope.character.backgrounds.forEach(function(characterBackground, index, array){
+		for(var i=0;i<$scope.skills.length;i++) {
+			if($scope.backgrounds[i].ordinal == characterBackground.ordinal) {
+				if($scope.backgrounds[i].requiresSpecialization) {
+					$scope.backgrounds.splice(i, 0, copyTrait($scope.backgrounds[i]));
+					$scope.backgrounds[i].specialization = characterBackground.specialization;
+				}
+				$scope.backgrounds[i].rating = ratings[characterBackground.rating];
+				break;
+			}
+		}
+	});
 	
 	//----------------------------------------------
 	
@@ -254,6 +272,42 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		}
 	}
 	
+	$scope.backgroundChange = function(backgroundIndex) {
+		var background = $scope.backgrounds[backgroundIndex];
+		
+		if(background.rating.value == 0) {
+			$scope.removeBackground(background);
+		} else {
+			$scope.setBackground(background);
+		}
+	}
+	
+	$scope.setBackground = function(background) {
+		$scope.requests.push({"trait": 15, "value": background.ordinal, "rating": background.rating.value, "specialization": background.specialization});
+		if(background.specialization) {
+			for(var i=0;i<$scope.backgrounds.length;i++) {
+				if($scope.backgrounds[i].ordinal == background.ordinal && $scope.backgrounds[i].specialization == background.specialization) {
+					$scope.backgrounds.splice(i+1, 0, copyTrait(background));
+					$scope.backgrounds[i+1].rating = "";
+					$scope.backgrounds[i+1].specialization = "";
+					break;
+				}
+			}
+		}
+	}
+	
+	$scope.removeBackground = function(background) {
+		$scope.requests.push({"trait": 16, "value": background.ordinal, "specialization": background.specialization});
+		if(background.specialization) {
+			for(var i=0;i<$scope.backgrounds.length;i++) {
+				if($scope.backgrounds[i].ordinal == background.ordinal && $scope.backgrounds[i].specialization == background.specialization) {
+					$scope.backgrounds.splice(i, 1);
+					break;
+				}
+			}
+		}
+	}
+	
 	$scope.submit = function(csrfHeader, csrfToken) {
 		characterRepository.addRequestsToCharacter($scope.character.id, $scope.requests, csrfHeader, csrfToken).
 			success(function(data, status, headers, config) {redirect.toUrl('/user/page/characters')}).
@@ -333,6 +387,19 @@ directive('selectSkill', [function() {
 		      scope.ratings = ratings;
 	    },
 		templateUrl: '/js/user/character/selectSkill.html'
+	};
+}]).
+directive('selectBackground', [function() {
+	return {
+		restrict: 'E',
+		scope: {
+			backgrounds: '=',
+			change: '&change'
+		},
+		link: function (scope) {
+		      scope.ratings = ratings;
+	    },
+		templateUrl: '/js/user/character/selectBackground.html'
 	};
 }]);
 

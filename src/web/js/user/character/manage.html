@@ -1,7 +1,7 @@
 <form ng-submit="submit(csrf.header, csrf.token)" ng-controller="manageCharacter">
 Name: {{character.name}}
 <table>
-	<tr><td colspan=5><table>
+	<tr><td colspan=6><table>
 		<tr>
 			<td>Clan</td>
 			<td ng-show="bloodlines.list.length > 1">Bloodline</td>
@@ -11,15 +11,15 @@ Name: {{character.name}}
 		</tr>
 	</table></td></tr>
 	
-	<tr><td colspan=5 ng-show="disciplineOptions.length > 1">In Clan Disciplines</td></tr>
-	<tr><td coslpan=5>
+	<tr><td colspan=6 ng-show="disciplineOptions.length > 1">In Clan Disciplines</td></tr>
+	<tr><td coslpan=6>
 		<table><tr>
 			<td ng-repeat="disciplines in disciplineOptions">
 				<select-in-clan-discipline disciplines="disciplines" change="disciplineChange($index)"></select-in-clan-discipline>
 			</td>
 		</tr></table>
 	
-	<tr><td colspan=5><table>
+	<tr><td colspan=6><table>
 		<tr>
 			<td>Physical</td>
 			<td>Social</td>
@@ -35,14 +35,20 @@ Name: {{character.name}}
 		</tr>
 	</table></td></tr>
 	
-	<tr><td colspan=5><table><tr>
+	<tr><td colspan=6><table><tr>
 	<td>
 	<select-skill skillgroups="skillGroups" change="skillChange(groupIndex, skillIndex)"></select-skill>
 	</td>
 	</tr></table>
 	</td></tr>
 	
-	<tr><td colspan='2'><input name="submit" type="submit" value="committ" /></td></tr>
+	<tr><td colspan=2><table><tr>
+	<td>
+	<select-background backgrounds="backgrounds" change="backgroundChange(backgroundIndex)"></select-background>
+	</td>
+	</tr></table>
+	
+	<tr><td colspan=2><input name="submit" type="submit" value="committ" /></td></tr>
 </table>
 {{character}}
 </form>

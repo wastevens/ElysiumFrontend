@@ -8,6 +8,7 @@ import com.dstevens.characters.traits.attributes.Attribute;
 import com.dstevens.characters.traits.attributes.focuses.MentalAttributeFocus;
 import com.dstevens.characters.traits.attributes.focuses.PhysicalAttributeFocus;
 import com.dstevens.characters.traits.attributes.focuses.SocialAttributeFocus;
+import com.dstevens.characters.traits.backgrounds.Background;
 import com.dstevens.characters.traits.changes.TraitChange;
 import com.dstevens.characters.traits.changes.TraitChangeFactory;
 import com.dstevens.characters.traits.powers.disciplines.Discipline;
@@ -121,6 +122,21 @@ public enum TraitChanges {
 		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			int value = trait.value;
 			return traitChangeFactory.skill(Skill.values()[value], Optional.ofNullable(trait.rating).orElse(0), trait.specialization, set()).remove();
+		}
+	},
+	// 13
+	WITH_BACKGROUND {
+		@Override
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.background(Background.values()[trait.value], Optional.ofNullable(trait.rating).orElse(0), trait.specialization, set());
+		}
+	},
+	// 14
+	REMOVE_BACKGROUND {
+		@Override
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			int value = trait.value;
+			return traitChangeFactory.background(Background.values()[value], Optional.ofNullable(trait.rating).orElse(0), trait.specialization, set()).remove();
 		}
 	},
 	;
