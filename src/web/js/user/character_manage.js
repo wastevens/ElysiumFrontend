@@ -34,6 +34,39 @@ function displaySkillsInGroups(scope) {
 	scope.skillGroups = chunk(skillsToDisplay, skillsToDisplay.length / numberOfColumns);
 }
 
+function _initializeTraits(scope, traitName, traitSource) {
+	scope[traitName] = [];
+	traitSource.get().forEach(function(trait, index, array) {
+		scope[traitName].push(trait);
+	});
+}
+
+function _initializeCharacterTraits(scope, traitName) {
+	var traits = scope[traitName];
+	scope.character[traitName].forEach(function(characterTrait, index, array){
+		for(var i=0;i<traits.length;i++) {
+			if(traits[i].ordinal == characterTrait.ordinal) {
+				if(traits[i].requiresSpecialization) {
+					traits.splice(i, 0, copyTrait(traits[i]));
+					traits[i].specialization = characterTrait.specialization;
+				}
+				traits[i].rating = ratings[characterTrait.rating];
+				break;
+			}
+		}
+	});
+}
+
+function initializeSkills(scope, skillSource) {
+	_initializeTraits(scope, 'skills', skillSource);
+	_initializeCharacterTraits(scope, 'skills');
+}
+
+function initializeBackgrounds(scope, skillSource) {
+	_initializeTraits(scope, 'backgrounds', skillSource);
+	_initializeCharacterTraits(scope, 'backgrounds');
+}
+
 angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds']).
 controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 
                        function($scope, $rootScope, redirect, characterRepository, clanSource, bloodlineSource, disciplineSource, physicalFocusSource, socialFocusSource, mentalFocusSource, skillSource, backgroundSource) {
@@ -102,42 +135,10 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	    focus: mentalFocusSource.get()[$scope.character.mentalAttributeFocuses[0]]
 	}
 	
-	$scope.skills = [];
-	skillSource.get().forEach(function(skill, index, array) {
-		$scope.skills.push(skill);
-	});
-	
-	$scope.character.skills.forEach(function(characterSkill, index, array){
-		for(var i=0;i<$scope.skills.length;i++) {
-			if($scope.skills[i].ordinal == characterSkill.ordinal) {
-				if($scope.skills[i].requiresSpecialization) {
-					$scope.skills.splice(i, 0, copyTrait($scope.skills[i]));
-					$scope.skills[i].specialization = characterSkill.specialization;
-				}
-				$scope.skills[i].rating = ratings[characterSkill.rating];
-				break;
-			}
-		}
-	});
+	initializeSkills($scope, skillSource);
 	displaySkillsInGroups($scope);
 	
-	$scope.backgrounds = [];
-	backgroundSource.get().forEach(function(background, index, array) {
-		$scope.backgrounds.push(background);
-	});
-	
-	$scope.character.backgrounds.forEach(function(characterBackground, index, array){
-		for(var i=0;i<$scope.skills.length;i++) {
-			if($scope.backgrounds[i].ordinal == characterBackground.ordinal) {
-				if($scope.backgrounds[i].requiresSpecialization) {
-					$scope.backgrounds.splice(i, 0, copyTrait($scope.backgrounds[i]));
-					$scope.backgrounds[i].specialization = characterBackground.specialization;
-				}
-				$scope.backgrounds[i].rating = ratings[characterBackground.rating];
-				break;
-			}
-		}
-	});
+	initializeBackgrounds($scope, backgroundSource);
 	
 	//----------------------------------------------
 	
