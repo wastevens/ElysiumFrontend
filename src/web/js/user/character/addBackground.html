@@ -1,0 +1,10 @@
+<table><tr><td>
+	<select ng-model='backgrounds.newBackground' ng-options="background.name for background in backgrounds.backgrounds">
+		<option value="">-- Choose Background --</option>
+	</select>
+	<input type=text ng-show="backgrounds.newBackground.requiresSpecialization" size="9" ng-model="backgrounds.newBackground.specialization">
+</td><td>
+	<select ng-model="backgrounds.newBackground.rating" ng-change="change()" ng-options="rating.display for rating in ratings track by rating.value">
+		<option value="">-- Rating --</option>
+	</select>
+</td></tr></table>

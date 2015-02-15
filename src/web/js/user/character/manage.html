@@ -42,11 +42,14 @@ Name: {{character.name}}
 	</tr></table>
 	</td></tr>
 	
-	<tr><td colspan=2><table><tr>
-	<td>
-	<select-background backgrounds="backgrounds" change="backgroundChange(backgroundIndex)"></select-background>
-	</td>
-	</tr></table>
+	<tr><td colspan=2><table>
+	<tr><td>
+	<select-background backgrounds="characterBackgrounds" change="backgroundChange(backgroundIndex)"></select-background>
+	</td></tr>
+	<tr><td>
+	<add-background backgrounds="backgrounds" change="addBackground()"></select-background>
+	</td></tr>
+	</table>
 	
 	<tr><td colspan=2><input name="submit" type="submit" value="committ" /></td></tr>
 </table>

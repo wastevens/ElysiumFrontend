@@ -62,9 +62,19 @@ function initializeSkills(scope, skillSource) {
 	_initializeCharacterTraits(scope, 'skills');
 }
 
-function initializeBackgrounds(scope, skillSource) {
-	_initializeTraits(scope, 'backgrounds', skillSource);
-	_initializeCharacterTraits(scope, 'backgrounds');
+function initializeBackgrounds(scope, backgroundSource) {
+	scope.backgrounds = {
+		backgrounds: backgroundSource.get()
+	}
+	
+	scope.characterBackgrounds = [];
+	
+	scope.character['backgrounds'].forEach(function(characterTrait, index, array){
+		var characterBackground = copyTrait(characterTrait);
+		characterBackground.name = backgroundSource.get()[characterTrait.ordinal].name;
+		characterBackground.rating = ratings[characterTrait.rating];
+		scope.characterBackgrounds.push(characterBackground);
+	});
 }
 
 angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds']).
@@ -273,10 +283,21 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		}
 	}
 	
+	$scope.addBackground = function() {
+		var background = $scope.backgrounds.newBackground;
+		
+		if(background.rating.value > 0) {
+			$scope.characterBackgrounds.push(background);
+			$scope.setBackground(background);
+			$scope.backgrounds.newBackground = null;
+		}
+	}
+	
 	$scope.backgroundChange = function(backgroundIndex) {
-		var background = $scope.backgrounds[backgroundIndex];
+		var background = $scope.characterBackgrounds[backgroundIndex];
 		
 		if(background.rating.value == 0) {
+			$scope.characterBackgrounds.splice(backgroundIndex, 1);
 			$scope.removeBackground(background);
 		} else {
 			$scope.setBackground(background);
@@ -285,28 +306,10 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	
 	$scope.setBackground = function(background) {
 		$scope.requests.push({"trait": 15, "value": background.ordinal, "rating": background.rating.value, "specialization": background.specialization});
-		if(background.specialization) {
-			for(var i=0;i<$scope.backgrounds.length;i++) {
-				if($scope.backgrounds[i].ordinal == background.ordinal && $scope.backgrounds[i].specialization == background.specialization) {
-					$scope.backgrounds.splice(i+1, 0, copyTrait(background));
-					$scope.backgrounds[i+1].rating = "";
-					$scope.backgrounds[i+1].specialization = "";
-					break;
-				}
-			}
-		}
 	}
 	
 	$scope.removeBackground = function(background) {
 		$scope.requests.push({"trait": 16, "value": background.ordinal, "specialization": background.specialization});
-		if(background.specialization) {
-			for(var i=0;i<$scope.backgrounds.length;i++) {
-				if($scope.backgrounds[i].ordinal == background.ordinal && $scope.backgrounds[i].specialization == background.specialization) {
-					$scope.backgrounds.splice(i, 1);
-					break;
-				}
-			}
-		}
 	}
 	
 	$scope.submit = function(csrfHeader, csrfToken) {
@@ -388,6 +391,19 @@ directive('selectSkill', [function() {
 		      scope.ratings = ratings;
 	    },
 		templateUrl: '/js/user/character/selectSkill.html'
+	};
+}]).
+directive('addBackground', [function() {
+	return {
+		restrict: 'E',
+		scope: {
+			backgrounds: '=',
+			change: '&change'
+		},
+		link: function (scope) {
+		      scope.ratings = ratings;
+	    },
+		templateUrl: '/js/user/character/addBackground.html'
 	};
 }]).
 directive('selectBackground', [function() {
