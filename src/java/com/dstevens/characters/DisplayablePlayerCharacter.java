@@ -26,17 +26,18 @@ public class DisplayablePlayerCharacter {
 	public final Set<Integer> mentalAttributeFocuses;
 	public final Set<DisplayableCharacterSkill> skills;
 	public final Set<DisplayableCharacterBackground> backgrounds;
+	public final Set<DisplayableCharacterDiscipline> disciplines;
 	
 	//Jackson only
     @Deprecated
 	private DisplayablePlayerCharacter() {
-		this(null, null, -1, -1, -1, null, null, null, 0, 0, 0, null, null, null, null, null);
+		this(null, null, -1, -1, -1, null, null, null, 0, 0, 0, null, null, null, null, null, null);
 	}
     
     private DisplayablePlayerCharacter(String id, String name, int setting, int status, int approval, Integer clan, Integer bloodline, List<Integer> inClanDisciplines,
     		                           int physicalAttribute, int socialAttribute, int mentalAttribute,
     		                           Set<Integer> physicalAttributeFocuses, Set<Integer> socialAttributeFocuses, Set<Integer> mentalAttributeFocuses,
-    		                           Set<DisplayableCharacterSkill> skills, Set<DisplayableCharacterBackground> backgrounds) {
+    		                           Set<DisplayableCharacterSkill> skills, Set<DisplayableCharacterBackground> backgrounds, Set<DisplayableCharacterDiscipline> disciplines) {
 		this.id = id;
 		this.name = name;
 		this.setting = setting;
@@ -53,6 +54,7 @@ public class DisplayablePlayerCharacter {
 		this.mentalAttributeFocuses = mentalAttributeFocuses;
 		this.skills = skills;
 		this.backgrounds = backgrounds;
+		this.disciplines = disciplines;
     }
 	
 	public static Function<PlayerCharacter, DisplayablePlayerCharacter> fromCharacter() {
@@ -70,7 +72,8 @@ public class DisplayablePlayerCharacter {
 				                                                     t.getSocialAttributeFocuses().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toSet()),
 				                                                     t.getMentalAttributeFocuses().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toSet()),
 				                                                     t.getSkills().stream().map(DisplayableCharacterSkill.fromSkill()).collect(Collectors.toSet()),
-				                                                     t.getBackgrounds().stream().map(DisplayableCharacterBackground.fromBackground()).collect(Collectors.toSet()));
+				                                                     t.getBackgrounds().stream().map(DisplayableCharacterBackground.fromBackground()).collect(Collectors.toSet()),
+				                                                     t.getDisciplines().stream().map(DisplayableCharacterDiscipline.fromDiscipline()).collect(Collectors.toSet()));
 	}
 	
 	public String serialized() {

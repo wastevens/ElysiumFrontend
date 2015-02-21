@@ -124,19 +124,32 @@ public enum TraitChanges {
 			return traitChangeFactory.skill(Skill.values()[value], Optional.ofNullable(trait.rating).orElse(0), trait.specialization, set()).remove();
 		}
 	},
-	// 13
+	// 15
 	WITH_BACKGROUND {
 		@Override
 		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.background(Background.values()[trait.value], Optional.ofNullable(trait.rating).orElse(0), trait.specialization, set());
 		}
 	},
-	// 14
+	// 16
 	REMOVE_BACKGROUND {
 		@Override
 		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
-			int value = trait.value;
-			return traitChangeFactory.background(Background.values()[value], Optional.ofNullable(trait.rating).orElse(0), trait.specialization, set()).remove();
+			return traitChangeFactory.background(Background.values()[trait.value], Optional.ofNullable(trait.rating).orElse(0), trait.specialization, set()).remove();
+		}
+	},
+	// 17
+	WITH_DISCIPLINE {
+		@Override
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.power(Discipline.values()[trait.value], Optional.ofNullable(trait.rating).orElse(0));
+		}
+	},
+	// 18
+	REMOVE_DISCIPLINE {
+		@Override
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.power(Discipline.values()[trait.value], Optional.ofNullable(trait.rating).orElse(0)).remove();
 		}
 	},
 	;

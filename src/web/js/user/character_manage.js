@@ -77,6 +77,21 @@ function initializeBackgrounds(scope, backgroundSource) {
 	});
 }
 
+function initializeDisciplines(scope, disciplineSource) {
+	scope.disciplines = {
+		disciplines: disciplineSource.get()
+	}
+	
+	scope.characterDisciplines = [];
+	
+	scope.character['disciplines'].forEach(function(characterTrait, index, array){
+		var characterDiscipline = copyTrait(characterTrait);
+		characterDiscipline.name = disciplineSource.get()[characterTrait.ordinal].name;
+		characterDiscipline.rating = ratings[characterTrait.rating];
+		scope.characterDisciplines.push(characterDiscipline);
+	});
+}
+
 angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds']).
 controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 
                        function($scope, $rootScope, redirect, characterRepository, clanSource, bloodlineSource, disciplineSource, physicalFocusSource, socialFocusSource, mentalFocusSource, skillSource, backgroundSource) {
@@ -149,6 +164,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	displaySkillsInGroups($scope);
 	
 	initializeBackgrounds($scope, backgroundSource);
+	initializeDisciplines($scope, disciplineSource);
 	
 	//----------------------------------------------
 	
@@ -167,7 +183,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	$scope.bloodlineChange = function() {
 		$scope.disciplineOptions.forEach(function(disciplines, index, array) {
 			if(disciplines.discipline) {
-				$scope.requests.push({"trait": 3, "value": disciplines.discipline.id});
+				$scope.requests.push({"trait": 3, "value": disciplines.discipline.ordinal});
 			}
 		});
 		
@@ -187,7 +203,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	$scope.disciplineChange = function(index) {
 		if($scope.disciplineOptions[index].discipline) {
-			$scope.requests.push({"trait": 2, "value": $scope.disciplineOptions[index].discipline.id});
+			$scope.requests.push({"trait": 2, "value": $scope.disciplineOptions[index].discipline.ordinal});
 		}
 	}
 	
@@ -312,6 +328,35 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		$scope.requests.push({"trait": 16, "value": background.ordinal, "specialization": background.specialization});
 	}
 	
+	$scope.addDiscipline = function() {
+		var discipline = $scope.disciplines.newDiscipline;
+		
+		if(discipline.rating.value > 0) {
+			$scope.characterDisciplines.push(discipline);
+			$scope.setDiscipline(discipline);
+			$scope.disciplines.newdiscipline = null;
+		}
+	}
+	
+	$scope.disciplineChange = function(disciplineIndex) {
+		var discipline = $scope.characterDisciplines[disciplineIndex];
+		
+		if(discipline.rating.value == 0) {
+			$scope.characterDisciplines.splice(disciplineIndex, 1);
+			$scope.removeDiscipline(discipline);
+		} else {
+			$scope.setDiscipline(discipline);
+		}
+	}
+	
+	$scope.setDiscipline = function(discipline) {
+		$scope.requests.push({"trait": 17, "value": discipline.ordinal, "rating": discipline.rating.value});
+	}
+	
+	$scope.removeDiscipline = function(discipline) {
+		$scope.requests.push({"trait": 18, "value": discipline.ordinal});
+	}
+	
 	$scope.submit = function(csrfHeader, csrfToken) {
 		characterRepository.addRequestsToCharacter($scope.character.id, $scope.requests, csrfHeader, csrfToken).
 			success(function(data, status, headers, config) {redirect.toUrl('/user/page/characters')}).
@@ -418,8 +463,33 @@ directive('selectBackground', [function() {
 	    },
 		templateUrl: '/js/user/character/selectBackground.html'
 	};
+}]).
+directive('addDiscipline', [function() {
+	return {
+		restrict: 'E',
+		scope: {
+			disciplines: '=',
+			change: '&change'
+		},
+		link: function (scope) {
+		      scope.ratings = ratings;
+	    },
+		templateUrl: '/js/user/character/addDiscipline.html'
+	};
+}]).
+directive('selectDiscipline', [function() {
+	return {
+		restrict: 'E',
+		scope: {
+			disciplines: '=',
+			change: '&change'
+		},
+		link: function (scope) {
+		      scope.ratings = ratings;
+	    },
+		templateUrl: '/js/user/character/selectDiscipline.html'
+	};
 }]);
-
 angular.module('user.character.manage.filters', ['filters.setting']);
 
 angular.module('user.character.manage', ['user.character.manage.filters', 'user.character.manage.controllers', 'user.character.manage.directives', 'user.character.manage.services']);

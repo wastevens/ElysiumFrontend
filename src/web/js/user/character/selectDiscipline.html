@@ -1,0 +1,8 @@
+<table><tr ng-repeat="discipline in disciplines">
+<td>{{discipline.name}}</td>
+<td>
+	<select ng-model="discipline.rating" ng-change="change({disciplineIndex: $index})" ng-options="rating.display for rating in ratings track by rating.value">
+		<option value="">-- Rating --</option>
+	</select>
+</td>
+</tr></table>
