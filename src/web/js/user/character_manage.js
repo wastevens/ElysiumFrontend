@@ -62,34 +62,26 @@ function initializeSkills(scope, skillSource) {
 	_initializeCharacterTraits(scope, 'skills');
 }
 
-function initializeBackgrounds(scope, backgroundSource) {
-	scope.backgrounds = {
-		backgrounds: backgroundSource.get()
-	}
+function _initializeCharacterOptionalTraits(scope, traitName, existingTraits, traitSource) {
+	var traits = {};
+	traits[traitName] = traitSource.get();
+	scope[traitName] = traits;
 	
-	scope.characterBackgrounds = [];
-	
-	scope.character['backgrounds'].forEach(function(characterTrait, index, array){
-		var characterBackground = copyTrait(characterTrait);
-		characterBackground.name = backgroundSource.get()[characterTrait.ordinal].name;
-		characterBackground.rating = ratings[characterTrait.rating];
-		scope.characterBackgrounds.push(characterBackground);
+	scope[existingTraits] = [];
+	scope.character[traitName].forEach(function(characterTrait, index, array) {
+		var copiedTrait = copyTrait(characterTrait);
+		copiedTrait.name = traitSource.get()[characterTrait.ordinal].name;
+		copiedTrait.rating = ratings[characterTrait.rating];
+		scope[existingTraits].push(copiedTrait);
 	});
 }
 
+function initializeBackgrounds(scope, backgroundSource) {
+	_initializeCharacterOptionalTraits(scope, 'backgrounds', 'characterBackgrounds', backgroundSource);
+}
+
 function initializeDisciplines(scope, disciplineSource) {
-	scope.disciplines = {
-		disciplines: disciplineSource.get()
-	}
-	
-	scope.characterDisciplines = [];
-	
-	scope.character['disciplines'].forEach(function(characterTrait, index, array){
-		var characterDiscipline = copyTrait(characterTrait);
-		characterDiscipline.name = disciplineSource.get()[characterTrait.ordinal].name;
-		characterDiscipline.rating = ratings[characterTrait.rating];
-		scope.characterDisciplines.push(characterDiscipline);
-	});
+	_initializeCharacterOptionalTraits(scope, 'disciplines', 'characterDisciplines', disciplineSource);
 }
 
 angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds']).
