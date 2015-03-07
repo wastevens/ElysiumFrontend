@@ -1,5 +1,5 @@
 <table><tr><td>
-	<select ng-model='disciplines.newDiscipline' ng-options="discipline.name for discipline in disciplines.disciplines">
+	<select ng-model='disciplines.newDiscipline' ng-options="discipline.name group by discipline.type for discipline in disciplines.disciplines">
 		<option value="">-- Choose Discipline --</option>
 	</select>
 </td><td>

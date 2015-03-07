@@ -2,6 +2,7 @@ angular.module('sources.disciplines', []).
 factory('disciplineSource', [function() {
 	var map = [];
 	var i = -1;
+	var types = ['Necromancy', 'Thaumaturgy'];
 	map[++i] = {"name": "Animalism", "ordinal": i};
 	map[++i] = {"name": "Auspex", "ordinal": i};
     map[++i] = {"name": "Celerity", "ordinal": i};
@@ -26,19 +27,19 @@ factory('disciplineSource', [function() {
     map[++i] = {"name": "Vicissitude", "ordinal": i};
     map[++i] = {"name": "Visceratika", "ordinal": i};
     
-    map[++i] = {"name": "Sepulchre Path", "ordinal": i};
-    map[++i] = {"name": "Bone Path", "ordinal": i};
-    map[++i] = {"name": "Ash Path", "ordinal": i};
-    map[++i] = {"name": "Mortis Path", "ordinal": i};
+    map[++i] = {"name": "Sepulchre Path", "ordinal": i, "type": types[0]};
+    map[++i] = {"name": "Bone Path", "ordinal": i, "type": types[0]};
+    map[++i] = {"name": "Ash Path", "ordinal": i, "type": types[0]};
+    map[++i] = {"name": "Mortis Path", "ordinal": i, "type": types[0]};
     
-    map[++i] = {"name": "Path of Blood", "ordinal": i};
-    map[++i] = {"name": "Path of Conjuring", "ordinal": i};
-    map[++i] = {"name": "Path of Corruption", "ordinal": i};
-    map[++i] = {"name": "Path of Elemental Mastery", "ordinal": i};
-    map[++i] = {"name": "Lure of Flames", "ordinal": i};
-    map[++i] = {"name": "Movement of the Mind", "ordinal": i};
-    map[++i] = {"name": "Path of Technomancy", "ordinal": i};
-    map[++i] = {"name": "Path of Weather Mastery", "ordinal": i};
+    map[++i] = {"name": "Path of Blood", "ordinal": i, "type": types[1]};
+    map[++i] = {"name": "Path of Conjuring", "ordinal": i, "type": types[1]};
+    map[++i] = {"name": "Path of Corruption", "ordinal": i, "type": types[1]};
+    map[++i] = {"name": "Path of Elemental Mastery", "ordinal": i, "type": types[1]};
+    map[++i] = {"name": "Lure of Flames", "ordinal": i, "type": types[1]};
+    map[++i] = {"name": "Movement of the Mind", "ordinal": i, "type": types[1]};
+    map[++i] = {"name": "Path of Technomancy", "ordinal": i, "type": types[1]};
+    map[++i] = {"name": "Path of Weather Mastery", "ordinal": i, "type": types[1]};
 			
 	return {
 		get: function() {
