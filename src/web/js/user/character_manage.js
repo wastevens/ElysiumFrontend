@@ -7,6 +7,9 @@ var ratings = [{value: 0, display: "Remove"},
                {value: 4, display: "4"},
                {value: 5, display: "5"}];
 
+var possession = [{value: 0, display: "Remove"},
+                  {value: 1, display: "Acquire"}];
+
 function chunk(arr, size) {
 	var newArr = [];
 	for (var i=0; i<arr.length; i+=size) {
@@ -84,9 +87,27 @@ function initializeDisciplines(scope, disciplineSource) {
 	_initializeCharacterOptionalTraits(scope, 'disciplines', 'characterDisciplines', disciplineSource);
 }
 
-angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds']).
-controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 
-                       function($scope, $rootScope, redirect, characterRepository, clanSource, bloodlineSource, disciplineSource, physicalFocusSource, socialFocusSource, mentalFocusSource, skillSource, backgroundSource) {
+function _initializeCharacterPossessedTraits(scope, traitName, existingTraits, traitSource) {
+	var traits = {};
+	traits[traitName] = traitSource.get();
+	scope[traitName] = traits;
+	
+	scope[existingTraits] = [];
+	scope.character[traitName].forEach(function(characterTrait, index, array) {
+		var copiedTrait = copyTrait(characterTrait);
+		copiedTrait.name = traitSource.get()[characterTrait.ordinal].name;
+		copiedTrait.possession = possession[1];
+		scope[existingTraits].push(copiedTrait);
+	});
+}
+
+function initializeTechniques(scope, techniqueSource) {
+	_initializeCharacterPossessedTraits(scope, 'techniques', 'characterTechniques', techniqueSource);
+}
+
+angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds', 'sources.techniques']).
+controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'techniqueSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 
+                       function($scope, $rootScope, redirect, characterRepository, clanSource, bloodlineSource, disciplineSource, techniqueSource, physicalFocusSource, socialFocusSource, mentalFocusSource, skillSource, backgroundSource) {
 	//--------------------------------------------
 	// Setup
 	//--------------------------------------------
@@ -157,6 +178,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	
 	initializeBackgrounds($scope, backgroundSource);
 	initializeDisciplines($scope, disciplineSource);
+	initializeTechniques($scope, techniqueSource);
 	
 	//----------------------------------------------
 	
@@ -349,6 +371,35 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		$scope.requests.push({"trait": 18, "value": discipline.ordinal});
 	}
 	
+	$scope.addTechnique = function() {
+		var technique = $scope.techniques.newTechnique;
+		
+		if(technique.possession.value > 0) {
+			$scope.characterTechniques.push(technique);
+			$scope.setTechnique(technique);
+			$scope.techniques.newTechnique = null;
+		}
+	}
+	
+	$scope.techniqueChange = function(techniqueIndex) {
+		var technique = $scope.characterTechniques[techniqueIndex];
+		
+		if(technique.possession.value == 0) {
+			$scope.characterTechniques.splice(techniqueIndex, 1);
+			$scope.removeTechnique(technique);
+		} else {
+			$scope.setTechnique(technique);
+		}
+	}
+	
+	$scope.setTechnique = function(technique) {
+		$scope.requests.push({"trait": 19, "value": technique.ordinal});
+	}
+	
+	$scope.removeTechnique = function(technique) {
+		$scope.requests.push({"trait": 20, "value": technique.ordinal});
+	}
+	
 	$scope.submit = function(csrfHeader, csrfToken) {
 		characterRepository.addRequestsToCharacter($scope.character.id, $scope.requests, csrfHeader, csrfToken).
 			success(function(data, status, headers, config) {redirect.toUrl('/user/page/characters')}).
@@ -480,6 +531,32 @@ directive('selectDiscipline', [function() {
 		      scope.ratings = ratings;
 	    },
 		templateUrl: '/js/user/character/selectDiscipline.html'
+	};
+}]).
+directive('addTechnique', [function() {
+	return {
+		restrict: 'E',
+		scope: {
+			techniques: '=',
+			change: '&change'
+		},
+		link: function (scope) {
+		      scope.possessions = possession;
+	    },
+		templateUrl: '/js/user/character/addTechnique.html'
+	};
+}]).
+directive('selectTechnique', [function() {
+	return {
+		restrict: 'E',
+		scope: {
+			techniques: '=',
+			change: '&change'
+		},
+		link: function (scope) {
+		      scope.possessions = possession;
+	    },
+		templateUrl: '/js/user/character/selectTechnique.html'
 	};
 }]);
 angular.module('user.character.manage.filters', ['filters.setting']);

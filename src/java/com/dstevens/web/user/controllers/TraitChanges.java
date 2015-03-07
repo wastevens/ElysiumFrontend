@@ -12,6 +12,7 @@ import com.dstevens.characters.traits.backgrounds.Background;
 import com.dstevens.characters.traits.changes.TraitChange;
 import com.dstevens.characters.traits.changes.TraitChangeFactory;
 import com.dstevens.characters.traits.powers.disciplines.Discipline;
+import com.dstevens.characters.traits.powers.disciplines.Technique;
 import com.dstevens.characters.traits.skills.Skill;
 
 import static com.dstevens.collections.Sets.set;
@@ -150,6 +151,20 @@ public enum TraitChanges {
 		@Override
 		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.power(Discipline.values()[trait.value], Optional.ofNullable(trait.rating).orElse(0)).remove();
+		}
+	},
+	// 19
+	WITH_TECHNIQUE {
+		@Override
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.technique(Technique.values()[trait.value]);
+		}
+	},
+	// 20
+	REMOVE_TECHNIQUE {
+		@Override
+		public TraitChange<?> using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			return traitChangeFactory.technique(Technique.values()[trait.value]).remove();
 		}
 	},
 	;

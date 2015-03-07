@@ -1,0 +1,8 @@
+<table><tr ng-repeat="technique in techniques">
+<td>{{technique.name}}</td>
+<td>
+	<select ng-model="technique.possession" ng-change="change({techniqueIndex: $index})" ng-options="possession.display for possession in possessions track by possession.value">
+		<option value="">-- Possession --</option>
+	</select>
+</td>
+</tr></table>
