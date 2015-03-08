@@ -21,7 +21,7 @@ alter table PlayerCharacter_thaumaturgicalRituals drop foreign key PlayerCharact
 alter table Skills drop foreign key PlayerCharacter_Skills_FK;
 alter table Skills_Focuses drop foreign key CharacterSkill_focuses_FK;
 alter table Status drop foreign key PlayerCharacter_Status_FK;
-alter table TraitChange_focuses drop foreign key TraitChanges_focuses_FK;
+alter table TraitChange_focuses drop foreign key TraitQualities_focuses_FK;
 alter table TraitChanges drop foreign key TraitChange_ChildTraitChange_FK;
 alter table Troupe_PlayerCharacters drop foreign key PlayerCharacters_Troupe_FK;
 alter table Troupe_PlayerCharacters drop foreign key Troupe_PlayerCharacters_FK;
@@ -86,7 +86,7 @@ create table Skills (id varchar(255) not null, rating integer, specialization va
 create table Skills_Focuses (CharacterSkill_id varchar(255) not null, focuses varchar(255));
 create table Status (id varchar(255) not null, specialization varchar(255), trait integer not null, character_id varchar(255), primary key (id));
 create table TraitChange_focuses (TraitChange_id varchar(255) not null, focuses varchar(255));
-create table TraitChanges (trait_change_type varchar(31) not null, id varchar(255) not null, cost integer, ordinal integer, rating integer, remove bit, specialization varchar(255), child_id varchar(255), primary key (id));
+create table TraitChanges (id varchar(255) not null, cost integer, rating integer, specialization varchar(255), remove bit, traitOrdinal integer, traitTypeOrdinal integer, child_id varchar(255), primary key (id));
 create table Troupe (id varchar(255) not null, deleted_at datetime, name varchar(255), setting integer, primary key (id));
 create table Troupe_PlayerCharacters (troupe_id varchar(255) not null, playerCharacter_id varchar(255) not null, primary key (troupe_id, playerCharacter_id));
 create table Troupe_StorytellerUsers (troupe_id varchar(255) not null, user_id varchar(255) not null, primary key (troupe_id, user_id));
@@ -120,7 +120,7 @@ alter table PlayerCharacter_thaumaturgicalRituals add constraint PlayerCharacter
 alter table Skills add constraint PlayerCharacter_Skills_FK foreign key (character_id) references PlayerCharacter (id);
 alter table Skills_Focuses add constraint CharacterSkill_focuses_FK foreign key (CharacterSkill_id) references Skills (id);
 alter table Status add constraint PlayerCharacter_Status_FK foreign key (character_id) references PlayerCharacter (id);
-alter table TraitChange_focuses add constraint TraitChanges_focuses_FK foreign key (TraitChange_id) references TraitChanges (id);
+alter table TraitChange_focuses add constraint TraitQualities_focuses_FK foreign key (TraitChange_id) references TraitChanges (id);
 alter table TraitChanges add constraint TraitChange_ChildTraitChange_FK foreign key (child_id) references TraitChanges (id);
 alter table Troupe_PlayerCharacters add constraint PlayerCharacters_Troupe_FK foreign key (playerCharacter_id) references PlayerCharacter (id);
 alter table Troupe_PlayerCharacters add constraint Troupe_PlayerCharacters_FK foreign key (troupe_id) references Troupe (id);

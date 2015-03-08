@@ -54,7 +54,7 @@ public class CharacterController {
 			throw new UnknownCharacterException("Could not find character with id " + id);
 		}
 		//Push this to PlayerCharacter; get the character with all current requests applied
-		character.getRequestedTraitChanges().forEach((TraitChange<?> t) -> character.apply(t));
+		character.getRequestedTraitChanges().forEach((TraitChange t) -> character.apply(t));
 		ModelAndView modelAndView = new ModelAndView("/user/character/manage");
 		modelAndView.addObject("character", DisplayablePlayerCharacter.fromCharacter().apply(character).serialized());
 		return modelAndView;
@@ -67,8 +67,8 @@ public class CharacterController {
 			throw new UnknownCharacterException("Could not find character with id " + id);
 		}
 		//Introduce #request that takes a list.  No reason to do this single file.
-		List<TraitChange<?>> traitChanges = requests.stream().map(RawTraitChange.toTraitChangeUsing(traitChangeFactoryProvider.giveTraits())).collect(Collectors.toList());
-		for (TraitChange<?> traitChange : traitChanges) {
+		List<TraitChange> traitChanges = requests.stream().map(RawTraitChange.toTraitChangeUsing(traitChangeFactoryProvider.giveTraits())).collect(Collectors.toList());
+		for (TraitChange traitChange : traitChanges) {
 			character = character.request(traitChange);
 		}
 		playerCharacterService.save(character);

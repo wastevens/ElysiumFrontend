@@ -208,14 +208,14 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 				$scope.disciplineOptions[index].discipline = null;
 				if(disciplines.length == 1) {
 					$scope.disciplineOptions[index].discipline = disciplines[0];
-					$scope.disciplineChange(index);
+					$scope.inClanDisciplineChange(index);
 				}
 			});
 		} else {
 			$scope.disciplineOptions = [];
 		}
 	}
-	$scope.disciplineChange = function(index) {
+	$scope.inClanDisciplineChange = function(index) {
 		if($scope.disciplineOptions[index].discipline) {
 			$scope.requests.push({"trait": 2, "value": $scope.disciplineOptions[index].discipline.ordinal});
 		}
