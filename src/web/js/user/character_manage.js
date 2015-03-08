@@ -184,7 +184,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	
 	$scope.clanChange = function() {
 		if($scope.clans.clan) {
-			$scope.requests.push({"trait": 0, "value": $scope.clans.clan.id});
+			$scope.requests.push({"traitType": 0, "trait": 0, "value": $scope.clans.clan.id});
 			$scope.bloodlines.list = $scope.clans.clan.bloodlines;
 			$scope.bloodlines.bloodline = null;
 			if($scope.bloodlines.list.length == 1) {
@@ -197,12 +197,12 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	$scope.bloodlineChange = function() {
 		$scope.disciplineOptions.forEach(function(disciplines, index, array) {
 			if(disciplines.discipline) {
-				$scope.requests.push({"trait": 3, "value": disciplines.discipline.ordinal});
+				$scope.requests.push({"traitType": 0, "trait": 3, "value": disciplines.discipline.ordinal});
 			}
 		});
 		
 		if($scope.bloodlines.bloodline) {
-			$scope.requests.push({"trait": 1, "value": $scope.bloodlines.bloodline.id});
+			$scope.requests.push({"traitType": 0, "trait": 1, "value": $scope.bloodlines.bloodline.id});
 			$scope.disciplineOptions = $scope.bloodlines.bloodline.disciplines;
 			$scope.disciplineOptions.forEach(function(disciplines, index, array) {
 				$scope.disciplineOptions[index].discipline = null;
@@ -217,61 +217,61 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	$scope.inClanDisciplineChange = function(index) {
 		if($scope.disciplineOptions[index].discipline) {
-			$scope.requests.push({"trait": 2, "value": $scope.disciplineOptions[index].discipline.ordinal});
+			$scope.requests.push({"traitType": 0, "trait": 2, "value": $scope.disciplineOptions[index].discipline.ordinal});
 		}
 	}
 	
 	$scope.physicalChange = function() {
 		if($scope.physical.priority.value) {
-			$scope.requests.push({"trait": 4, "value": $scope.physical.priority.value});
+			$scope.requests.push({"traitType": 0, "trait": 4, "value": $scope.physical.priority.value});
 		}
 	}
 	
 	$scope.socialChange = function() {
 		if($scope.social.priority.value) {
-			$scope.requests.push({"trait": 5, "value": $scope.social.priority.value});
+			$scope.requests.push({"traitType": 0, "trait": 5, "value": $scope.social.priority.value});
 		}
 	}
 	
 	$scope.mentalChange = function() {
 		if($scope.mental.priority.value) {
-			$scope.requests.push({"trait": 6, "value": $scope.mental.priority.value});
+			$scope.requests.push({"traitType": 0, "trait": 6, "value": $scope.mental.priority.value});
 		}
 	}
 	
 	$scope.physicalFocusChange = function() {
 		if($scope.physicalAttributeFocuses) {
 			$scope.physicalAttributeFocuses.forEach(function(focus, index, array) {
-				$scope.requests.push({"trait": 10, "value": focus});	
+				$scope.requests.push({"traitType": 0, "trait": 10, "value": focus});	
 			});
 			$scope.physicalAttributeFocuses = [];
 		}
 		if($scope.physical.focus) {
-			$scope.requests.push({"trait": 7, "value": $scope.physical.focus.id});
+			$scope.requests.push({"traitType": 0, "trait": 7, "value": $scope.physical.focus.id});
 		}
 	}
 	
 	$scope.socialFocusChange = function() {
 		if($scope.socialAttributeFocuses) {
 			$scope.socialAttributeFocuses.forEach(function(focus, index, array) {
-				$scope.requests.push({"trait": 11, "value": focus});	
+				$scope.requests.push({"traitType": 0, "trait": 11, "value": focus});	
 			});
 			$scope.socialAttributeFocuses = [];
 		}
 		if($scope.social.focus) {
-			$scope.requests.push({"trait": 8, "value": $scope.social.focus.id});
+			$scope.requests.push({"traitType": 0, "trait": 8, "value": $scope.social.focus.id});
 		}
 	}
 	
 	$scope.mentalFocusChange = function() {
 		if($scope.mentalAttributeFocuses) {
 			$scope.mentalAttributeFocuses.forEach(function(focus, index, array) {
-				$scope.requests.push({"trait": 12, "value": focus});	
+				$scope.requests.push({"traitType": 0, "trait": 12, "value": focus});	
 			});
 			$scope.mentalAttributeFocuses = [];
 		}
 		if($scope.mental.focus) {
-			$scope.requests.push({"trait": 9, "value": $scope.mental.focus.id});
+			$scope.requests.push({"traitType": 0, "trait": 9, "value": $scope.mental.focus.id});
 		}
 	}
 	
@@ -288,7 +288,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	$scope.setSkill = function(skill) {
-		$scope.requests.push({"trait": 13, "value": skill.ordinal, "rating": skill.rating.value, "specialization": skill.specialization});
+		$scope.requests.push({"traitType": 0, "trait": 13, "value": skill.ordinal, "rating": skill.rating.value, "specialization": skill.specialization});
 		if(skill.specialization) {
 			for(var i=0;i<$scope.skills.length;i++) {
 				if($scope.skills[i].ordinal == skill.ordinal && $scope.skills[i].specialization == skill.specialization) {
@@ -302,7 +302,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	$scope.removeSkill = function(skill) {
-		$scope.requests.push({"trait": 14, "value": skill.ordinal, "specialization": skill.specialization});
+		$scope.requests.push({"traitType": 0, "trait": 14, "value": skill.ordinal, "specialization": skill.specialization});
 		if(skill.specialization) {
 			for(var i=0;i<$scope.skills.length;i++) {
 				if($scope.skills[i].ordinal == skill.ordinal && $scope.skills[i].specialization == skill.specialization) {
@@ -335,11 +335,11 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	$scope.setBackground = function(background) {
-		$scope.requests.push({"trait": 15, "value": background.ordinal, "rating": background.rating.value, "specialization": background.specialization});
+		$scope.requests.push({"traitType": 0, "trait": 15, "value": background.ordinal, "rating": background.rating.value, "specialization": background.specialization});
 	}
 	
 	$scope.removeBackground = function(background) {
-		$scope.requests.push({"trait": 16, "value": background.ordinal, "specialization": background.specialization});
+		$scope.requests.push({"traitType": 0, "trait": 16, "value": background.ordinal, "specialization": background.specialization});
 	}
 	
 	$scope.addDiscipline = function() {
@@ -364,11 +364,11 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	$scope.setDiscipline = function(discipline) {
-		$scope.requests.push({"trait": 17, "value": discipline.ordinal, "rating": discipline.rating.value});
+		$scope.requests.push({"traitType": 0, "trait": 17, "value": discipline.ordinal, "rating": discipline.rating.value});
 	}
 	
 	$scope.removeDiscipline = function(discipline) {
-		$scope.requests.push({"trait": 18, "value": discipline.ordinal});
+		$scope.requests.push({"traitType": 0, "trait": 18, "value": discipline.ordinal});
 	}
 	
 	$scope.addTechnique = function() {
@@ -393,11 +393,11 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	$scope.setTechnique = function(technique) {
-		$scope.requests.push({"trait": 19, "value": technique.ordinal});
+		$scope.requests.push({"traitType": 11, "trait": 21, "value": technique.ordinal});
 	}
 	
 	$scope.removeTechnique = function(technique) {
-		$scope.requests.push({"trait": 20, "value": technique.ordinal});
+		$scope.requests.push({"traitType": 11, "trait": 22, "value": technique.ordinal});
 	}
 	
 	$scope.submit = function(csrfHeader, csrfToken) {

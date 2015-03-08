@@ -7,6 +7,7 @@ import com.dstevens.characters.traits.changes.TraitChangeFactory;
 
 public class RawTraitChange {
 
+	public int traitType;
 	public int trait;
 	public int value;
 	public Integer rating;

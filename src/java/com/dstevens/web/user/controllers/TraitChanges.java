@@ -181,6 +181,24 @@ public enum TraitChanges {
 			return traitChangeFactory.traitChange(TraitType.TECHNIQUE, Technique.values()[trait.value], TraitQualities.NONE).remove();
 		}
 	},
+	//21
+	WITH_TRAIT_CHANGE {
+		@Override
+		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			int rating = Optional.ofNullable(trait.rating).orElse(0);
+			return traitChangeFactory.traitChange(TraitType.values()[trait.traitType], Technique.values()[trait.value], 
+					                              new TraitQualitiesBuilder().rated(rating).specialized(trait.specialization).focused(set()).build());
+		}
+	},
+	//22
+	WITHOUT_TRAIT_CHANGE {
+		@Override
+		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
+			int rating = Optional.ofNullable(trait.rating).orElse(0);
+			return traitChangeFactory.traitChange(TraitType.values()[trait.traitType], Technique.values()[trait.value], 
+					new TraitQualitiesBuilder().rated(rating).specialized(trait.specialization).focused(set()).build()).remove();
+		}
+	},
 	;
 	
 	public abstract TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait);
