@@ -89,7 +89,7 @@ function initializeDisciplines(scope, disciplineSource) {
 
 function _initializeCharacterPossessedTraits(scope, traitName, existingTraits, traitSource) {
 	var traits = {};
-	traits[traitName] = traitSource.get();
+	traits = traitSource.get();
 	scope[traitName] = traits;
 	
 	scope[existingTraits] = [];
@@ -111,6 +111,9 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	//--------------------------------------------
 	// Setup
 	//--------------------------------------------
+	$scope.ratings = ratings;
+	$scope.possession = possession;
+	
 	$scope.requests = [];
 	
 	$scope.disciplineOptions = [];
@@ -400,6 +403,45 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		$scope.requests.push({"traitType": traitType, "traitChange": 22, "trait": technique.ordinal});
 	}
 	
+	$scope.addTechnique = function(traitType) {
+		var technique = $scope.techniques.newTechnique;
+		
+		if(technique.possession.value > 0) {
+			$scope.characterTechniques.push(technique);
+			$scope.setTechnique(traitType, technique);
+			$scope.techniques.newTechnique = null;
+		}
+	}
+	
+	//--------------------------------------------------------
+	$scope.addTrait = function(characterTraitsName, traitType, trait) {
+		if(trait.rating.value > 0) {
+			$scope[characterTraitsName].push(trait);
+			$scope.setTrait(traitType, trait);
+			$scope.newTrait = null;
+		}
+	}
+	
+	$scope.traitChange = function(characterTraitsName, traitType, traitIndex) {
+		var trait = $scope[characterTraitsName][traitIndex];
+		
+		if(trait.rating.value == 0) {
+			$scope[characterTraitsName].splice(traitIndex, 1);
+			$scope.removeTrait(traitType, trait);
+		} else {
+			$scope.setTrait(traitType, trait);
+		}
+	}
+	
+	$scope.setTrait = function(traitType, trait) {
+		$scope.requests.push({"traitType": traitType, "traitChange": 21, "trait": trait.ordinal, "rating": trait.rating.value});
+	}
+	
+	$scope.removeTrait = function(traitType, trait) {
+		$scope.requests.push({"traitType": traitType, "traitChange": 22, "trait": trait.ordinal, "rating": trait.rating.value});
+	}
+	//--------------------------------------------------------
+	
 	$scope.submit = function(csrfHeader, csrfToken) {
 		characterRepository.addRequestsToCharacter($scope.character.id, $scope.requests, csrfHeader, csrfToken).
 			success(function(data, status, headers, config) {redirect.toUrl('/user/page/characters')}).
@@ -537,11 +579,16 @@ directive('addTechnique', [function() {
 	return {
 		restrict: 'E',
 		scope: {
-			techniques: '=',
+			traitTitle: '@traittitle',
+			traits: '=',
+			ratingsTitle: '@ratingstitle',
+			ratings: '=',
 			change: '&change',
 		},
 		link: function (scope, element, attr) {
-		    scope.possessions = possession;
+			console.log(scope);
+			console.log(element);
+			console.log(attr);
 	    },
 		templateUrl: '/js/user/character/addTechnique.html'
 	};
@@ -550,11 +597,13 @@ directive('selectTechnique', [function() {
 	return {
 		restrict: 'E',
 		scope: {
-			techniques: '=',
+			traitTitle: '@traittitle',
+			traits: '=',
+			ratingsTitle: '@ratingstitle',
+			ratings: '=',
 			change: '&change',
 		},
 		link: function (scope, element, attr) {
-		    scope.possessions = possession;
 	    },
 		templateUrl: '/js/user/character/selectTechnique.html'
 	};

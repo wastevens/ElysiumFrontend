@@ -65,9 +65,9 @@ Name: {{character.name}}
 	<td>
 		<table>
 			<tr><td>
-				<select-technique techniques="characterTechniques" change="techniqueChange(11, techniqueIndex)"></select-technique>
+				<select-technique traittitle="Technique" traits="characterTechniques" ratingstitle="Possession" ratings="possession" change="traitChange('characterTechniques', 11, traitIndex)"></select-technique>
 			</td></tr><tr><td>
-				<add-technique techniques="techniques" change="addTechnique(11)"></add-technique>
+				<add-technique traittitle="Technique" traits="techniques" ratingstitle="Possession" ratings="possession" change="addTrait('characterTechniques', 11, trait)"></add-technique>
 		</td></tr>
 	</table>
 	</td>
