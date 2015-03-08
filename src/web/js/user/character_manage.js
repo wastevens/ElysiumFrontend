@@ -374,45 +374,6 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		$scope.requests.push({"traitType": 0, "traitChange": 18, "trait": discipline.ordinal});
 	}
 	
-	$scope.addTechnique = function(traitType) {
-		var technique = $scope.techniques.newTechnique;
-		
-		if(technique.possession.value > 0) {
-			$scope.characterTechniques.push(technique);
-			$scope.setTechnique(traitType, technique);
-			$scope.techniques.newTechnique = null;
-		}
-	}
-	
-	$scope.techniqueChange = function(traitType, techniqueIndex) {
-		var technique = $scope.characterTechniques[techniqueIndex];
-		
-		if(technique.possession.value == 0) {
-			$scope.characterTechniques.splice(techniqueIndex, 1);
-			$scope.removeTechnique(traitType, technique);
-		} else {
-			$scope.setTechnique(traitType, technique);
-		}
-	}
-	
-	$scope.setTechnique = function(traitType, technique) {
-		$scope.requests.push({"traitType": traitType, "traitChange": 21, "trait": technique.ordinal});
-	}
-	
-	$scope.removeTechnique = function(traitType, technique) {
-		$scope.requests.push({"traitType": traitType, "traitChange": 22, "trait": technique.ordinal});
-	}
-	
-	$scope.addTechnique = function(traitType) {
-		var technique = $scope.techniques.newTechnique;
-		
-		if(technique.possession.value > 0) {
-			$scope.characterTechniques.push(technique);
-			$scope.setTechnique(traitType, technique);
-			$scope.techniques.newTechnique = null;
-		}
-	}
-	
 	//--------------------------------------------------------
 	$scope.addTrait = function(characterTraitsName, traitType, trait) {
 		if(trait.rating.value > 0) {
@@ -575,7 +536,7 @@ directive('selectDiscipline', [function() {
 		templateUrl: '/js/user/character/selectDiscipline.html'
 	};
 }]).
-directive('addTechnique', [function() {
+directive('addTrait', [function() {
 	return {
 		restrict: 'E',
 		scope: {
@@ -590,10 +551,10 @@ directive('addTechnique', [function() {
 			console.log(element);
 			console.log(attr);
 	    },
-		templateUrl: '/js/user/character/addTechnique.html'
+		templateUrl: '/js/user/character/addTrait.html'
 	};
 }]).
-directive('selectTechnique', [function() {
+directive('selectTrait', [function() {
 	return {
 		restrict: 'E',
 		scope: {
@@ -605,7 +566,7 @@ directive('selectTechnique', [function() {
 		},
 		link: function (scope, element, attr) {
 	    },
-		templateUrl: '/js/user/character/selectTechnique.html'
+		templateUrl: '/js/user/character/selectTrait.html'
 	};
 }]);
 angular.module('user.character.manage.filters', ['filters.setting']);
