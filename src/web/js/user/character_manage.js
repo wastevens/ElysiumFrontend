@@ -371,33 +371,33 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		$scope.requests.push({"traitType": 0, "traitChange": 18, "trait": discipline.ordinal});
 	}
 	
-	$scope.addTechnique = function() {
+	$scope.addTechnique = function(traitType) {
 		var technique = $scope.techniques.newTechnique;
 		
 		if(technique.possession.value > 0) {
 			$scope.characterTechniques.push(technique);
-			$scope.setTechnique(technique);
+			$scope.setTechnique(traitType, technique);
 			$scope.techniques.newTechnique = null;
 		}
 	}
 	
-	$scope.techniqueChange = function(techniqueIndex) {
+	$scope.techniqueChange = function(traitType, techniqueIndex) {
 		var technique = $scope.characterTechniques[techniqueIndex];
 		
 		if(technique.possession.value == 0) {
 			$scope.characterTechniques.splice(techniqueIndex, 1);
-			$scope.removeTechnique(technique);
+			$scope.removeTechnique(traitType, technique);
 		} else {
-			$scope.setTechnique(technique);
+			$scope.setTechnique(traitType, technique);
 		}
 	}
 	
-	$scope.setTechnique = function(technique) {
-		$scope.requests.push({"traitType": 11, "traitChange": 21, "trait": technique.ordinal});
+	$scope.setTechnique = function(traitType, technique) {
+		$scope.requests.push({"traitType": traitType, "traitChange": 21, "trait": technique.ordinal});
 	}
 	
-	$scope.removeTechnique = function(technique) {
-		$scope.requests.push({"traitType": 11, "traitChange": 22, "trait": technique.ordinal});
+	$scope.removeTechnique = function(traitType, technique) {
+		$scope.requests.push({"traitType": traitType, "traitChange": 22, "trait": technique.ordinal});
 	}
 	
 	$scope.submit = function(csrfHeader, csrfToken) {
@@ -538,10 +538,10 @@ directive('addTechnique', [function() {
 		restrict: 'E',
 		scope: {
 			techniques: '=',
-			change: '&change'
+			change: '&change',
 		},
-		link: function (scope) {
-		      scope.possessions = possession;
+		link: function (scope, element, attr) {
+		    scope.possessions = possession;
 	    },
 		templateUrl: '/js/user/character/addTechnique.html'
 	};
@@ -551,10 +551,10 @@ directive('selectTechnique', [function() {
 		restrict: 'E',
 		scope: {
 			techniques: '=',
-			change: '&change'
+			change: '&change',
 		},
-		link: function (scope) {
-		      scope.possessions = possession;
+		link: function (scope, element, attr) {
+		    scope.possessions = possession;
 	    },
 		templateUrl: '/js/user/character/selectTechnique.html'
 	};

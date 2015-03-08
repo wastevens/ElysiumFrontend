@@ -3,7 +3,7 @@
 		<option value="">-- Choose Technique --</option>
 	</select>
 </td><td>
-	<select ng-model="techniques.newTechnique.possession" ng-change="change()" ng-options="possession.display for possession in possessions track by possession.value">
+	<select ng-model="techniques.newTechnique.possession" ng-change="change({traitType: type})" ng-options="possession.display for possession in possessions track by possession.value">
 		<option value="">-- Possession --</option>
 	</select>
 </td></tr></table>
