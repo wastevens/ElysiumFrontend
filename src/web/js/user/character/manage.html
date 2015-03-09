@@ -42,37 +42,28 @@ Name: {{character.name}}
 	</tr></table>
 	</td></tr>
 	
-	<tr>
-	
-	<td>
-	<table>
-		<tr><td>
-			<select-trait traittitle="Background" traits="characterBackgrounds" ratingstitle="Rating" ratings="ratings" change="traitChange('characterBackgrounds', 6, traitIndex)"></select-trait>
-		</td></tr><tr><td>
-			<add-trait traittitle="Background" traits="backgrounds" ratingstitle="Rating" ratings="ratings" change="addTrait('characterBackgrounds', 6, trait)"></add-trait>
-		</td></tr>
+	<tr><td colspan=6>
+	<table border="1">
+		<tr>
+			<td><select-trait traittitle="Background" traits="characterBackgrounds" ratingstitle="Rating" ratings="ratings" change="traitChange('characterBackgrounds', 6, traitIndex)"></select-trait></td>
+			<td><select-trait traittitle="Discipline" traits="characterDisciplines" ratingstitle="Rating" ratings="ratings" change="traitChange('characterDisciplines', 9, traitIndex)"></select-trait></td>
+		</tr><tr>
+			<td><add-trait traittitle="Background" traits="backgrounds" ratingstitle="Rating" ratings="ratings" change="addTrait('characterBackgrounds', 6, trait)"></add-trait></td>
+			<td><add-trait traittitle="Discipline" traits="disciplines" ratingstitle="Rating" ratings="ratings" change="addTrait('characterDisciplines', 9, trait)"></add-trait></td>
+		</tr>
 	</table>
-	</td>
-	<td>
-		<table>
-			<tr><td>
-				<select-trait traittitle="Discipline" traits="characterDisciplines" ratingstitle="Rating" ratings="ratings" change="traitChange('characterDisciplines', 9, traitIndex)"></select-trait>
-			</td></tr><tr><td>
-				<add-trait traittitle="Discipline" traits="disciplines" ratingstitle="Rating" ratings="ratings" change="addTrait('characterDisciplines', 9, trait)"></add-trait>
-			</td></tr>
-		</table>
-	</td>
-	<td>
-		<table>
-			<tr><td>
-				<select-trait traittitle="Technique" traits="characterTechniques" ratingstitle="Possession" ratings="possession" change="traitChange('characterTechniques', 11, traitIndex)"></select-trait>
-			</td></tr><tr><td>
-				<add-trait traittitle="Technique" traits="techniques" ratingstitle="Possession" ratings="possession" change="addTrait('characterTechniques', 11, trait)"></add-trait>
-			</td></tr>
-		</table>
-	</td>
-	
-	</tr>
+	</td></tr>
+	<tr><td colspan=6>
+	<table border="1">
+		<tr>
+			<td><select-trait traittitle="Technique" traits="characterTechniques" ratingstitle="Possession" ratings="possession" change="traitChange('characterTechniques', 11, traitIndex)"></select-trait></td>
+			<td><select-trait traittitle="Elder Power" traits="characterElderPowers" ratingstitle="Possession" ratings="possession" change="traitChange('characterElderPowers', 10, traitIndex)"></select-trait></td>
+		</tr><tr>
+			<td><add-trait traittitle="Technique" traits="techniques" ratingstitle="Possession" ratings="possession" change="addTrait('characterTechniques', 11, trait)"></add-trait></td>
+			<td><add-trait traittitle="Elder Power" traits="elderPowers" ratingstitle="Possession" ratings="possession" change="addTrait('characterElderPowers', 10, trait)"></add-trait></td>
+		</tr>
+	</table>
+	</td></tr>
 	
 	<tr><td colspan=2><input name="submit" type="submit" value="committ" /></td></tr>
 </table>

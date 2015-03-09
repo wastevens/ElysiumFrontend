@@ -105,9 +105,13 @@ function initializeTechniques(scope, techniqueSource) {
 	_initializeCharacterPossessedTraits(scope, 'techniques', 'characterTechniques', techniqueSource);
 }
 
-angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds', 'sources.techniques']).
-controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'techniqueSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 
-                       function($scope, $rootScope, redirect, characterRepository, clanSource, bloodlineSource, disciplineSource, techniqueSource, physicalFocusSource, socialFocusSource, mentalFocusSource, skillSource, backgroundSource) {
+function initializeElderPowers(scope, elderPowerSource) {
+	_initializeCharacterPossessedTraits(scope, 'elderPowers', 'characterElderPowers', elderPowerSource);
+}
+
+angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds', 'sources.techniques', 'sources.elderPowers']).
+controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'techniqueSource', 'elderPowerSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 
+                       function($scope, $rootScope, redirect, characterRepository, clanSource, bloodlineSource, disciplineSource, techniqueSource, elderPowerSource, physicalFocusSource, socialFocusSource, mentalFocusSource, skillSource, backgroundSource) {
 	//--------------------------------------------
 	// Setup
 	//--------------------------------------------
@@ -182,6 +186,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	initializeBackgrounds($scope, backgroundSource);
 	initializeDisciplines($scope, disciplineSource);
 	initializeTechniques($scope, techniqueSource);
+	initializeElderPowers($scope, elderPowerSource);
 	
 	//----------------------------------------------
 	

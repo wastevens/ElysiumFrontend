@@ -7,6 +7,7 @@
 <script src="/js/sources/clans.js"></script>
 <script src="/js/sources/disciplines.js"></script>
 <script src="/js/sources/techniques.js"></script>
+<script src="/js/sources/elderPowers.js"></script>
 <script src="/js/sources/skills.js"></script>
 <script src="/js/sources/backgrounds.js"></script>
 <script src="/js/sources/settings.js"></script>
