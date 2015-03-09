@@ -1,9 +1,0 @@
-<table><tr><td>
-	<select ng-model='disciplines.newDiscipline' ng-options="discipline.name group by discipline.type for discipline in disciplines.disciplines">
-		<option value="">-- Choose Discipline --</option>
-	</select>
-</td><td>
-	<select ng-model="disciplines.newDiscipline.rating" ng-change="change()" ng-options="rating.display for rating in ratings track by rating.value">
-		<option value="">-- Rating --</option>
-	</select>
-</td></tr></table>

@@ -67,7 +67,7 @@ function initializeSkills(scope, skillSource) {
 
 function _initializeCharacterOptionalTraits(scope, traitName, existingTraits, traitSource) {
 	var traits = {};
-	traits[traitName] = traitSource.get();
+	traits = traitSource.get();
 	scope[traitName] = traits;
 	
 	scope[existingTraits] = [];
@@ -316,64 +316,6 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		}
 	}
 	
-	$scope.addBackground = function() {
-		var background = $scope.backgrounds.newBackground;
-		
-		if(background.rating.value > 0) {
-			$scope.characterBackgrounds.push(background);
-			$scope.setBackground(background);
-			$scope.backgrounds.newBackground = null;
-		}
-	}
-	
-	$scope.backgroundChange = function(backgroundIndex) {
-		var background = $scope.characterBackgrounds[backgroundIndex];
-		
-		if(background.rating.value == 0) {
-			$scope.characterBackgrounds.splice(backgroundIndex, 1);
-			$scope.removeBackground(background);
-		} else {
-			$scope.setBackground(background);
-		}
-	}
-	
-	$scope.setBackground = function(background) {
-		$scope.requests.push({"traitType": 0, "traitChange": 15, "trait": background.ordinal, "rating": background.rating.value, "specialization": background.specialization});
-	}
-	
-	$scope.removeBackground = function(background) {
-		$scope.requests.push({"traitType": 0, "traitChange": 16, "trait": background.ordinal, "specialization": background.specialization});
-	}
-	
-	$scope.addDiscipline = function() {
-		var discipline = $scope.disciplines.newDiscipline;
-		
-		if(discipline.rating.value > 0) {
-			$scope.characterDisciplines.push(discipline);
-			$scope.setDiscipline(discipline);
-			$scope.disciplines.newdiscipline = null;
-		}
-	}
-	
-	$scope.disciplineChange = function(disciplineIndex) {
-		var discipline = $scope.characterDisciplines[disciplineIndex];
-		
-		if(discipline.rating.value == 0) {
-			$scope.characterDisciplines.splice(disciplineIndex, 1);
-			$scope.removeDiscipline(discipline);
-		} else {
-			$scope.setDiscipline(discipline);
-		}
-	}
-	
-	$scope.setDiscipline = function(discipline) {
-		$scope.requests.push({"traitType": 0, "traitChange": 17, "trait": discipline.ordinal, "rating": discipline.rating.value});
-	}
-	
-	$scope.removeDiscipline = function(discipline) {
-		$scope.requests.push({"traitType": 0, "traitChange": 18, "trait": discipline.ordinal});
-	}
-	
 	//--------------------------------------------------------
 	$scope.addTrait = function(characterTraitsName, traitType, trait) {
 		if(trait.rating.value > 0) {
@@ -395,11 +337,11 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	$scope.setTrait = function(traitType, trait) {
-		$scope.requests.push({"traitType": traitType, "traitChange": 21, "trait": trait.ordinal, "rating": trait.rating.value});
+		$scope.requests.push({"traitType": traitType, "traitChange": 21, "trait": trait.ordinal, "rating": trait.rating.value, "specialization": trait.specialization});
 	}
 	
 	$scope.removeTrait = function(traitType, trait) {
-		$scope.requests.push({"traitType": traitType, "traitChange": 22, "trait": trait.ordinal, "rating": trait.rating.value});
+		$scope.requests.push({"traitType": traitType, "traitChange": 22, "trait": trait.ordinal, "rating": trait.rating.value, "specialization": trait.specialization});
 	}
 	//--------------------------------------------------------
 	
@@ -510,32 +452,6 @@ directive('selectBackground', [function() {
 		templateUrl: '/js/user/character/selectBackground.html'
 	};
 }]).
-directive('addDiscipline', [function() {
-	return {
-		restrict: 'E',
-		scope: {
-			disciplines: '=',
-			change: '&change'
-		},
-		link: function (scope) {
-		      scope.ratings = ratings;
-	    },
-		templateUrl: '/js/user/character/addDiscipline.html'
-	};
-}]).
-directive('selectDiscipline', [function() {
-	return {
-		restrict: 'E',
-		scope: {
-			disciplines: '=',
-			change: '&change'
-		},
-		link: function (scope) {
-		      scope.ratings = ratings;
-	    },
-		templateUrl: '/js/user/character/selectDiscipline.html'
-	};
-}]).
 directive('addTrait', [function() {
 	return {
 		restrict: 'E',
@@ -547,9 +463,6 @@ directive('addTrait', [function() {
 			change: '&change',
 		},
 		link: function (scope, element, attr) {
-			console.log(scope);
-			console.log(element);
-			console.log(attr);
 	    },
 		templateUrl: '/js/user/character/addTrait.html'
 	};

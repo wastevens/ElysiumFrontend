@@ -44,23 +44,23 @@ Name: {{character.name}}
 	
 	<tr>
 	
-	<td colspan=2>
+	<td>
 	<table>
 		<tr><td>
-			<select-background backgrounds="characterBackgrounds" change="backgroundChange(backgroundIndex)"></select-background>
+			<select-trait traittitle="Background" traits="characterBackgrounds" ratingstitle="Rating" ratings="ratings" change="traitChange('characterBackgrounds', 6, traitIndex)"></select-trait>
 		</td></tr><tr><td>
-			<add-background backgrounds="backgrounds" change="addBackground()"></add-background>
+			<add-trait traittitle="Background" traits="backgrounds" ratingstitle="Rating" ratings="ratings" change="addTrait('characterBackgrounds', 6, trait)"></add-trait>
 		</td></tr>
 	</table>
 	</td>
-	<td colspan=2>
+	<td>
 		<table>
 			<tr><td>
-				<select-discipline disciplines="characterDisciplines" change="disciplineChange(disciplineIndex)"></select-discipline>
+				<select-trait traittitle="Discipline" traits="characterDisciplines" ratingstitle="Rating" ratings="ratings" change="traitChange('characterDisciplines', 9, traitIndex)"></select-trait>
 			</td></tr><tr><td>
-				<add-discipline disciplines="disciplines" change="addDiscipline()"></add-discipline>
-		</td></tr>
-	</table>
+				<add-trait traittitle="Discipline" traits="disciplines" ratingstitle="Rating" ratings="ratings" change="addTrait('characterDisciplines', 9, trait)"></add-trait>
+			</td></tr>
+		</table>
 	</td>
 	<td>
 		<table>
@@ -68,8 +68,8 @@ Name: {{character.name}}
 				<select-trait traittitle="Technique" traits="characterTechniques" ratingstitle="Possession" ratings="possession" change="traitChange('characterTechniques', 11, traitIndex)"></select-trait>
 			</td></tr><tr><td>
 				<add-trait traittitle="Technique" traits="techniques" ratingstitle="Possession" ratings="possession" change="addTrait('characterTechniques', 11, trait)"></add-trait>
-		</td></tr>
-	</table>
+			</td></tr>
+		</table>
 	</td>
 	
 	</tr>
