@@ -67,8 +67,10 @@ Name: {{character.name}}
 		<tr><td colspan=6>
 	<table border="1">
 		<tr>
+			<td><select-trait traittitle="Thaumaturgical Ritual" traits="characterThaumaturgicalRituals" ratingstitle="Possession" ratings="possession" change="traitChange('characterThaumaturgicalRituals', 13, traitIndex)"></select-trait></td>
 			<td><select-trait traittitle="Necromantic Ritual" traits="characterNecromanticRituals" ratingstitle="Possession" ratings="possession" change="traitChange('characterNecromanticRituals', 12, traitIndex)"></select-trait></td>
 		</tr><tr>
+			<td><add-trait traittitle="Thaumaturgical Rituals" traits="thaumaturgicalRituals" ratingstitle="Possession" ratings="possession" change="addTrait('characterThaumaturgicalRituals', 13, trait)"></add-trait></td>
 			<td><add-trait traittitle="Necromantic Rituals" traits="necromanticRituals" ratingstitle="Possession" ratings="possession" change="addTrait('characterNecromanticRituals', 12, trait)"></add-trait></td>
 		</tr>
 	</table>
