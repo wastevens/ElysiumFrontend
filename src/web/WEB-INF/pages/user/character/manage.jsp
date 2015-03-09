@@ -5,6 +5,8 @@
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-resource.js"></script>
 <script src="/js/sources/attributes.js"></script>
 <script src="/js/sources/clans.js"></script>
+<script src="/js/sources/merits.js"></script>
+<script src="/js/sources/flaws.js"></script>
 <script src="/js/sources/disciplines.js"></script>
 <script src="/js/sources/techniques.js"></script>
 <script src="/js/sources/elderPowers.js"></script>

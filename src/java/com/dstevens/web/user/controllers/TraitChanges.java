@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.dstevens.characters.clans.Bloodline;
 import com.dstevens.characters.clans.Clan;
+import com.dstevens.characters.traits.Trait;
 import com.dstevens.characters.traits.TraitQualities;
 import com.dstevens.characters.traits.TraitQualitiesBuilder;
 import com.dstevens.characters.traits.TraitType;
@@ -186,7 +187,8 @@ public enum TraitChanges {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			int rating = Optional.ofNullable(trait.rating).orElse(0);
-			return traitChangeFactory.traitChange(TraitType.values()[trait.traitType], Technique.values()[trait.trait], 
+			TraitType traitType = TraitType.values()[trait.traitType];
+			return traitChangeFactory.traitChange(traitType, traitType.traits[trait.trait], 
 					                              new TraitQualitiesBuilder().rated(rating).specialized(trait.specialization).focused(set()).build());
 		}
 	},
@@ -195,8 +197,9 @@ public enum TraitChanges {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			int rating = Optional.ofNullable(trait.rating).orElse(0);
-			return traitChangeFactory.traitChange(TraitType.values()[trait.traitType], Technique.values()[trait.trait], 
-					new TraitQualitiesBuilder().rated(rating).specialized(trait.specialization).focused(set()).build()).remove();
+			TraitType traitType = TraitType.values()[trait.traitType];
+			return traitChangeFactory.traitChange(traitType, traitType.traits[trait.trait],
+					                              new TraitQualitiesBuilder().rated(rating).specialized(trait.specialization).focused(set()).build()).remove();
 		}
 	},
 	;

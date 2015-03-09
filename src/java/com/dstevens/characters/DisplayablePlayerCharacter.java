@@ -31,11 +31,13 @@ public class DisplayablePlayerCharacter {
 	public final Set<DisplayableElderPower> elderPowers;
 	public final Set<DisplayableNecromanticRitual> necromanticRituals;
 	public final Set<DisplayableThaumaturgicalRitual> thaumaturgicalRituals;
+	public final Set<DisplayableCharacterMerit> merits;
+	public final Set<DisplayableCharacterFlaw> flaws;
 	
 	//Jackson only
     @Deprecated
 	private DisplayablePlayerCharacter() {
-		this(null, null, -1, -1, -1, null, null, null, 0, 0, 0, null, null, null, null, null, null, null, null, null, null);
+		this(null, null, -1, -1, -1, null, null, null, 0, 0, 0, null, null, null, null, null, null, null, null, null, null, null, null);
 	}
     
     private DisplayablePlayerCharacter(String id, String name, int setting, int status, int approval, Integer clan, Integer bloodline, List<Integer> inClanDisciplines,
@@ -44,7 +46,8 @@ public class DisplayablePlayerCharacter {
     		                           Set<DisplayableCharacterSkill> skills, Set<DisplayableCharacterBackground> backgrounds, 
     		                           Set<DisplayableCharacterDiscipline> disciplines, 
     		                           Set<DisplayableTechnique> techniques, Set<DisplayableElderPower> elderPowers,
-    		                           Set<DisplayableNecromanticRitual> necromanticRituals, Set<DisplayableThaumaturgicalRitual> thaumaturgicalRituals) {
+    		                           Set<DisplayableNecromanticRitual> necromanticRituals, Set<DisplayableThaumaturgicalRitual> thaumaturgicalRituals,
+    		                           Set<DisplayableCharacterMerit> merits, Set<DisplayableCharacterFlaw> flaws) {
 		this.id = id;
 		this.name = name;
 		this.setting = setting;
@@ -66,6 +69,8 @@ public class DisplayablePlayerCharacter {
 		this.elderPowers = elderPowers;
 		this.necromanticRituals = necromanticRituals;
 		this.thaumaturgicalRituals = thaumaturgicalRituals;
+		this.merits = merits;
+		this.flaws = flaws;
     }
 	
 	public static Function<PlayerCharacter, DisplayablePlayerCharacter> fromCharacter() {
@@ -88,7 +93,9 @@ public class DisplayablePlayerCharacter {
 				                                                     t.getTechniques().stream().map(DisplayableTechnique.fromTechnique()).collect(Collectors.toSet()),
 				                                                     t.getElderPowers().stream().map(DisplayableElderPower.fromElderPower()).collect(Collectors.toSet()),
 				                                                     t.getNecromanticRituals().stream().map(DisplayableNecromanticRitual.fromNecromanticRitual()).collect(Collectors.toSet()),
-				                                                     t.getThaumaturgicalRituals().stream().map(DisplayableThaumaturgicalRitual.fromThaumaturgicalRitual()).collect(Collectors.toSet())
+				                                                     t.getThaumaturgicalRituals().stream().map(DisplayableThaumaturgicalRitual.fromThaumaturgicalRitual()).collect(Collectors.toSet()),
+				                                                     t.getMerits().stream().map(DisplayableCharacterMerit.fromMerit()).collect(Collectors.toSet()),
+				                                                     t.getFlaws().stream().map(DisplayableCharacterFlaw.fromFlaw()).collect(Collectors.toSet())
 				                                                     );
 	}
 	

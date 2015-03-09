@@ -64,7 +64,7 @@ Name: {{character.name}}
 		</tr>
 	</table>
 	</td></tr>
-		<tr><td colspan=6>
+	<tr><td colspan=6>
 	<table border="1">
 		<tr>
 			<td><select-trait traittitle="Thaumaturgical Ritual" traits="characterThaumaturgicalRituals" ratingstitle="Possession" ratings="possession" change="traitChange('characterThaumaturgicalRituals', 13, traitIndex)"></select-trait></td>
@@ -72,6 +72,17 @@ Name: {{character.name}}
 		</tr><tr>
 			<td><add-trait traittitle="Thaumaturgical Rituals" traits="thaumaturgicalRituals" ratingstitle="Possession" ratings="possession" change="addTrait('characterThaumaturgicalRituals', 13, trait)"></add-trait></td>
 			<td><add-trait traittitle="Necromantic Rituals" traits="necromanticRituals" ratingstitle="Possession" ratings="possession" change="addTrait('characterNecromanticRituals', 12, trait)"></add-trait></td>
+		</tr>
+	</table>
+	</td></tr>
+	<tr><td colspan=6>
+	<table border="1">
+		<tr>
+			<td><select-trait traittitle="Merit" traits="characterMerits" ratingstitle="Possession" ratings="possession" change="traitChange('characterMerits', 8, traitIndex)"></select-trait></td>
+			<td><select-trait traittitle="Flaw" traits="characterFlaws" ratingstitle="Possession" ratings="possession" change="traitChange('characterFlaws', 7, traitIndex)"></select-trait></td>
+		</tr><tr>
+			<td><add-trait traittitle="Merit" traits="merits" ratingstitle="Possession" ratings="possession" change="addTrait('characterMerits', 8, trait)"></add-trait></td>
+			<td><add-trait traittitle="Flaw" traits="flaws" ratingstitle="Possession" ratings="possession" change="addTrait('characterFlaws', 7, trait)"></add-trait></td>
 		</tr>
 	</table>
 	</td></tr>

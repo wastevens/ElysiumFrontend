@@ -117,9 +117,17 @@ function initializeThaumaturgicalRituals(scope, thaumaturgicalRitualSource) {
 	_initializeCharacterPossessedTraits(scope, 'thaumaturgicalRituals', 'characterThaumaturgicalRituals', thaumaturgicalRitualSource);
 }
 
-angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds', 'sources.techniques', 'sources.elderPowers', 'sources.rituals.necromantic', 'sources.rituals.thaumaturgical']).
-controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'techniqueSource', 'elderPowerSource', 'necromanticRitualSource', 'thaumaturgicalRitualSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 
-                       function($scope,   $rootScope,   redirect,   characterRepository,   clanSource,   bloodlineSource,   disciplineSource,   techniqueSource,   elderPowerSource,   necromanticRitualSource,   thaumaturgicalRitualSource,   physicalFocusSource,   socialFocusSource,   mentalFocusSource,   skillSource,   backgroundSource) {
+function initializeMerits(scope, meritSource) {
+	_initializeCharacterPossessedTraits(scope, 'merits', 'characterMerits', meritSource);
+}
+
+function initializeFlaws(scope, flawSource) {
+	_initializeCharacterPossessedTraits(scope, 'flaws', 'characterFlaws', flawSource);
+}
+
+angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds', 'sources.techniques', 'sources.elderPowers', 'sources.rituals.necromantic', 'sources.rituals.thaumaturgical', 'sources.merits', 'sources.flaws']).
+controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'techniqueSource', 'elderPowerSource', 'necromanticRitualSource', 'thaumaturgicalRitualSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 'meritSource', 'flawSource',  
+                       function($scope,   $rootScope,   redirect,   characterRepository,   clanSource,   bloodlineSource,   disciplineSource,   techniqueSource,   elderPowerSource,   necromanticRitualSource,   thaumaturgicalRitualSource,   physicalFocusSource,   socialFocusSource,   mentalFocusSource,   skillSource,   backgroundSource,   meritSource,   flawSource) {
 	//--------------------------------------------
 	// Setup
 	//--------------------------------------------
@@ -197,6 +205,8 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	initializeElderPowers($scope, elderPowerSource);
 	initializeNecromanticRituals($scope, necromanticRitualSource);
 	initializeThaumaturgicalRituals($scope, thaumaturgicalRitualSource);
+	initializeMerits($scope, meritSource);
+	initializeFlaws($scope, flawSource);
 	
 	//----------------------------------------------
 	
