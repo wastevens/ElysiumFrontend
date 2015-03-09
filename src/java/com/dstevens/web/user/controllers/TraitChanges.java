@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import com.dstevens.characters.clans.Bloodline;
 import com.dstevens.characters.clans.Clan;
-import com.dstevens.characters.traits.Trait;
 import com.dstevens.characters.traits.TraitQualities;
 import com.dstevens.characters.traits.TraitQualitiesBuilder;
 import com.dstevens.characters.traits.TraitType;
