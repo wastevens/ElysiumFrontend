@@ -64,6 +64,15 @@ Name: {{character.name}}
 		</tr>
 	</table>
 	</td></tr>
+		<tr><td colspan=6>
+	<table border="1">
+		<tr>
+			<td><select-trait traittitle="Necromantic Ritual" traits="characterNecromanticRituals" ratingstitle="Possession" ratings="possession" change="traitChange('characterNecromanticRituals', 12, traitIndex)"></select-trait></td>
+		</tr><tr>
+			<td><add-trait traittitle="Necromantic Rituals" traits="necromanticRituals" ratingstitle="Possession" ratings="possession" change="addTrait('characterNecromanticRituals', 12, trait)"></add-trait></td>
+		</tr>
+	</table>
+	</td></tr>
 	
 	<tr><td colspan=2><input name="submit" type="submit" value="committ" /></td></tr>
 </table>
