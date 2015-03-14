@@ -5,7 +5,7 @@ import java.util.function.Function;
 import com.dstevens.characters.traits.powers.magic.thaumaturgy.ThaumaturgicalRitual;
 import com.google.gson.Gson;
 
-public class DisplayableThaumaturgicalRitual {
+public class DisplayableThaumaturgicalRitual implements DisplayableCharacterTrait {
 
 	public final int ordinal;
 	
@@ -28,4 +28,8 @@ public class DisplayableThaumaturgicalRitual {
 		return new Gson().toJson(this);
 	}
 	
+	@Override
+	public int ordinal() {
+		return ordinal;
+	}
 }

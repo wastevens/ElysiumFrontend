@@ -5,7 +5,7 @@ import java.util.function.Function;
 import com.dstevens.characters.traits.powers.magic.necromancy.NecromanticRitual;
 import com.google.gson.Gson;
 
-public class DisplayableNecromanticRitual {
+public class DisplayableNecromanticRitual implements DisplayableCharacterTrait {
 
 	public final int ordinal;
 	
@@ -27,5 +27,9 @@ public class DisplayableNecromanticRitual {
 	public String serialized() {
 		return new Gson().toJson(this);
 	}
-	
+
+	@Override
+	public int ordinal() {
+		return ordinal;
+	}
 }

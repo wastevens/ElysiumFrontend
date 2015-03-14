@@ -5,7 +5,7 @@ import java.util.function.Function;
 import com.dstevens.characters.traits.distinctions.flaws.CharacterFlaw;
 import com.google.gson.Gson;
 
-public class DisplayableCharacterFlaw {
+public class DisplayableCharacterFlaw implements DisplayableSpecializedCharacterTrait {
 
 	public final int ordinal;
 	public final String specialization;
@@ -28,6 +28,16 @@ public class DisplayableCharacterFlaw {
 	
 	public String serialized() {
 		return new Gson().toJson(this);
+	}
+
+	@Override
+	public int ordinal() {
+		return ordinal;
+	}
+
+	@Override
+	public String specialization() {
+		return specialization;
 	}
 	
 }

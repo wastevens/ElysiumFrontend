@@ -5,7 +5,7 @@ import java.util.function.Function;
 import com.dstevens.characters.traits.skills.CharacterSkill;
 import com.google.gson.Gson;
 
-public class DisplayableCharacterSkill {
+public class DisplayableCharacterSkill implements DisplayableSpecializedCharacterTrait {
 
 	public final int ordinal;
 	public final int rating;
@@ -31,5 +31,14 @@ public class DisplayableCharacterSkill {
 	public String serialized() {
 		return new Gson().toJson(this);
 	}
-	
+
+	@Override
+	public int ordinal() {
+		return ordinal;
+	}
+
+	@Override
+	public String specialization() {
+		return specialization;
+	}
 }

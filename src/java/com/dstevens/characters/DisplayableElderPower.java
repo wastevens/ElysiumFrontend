@@ -5,7 +5,7 @@ import java.util.function.Function;
 import com.dstevens.characters.traits.powers.disciplines.ElderPower;
 import com.google.gson.Gson;
 
-public class DisplayableElderPower {
+public class DisplayableElderPower implements DisplayableCharacterTrait {
 
 	public final int ordinal;
 	
@@ -27,5 +27,9 @@ public class DisplayableElderPower {
 	public String serialized() {
 		return new Gson().toJson(this);
 	}
-	
+
+	@Override
+	public int ordinal() {
+		return ordinal;
+	}
 }

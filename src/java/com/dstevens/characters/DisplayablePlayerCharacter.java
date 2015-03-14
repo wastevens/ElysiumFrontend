@@ -2,11 +2,12 @@ package com.dstevens.characters;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
+
+import static com.dstevens.collections.Lists.sort;
 
 public class DisplayablePlayerCharacter {
 
@@ -21,18 +22,18 @@ public class DisplayablePlayerCharacter {
 	public final int physicalAttribute;
 	public final int socialAttribute;
 	public final int mentalAttribute;
-	public final Set<Integer> physicalAttributeFocuses;
-	public final Set<Integer> socialAttributeFocuses;
-	public final Set<Integer> mentalAttributeFocuses;
-	public final Set<DisplayableCharacterSkill> skills;
-	public final Set<DisplayableCharacterBackground> backgrounds;
-	public final Set<DisplayableCharacterDiscipline> disciplines;
-	public final Set<DisplayableTechnique> techniques;
-	public final Set<DisplayableElderPower> elderPowers;
-	public final Set<DisplayableNecromanticRitual> necromanticRituals;
-	public final Set<DisplayableThaumaturgicalRitual> thaumaturgicalRituals;
-	public final Set<DisplayableCharacterMerit> merits;
-	public final Set<DisplayableCharacterFlaw> flaws;
+	public final List<Integer> physicalAttributeFocuses;
+	public final List<Integer> socialAttributeFocuses;
+	public final List<Integer> mentalAttributeFocuses;
+	public final List<DisplayableCharacterSkill> skills;
+	public final List<DisplayableCharacterBackground> backgrounds;
+	public final List<DisplayableCharacterDiscipline> disciplines;
+	public final List<DisplayableTechnique> techniques;
+	public final List<DisplayableElderPower> elderPowers;
+	public final List<DisplayableNecromanticRitual> necromanticRituals;
+	public final List<DisplayableThaumaturgicalRitual> thaumaturgicalRituals;
+	public final List<DisplayableCharacterMerit> merits;
+	public final List<DisplayableCharacterFlaw> flaws;
 	
 	//Jackson only
     @Deprecated
@@ -42,12 +43,12 @@ public class DisplayablePlayerCharacter {
     
     private DisplayablePlayerCharacter(String id, String name, int setting, int status, int approval, Integer clan, Integer bloodline, List<Integer> inClanDisciplines,
     		                           int physicalAttribute, int socialAttribute, int mentalAttribute,
-    		                           Set<Integer> physicalAttributeFocuses, Set<Integer> socialAttributeFocuses, Set<Integer> mentalAttributeFocuses,
-    		                           Set<DisplayableCharacterSkill> skills, Set<DisplayableCharacterBackground> backgrounds, 
-    		                           Set<DisplayableCharacterDiscipline> disciplines, 
-    		                           Set<DisplayableTechnique> techniques, Set<DisplayableElderPower> elderPowers,
-    		                           Set<DisplayableNecromanticRitual> necromanticRituals, Set<DisplayableThaumaturgicalRitual> thaumaturgicalRituals,
-    		                           Set<DisplayableCharacterMerit> merits, Set<DisplayableCharacterFlaw> flaws) {
+    		                           List<Integer> physicalAttributeFocuses, List<Integer> socialAttributeFocuses, List<Integer> mentalAttributeFocuses,
+    		                           List<DisplayableCharacterSkill> skills, List<DisplayableCharacterBackground> backgrounds, 
+    		                           List<DisplayableCharacterDiscipline> disciplines, 
+    		                           List<DisplayableTechnique> techniques, List<DisplayableElderPower> elderPowers,
+    		                           List<DisplayableNecromanticRitual> necromanticRituals, List<DisplayableThaumaturgicalRitual> thaumaturgicalRituals,
+    		                           List<DisplayableCharacterMerit> merits, List<DisplayableCharacterFlaw> flaws) {
 		this.id = id;
 		this.name = name;
 		this.setting = setting;
@@ -74,6 +75,8 @@ public class DisplayablePlayerCharacter {
     }
 	
 	public static Function<PlayerCharacter, DisplayablePlayerCharacter> fromCharacter() {
+		DisplayableSpecializedCharacterTraitComparator displayableSpecializedCharacterTraitComparator = new DisplayableSpecializedCharacterTraitComparator();
+		DisplayableCharacterTraitComparator displayableCharacterTraitComparator = new DisplayableCharacterTraitComparator();
 		return (PlayerCharacter t) -> new DisplayablePlayerCharacter(t.getId(), t.getName(), 
 																	 t.getSetting().ordinal(), 
 				                                                     t.getCurrentStatus().status().ordinal(), 
@@ -84,18 +87,18 @@ public class DisplayablePlayerCharacter {
 				                                                     t.getPhysicalAttribute(),
 				                                                     t.getSocialAttribute(),
 				                                                     t.getMentalAttribute(),
-				                                                     t.getPhysicalAttributeFocuses().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toSet()),
-				                                                     t.getSocialAttributeFocuses().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toSet()),
-				                                                     t.getMentalAttributeFocuses().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toSet()),
-				                                                     t.getSkills().stream().map(DisplayableCharacterSkill.fromSkill()).collect(Collectors.toSet()),
-				                                                     t.getBackgrounds().stream().map(DisplayableCharacterBackground.fromBackground()).collect(Collectors.toSet()),
-				                                                     t.getDisciplines().stream().map(DisplayableCharacterDiscipline.fromDiscipline()).collect(Collectors.toSet()),
-				                                                     t.getTechniques().stream().map(DisplayableTechnique.fromTechnique()).collect(Collectors.toSet()),
-				                                                     t.getElderPowers().stream().map(DisplayableElderPower.fromElderPower()).collect(Collectors.toSet()),
-				                                                     t.getNecromanticRituals().stream().map(DisplayableNecromanticRitual.fromNecromanticRitual()).collect(Collectors.toSet()),
-				                                                     t.getThaumaturgicalRituals().stream().map(DisplayableThaumaturgicalRitual.fromThaumaturgicalRitual()).collect(Collectors.toSet()),
-				                                                     t.getMerits().stream().map(DisplayableCharacterMerit.fromMerit()).collect(Collectors.toSet()),
-				                                                     t.getFlaws().stream().map(DisplayableCharacterFlaw.fromFlaw()).collect(Collectors.toSet())
+				                                                     sort(t.getPhysicalAttributeFocuses().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toList())),
+				                                                     sort(t.getSocialAttributeFocuses().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toList())),
+				                                                     sort(t.getMentalAttributeFocuses().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toList())),
+				                                                     sort(t.getSkills().stream().map(DisplayableCharacterSkill.fromSkill()).collect(Collectors.toList()), displayableSpecializedCharacterTraitComparator),
+				                                                     sort(t.getBackgrounds().stream().map(DisplayableCharacterBackground.fromBackground()).collect(Collectors.toList()), displayableSpecializedCharacterTraitComparator),
+				                                                     sort(t.getDisciplines().stream().map(DisplayableCharacterDiscipline.fromDiscipline()).collect(Collectors.toList()), displayableCharacterTraitComparator),
+				                                                     sort(t.getTechniques().stream().map(DisplayableTechnique.fromTechnique()).collect(Collectors.toList()), displayableCharacterTraitComparator),
+				                                                     sort(t.getElderPowers().stream().map(DisplayableElderPower.fromElderPower()).collect(Collectors.toList()), displayableCharacterTraitComparator),
+				                                                     sort(t.getNecromanticRituals().stream().map(DisplayableNecromanticRitual.fromNecromanticRitual()).collect(Collectors.toList()), displayableCharacterTraitComparator),
+				                                                     sort(t.getThaumaturgicalRituals().stream().map(DisplayableThaumaturgicalRitual.fromThaumaturgicalRitual()).collect(Collectors.toList()), displayableCharacterTraitComparator),
+				                                                     sort(t.getMerits().stream().map(DisplayableCharacterMerit.fromMerit()).collect(Collectors.toList()), displayableSpecializedCharacterTraitComparator),
+				                                                     sort(t.getFlaws().stream().map(DisplayableCharacterFlaw.fromFlaw()).collect(Collectors.toList()), displayableSpecializedCharacterTraitComparator)
 				                                                     );
 	}
 	
