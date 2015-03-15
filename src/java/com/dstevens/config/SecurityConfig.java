@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        authorizeRequests().antMatchers("/troupes/**").hasRole("USER").and().
 	        authorizeRequests().antMatchers("/characters/**").hasRole("USER").and().
 	    	authorizeRequests().antMatchers("/user/**").hasRole("USER").and().
+	    	authorizeRequests().antMatchers("/traits/**").hasRole("USER").and().
 		    csrf(); 
  
 	}

@@ -91,11 +91,10 @@ function _initializeCharacterPossessedTraits(scope, traitName, existingTraits, t
 	var traits = {};
 	traits = traitSource.get();
 	scope[traitName] = traits;
-	
 	scope[existingTraits] = [];
 	scope.character[traitName].forEach(function(characterTrait, index, array) {
 		var copiedTrait = copyTrait(characterTrait);
-		copiedTrait.name = traitSource.get()[characterTrait.ordinal].name;
+		copiedTrait.name = traits[characterTrait.ordinal].name;
 		copiedTrait.possession = possession[1];
 		scope[existingTraits].push(copiedTrait);
 	});
@@ -114,7 +113,16 @@ function initializeNecromanticRituals(scope, necromanticRitualSource) {
 }
 
 function initializeThaumaturgicalRituals(scope, thaumaturgicalRitualSource) {
-	_initializeCharacterPossessedTraits(scope, 'thaumaturgicalRituals', 'characterThaumaturgicalRituals', thaumaturgicalRitualSource);
+	thaumaturgicalRitualSource.get().$promise.then(function(traits) {
+		scope['thaumaturgicalRituals'] = traits;
+		scope['characterThaumaturgicalRituals'] = [];
+		scope.character['thaumaturgicalRituals'].forEach(function(characterTrait, index, array) {
+			var copiedTrait = copyTrait(characterTrait);
+			copiedTrait.name = traits[characterTrait.ordinal].name;
+			copiedTrait.possession = possession[1];
+			scope['characterThaumaturgicalRituals'].push(copiedTrait);
+		});
+	});
 }
 
 function initializeMerits(scope, meritSource) {

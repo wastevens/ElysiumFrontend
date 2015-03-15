@@ -20,6 +20,7 @@
 <script src="/js/services/csrfResource.js"></script>
 <script src="/js/services/troupeRepository.js"></script>
 <script src="/js/services/characterRepository.js"></script>
+<script src="/js/services/traitRepository.js"></script>
 <script src="/js/user/character_manage.js"></script>
 </head>
 <body ng-app="user.character.manage">
