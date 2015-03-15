@@ -3,3 +3,6 @@
 /dist/
 /lib/
 /war/
+/.settings/
+/.classpath
+/.project
