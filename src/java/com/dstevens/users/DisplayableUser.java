@@ -1,15 +1,15 @@
 package com.dstevens.users;
 
-import static com.dstevens.collections.Sets.set;
-
 import java.util.Comparator;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.dstevens.collections.Sets.set;
+
 public class DisplayableUser implements Comparable<DisplayableUser> {
 
-	public final String id;
+	public final Integer id;
 	public final String firstName;
 	public final String lastName;
 	public final String email;
@@ -21,7 +21,7 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 		this(null, null, null, null, set());
 	}
 	
-	private DisplayableUser(String id, String firstName, String lastName, String email, Set<Integer> roles) {
+	private DisplayableUser(Integer id, String firstName, String lastName, String email, Set<Integer> roles) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -38,7 +38,7 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 				                               t.getRoles().stream().map((Role r) -> r.ordinal()).collect(Collectors.toSet()));
 	}
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 

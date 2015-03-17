@@ -17,8 +17,12 @@ public class UserRepository {
 		return dao.findAll();
 	}
 
-	public User findUser(String id) {
+	public User findUser(Integer id) {
 		return dao.findOne(id);
+	}
+	
+	public User findUserWithEmail(String email) {
+		return dao.findWithEmail(email);
 	}
 
 	public void save(User user) {

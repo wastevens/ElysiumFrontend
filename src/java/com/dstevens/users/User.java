@@ -1,12 +1,21 @@
 package com.dstevens.users;
 
-import static com.dstevens.collections.Sets.set;
-import static com.dstevens.collections.Sets.setWith;
-import static com.dstevens.collections.Sets.setWithout;
-
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 
 import org.hibernate.annotations.ForeignKey;
 import org.springframework.context.annotation.Scope;
@@ -16,17 +25,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.dstevens.characters.PlayerCharacter;
-import com.dstevens.suppliers.IdSupplier;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import static com.dstevens.collections.Sets.set;
+import static com.dstevens.collections.Sets.setWith;
+import static com.dstevens.collections.Sets.setWithout;
 
 @SuppressWarnings("deprecation")
 @Entity
@@ -38,7 +40,10 @@ public class User implements UserDetails {
 	private static final long serialVersionUID = -7180299088295506267L;
 
 	@Id
-    private final String id;
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "tableGen")
+	@TableGenerator(name = "tableGen", pkColumnValue = "user", table="ID_Sequences", allocationSize=1 )
+	@Column(name="id", nullable=false, unique=true)
+    private final Integer id;
     
     @Column(name="email")
     private final String email;
@@ -71,10 +76,10 @@ public class User implements UserDetails {
     }
     
     public User(String email, String password, Set<Role> roles) {
-    	this(new IdSupplier().get(), email, password, roles, set(), null, null);
+    	this(null, email, password, roles, set(), null, null);
     }
     
-    private User(String id, String email, String password, Set<Role> roles, Set<PlayerCharacter> characters, String firstName, String lastName) {
+    private User(Integer id, String email, String password, Set<Role> roles, Set<PlayerCharacter> characters, String firstName, String lastName) {
 		this.id = id;
 		this.email = email;
 		this.password = password;
@@ -84,7 +89,7 @@ public class User implements UserDetails {
 		this.lastName = lastName;
     }
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
     

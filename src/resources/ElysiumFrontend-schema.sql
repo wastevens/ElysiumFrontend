@@ -90,11 +90,11 @@ create table TraitChange_focuses (TraitChange_id varchar(255) not null, focuses 
 create table TraitChanges (id varchar(255) not null, cost integer, rating integer, specialization varchar(255), remove bit, traitOrdinal integer, traitTypeOrdinal integer, child_id varchar(255), primary key (id));
 create table Troupe (id integer not null, deleted_at datetime, name varchar(255), setting integer, primary key (id));
 create table Troupe_PlayerCharacters (troupe_id integer not null, playerCharacter_id varchar(255) not null, primary key (troupe_id, playerCharacter_id));
-create table Troupe_StorytellerUsers (troupe_id integer not null, user_id varchar(255) not null, primary key (troupe_id, user_id));
-create table User (id varchar(255) not null, email varchar(255), firstName varchar(255), lastName varchar(255), password varchar(255), primary key (id));
-create table UserPasswordResetToken (id varchar(255) not null, email varchar(255), expiresAt datetime, resetToken varchar(255), primary key (id));
-create table User_PlayerCharacters (user_id varchar(255) not null, playerCharacter_id varchar(255) not null, primary key (user_id, playerCharacter_id));
-create table User_roles (User_id varchar(255) not null, roles integer);
+create table Troupe_StorytellerUsers (troupe_id integer not null, user_id integer not null, primary key (troupe_id, user_id));
+create table User (id integer not null, email varchar(255), firstName varchar(255), lastName varchar(255), password varchar(255), primary key (id));
+create table UserPasswordResetToken (id integer not null, email varchar(255), expiresAt datetime, resetToken varchar(255), primary key (id));
+create table User_PlayerCharacters (user_id integer not null, playerCharacter_id varchar(255) not null, primary key (user_id, playerCharacter_id));
+create table User_roles (User_id integer not null, roles integer);
 alter table PlayerCharacter_AppliedTraitChanges add constraint PlayerCharacter_AppliedTraitChanges_UC  unique (appliedTraitChanges_id);
 alter table PlayerCharacter_ExperienceAward add constraint PlayerCharacter_ExperienceAwards_UC  unique (experienceAwards_id);
 alter table PlayerCharacter_RequestedTraitChanges add constraint PlayerCharacter_RequestedTraitChanges_UC  unique (requesedTraitChanges_id);

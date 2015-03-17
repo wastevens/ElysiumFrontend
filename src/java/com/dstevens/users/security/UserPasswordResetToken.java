@@ -3,19 +3,23 @@ package com.dstevens.users.security;
 import java.time.Clock;
 import java.util.Date;
 
-import com.dstevens.suppliers.IdSupplier;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 
 @Entity
 @Table(name="UserPasswordResetToken")
 public class UserPasswordResetToken {
 
 	@Id
-    private final String id;
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "tableGen")
+	@TableGenerator(name = "tableGen", pkColumnValue = "passwordResetToken", table="ID_Sequences", allocationSize=1 )
+	@Column(name="id", nullable=false, unique=true)
+    private final Integer id;
     
     @Column(name="email")
     private final String email;
@@ -30,11 +34,11 @@ public class UserPasswordResetToken {
     @SuppressWarnings("unused")
     @Deprecated
 	private UserPasswordResetToken() {
-    	this(null, null, null);
+    	this(null, null, null, null);
     }
     
-    public UserPasswordResetToken(String email, String resetToken, Date expiresAt) {
-    	this.id = new IdSupplier().get();
+    public UserPasswordResetToken(Integer id, String email, String resetToken, Date expiresAt) {
+    	this.id = id;
 		this.email = email;
 		this.resetToken = resetToken;
 		this.expiresAt = expiresAt;

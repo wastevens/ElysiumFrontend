@@ -24,7 +24,7 @@ public class UserPasswordResetTokenService {
 	
 	public String produceTokenExpiringIn(String email, int minutes) {
 		String resetToken = randomUUID().toString();
-		dao.save(new UserPasswordResetToken(email, resetToken, Date.from(clockSupplier.get().instant().plus(minutes, ChronoUnit.MINUTES))));
+		dao.save(new UserPasswordResetToken(null, email, resetToken, Date.from(clockSupplier.get().instant().plus(minutes, ChronoUnit.MINUTES))));
 		return resetToken;
 	}
 	

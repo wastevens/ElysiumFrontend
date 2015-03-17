@@ -36,7 +36,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/admin/users/{id}", method = RequestMethod.PUT)
-	public @ResponseBody void updateUser(@PathVariable String id, @RequestBody final DisplayableUser userWrapper) {
+	public @ResponseBody void updateUser(@PathVariable Integer id, @RequestBody final DisplayableUser userWrapper) {
 		User user = userRepository.findUser(id);
 		if(user == null) {
 			throw new UnknownUserException("Could not find user with id " + id);
@@ -45,7 +45,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/admin/users/{id}", method = RequestMethod.GET)
-	public @ResponseBody String getUser(@PathVariable String id) {
+	public @ResponseBody String getUser(@PathVariable Integer id) {
 		return new Gson().toJson(DisplayableUser.fromUser().apply(userRepository.findUser(id)));
 	}
 	
