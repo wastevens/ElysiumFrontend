@@ -3,7 +3,7 @@ package com.dstevens.troupes;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-public interface TroupeDao extends CrudRepository<Troupe, String> {
+public interface TroupeDao extends CrudRepository<Troupe, Integer> {
 
     @Query("SELECT a FROM Troupe a WHERE a.name = ?1 AND a.deleteTimestamp is null")
     Troupe findUndeletedNamed(String name);

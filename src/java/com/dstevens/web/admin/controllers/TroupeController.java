@@ -45,7 +45,7 @@ public class TroupeController {
 	}
 	
 	@RequestMapping(value = "/admin/page/troupes/{id}", method = RequestMethod.GET)
-	public ModelAndView getManageTroupePage(@PathVariable String id) {
+	public ModelAndView getManageTroupePage(@PathVariable Integer id) {
 		Troupe troupe = troupeRepository.findWithId(id);
 		if(troupe == null) {
 			throw new UnknownTroupeException("Could not find troupe with id " + id);
@@ -63,7 +63,7 @@ public class TroupeController {
 	
 	@ResponseStatus(value=HttpStatus.NO_CONTENT)
 	@RequestMapping(value = "/troupes/{id}", method = RequestMethod.DELETE)
-	public @ResponseBody void deleteTroupe(@PathVariable String id) {
+	public @ResponseBody void deleteTroupe(@PathVariable Integer id) {
 		Troupe troupeToDelete = troupeRepository.findWithId(id);
 		if(troupeToDelete != null) {
 			troupeRepository.delete(troupeToDelete);
@@ -71,7 +71,7 @@ public class TroupeController {
 	}
 	
 	@RequestMapping(value = "/troupes/{id}", method = RequestMethod.POST)
-	public @ResponseBody void updateTroupe(@PathVariable String id, @RequestBody final RawTroupe rawTroupe) {
+	public @ResponseBody void updateTroupe(@PathVariable Integer id, @RequestBody final RawTroupe rawTroupe) {
 		Troupe troupe = troupeRepository.findWithId(id);
 		if(troupe == null) {
 			throw new UnknownTroupeException("Could not find troupe with id " + id);
@@ -79,7 +79,7 @@ public class TroupeController {
 		troupeRepository.save(troupe.withName(rawTroupe.name).withSetting(rawTroupe.setting).withStorytellers(rawTroupe.storytellers(userRepository)));
 	}
 	
-	private String getTroupe(@PathVariable String id) {
+	private String getTroupe(@PathVariable Integer id) {
 		Troupe troupe = troupeRepository.findWithId(id);
 		return new Gson().toJson(DisplayableTroupe.fromTroupes().apply(troupe));
 	}

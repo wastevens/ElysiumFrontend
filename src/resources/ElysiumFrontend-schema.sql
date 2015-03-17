@@ -62,6 +62,7 @@ drop table if exists User;
 drop table if exists UserPasswordResetToken;
 drop table if exists User_PlayerCharacters;
 drop table if exists User_roles;
+drop table if exists ID_Sequences;
 create table AttributeValue (attribute_type varchar(31) not null, id varchar(255) not null, value integer, primary key (id));
 create table Backgrounds (id varchar(255) not null, rating integer, specialization varchar(255), background integer, character_id varchar(255), primary key (id));
 create table Backgrounds_Focuses (CharacterBackground_id varchar(255) not null, focuses varchar(255));
@@ -87,9 +88,9 @@ create table Skills_Focuses (CharacterSkill_id varchar(255) not null, focuses va
 create table Status (id varchar(255) not null, specialization varchar(255), trait integer not null, character_id varchar(255), primary key (id));
 create table TraitChange_focuses (TraitChange_id varchar(255) not null, focuses varchar(255));
 create table TraitChanges (id varchar(255) not null, cost integer, rating integer, specialization varchar(255), remove bit, traitOrdinal integer, traitTypeOrdinal integer, child_id varchar(255), primary key (id));
-create table Troupe (id varchar(255) not null, deleted_at datetime, name varchar(255), setting integer, primary key (id));
-create table Troupe_PlayerCharacters (troupe_id varchar(255) not null, playerCharacter_id varchar(255) not null, primary key (troupe_id, playerCharacter_id));
-create table Troupe_StorytellerUsers (troupe_id varchar(255) not null, user_id varchar(255) not null, primary key (troupe_id, user_id));
+create table Troupe (id integer not null, deleted_at datetime, name varchar(255), setting integer, primary key (id));
+create table Troupe_PlayerCharacters (troupe_id integer not null, playerCharacter_id varchar(255) not null, primary key (troupe_id, playerCharacter_id));
+create table Troupe_StorytellerUsers (troupe_id integer not null, user_id varchar(255) not null, primary key (troupe_id, user_id));
 create table User (id varchar(255) not null, email varchar(255), firstName varchar(255), lastName varchar(255), password varchar(255), primary key (id));
 create table UserPasswordResetToken (id varchar(255) not null, email varchar(255), expiresAt datetime, resetToken varchar(255), primary key (id));
 create table User_PlayerCharacters (user_id varchar(255) not null, playerCharacter_id varchar(255) not null, primary key (user_id, playerCharacter_id));
@@ -129,3 +130,4 @@ alter table Troupe_StorytellerUsers add constraint Troupe_StorytellerUsers_FK fo
 alter table User_PlayerCharacters add constraint PlayerCharacters_User_FK foreign key (playerCharacter_id) references PlayerCharacter (id);
 alter table User_PlayerCharacters add constraint User_PlayerCharacters_FK foreign key (user_id) references User (id);
 alter table User_roles add constraint User_Roles_FK foreign key (User_id) references User (id);
+create table ID_Sequences ( sequence_name varchar(255),  sequence_next_hi_value bigint );

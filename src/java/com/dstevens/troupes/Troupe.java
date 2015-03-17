@@ -19,19 +19,25 @@ import com.dstevens.utilities.ObjectExtensions;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 
 @SuppressWarnings("deprecation")
 @Entity
 @Table(name="Troupe")
 public class Troupe implements Comparable<Troupe> {
 
-    @Id
-    private final String id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "tableGen")
+	@TableGenerator(name = "tableGen", pkColumnValue = "troupe", table="ID_Sequences", allocationSize=1 )
+	@Column(name="id", nullable=false, unique=true)
+    private final Integer id;
     
     @Column(name="name")
     private String name;
@@ -62,11 +68,11 @@ public class Troupe implements Comparable<Troupe> {
         this(null, null, null, set(), set(), null);
     }
     
-    Troupe(String id, String name, Setting setting) {
+    Troupe(Integer id, String name, Setting setting) {
         this(id, name, setting, set(), set(), null);
     }
     
-    private Troupe(String id, String name, Setting setting, Set<PlayerCharacter> characters, Set<User> storytellers, Date deleteTimestamp) {
+    private Troupe(Integer id, String name, Setting setting, Set<PlayerCharacter> characters, Set<User> storytellers, Date deleteTimestamp) {
         this.id = id;
         this.name = name;
         this.setting = setting;
@@ -75,7 +81,7 @@ public class Troupe implements Comparable<Troupe> {
         this.deleteTimestamp = deleteTimestamp;
     }
     
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 

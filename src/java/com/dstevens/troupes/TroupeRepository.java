@@ -25,7 +25,7 @@ public class TroupeRepository {
         return dao.save(factory.createTroupe(troupeName, setting));
     }
 
-    public Troupe findWithId(String id) {
+    public Troupe findWithId(Integer id) {
     	return dao.findOne(id);
     }
     

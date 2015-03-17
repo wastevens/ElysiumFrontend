@@ -99,7 +99,7 @@ public class CharacterController {
 	private static class RawCharacter {
 
 		public String name;
-		public String troupeId;
+		public Integer troupeId;
 		
 	}
 }
