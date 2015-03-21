@@ -1,6 +1,7 @@
 package com.dstevens.web.config.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +29,7 @@ public class AuthenticationController {
 		UserDetails userDetails = userService.loadUserByUsername(request.username);
 		if(userDetails.getUsername().equals(request.username) &&
 		   userDetails.getPassword().equals(request.password)) {
-			return userService.authorize(request.username);
+			return userService.authorize(new UsernamePasswordAuthenticationToken(request.username, request.password, userDetails.getAuthorities()));
 		}
 		throw new ForbiddenException("User not authenticated");
 	}
