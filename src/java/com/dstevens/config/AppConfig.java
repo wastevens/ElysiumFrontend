@@ -52,6 +52,6 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(tokenAuthorizationInterceptor).excludePathPatterns("/login**", "/request**", "/create**", "/authenticate**");
+		registry.addInterceptor(tokenAuthorizationInterceptor).excludePathPatterns("/", "/login**", "/request**", "/create**", "/authenticate**");
 	}
 }
