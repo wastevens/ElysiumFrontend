@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="lib/default/activation.jar"/>
 	<classpathentry kind="lib" path="lib/default/ant.jar"/>
 	<classpathentry kind="lib" path="lib/default/antlr.jar"/>
 	<classpathentry kind="lib" path="lib/default/aopalliance.jar"/>
@@ -15,8 +16,9 @@
 	<classpathentry kind="lib" path="lib/default/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/default/CommonServices.jar"/>
 	<classpathentry kind="lib" path="lib/default/contenttype.jar"/>
+	<classpathentry kind="lib" path="lib/default/Courier.jar"/>
 	<classpathentry kind="lib" path="lib/default/dom4j.jar"/>
-	<classpathentry kind="lib" path="lib/default/Elysium.jar" sourcepath="lib/sources/Elysium-sources.jar"/>
+	<classpathentry kind="lib" path="lib/default/Elysium.jar"/>
 	<classpathentry kind="lib" path="lib/default/freemarker.jar"/>
 	<classpathentry kind="lib" path="lib/default/gson.jar"/>
 	<classpathentry kind="lib" path="lib/default/guava.jar"/>
@@ -30,13 +32,15 @@
 	<classpathentry kind="lib" path="lib/default/jackson-databind.jar"/>
 	<classpathentry kind="lib" path="lib/default/jandex.jar"/>
 	<classpathentry kind="lib" path="lib/default/javassist.jar"/>
-	<classpathentry kind="lib" path="lib/default/javax.servlet-api.jar"/>
+	<classpathentry kind="lib" path="lib/default/javax.mail.jar"/>
+	<classpathentry kind="lib" path="lib/default/javax.servlet-api.jar" sourcepath="lib/sources/javax.servlet-api-sources.jar"/>
 	<classpathentry kind="lib" path="lib/default/jboss-logging-annotations.jar"/>
 	<classpathentry kind="lib" path="lib/default/jboss-logging.jar"/>
 	<classpathentry kind="lib" path="lib/default/jboss-transaction-api_1.2_spec.jar"/>
 	<classpathentry kind="lib" path="lib/default/jcl-over-slf4j.jar"/>
 	<classpathentry kind="lib" path="lib/default/jobs.jar"/>
 	<classpathentry kind="lib" path="lib/default/jsr305.jar"/>
+	<classpathentry kind="lib" path="lib/default/jstl.jar"/>
 	<classpathentry kind="lib" path="lib/default/jta.jar"/>
 	<classpathentry kind="lib" path="lib/default/jtidy.jar"/>
 	<classpathentry kind="lib" path="lib/default/log4j.jar"/>
@@ -49,38 +53,30 @@
 	<classpathentry kind="lib" path="lib/default/runtime.jar"/>
 	<classpathentry kind="lib" path="lib/default/slf4j-api.jar"/>
 	<classpathentry kind="lib" path="lib/default/slf4j-log4j12.jar"/>
+	<classpathentry kind="lib" path="lib/default/spring-aop-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-aop.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-aspects.jar"/>
+	<classpathentry kind="lib" path="lib/default/spring-beans-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-beans.jar"/>
+	<classpathentry kind="lib" path="lib/default/spring-context-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-context.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-core.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-data-commons.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-data-jpa.jar"/>
+	<classpathentry kind="lib" path="lib/default/spring-expression-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-expression.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-instrument.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-jdbc.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-orm.jar"/>
-	<classpathentry kind="lib" path="lib/default/spring-security-core.jar" sourcepath="lib/sources/spring-security-core-sources.jar"/>
+	<classpathentry kind="lib" path="lib/default/spring-security-config.jar" sourcepath="lib/sources/spring-security-config-sources.jar"/>
+	<classpathentry kind="lib" path="lib/default/spring-security-core.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-security-web.jar" sourcepath="lib/sources/spring-security-web-sources.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-tx.jar"/>
-	<classpathentry kind="lib" path="lib/default/spring-web.jar"/>
-	<classpathentry kind="lib" path="lib/default/spring-webmvc.jar" sourcepath="lib/sources/spring-webmvc-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/ElysiumFrontend/lib/javadoc/spring-webmvc-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/default/text.jar"/>
-	<classpathentry kind="lib" path="lib/default/xml-apis.jar"/>
-	<classpathentry kind="lib" path="lib/default/spring-security-config.jar" sourcepath="lib/sources/spring-security-config-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/ElysiumFrontend/lib/javadoc/spring-security-config-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/default/jstl.jar"/>
+	<classpathentry kind="lib" path="lib/default/spring-webmvc.jar" sourcepath="lib/sources/spring-webmvc-sources.jar"/>
 	<classpathentry kind="lib" path="lib/default/standard.jar"/>
-	<classpathentry kind="lib" path="lib/default/activation.jar"/>
-	<classpathentry kind="lib" path="lib/default/javax.mail.jar"/>
-	<classpathentry kind="lib" path="lib/default/Courier.jar"/>
+	<classpathentry kind="lib" path="lib/default/text.jar"/>
 	<classpathentry kind="lib" path="lib/default/TheWheel.jar"/>
+	<classpathentry kind="lib" path="lib/default/xml-apis.jar"/>
+	<classpathentry kind="lib" path="lib/default/spring-web.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -16,6 +16,7 @@ import com.dstevens.users.ElysiumUserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
  
 	@Autowired private ElysiumUserDetailsService userDetailService;
+	@Autowired private ElysiumAuthenticationSuccessHandler successHandler;
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -25,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 	    http.
-	    	formLogin().loginPage("/login").successHandler(new ElysiumAuthenticationSuccessHandler()).failureUrl("/login?error").permitAll().and().
+	    	formLogin().loginPage("/login").successHandler(successHandler).failureUrl("/login?error").permitAll().and().
 	    	logout().logoutUrl("/logout").permitAll().and().
 	        authorizeRequests().antMatchers("/createAccount/**").permitAll().and().
 	        authorizeRequests().antMatchers("/resetPassword/**").permitAll().and().
@@ -34,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        authorizeRequests().antMatchers("/characters/**").hasRole("USER").and().
 	    	authorizeRequests().antMatchers("/user/**").hasRole("USER").and().
 	    	authorizeRequests().antMatchers("/traits/**").hasRole("USER").and().
-		    csrf(); 
+		    csrf().disable(); 
  
 	}
 }
