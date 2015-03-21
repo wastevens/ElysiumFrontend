@@ -23,13 +23,12 @@ public class TokenAuthorizationInterceptor extends HandlerInterceptorAdapter {
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		String authorization = getAuthorizationFrom(request);
+		AuthorizationToken authorization = getAuthorizationFrom(request);
 		if(authorization == null) {
 			System.out.println("No authorization found");
 			throw new ForbiddenException("Request not authorized");
 		}
-		String username = request.getUserPrincipal().getName();
-		if(!userService.isUserAuthorized(username, authorization)) {
+		if(!userService.isUserAuthorized(authorization)) {
 			System.out.println("Authorization failed");
 			throw new ForbiddenException("Request not authorized");
 		}
@@ -37,15 +36,18 @@ public class TokenAuthorizationInterceptor extends HandlerInterceptorAdapter {
 		return true;
 	}
 
-	private String getAuthorizationFrom(HttpServletRequest request) {
-		String authorizationHeader = request.getHeader("AUTHORIZATION");
-		if(authorizationHeader == null) {
+	private AuthorizationToken getAuthorizationFrom(HttpServletRequest request) {
+		String token = request.getHeader("AUTHORIZATION");
+		if(token == null) {
 			Cookie cookie = WebUtils.getCookie(request, "AUTHORIZATION");
 			if(cookie != null) {
-				authorizationHeader = cookie.getValue(); 
+				token = cookie.getValue(); 
 			}
 		}
-		return authorizationHeader;
+		if(token != null) {
+			return AuthorizationToken.from(token);
+		}
+		return null;
 	}
 
 }
