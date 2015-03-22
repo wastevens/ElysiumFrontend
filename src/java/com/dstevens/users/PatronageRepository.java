@@ -25,8 +25,8 @@ public class PatronageRepository {
 		return dao.findOne(Integer.valueOf(membershipId.substring(4)));
 	}
 	
-	public void save(Patronage patronage) {
-		dao.save(patronage);
+	public Patronage save(Patronage patronage) {
+		return dao.save(patronage);
 	}
 	
 	

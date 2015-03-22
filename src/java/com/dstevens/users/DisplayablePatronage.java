@@ -20,7 +20,11 @@ public class DisplayablePatronage {
 	}
 
 	public static DisplayablePatronage from(Patronage patronage) {
-		return new DisplayablePatronage(patronage.displayMembershipId(), new SimpleDateFormat("yyyy-MM-dd").format(patronage.getExpiration()), patronage.getUser().getId());
+		Integer id = null;
+		if(patronage.getUser() != null) {
+			id = patronage.getUser().getId();
+		}
+		return new DisplayablePatronage(patronage.displayMembershipId(), new SimpleDateFormat("yyyy-MM-dd").format(patronage.getExpiration()), id);
 	}
 	
 }
