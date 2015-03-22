@@ -22,7 +22,7 @@ public class ElysiumUserDetailsService implements UserDetailsService {
 
 	private final UserDao userDao;
 
-	private static final Map<Authorization, Authentication> authorizationTokens = map();
+	private static final Map<Authorization, Authentication> authorizations = map();
 	
 	@Autowired
 	public ElysiumUserDetailsService(UserDao userDao) {
@@ -39,19 +39,19 @@ public class ElysiumUserDetailsService implements UserDetailsService {
 	}
 	
 	public Authorization authorize(Authentication authentication) {
-		if(authorizationTokens.containsValue(authentication)) {
+		if(authorizations.containsValue(authentication)) {
 			return findAuthorizationFor(authentication);
 		}
 		long currentTimeMillis = System.currentTimeMillis();
 		long duration = (24 * 60 * 60 * 1000);
 		Authorization token = new Authorization(authentication.getName(), new IdSupplier().get().replace(":", "-"), String.valueOf(currentTimeMillis + duration));
-		authorizationTokens.put(token, authentication);
-		System.out.println(authorizationTokens);
+		authorizations.put(token, authentication);
+		System.out.println(authorizations);
 		return token;
 	}
 
 	private Authorization findAuthorizationFor(Authentication authentication) {
-		Optional<Entry<Authorization, Authentication>> filter = authorizationTokens.entrySet().stream().findFirst().filter(predicate(authentication));
+		Optional<Entry<Authorization, Authentication>> filter = authorizations.entrySet().stream().findFirst().filter(predicate(authentication));
 		if(filter.isPresent()) {
 			return filter.get().getKey();
 		}
@@ -71,21 +71,21 @@ public class ElysiumUserDetailsService implements UserDetailsService {
 	}
 	
 	public boolean isUserAuthorized(Authorization token) {
-		if(!authorizationTokens.containsKey(token)) {
+		if(!authorizations.containsKey(token)) {
 			return false;
 		}
 		if(!(Long.valueOf(token.expiration()) > System.currentTimeMillis())) {
-			authorizationTokens.remove(token);
+			authorizations.remove(token);
 			return false;
 		}
 		return true;
 	}
 	
 	public Authentication authenticationFor(Authorization token) {
-		return authorizationTokens.get(token);
+		return authorizations.get(token);
 	}
 
 	public void removeAuthorizationFor(Authorization authorization) {
-		authorizationTokens.remove(authorization);
+		authorizations.remove(authorization);
 	}
 }

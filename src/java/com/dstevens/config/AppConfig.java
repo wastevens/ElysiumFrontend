@@ -22,7 +22,7 @@ import org.springframework.web.servlet.view.JstlView;
 public class AppConfig extends WebMvcConfigurerAdapter {
  
 	@Autowired
-	private AuthorizationTokenInterceptor tokenAuthorizationInterceptor;
+	private AuthorizationGuard tokenAuthorizationInterceptor;
 
 	@Bean
 	public InternalResourceViewResolver viewResolver() {

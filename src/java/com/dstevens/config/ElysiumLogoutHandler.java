@@ -1,6 +1,5 @@
 package com.dstevens.config;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -8,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.WebUtils;
 
 import com.dstevens.users.ElysiumUserDetailsService;
+
+import static com.dstevens.config.AuthorizationReader.authorizationIn;
 
 @Component
 public class ElysiumLogoutHandler implements LogoutHandler {
@@ -24,22 +24,7 @@ public class ElysiumLogoutHandler implements LogoutHandler {
 	
 	@Override
 	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-		
-		userService.removeAuthorizationFor(getAuthorizationFrom(request));
-	}
-	
-	private Authorization getAuthorizationFrom(HttpServletRequest request) {
-		String token = request.getHeader("AUTHORIZATION");
-		if(token == null) {
-			Cookie cookie = WebUtils.getCookie(request, "AUTHORIZATION");
-			if(cookie != null) {
-				token = cookie.getValue(); 
-			}
-		}
-		if(token != null) {
-			return Authorization.from(token);
-		}
-		return null;
+		userService.removeAuthorizationFor(authorizationIn(request));
 	}
 
 }

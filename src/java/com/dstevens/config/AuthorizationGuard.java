@@ -1,29 +1,29 @@
 package com.dstevens.config;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-import org.springframework.web.util.WebUtils;
 
 import com.dstevens.users.ElysiumUserDetailsService;
 
+import static com.dstevens.config.AuthorizationReader.authorizationIn;
+
 @Component
-public class AuthorizationTokenInterceptor extends HandlerInterceptorAdapter {
+public class AuthorizationGuard extends HandlerInterceptorAdapter {
 
 	private ElysiumUserDetailsService userService;
 
 	@Autowired
-	public AuthorizationTokenInterceptor(ElysiumUserDetailsService userService) {
+	public AuthorizationGuard(ElysiumUserDetailsService userService) {
 		this.userService = userService;
 	}
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		Authorization authorization = getAuthorizationFrom(request);
+		Authorization authorization = authorizationIn(request);
 		if(authorization == null) {
 			System.out.println("No authorization found");
 			throw new ForbiddenException("Request not authorized");
@@ -34,20 +34,6 @@ public class AuthorizationTokenInterceptor extends HandlerInterceptorAdapter {
 		}
 		
 		return true;
-	}
-
-	private Authorization getAuthorizationFrom(HttpServletRequest request) {
-		String token = request.getHeader("AUTHORIZATION");
-		if(token == null) {
-			Cookie cookie = WebUtils.getCookie(request, "AUTHORIZATION");
-			if(cookie != null) {
-				token = cookie.getValue(); 
-			}
-		}
-		if(token != null) {
-			return Authorization.from(token);
-		}
-		return null;
 	}
 
 }
