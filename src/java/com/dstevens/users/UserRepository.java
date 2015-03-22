@@ -1,5 +1,8 @@
 package com.dstevens.users;
 
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,15 +21,18 @@ public class UserRepository {
 	}
 	
 	public Iterable<User> findClients() {
-		return dao.findWithoutPatronage();
+		return StreamSupport.stream(dao.findAll().spliterator(), false).filter((User t) -> t.getPatronage() == null).collect(Collectors.toList());
 	}
 	
 	public Iterable<User> findPatrons() {
-		return dao.findWithPatronage();
+		return StreamSupport.stream(dao.findAll().spliterator(), false).filter((User t) -> t.getPatronage() != null).collect(Collectors.toList());
 	}
 
 	public User findUser(Integer id) {
-		return dao.findOne(id);
+		if(id != null) {
+			return dao.findOne(id);
+		}
+		return null;
 	}
 	
 	public User findUserWithEmail(String email) {

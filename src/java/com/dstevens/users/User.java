@@ -19,6 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.ForeignKey;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.GrantedAuthority;
@@ -70,9 +71,7 @@ public class User implements UserDetails {
     @Column(name="lastName")
     private final String lastName;
 	
-    @OneToOne(optional=true)
-	@JoinColumn(name="patronage_id")
-	@ForeignKey(name="User_Patronage_FK")
+    @OneToOne(mappedBy="user", optional=true)
     private final Patronage patronage;
     
     //Hibernate only
@@ -202,5 +201,10 @@ public class User implements UserDetails {
 	
 	public boolean isPatronageActiveAsOf(Date date) {
 		return patronage.isActiveAsOf(date);
+	}
+	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 }

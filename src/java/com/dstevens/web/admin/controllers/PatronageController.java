@@ -17,23 +17,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dstevens.users.DisplayablePatronage;
 import com.dstevens.users.Patronage;
 import com.dstevens.users.PatronageRepository;
+import com.dstevens.users.User;
+import com.dstevens.users.UserRepository;
 import com.google.gson.Gson;
 
 @Controller
 public class PatronageController {
 
 	private final PatronageRepository patronageRepository;
+	private final UserRepository userRepository;
 
 	@Autowired
-	public PatronageController(PatronageRepository patronageRepository) {
+	public PatronageController(PatronageRepository patronageRepository, UserRepository userRepository) {
 		this.patronageRepository = patronageRepository;
-	}
-	
-	@RequestMapping(value = "/admin/patronages", method = RequestMethod.POST)
-	public @ResponseBody String createPatronage(@RequestBody RawRequestBody requestBody, HttpServletResponse response) {
-		Patronage savedPatronage = patronageRepository.save(new Patronage(requestBody.year, requestBody.expirationAsDate()));
-		addLocationHeader(response, savedPatronage);
-		return new Gson().toJson(DisplayablePatronage.from(savedPatronage));
+		this.userRepository = userRepository;
 	}
 	
 	@RequestMapping(value = "/admin/patronages/{id}", method = RequestMethod.GET)
@@ -41,10 +38,29 @@ public class PatronageController {
 		return new Gson().toJson(DisplayablePatronage.from(patronageRepository.findPatronageByMembershipId(id)));
 	}
 	
+	
+	@RequestMapping(value = "/admin/patronages", method = RequestMethod.POST)
+	public @ResponseBody String createPatronage(@RequestBody RawRequestBody requestBody, HttpServletResponse response) {
+		User user = userRepository.findUser(requestBody.userId);
+		if(user != null && user.getPatronage() != null) {
+			throw new IllegalArgumentException("User " + requestBody.userId + " already has a patronage.");
+		}
+		Patronage patronage = new Patronage(requestBody.year, requestBody.expirationAsDate(), user);
+		Patronage savedPatronage = patronageRepository.save(patronage);
+		addLocationHeader(response, savedPatronage);
+		return new Gson().toJson(DisplayablePatronage.from(savedPatronage));
+	}
+	
 	@RequestMapping(value = "/admin/patronages/{id}", method = RequestMethod.PUT)
 	public @ResponseBody String updatePatronage(@PathVariable String id, @RequestBody RawRequestBody requestBody, HttpServletResponse response) {
+		User user = userRepository.findUser(requestBody.userId);
 		Patronage patronage = patronageRepository.findPatronageByMembershipId(id);
-		Patronage updatedPatronage = patronageRepository.save(patronage.expiringOn(requestBody.expirationAsDate()));
+		if(user != null) {
+			if(!user.getPatronage().equals(patronage)) {
+				throw new IllegalArgumentException("User " + requestBody.userId + " is associated with patronage " + user.getPatronage().displayMembershipId());
+			}
+		}
+		Patronage updatedPatronage = patronageRepository.save(patronage.expiringOn(requestBody.expirationAsDate()).forUser(user));
 		addLocationHeader(response, updatedPatronage);
 		return new Gson().toJson(DisplayablePatronage.from(updatedPatronage));
 	}
@@ -56,6 +72,7 @@ public class PatronageController {
 	private static class RawRequestBody {
 		public Integer year;
 		public String expiration;
+		public Integer userId;
 		
 		private Date expirationAsDate() {
 			try {

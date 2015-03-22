@@ -7,10 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.ForeignKey;
+
+@SuppressWarnings("deprecation")
 @Entity
 @Table(name="Patronage")
 public class Patronage {
@@ -28,23 +35,30 @@ public class Patronage {
 	@Column(name="expiration")
 	private final Date expiration;
 	
-	@OneToOne(mappedBy="patronage", optional=true)
-	private User user;
+	@OneToOne(optional=true)
+	@JoinColumn(name="user_id")
+	@ForeignKey(name="Patronage_User_FK")
+	private final User user;
 	
 	//Hibernate only
     @Deprecated
     public Patronage() {
-    	this(null, null, null);
+    	this(null, null, null, null);
     }
     
     public Patronage(Integer year, Date expiration) {
-    	this(null, year, expiration);
+    	this(null, year, expiration, null);
     }
     
-	public Patronage(Integer id, Integer year, Date expiration) {
+    public Patronage(Integer year, Date expiration, User user) {
+    	this(null, year, expiration, user);
+    }
+    
+	public Patronage(Integer id, Integer year, Date expiration, User user) {
 		this.id = id;
 		this.year = year;
 		this.expiration = expiration;
+		this.user = user;
 	}
 
 	public String displayMembershipId() {
@@ -63,7 +77,26 @@ public class Patronage {
 		return expiration.after(date);
 	}
 	
-	public Patronage expiringOn(Date date) {
-		return new Patronage(id, year, date);
+	public Patronage expiringOn(Date expiration) {
+		return new Patronage(id, year, expiration, user);
+	}
+	
+	public Patronage forUser(User user) {
+		return new Patronage(id, year, expiration, user);
+	}
+	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
+	
+	@Override
+	public boolean equals(Object that) {
+		return EqualsBuilder.reflectionEquals(this, that);
+	}
+	
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
 	}
 }
