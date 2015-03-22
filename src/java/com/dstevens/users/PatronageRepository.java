@@ -18,11 +18,17 @@ public class PatronageRepository {
 	}
 
 	public Patronage findPatronage(Integer id) {
-		return dao.findOne(id);
+		if(id != null) {
+			return dao.findOne(id);
+		}
+		return null;
 	}
 	
 	public Patronage findPatronageByMembershipId(String membershipId) {
-		return dao.findOne(Integer.valueOf(membershipId.substring(4)));
+		if(membershipId != null && membershipId.length() > 4) {
+			return dao.findOne(Integer.valueOf(membershipId.substring(4)));
+		}
+		return null;
 	}
 	
 	public Patronage save(Patronage patronage) {
