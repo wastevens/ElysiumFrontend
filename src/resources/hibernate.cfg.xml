@@ -22,6 +22,7 @@
     
     <mapping class="com.dstevens.troupes.Troupe"/>
     <mapping class="com.dstevens.users.User"/>
+    <mapping class="com.dstevens.users.Patronage"/>
     <mapping class="com.dstevens.users.security.UserPasswordResetToken"/>
     
   </session-factory>

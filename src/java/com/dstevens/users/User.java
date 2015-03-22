@@ -1,6 +1,7 @@
 package com.dstevens.users;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
@@ -68,18 +70,21 @@ public class User implements UserDetails {
     @Column(name="lastName")
     private final String lastName;
 	
+    @OneToOne(mappedBy="user", optional=true)
+    private final Patronage patronage;
+    
     //Hibernate only
     @SuppressWarnings("unused")
     @Deprecated
 	private User() {
-    	this(null, null, null, set(), set(), null, null);
+    	this(null, null, null, set(), set(), null, null, null);
     }
     
     public User(String email, String password, Set<Role> roles) {
-    	this(null, email, password, roles, set(), null, null);
+    	this(null, email, password, roles, set(), null, null, null);
     }
     
-    private User(Integer id, String email, String password, Set<Role> roles, Set<PlayerCharacter> characters, String firstName, String lastName) {
+    private User(Integer id, String email, String password, Set<Role> roles, Set<PlayerCharacter> characters, String firstName, String lastName, Patronage patronage) {
 		this.id = id;
 		this.email = email;
 		this.password = password;
@@ -87,6 +92,7 @@ public class User implements UserDetails {
 		this.characters = characters;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.patronage = patronage;
     }
 
 	public Integer getId() {
@@ -119,39 +125,43 @@ public class User implements UserDetails {
 
 
 	public User withEmail(String email) {
-		return new User(id, email, password, roles, characters, firstName, lastName);
+		return new User(id, email, password, roles, characters, firstName, lastName, patronage);
 	}
 	
 	public User withPassword(String password) {
-		return new User(id, email, password, roles, characters, firstName, lastName);
+		return new User(id, email, password, roles, characters, firstName, lastName, patronage);
 	}
 	
 	public User withRoles(Set<Role> roles) {
-		return new User(id, email, password, roles, characters, firstName, lastName);
+		return new User(id, email, password, roles, characters, firstName, lastName, patronage);
 	}
 	
 	public User withRole(Role role) {
-		return new User(id, email, password, setWith(roles, role), characters, firstName, lastName);
+		return new User(id, email, password, setWith(roles, role), characters, firstName, lastName, patronage);
 	}
 	
 	public User withoutRole(Role role) {
-		return new User(id, email, password, setWithout(roles, role), characters, firstName, lastName);
+		return new User(id, email, password, setWithout(roles, role), characters, firstName, lastName, patronage);
 	}
 	
 	public User withCharacter(PlayerCharacter character) {
-		return new User(id, email, password, roles, setWith(characters, character), firstName, lastName);
+		return new User(id, email, password, roles, setWith(characters, character), firstName, lastName, patronage);
 	}
 	
 	public User withoutCharacter(PlayerCharacter character) {
-		return new User(id, email, password, roles, setWithout(characters, character), firstName, lastName);
+		return new User(id, email, password, roles, setWithout(characters, character), firstName, lastName, patronage);
 	}
 	
 	public User withFirstName(String firstName) {
-		return new User(id, email, password, roles, characters, firstName, lastName);
+		return new User(id, email, password, roles, characters, firstName, lastName, patronage);
 	}
 	
 	public User withLastName(String lastName) {
-		return new User(id, email, password, roles, characters, firstName, lastName);
+		return new User(id, email, password, roles, characters, firstName, lastName, patronage);
+	}
+	
+	public User withPatronage(Patronage patronage) {
+		return new User(id, email, password, roles, characters, firstName, lastName, patronage);
 	}
     
 	@Override
@@ -182,5 +192,9 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+	
+	public boolean isPatronageActiveAsOf(Date date) {
+		return patronage.isActiveAsOf(date);
 	}
 }
