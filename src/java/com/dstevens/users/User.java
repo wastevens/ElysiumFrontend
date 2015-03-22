@@ -18,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.ForeignKey;
@@ -61,7 +62,8 @@ public class User implements UserDetails {
 	@ManyToMany(cascade={CascadeType.ALL})
 	@JoinTable(name="User_PlayerCharacters", 
 	           joinColumns = @JoinColumn(name="user_id"), 
-	           inverseJoinColumns = @JoinColumn(name="playerCharacter_id"))
+	           inverseJoinColumns = @JoinColumn(name="playerCharacter_id"),
+	           uniqueConstraints= {@UniqueConstraint(columnNames={"user_id", "playerCharacter_id"})})
 	@ForeignKey(name="User_PlayerCharacters_FK", inverseName="PlayerCharacters_User_FK")
     private final Set<PlayerCharacter> characters;
 	
@@ -71,7 +73,12 @@ public class User implements UserDetails {
     @Column(name="lastName")
     private final String lastName;
 	
-    @OneToOne(mappedBy="user", optional=true)
+    @OneToOne(cascade={CascadeType.ALL}, optional=true)
+    @JoinTable(name="User_Patronage", 
+    joinColumns = @JoinColumn(name="user_id", nullable=true), 
+    inverseJoinColumns = @JoinColumn(name="patronage_id", nullable=true),
+    uniqueConstraints={@UniqueConstraint(columnNames={"patronage_id", "user_id"}, name="User_Patronage_UC")})
+    @ForeignKey(name="User_Patronage_FK", inverseName="Patronage_User_FK")
     private final Patronage patronage;
     
     //Hibernate only

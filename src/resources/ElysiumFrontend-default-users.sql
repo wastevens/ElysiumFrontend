@@ -4,9 +4,13 @@ insert into User(id, email, password) values (3, 'patron@ut.org', 'password');
 insert into User(id, email, password) values (4, 'expired-patron@ut.org', 'password');
 insert into User(id, email, password) values (5, 'user@ut.org', 'password');
 
-insert into Patronage(id, year, expiration, user_id) values (42, 2014, '2020-12-31', 2);
-insert into Patronage(id, year, expiration, user_id) values (43, 2014, '2020-12-31', 3);
-insert into Patronage(id, year, expiration, user_id) values (44, 2014, '2014-12-31', 4);
+insert into Patronage(id, year, expiration) values (42, 2014, '2020-12-31');
+insert into Patronage(id, year, expiration) values (43, 2014, '2020-12-31');
+insert into Patronage(id, year, expiration) values (44, 2014, '2014-12-31');
+
+insert into User_Patronage(user_id, patronage_id) values(2, 42);
+insert into User_Patronage(user_id, patronage_id) values(3, 43);
+insert into User_Patronage(user_id, patronage_id) values(4, 44);
 	
 insert into User_roles(user_id, roles) values (2, 0);
 insert into User_roles(user_id, roles) values (2, 1);

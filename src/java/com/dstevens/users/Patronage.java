@@ -2,15 +2,18 @@ package com.dstevens.users;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -35,9 +38,12 @@ public class Patronage {
 	@Column(name="expiration")
 	private final Date expiration;
 	
-	@OneToOne(optional=true)
-	@JoinColumn(name="user_id")
-	@ForeignKey(name="Patronage_User_FK")
+    @OneToOne(cascade={CascadeType.ALL}, optional=true)
+    @JoinTable(name="User_Patronage", 
+    joinColumns = @JoinColumn(name="patronage_id", nullable=true), 
+    inverseJoinColumns = @JoinColumn(name="user_id", nullable=true),
+    uniqueConstraints={@UniqueConstraint(columnNames={"patronage_id", "user_id"}, name="User_Patronage_UC")})
+    @ForeignKey(name="Patronage_User_FK", inverseName="User_Patronage_FK")
 	private final User user;
 	
 	//Hibernate only

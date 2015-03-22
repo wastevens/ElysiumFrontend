@@ -35,7 +35,8 @@ public class PatronageController {
 	
 	@RequestMapping(value = "/admin/patronages/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getPatronage(@PathVariable String id) {
-		return new Gson().toJson(DisplayablePatronage.from(patronageRepository.findPatronageByMembershipId(id)));
+		Patronage findPatronageByMembershipId = patronageRepository.findPatronageByMembershipId(id);
+		return new Gson().toJson(DisplayablePatronage.from(findPatronageByMembershipId));
 	}
 	
 	
@@ -55,8 +56,8 @@ public class PatronageController {
 	public @ResponseBody String updatePatronage(@PathVariable String id, @RequestBody RawRequestBody requestBody, HttpServletResponse response) {
 		User user = userRepository.findUser(requestBody.userId);
 		Patronage patronage = patronageRepository.findPatronageByMembershipId(id);
-		if(user != null) {
-			if(!user.getPatronage().equals(patronage)) {
+		if(user != null && user.getPatronage() != null) {
+			if(user.getPatronage().equals(patronage)) {
 				throw new IllegalArgumentException("User " + requestBody.userId + " is associated with patronage " + user.getPatronage().displayMembershipId());
 			}
 		}

@@ -22,7 +22,7 @@
 	<classpathentry kind="lib" path="lib/default/gson.jar"/>
 	<classpathentry kind="lib" path="lib/default/guava.jar"/>
 	<classpathentry kind="lib" path="lib/default/hibernate-commons-annotations.jar"/>
-	<classpathentry kind="lib" path="lib/default/hibernate-core.jar"/>
+	<classpathentry kind="lib" path="lib/default/hibernate-core.jar" sourcepath="lib/sources/hibernate-core-sources.jar"/>
 	<classpathentry kind="lib" path="lib/default/hibernate-entitymanager.jar"/>
 	<classpathentry kind="lib" path="lib/default/hibernate-jpa-2.1-api.jar"/>
 	<classpathentry kind="lib" path="lib/default/hibernate-tools.jar"/>
