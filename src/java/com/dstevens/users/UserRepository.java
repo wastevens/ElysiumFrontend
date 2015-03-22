@@ -39,8 +39,8 @@ public class UserRepository {
 		return dao.findWithEmail(email);
 	}
 
-	public void save(User user) {
-		dao.save(user);
+	public User save(User user) {
+		return dao.save(user);
 	}
 	
 	

@@ -54,11 +54,14 @@ public class PatronageController {
 	
 	@RequestMapping(value = "/admin/patronages/{id}", method = RequestMethod.PUT)
 	public @ResponseBody String updatePatronage(@PathVariable String id, @RequestBody RawRequestBody requestBody, HttpServletResponse response) {
-		User user = userRepository.findUser(requestBody.userId);
 		Patronage patronage = patronageRepository.findPatronageByMembershipId(id);
+		if(patronage == null) {
+			throw new IllegalArgumentException("No patronage " + id + " found");
+		}
+		User user = userRepository.findUser(requestBody.userId);
 		if(user != null && user.getPatronage() != null) {
-			if(user.getPatronage().equals(patronage)) {
-				throw new IllegalArgumentException("User " + requestBody.userId + " is associated with patronage " + user.getPatronage().displayMembershipId());
+			if(!user.getPatronage().equals(patronage)) {
+				throw new IllegalArgumentException("Patronage " + user.getPatronage().displayMembershipId() + " is associated with user " + user.getId());
 			}
 		}
 		Patronage updatedPatronage = patronageRepository.save(patronage.expiringOn(requestBody.expirationAsDate()).forUser(user));

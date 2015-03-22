@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,8 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.users.DisplayableUser;
+import com.dstevens.users.Patronage;
+import com.dstevens.users.PatronageRepository;
 import com.dstevens.users.Role;
-import com.dstevens.users.UnknownUserException;
 import com.dstevens.users.User;
 import com.dstevens.users.UserRepository;
 import com.google.gson.Gson;
@@ -27,10 +30,12 @@ import com.google.gson.Gson;
 public class UserController {
 
 	private final UserRepository userRepository;
+	private final PatronageRepository patronageRepository;
 
 	@Autowired
-	public UserController(UserRepository userRepository) {
+	public UserController(UserRepository userRepository, PatronageRepository patronageRepository) {
 		this.userRepository = userRepository;
+		this.patronageRepository = patronageRepository;
 	}
 	
 	@RequestMapping(value = "/admin/page/users", method = RequestMethod.GET)
@@ -39,12 +44,24 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/admin/users/{id}", method = RequestMethod.PUT)
-	public @ResponseBody void updateUser(@PathVariable Integer id, @RequestBody final DisplayableUser userWrapper) {
+	public @ResponseBody String updateUser(@PathVariable Integer id, @RequestBody DisplayableUser userWrapper, HttpServletResponse response) {
 		User user = userRepository.findUser(id);
 		if(user == null) {
-			throw new UnknownUserException("Could not find user with id " + id);
+			throw new IllegalArgumentException("No user " + id + " found");
 		}
-		userRepository.save(user.withEmail(userWrapper.email).withFirstName(userWrapper.firstName).withLastName(userWrapper.lastName).withRoles(userWrapper.roles()));
+		Patronage patronage = patronageRepository.findPatronageByMembershipId(userWrapper.patronageId);
+		if(patronage != null && patronage.getUser() != null) {
+			if(!patronage.getUser().equals(user)) {
+				throw new IllegalArgumentException("User " + patronage.getUser().getId() + " is associated with patronage " + patronage.displayMembershipId());
+			}
+		}
+		User updatedUser = userRepository.save(user.withEmail(userWrapper.email).withFirstName(userWrapper.firstName).withLastName(userWrapper.lastName).withRoles(userWrapper.roles()).withPatronage(patronage));
+		addLocationHeader(response, updatedUser);
+		return new Gson().toJson(DisplayableUser.fromUserOn(new Date()).apply(updatedUser));
+	}
+	
+	private void addLocationHeader(HttpServletResponse response, User user) {
+		response.addHeader("LOCATION", "/admin/users/" + user.getId());
 	}
 	
 	@RequestMapping(value = "/admin/users", method = RequestMethod.GET)
