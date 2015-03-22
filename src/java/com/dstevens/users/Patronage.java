@@ -60,7 +60,7 @@ public class Patronage {
 	}
 	
 	public boolean isActiveAsOf(Date date) {
-		return expiration.before(date);
+		return expiration.after(date);
 	}
 	
 	public Patronage expiringOn(Date date) {

@@ -1,5 +1,8 @@
 package com.dstevens.web.admin.controllers;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -44,25 +47,89 @@ public class UserController {
 		userRepository.save(user.withEmail(userWrapper.email).withFirstName(userWrapper.firstName).withLastName(userWrapper.lastName).withRoles(userWrapper.roles()));
 	}
 	
-	@RequestMapping(value = "/admin/users/{id}", method = RequestMethod.GET)
-	public @ResponseBody String getUser(@PathVariable Integer id) {
-		return new Gson().toJson(DisplayableUser.fromUser().apply(userRepository.findUser(id)));
-	}
-	
 	@RequestMapping(value = "/admin/users", method = RequestMethod.GET)
 	public @ResponseBody String getUsers() {
 		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
-				                                      map(DisplayableUser.fromUser()).
+				                                      map(DisplayableUser.fromUserOn(new Date())).
 				                                      sorted().
 				                                      collect(Collectors.toList());
 		return new Gson().toJson(collect);
+	}
+	
+	@RequestMapping(value = "/admin/users/{id}", method = RequestMethod.GET)
+	public @ResponseBody String getUser(@PathVariable Integer id) {
+		return new Gson().toJson(DisplayableUser.fromUserOn(new Date()).apply(userRepository.findUser(id)));
+	}
+	
+	@RequestMapping(value = "/admin/users/clients", method = RequestMethod.GET)
+	public @ResponseBody String getClients() {
+		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
+				map(DisplayableUser.fromUserOn(new Date())).
+				filter((DisplayableUser t) -> t.patronageId == null).
+				sorted().
+				collect(Collectors.toList());
+		return new Gson().toJson(collect);
+	}
+	
+	@RequestMapping(value = "/admin/users/patrons", method = RequestMethod.GET)
+	public @ResponseBody String getPatrons() {
+		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
+				map(DisplayableUser.fromUserOn(new Date())).
+				filter((DisplayableUser t) -> t.patronageId != null).
+				sorted().
+				collect(Collectors.toList());
+		return new Gson().toJson(collect);
+	}
+	
+	@RequestMapping(value = "/admin/users/patrons/active", method = RequestMethod.GET)
+	public @ResponseBody String getActivePatrons() {
+		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
+				map(DisplayableUser.fromUserOn(new Date())).
+				filter((DisplayableUser t) -> t.patronageId != null && t.activePatron).
+				sorted().
+				collect(Collectors.toList());
+		return new Gson().toJson(collect);
+	}
+	
+	@RequestMapping(value = "/admin/users/patrons/active/{year}/{month}", method = RequestMethod.GET)
+	public @ResponseBody String getActivePatronsOn(@PathVariable int year, @PathVariable int month) {
+		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
+				map(DisplayableUser.fromUserOn(dateOf(year, month))).
+				filter((DisplayableUser t) -> t.patronageId != null && t.activePatron).
+				sorted().
+				collect(Collectors.toList());
+		return new Gson().toJson(collect);
+	}
+	
+	@RequestMapping(value = "/admin/users/patrons/expired", method = RequestMethod.GET)
+	public @ResponseBody String getInactivePatrons() {
+		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
+				map(DisplayableUser.fromUserOn(new Date())).
+				filter((DisplayableUser t) -> t.patronageId != null && !t.activePatron).
+				sorted().
+				collect(Collectors.toList());
+		return new Gson().toJson(collect);
+	}
+	
+	@RequestMapping(value = "/admin/users/patrons/expired/{year}/{month}", method = RequestMethod.GET)
+	public @ResponseBody String getInactivePatronsOn(@PathVariable int year, @PathVariable int month) {
+		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
+				map(DisplayableUser.fromUserOn(dateOf(year, month))).
+				filter((DisplayableUser t) -> t.activePatron != null && !t.activePatron).
+				sorted().
+				collect(Collectors.toList());
+		return new Gson().toJson(collect);
+	}
+
+	private Date dateOf(int year, int month) {
+		return Date.from(LocalDate.of(year, month, 1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 	}
 	
 	@RequestMapping(value = "/admin/users/role/{roleId}", method = RequestMethod.GET)
 	public @ResponseBody String getUsersWithRole(@PathVariable int roleId) {
 		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
 				filter((User t) -> t.getRoles().contains(Role.values()[roleId])).
-				map(DisplayableUser.fromUser()).
+				map(DisplayableUser.fromUserOn(new Date())).
 				sorted().
 				collect(Collectors.toList());
 		return new Gson().toJson(collect);

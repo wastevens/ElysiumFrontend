@@ -1,6 +1,7 @@
 package com.dstevens.troupes;
 
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ public class DisplayableTroupe implements Comparable<DisplayableTroupe> {
 	
 	public static Function<Troupe, DisplayableTroupe> fromTroupes() {
 		return (Troupe t) -> new DisplayableTroupe(t.getId(), t.getName(), t.getSetting().ordinal(),
-				                                   t.getStorytellers().stream().map(DisplayableUser.fromUser()).collect(Collectors.toSet()),
+				                                   t.getStorytellers().stream().map(DisplayableUser.fromUserOn(new Date())).collect(Collectors.toSet()),
 				                                   t.getCharacters().stream().map(DisplayablePlayerCharacter.fromCharacter()).collect(Collectors.toSet()));
 	}
 	

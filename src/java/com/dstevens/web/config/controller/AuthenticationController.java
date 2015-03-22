@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dstevens.config.Authorization;
 import com.dstevens.config.ForbiddenException;
 import com.dstevens.users.ElysiumUserDetailsService;
+import com.google.gson.Gson;
 
 @Controller
 public class AuthenticationController {
@@ -24,12 +25,12 @@ public class AuthenticationController {
 	}
 	
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-	@ResponseBody
-	public Authorization authenticate(@RequestBody AuthorizationRequest request) {
+	public @ResponseBody String authenticate(@RequestBody AuthorizationRequest request) {
 		UserDetails userDetails = userService.loadUserByUsername(request.username);
 		if(userDetails.getUsername().equals(request.username) &&
 		   userDetails.getPassword().equals(request.password)) {
-			return userService.authorize(new UsernamePasswordAuthenticationToken(request.username, request.password, userDetails.getAuthorities()));
+			Authorization authorize = userService.authorize(new UsernamePasswordAuthenticationToken(request.username, request.password, userDetails.getAuthorities()));
+			return new Gson().toJson(DisplayableAuthorization.from(authorize));
 		}
 		throw new ForbiddenException("User not authenticated");
 	}
@@ -37,6 +38,21 @@ public class AuthenticationController {
 	private static class AuthorizationRequest {
 		public String username;
 		public String password;
+	}
+	
+	@SuppressWarnings("unused")
+	private static class DisplayableAuthorization {
+		public String username;
+		public String token;
+		
+		public DisplayableAuthorization(String username, String token) {
+			this.username = username;
+			this.token = token;
+		}
+
+		public static DisplayableAuthorization from(Authorization authorization) {
+			return new DisplayableAuthorization(authorization.getUsername(), authorization.getToken());
+		}
 	}
 	
 }
