@@ -14,7 +14,7 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 	public final String lastName;
 	public final String email;
 	public final Set<Integer> roles;
-	public final DisplayablePatronage patronage;
+	public final String patronageId;
 	
 	//Jackson only
     @Deprecated
@@ -22,13 +22,13 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 		this(null, null, null, null, set(), null);
 	}
 	
-	private DisplayableUser(Integer id, String firstName, String lastName, String email, Set<Integer> roles, DisplayablePatronage patronage) {
+	private DisplayableUser(Integer id, String firstName, String lastName, String email, Set<Integer> roles, String patronageId) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.roles = roles;
-		this.patronage = patronage;
+		this.patronageId = patronageId;
 	}
 	
 	public Set<Role> roles() {
@@ -38,7 +38,7 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 	public static Function<User, DisplayableUser> fromUser() {
 		return (User t) -> new DisplayableUser(t.getId(), t.getFirstName(), t.getLastName(), t.getEmail(), 
 				                               t.getRoles().stream().map((Role r) -> r.ordinal()).collect(Collectors.toSet()),
-				                               DisplayablePatronage.from(t.getPatronage()));
+				                               t.getPatronage().displayMembershipId());
 	}
 
 	public Integer getId() {

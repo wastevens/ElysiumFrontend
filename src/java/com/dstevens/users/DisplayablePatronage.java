@@ -7,16 +7,16 @@ public class DisplayablePatronage {
 
     public String membershipId;
 	public String expiration;
-	public Integer user_id;
+	public Integer userId;
 	
 	public DisplayablePatronage() {
 		this(null, null, null);
 	}
 	
-	public DisplayablePatronage(String membershipId, String expiration, Integer user_id) {
+	public DisplayablePatronage(String membershipId, String expiration, Integer userId) {
 		this.membershipId = membershipId;
 		this.expiration = expiration;
-		this.user_id = user_id;
+		this.userId = userId;
 	}
 
 	public static DisplayablePatronage from(Patronage patronage) {
