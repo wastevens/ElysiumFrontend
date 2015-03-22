@@ -70,7 +70,9 @@ public class User implements UserDetails {
     @Column(name="lastName")
     private final String lastName;
 	
-    @OneToOne(mappedBy="user", optional=true)
+    @OneToOne(optional=true)
+	@JoinColumn(name="patronage_id")
+	@ForeignKey(name="User_Patronage_FK")
     private final Patronage patronage;
     
     //Hibernate only

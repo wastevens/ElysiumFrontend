@@ -7,14 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
-import org.hibernate.annotations.ForeignKey;
-
-@SuppressWarnings("deprecation")
 @Entity
 @Table(name="Patronage")
 public class Patronage {
@@ -32,9 +28,7 @@ public class Patronage {
 	@Column(name="expiration")
 	private final Date expiration;
 	
-	@OneToOne(optional=true)
-	@JoinColumn(name="user_id")
-	@ForeignKey(name="Patron_User_FK")
+	@OneToOne(mappedBy="patronage", optional=true)
 	private User user;
 	
 	//Hibernate only
