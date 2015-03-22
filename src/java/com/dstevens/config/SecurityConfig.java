@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.dstevens.users.ElysiumUserDetailsService;
  
@@ -18,6 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
  
 	@Autowired private ElysiumUserDetailsService userDetailService;
 	@Autowired private ElysiumAuthenticationSuccessHandler successHandler;
+	@Autowired private HydrateUserFilter hydrateUserFilter;
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -30,7 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	         sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
 	    	 formLogin().loginPage("/login").successHandler(successHandler).failureUrl("/login?error").permitAll().and().
 	    	 logout().logoutUrl("/logout").permitAll().and().
-	    	 authorizeRequests().anyRequest().permitAll().and().
+	    	 addFilterBefore(hydrateUserFilter, UsernamePasswordAuthenticationFilter.class).
+	    	 authorizeRequests().antMatchers("/admin/**", "/admin**").hasAnyRole("ADMIN").and().
 		     csrf().disable(); 
  
 	}

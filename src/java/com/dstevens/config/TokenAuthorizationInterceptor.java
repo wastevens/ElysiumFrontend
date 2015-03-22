@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.util.WebUtils;
@@ -33,7 +32,6 @@ public class TokenAuthorizationInterceptor extends HandlerInterceptorAdapter {
 			System.out.println("Authorization failed");
 			throw new ForbiddenException("Request not authorized");
 		}
-		SecurityContextHolder.getContext().setAuthentication(userService.authenticationFor(authorization));
 		
 		return true;
 	}

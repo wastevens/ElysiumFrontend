@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="lib/default/activation.jar"/>
-	<classpathentry kind="lib" path="lib/default/ant.jar"/>
 	<classpathentry kind="lib" path="lib/default/antlr.jar"/>
 	<classpathentry kind="lib" path="lib/default/aopalliance.jar"/>
 	<classpathentry kind="lib" path="lib/default/app.jar"/>
@@ -78,5 +77,6 @@
 	<classpathentry kind="lib" path="lib/default/TheWheel.jar"/>
 	<classpathentry kind="lib" path="lib/default/xml-apis.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-web.jar" sourcepath="lib/sources/spring-web-sources.jar"/>
+	<classpathentry kind="lib" path="lib/default/ant.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

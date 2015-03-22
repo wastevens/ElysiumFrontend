@@ -1,6 +1,7 @@
 package com.dstevens.users;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -35,11 +36,14 @@ public class ElysiumUserDetailsService implements UserDetailsService {
 		return user;
 	}
 	
-	public AuthorizationToken authorize(Authentication username) {
+	public AuthorizationToken authorize(Authentication authentication) {
+		if(authorizationTokens.containsValue(authentication)) {
+			return authorizationTokens.entrySet().stream().findFirst().filter((Entry<AuthorizationToken, Authentication> entry) -> entry.getValue().equals(authentication)).get().getKey();
+		}
 		long currentTimeMillis = System.currentTimeMillis();
 		long duration = (24 * 60 * 60 * 1000);
-		AuthorizationToken token = new AuthorizationToken(username.getName(), new IdSupplier().get().replace(":", "-"), String.valueOf(currentTimeMillis + duration));
-		authorizationTokens.put(token, username);
+		AuthorizationToken token = new AuthorizationToken(authentication.getName(), new IdSupplier().get().replace(":", "-"), String.valueOf(currentTimeMillis + duration));
+		authorizationTokens.put(token, authentication);
 		System.out.println(authorizationTokens);
 		return token;
 	}
