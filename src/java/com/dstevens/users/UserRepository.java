@@ -16,6 +16,14 @@ public class UserRepository {
 	public Iterable<User> findAllUndeleted() {
 		return dao.findAll();
 	}
+	
+	public Iterable<User> findClients() {
+		return dao.findWithoutPatronage();
+	}
+	
+	public Iterable<User> findPatrons() {
+		return dao.findWithPatronage();
+	}
 
 	public User findUser(Integer id) {
 		return dao.findOne(id);

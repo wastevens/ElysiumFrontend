@@ -63,9 +63,8 @@ public class UserController {
 	
 	@RequestMapping(value = "/admin/users/clients", method = RequestMethod.GET)
 	public @ResponseBody String getClients() {
-		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
+		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findClients().spliterator(), false).
 				map(DisplayableUser.fromUserOn(new Date())).
-				filter((DisplayableUser t) -> t.patronageId == null).
 				sorted().
 				collect(Collectors.toList());
 		return new Gson().toJson(collect);
@@ -73,9 +72,8 @@ public class UserController {
 	
 	@RequestMapping(value = "/admin/users/patrons", method = RequestMethod.GET)
 	public @ResponseBody String getPatrons() {
-		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
+		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findPatrons().spliterator(), false).
 				map(DisplayableUser.fromUserOn(new Date())).
-				filter((DisplayableUser t) -> t.patronageId != null).
 				sorted().
 				collect(Collectors.toList());
 		return new Gson().toJson(collect);
@@ -83,9 +81,9 @@ public class UserController {
 	
 	@RequestMapping(value = "/admin/users/patrons/active", method = RequestMethod.GET)
 	public @ResponseBody String getActivePatrons() {
-		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
+		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findPatrons().spliterator(), false).
 				map(DisplayableUser.fromUserOn(new Date())).
-				filter((DisplayableUser t) -> t.patronageId != null && t.activePatron).
+				filter((DisplayableUser t) -> t.activePatron).
 				sorted().
 				collect(Collectors.toList());
 		return new Gson().toJson(collect);
@@ -93,9 +91,9 @@ public class UserController {
 	
 	@RequestMapping(value = "/admin/users/patrons/active/{year}/{month}", method = RequestMethod.GET)
 	public @ResponseBody String getActivePatronsOn(@PathVariable int year, @PathVariable int month) {
-		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
+		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findPatrons().spliterator(), false).
 				map(DisplayableUser.fromUserOn(dateOf(year, month))).
-				filter((DisplayableUser t) -> t.patronageId != null && t.activePatron).
+				filter((DisplayableUser t) -> t.activePatron).
 				sorted().
 				collect(Collectors.toList());
 		return new Gson().toJson(collect);
@@ -113,9 +111,9 @@ public class UserController {
 	
 	@RequestMapping(value = "/admin/users/patrons/expired/{year}/{month}", method = RequestMethod.GET)
 	public @ResponseBody String getInactivePatronsOn(@PathVariable int year, @PathVariable int month) {
-		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
+		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findPatrons().spliterator(), false).
 				map(DisplayableUser.fromUserOn(dateOf(year, month))).
-				filter((DisplayableUser t) -> t.activePatron != null && !t.activePatron).
+				filter((DisplayableUser t) -> !t.activePatron).
 				sorted().
 				collect(Collectors.toList());
 		return new Gson().toJson(collect);
