@@ -66,5 +66,4 @@ public class Patronage {
 	public Patronage expiringOn(Date date) {
 		return new Patronage(id, year, date);
 	}
-	
 }

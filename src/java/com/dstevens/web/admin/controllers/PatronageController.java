@@ -32,13 +32,25 @@ public class PatronageController {
 	@RequestMapping(value = "/admin/patronages", method = RequestMethod.POST)
 	public @ResponseBody String createPatronage(@RequestBody RawRequestBody requestBody, HttpServletResponse response) {
 		Patronage savedPatronage = patronageRepository.save(new Patronage(requestBody.year, requestBody.expirationAsDate()));
-		response.addHeader("LOCATION", "/admin/patronages/" + savedPatronage.displayMembershipId());
+		addLocationHeader(response, savedPatronage);
 		return new Gson().toJson(DisplayablePatronage.from(savedPatronage));
 	}
 	
 	@RequestMapping(value = "/admin/patronages/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getPatronage(@PathVariable String id) {
 		return new Gson().toJson(DisplayablePatronage.from(patronageRepository.findPatronageByMembershipId(id)));
+	}
+	
+	@RequestMapping(value = "/admin/patronages/{id}", method = RequestMethod.PUT)
+	public @ResponseBody String updatePatronage(@PathVariable String id, @RequestBody RawRequestBody requestBody, HttpServletResponse response) {
+		Patronage patronage = patronageRepository.findPatronageByMembershipId(id);
+		Patronage updatedPatronage = patronageRepository.save(patronage.expiringOn(requestBody.expirationAsDate()));
+		addLocationHeader(response, updatedPatronage);
+		return new Gson().toJson(DisplayablePatronage.from(updatedPatronage));
+	}
+
+	private void addLocationHeader(HttpServletResponse response, Patronage patronage) {
+		response.addHeader("LOCATION", "/admin/patronages/" + patronage.displayMembershipId());
 	}
 	
 	private static class RawRequestBody {
