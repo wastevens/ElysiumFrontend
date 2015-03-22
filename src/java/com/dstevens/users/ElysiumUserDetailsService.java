@@ -2,6 +2,8 @@ package com.dstevens.users;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -38,7 +40,7 @@ public class ElysiumUserDetailsService implements UserDetailsService {
 	
 	public AuthorizationToken authorize(Authentication authentication) {
 		if(authorizationTokens.containsValue(authentication)) {
-			return authorizationTokens.entrySet().stream().findFirst().filter((Entry<AuthorizationToken, Authentication> entry) -> entry.getValue().equals(authentication)).get().getKey();
+			return findAuthorizationFor(authentication);
 		}
 		long currentTimeMillis = System.currentTimeMillis();
 		long duration = (24 * 60 * 60 * 1000);
@@ -47,13 +49,43 @@ public class ElysiumUserDetailsService implements UserDetailsService {
 		System.out.println(authorizationTokens);
 		return token;
 	}
+
+	private AuthorizationToken findAuthorizationFor(Authentication authentication) {
+		Optional<Entry<AuthorizationToken, Authentication>> filter = authorizationTokens.entrySet().stream().findFirst().filter(predicate(authentication));
+		if(filter.isPresent()) {
+			return filter.get().getKey();
+		}
+		return null;
+	}
+
+	private Predicate<Entry<AuthorizationToken, Authentication>> predicate(final Authentication authentication) {
+		return new Predicate<Map.Entry<AuthorizationToken,Authentication>>() {
+
+			@Override
+			public boolean test(Entry<AuthorizationToken, Authentication> t) {
+				Authentication value = t.getValue();
+				return value.getName().equals(authentication.getName()) && 
+					   value.getCredentials().equals(authentication.getCredentials());
+			}
+		};
+	}
 	
 	public boolean isUserAuthorized(AuthorizationToken token) {
-		return (authorizationTokens.containsKey(token) &&
-				Long.valueOf(token.expiration()) > System.currentTimeMillis());
+		if(!authorizationTokens.containsKey(token)) {
+			return false;
+		}
+		if(!(Long.valueOf(token.expiration()) > System.currentTimeMillis())) {
+			authorizationTokens.remove(token);
+			return false;
+		}
+		return true;
 	}
 	
 	public Authentication authenticationFor(AuthorizationToken token) {
 		return authorizationTokens.get(token);
+	}
+
+	public void removeAuthorizationFor(AuthorizationToken authorization) {
+		authorizationTokens.remove(authorization);
 	}
 }

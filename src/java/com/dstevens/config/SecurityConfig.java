@@ -19,6 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
  
 	@Autowired private ElysiumUserDetailsService userDetailService;
 	@Autowired private ElysiumAuthenticationSuccessHandler successHandler;
+	@Autowired private ElysiumLogoutHandler logoutHandler;
 	@Autowired private HydrateUserFilter hydrateUserFilter;
 
 	@Autowired
@@ -31,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    http.
 	         sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
 	    	 formLogin().loginPage("/login").successHandler(successHandler).failureUrl("/login?error").permitAll().and().
-	    	 logout().logoutUrl("/logout").permitAll().and().
+	    	 logout().logoutUrl("/logout").addLogoutHandler(logoutHandler). permitAll().and().
 	    	 addFilterBefore(hydrateUserFilter, UsernamePasswordAuthenticationFilter.class).
 	    	 authorizeRequests().antMatchers("/admin/**", "/admin**").hasAnyRole("ADMIN").and().
 		     csrf().disable(); 
