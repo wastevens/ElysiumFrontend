@@ -51,6 +51,14 @@ public class Patronage {
 		return year + String.format("%06d", id);
 	}
 	
+	public Date getExpiration() {
+		return expiration;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+	
 	public boolean isActiveAsOf(Date date) {
 		return expiration.before(date);
 	}

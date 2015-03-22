@@ -124,6 +124,10 @@ public class User implements UserDetails {
 	public String getLastName() {
 		return lastName;
 	}
+	
+	public Patronage getPatronage() {
+		return patronage;
+	}
 
 
 	public User withEmail(String email) {
