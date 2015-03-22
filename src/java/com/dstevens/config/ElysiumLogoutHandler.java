@@ -28,7 +28,7 @@ public class ElysiumLogoutHandler implements LogoutHandler {
 		userService.removeAuthorizationFor(getAuthorizationFrom(request));
 	}
 	
-	private AuthorizationToken getAuthorizationFrom(HttpServletRequest request) {
+	private Authorization getAuthorizationFrom(HttpServletRequest request) {
 		String token = request.getHeader("AUTHORIZATION");
 		if(token == null) {
 			Cookie cookie = WebUtils.getCookie(request, "AUTHORIZATION");
@@ -37,7 +37,7 @@ public class ElysiumLogoutHandler implements LogoutHandler {
 			}
 		}
 		if(token != null) {
-			return AuthorizationToken.from(token);
+			return Authorization.from(token);
 		}
 		return null;
 	}

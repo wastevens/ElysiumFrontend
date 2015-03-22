@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dstevens.config.AuthorizationToken;
+import com.dstevens.config.Authorization;
 import com.dstevens.config.ForbiddenException;
 import com.dstevens.users.ElysiumUserDetailsService;
 
@@ -25,7 +25,7 @@ public class AuthenticationController {
 	
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	@ResponseBody
-	public AuthorizationToken authenticate(@RequestBody AuthorizationRequest request) {
+	public Authorization authenticate(@RequestBody AuthorizationRequest request) {
 		UserDetails userDetails = userService.loadUserByUsername(request.username);
 		if(userDetails.getUsername().equals(request.username) &&
 		   userDetails.getPassword().equals(request.password)) {

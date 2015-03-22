@@ -12,18 +12,18 @@ import org.springframework.web.util.WebUtils;
 import com.dstevens.users.ElysiumUserDetailsService;
 
 @Component
-public class TokenAuthorizationInterceptor extends HandlerInterceptorAdapter {
+public class AuthorizationTokenInterceptor extends HandlerInterceptorAdapter {
 
 	private ElysiumUserDetailsService userService;
 
 	@Autowired
-	public TokenAuthorizationInterceptor(ElysiumUserDetailsService userService) {
+	public AuthorizationTokenInterceptor(ElysiumUserDetailsService userService) {
 		this.userService = userService;
 	}
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		AuthorizationToken authorization = getAuthorizationFrom(request);
+		Authorization authorization = getAuthorizationFrom(request);
 		if(authorization == null) {
 			System.out.println("No authorization found");
 			throw new ForbiddenException("Request not authorized");
@@ -36,7 +36,7 @@ public class TokenAuthorizationInterceptor extends HandlerInterceptorAdapter {
 		return true;
 	}
 
-	private AuthorizationToken getAuthorizationFrom(HttpServletRequest request) {
+	private Authorization getAuthorizationFrom(HttpServletRequest request) {
 		String token = request.getHeader("AUTHORIZATION");
 		if(token == null) {
 			Cookie cookie = WebUtils.getCookie(request, "AUTHORIZATION");
@@ -45,7 +45,7 @@ public class TokenAuthorizationInterceptor extends HandlerInterceptorAdapter {
 			}
 		}
 		if(token != null) {
-			return AuthorizationToken.from(token);
+			return Authorization.from(token);
 		}
 		return null;
 	}

@@ -4,21 +4,21 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class AuthorizationToken {
+public class Authorization {
 
 	private final String username;
 	private final String key;
 	private final String expiration;
 
-	public static AuthorizationToken from(String token) {
+	public static Authorization from(String token) {
 		String[] expectedTokens = token.split(":");
 		String username = expectedTokens[0];
 		String key = expectedTokens[1];
 		String expiration = expectedTokens[2];
-		return new AuthorizationToken(username, key, expiration);
+		return new Authorization(username, key, expiration);
 	}
 	
-	public AuthorizationToken(String username, String key, String expiration) {
+	public Authorization(String username, String key, String expiration) {
 		this.username = username;
 		this.key = key;
 		this.expiration = expiration;

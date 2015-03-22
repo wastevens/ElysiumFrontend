@@ -30,12 +30,12 @@ public class HydrateUserFilter extends GenericFilterBean {
 	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		AuthorizationToken authorizationFrom = getAuthorizationFrom((HttpServletRequest) request);
-		if(authorizationFrom == null) {
+		Authorization authorization = getAuthorizationFrom((HttpServletRequest) request);
+		if(authorization == null) {
 			chain.doFilter(request, response);
 			return;
 		}
-		Authentication authenticationFor = userService.authenticationFor(authorizationFrom);
+		Authentication authenticationFor = userService.authenticationFor(authorization);
 		if(authenticationFor == null) {
 			chain.doFilter(request, response);
 			return;
@@ -44,7 +44,7 @@ public class HydrateUserFilter extends GenericFilterBean {
 		chain.doFilter(request, response);
 	}
 	
-	private AuthorizationToken getAuthorizationFrom(HttpServletRequest request) {
+	private Authorization getAuthorizationFrom(HttpServletRequest request) {
 		String token = request.getHeader("AUTHORIZATION");
 		if(token == null) {
 			Cookie cookie = WebUtils.getCookie(request, "AUTHORIZATION");
@@ -53,7 +53,7 @@ public class HydrateUserFilter extends GenericFilterBean {
 			}
 		}
 		if(token != null) {
-			return AuthorizationToken.from(token);
+			return Authorization.from(token);
 		}
 		return null;
 	}

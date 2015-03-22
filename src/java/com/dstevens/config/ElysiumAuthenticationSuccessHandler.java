@@ -28,7 +28,7 @@ public class ElysiumAuthenticationSuccessHandler extends SimpleUrlAuthentication
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-		AuthorizationToken authorization = userService.authorize(authentication);
+		Authorization authorization = userService.authorize(authentication);
 		response.addHeader("AUTHORIZATION", authorization.getToken());
 		Cookie cookie = new Cookie("AUTHORIZATION", authorization.getToken());
 		cookie.setPath("/");
