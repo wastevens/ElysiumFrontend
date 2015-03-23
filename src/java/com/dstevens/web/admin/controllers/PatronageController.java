@@ -91,10 +91,8 @@ public class PatronageController {
 			throw new IllegalArgumentException("No patronage " + id + " found");
 		}
 		User user = userRepository.findUser(requestBody.userId);
-		if(user != null && user.getPatronage() != null) {
-			if(!user.getPatronage().equals(patronage)) {
-				throw new IllegalArgumentException("Patronage " + user.getPatronage().displayMembershipId() + " is associated with user " + user.getId());
-			}
+		if(user != null && user.getPatronage() != null && !user.getPatronage().equals(patronage)) {
+			throw new IllegalArgumentException("Patronage " + user.getPatronage().displayMembershipId() + " is associated with user " + user.getId());
 		}
 		Patronage updatedPatronage = patronageRepository.save(patronage.expiringOn(requestBody.expirationAsDate()).forUser(user));
 		addLocationHeader(response, updatedPatronage);
