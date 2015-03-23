@@ -3,6 +3,9 @@ package com.dstevens.web.admin.controllers;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,6 +34,15 @@ public class PatronageController {
 	public PatronageController(PatronageRepository patronageRepository, UserRepository userRepository) {
 		this.patronageRepository = patronageRepository;
 		this.userRepository = userRepository;
+	}
+	
+	@RequestMapping(value = "/admin/patronages", method = RequestMethod.GET)
+	public @ResponseBody String getPatronages() {
+		List<DisplayablePatronage> collect = StreamSupport.stream(patronageRepository.findAllUndeleted().spliterator(), false).
+                map((Patronage t) -> DisplayablePatronage.from(t)).
+                sorted().
+                collect(Collectors.toList());
+		return new Gson().toJson(collect);
 	}
 	
 	@RequestMapping(value = "/admin/patronages/{id}", method = RequestMethod.GET)

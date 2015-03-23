@@ -1,9 +1,10 @@
 package com.dstevens.users;
 
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 
 
-public class DisplayablePatronage {
+public class DisplayablePatronage implements Comparable<DisplayablePatronage> {
 
     public String membershipId;
 	public String expiration;
@@ -26,5 +27,11 @@ public class DisplayablePatronage {
 		}
 		return new DisplayablePatronage(patronage.displayMembershipId(), new SimpleDateFormat("yyyy-MM-dd").format(patronage.getExpiration()), id);
 	}
-	
+
+	@Override
+	public int compareTo(DisplayablePatronage that) {
+		return Comparator.comparing((DisplayablePatronage t) -> t.expiration == null ? "" : t.expiration).
+				thenComparing(Comparator.comparing((DisplayablePatronage t) -> t.membershipId)).
+				compare(this, that);
+	}
 }
