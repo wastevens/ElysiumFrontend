@@ -45,6 +45,26 @@ public class PatronageController {
 		return new Gson().toJson(collect);
 	}
 	
+	@RequestMapping(value = "/admin/patronages/unassigned", method = RequestMethod.GET)
+	public @ResponseBody String getUnassignedPatronages() {
+		List<DisplayablePatronage> collect = StreamSupport.stream(patronageRepository.findAllUndeleted().spliterator(), false).
+				filter((Patronage t) -> t.getUser() == null).
+				map((Patronage t) -> DisplayablePatronage.from(t)).
+				sorted().
+				collect(Collectors.toList());
+		return new Gson().toJson(collect);
+	}
+	
+	@RequestMapping(value = "/admin/patronages/assigned", method = RequestMethod.GET)
+	public @ResponseBody String getAssignedPatronages() {
+		List<DisplayablePatronage> collect = StreamSupport.stream(patronageRepository.findAllUndeleted().spliterator(), false).
+				filter((Patronage t) -> t.getUser() != null).
+				map((Patronage t) -> DisplayablePatronage.from(t)).
+				sorted().
+				collect(Collectors.toList());
+		return new Gson().toJson(collect);
+	}
+	
 	@RequestMapping(value = "/admin/patronages/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getPatronage(@PathVariable String id) {
 		Patronage findPatronageByMembershipId = patronageRepository.findPatronageByMembershipId(id);
