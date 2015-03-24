@@ -16,7 +16,7 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 	public final String email;
 	public final String password;
 	public final Set<Integer> roles;
-	public final String patronageId;
+	public final String membershipId;
 	public final Boolean activePatron;
 	
 	//Jackson only
@@ -25,14 +25,14 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 		this(null, null, null, null, null, set(), null, null);
 	}
 	
-	private DisplayableUser(Integer id, String firstName, String lastName, String email, String password, Set<Integer> roles, String patronageId, Boolean activePatron) {
+	private DisplayableUser(Integer id, String firstName, String lastName, String email, String password, Set<Integer> roles, String membershipId, Boolean activePatron) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
 		this.roles = roles;
-		this.patronageId = patronageId;
+		this.membershipId = membershipId;
 		this.activePatron = activePatron;
 	}
 	

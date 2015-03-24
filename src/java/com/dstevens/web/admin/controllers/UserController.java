@@ -48,9 +48,9 @@ public class UserController {
 	@RequestMapping(value = "/admin/users", method = RequestMethod.POST)
 	@ResponseStatus(value=HttpStatus.CREATED)
 	public @ResponseBody String createUser(@RequestBody DisplayableUser userWrapper, HttpServletResponse response) {
-		Patronage patronage = patronageRepository.findPatronageByMembershipId(userWrapper.patronageId);
+		Patronage patronage = patronageRepository.findPatronageByMembershipId(userWrapper.membershipId);
 		if(patronage != null && patronage.getUser() != null) {
-			throw new IllegalArgumentException("Patronage " + userWrapper.patronageId + " already has a user.");
+			throw new IllegalArgumentException("Patronage " + userWrapper.membershipId + " already has a user.");
 		}
 		User user = userRepository.save(new User(userWrapper.getEmail(), userWrapper.getPassword(), userWrapper.getRoles().stream().map((Integer t) -> Role.values()[t]).collect(Collectors.toSet())).withFirstName(userWrapper.getFirstName()).withLastName(userWrapper.getLastName()));
 		if(patronage != null) {
@@ -68,7 +68,7 @@ public class UserController {
 		if(user == null) {
 			throw new IllegalArgumentException("No user " + id + " found");
 		}
-		Patronage patronage = patronageRepository.findPatronageByMembershipId(userWrapper.patronageId);
+		Patronage patronage = patronageRepository.findPatronageByMembershipId(userWrapper.membershipId);
 		if(patronage != null && patronage.getUser() != null && !patronage.getUser().equals(user)) {
 			throw new IllegalArgumentException("User " + patronage.getUser().getId() + " is associated with patronage " + patronage.displayMembershipId());
 		}
@@ -137,7 +137,7 @@ public class UserController {
 	public @ResponseBody String getInactivePatrons() {
 		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
 				map(DisplayableUser.fromUserOn(new Date())).
-				filter((DisplayableUser t) -> t.patronageId != null && !t.activePatron).
+				filter((DisplayableUser t) -> t.membershipId != null && !t.activePatron).
 				sorted().
 				collect(Collectors.toList());
 		return new Gson().toJson(collect);
