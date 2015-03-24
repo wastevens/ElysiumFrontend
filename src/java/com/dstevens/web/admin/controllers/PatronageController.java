@@ -10,12 +10,14 @@ import java.util.stream.StreamSupport;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.dstevens.users.DisplayablePatronage;
 import com.dstevens.users.Patronage;
@@ -73,15 +75,20 @@ public class PatronageController {
 	
 	
 	@RequestMapping(value = "/admin/patronages", method = RequestMethod.POST)
+	@ResponseStatus(value=HttpStatus.CREATED)
 	public @ResponseBody String createPatronage(@RequestBody RawRequestBody requestBody, HttpServletResponse response) {
 		User user = userRepository.findUser(requestBody.userId);
 		if(user != null && user.getPatronage() != null) {
 			throw new IllegalArgumentException("User " + requestBody.userId + " already has a patronage.");
 		}
-		Patronage patronage = new Patronage(requestBody.year, requestBody.expirationAsDate(), user);
-		Patronage savedPatronage = patronageRepository.save(patronage);
-		addLocationHeader(response, savedPatronage);
-		return new Gson().toJson(DisplayablePatronage.from(savedPatronage));
+		Patronage patronage = patronageRepository.save(new Patronage(requestBody.year, requestBody.expirationAsDate()));
+		if(user != null) {
+			patronage = patronage.forUser(user);
+			user = user.withPatronage(patronage);
+			patronage = patronageRepository.save(patronage);
+		}
+		addLocationHeader(response, patronage);
+		return new Gson().toJson(DisplayablePatronage.from(patronage));
 	}
 	
 	@RequestMapping(value = "/admin/patronages/{id}", method = RequestMethod.PUT)

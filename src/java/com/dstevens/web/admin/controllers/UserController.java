@@ -10,12 +10,14 @@ import java.util.stream.StreamSupport;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.users.DisplayableUser;
@@ -43,6 +45,23 @@ public class UserController {
 		return new ModelAndView("/admin/users");
 	}
 	
+	@RequestMapping(value = "/admin/users", method = RequestMethod.POST)
+	@ResponseStatus(value=HttpStatus.CREATED)
+	public @ResponseBody String createUser(@RequestBody DisplayableUser userWrapper, HttpServletResponse response) {
+		Patronage patronage = patronageRepository.findPatronageByMembershipId(userWrapper.patronageId);
+		if(patronage != null && patronage.getUser() != null) {
+			throw new IllegalArgumentException("Patronage " + userWrapper.patronageId + " already has a user.");
+		}
+		User user = userRepository.save(new User(userWrapper.getEmail(), userWrapper.getPassword(), userWrapper.getRoles().stream().map((Integer t) -> Role.values()[t]).collect(Collectors.toSet())).withFirstName(userWrapper.getFirstName()).withLastName(userWrapper.getLastName()));
+		if(patronage != null) {
+			user = user.withPatronage(patronage);
+			patronage = patronage.forUser(user);
+			user = userRepository.save(user);
+		}
+		addLocationHeader(response, user);
+		return new Gson().toJson(DisplayableUser.fromUserOn(new Date()).apply(user));
+	}
+	
 	@RequestMapping(value = "/admin/users/{id}", method = RequestMethod.PUT)
 	public @ResponseBody String updateUser(@PathVariable Integer id, @RequestBody DisplayableUser userWrapper, HttpServletResponse response) {
 		User user = userRepository.findUser(id);
@@ -50,10 +69,8 @@ public class UserController {
 			throw new IllegalArgumentException("No user " + id + " found");
 		}
 		Patronage patronage = patronageRepository.findPatronageByMembershipId(userWrapper.patronageId);
-		if(patronage != null && patronage.getUser() != null) {
-			if(!patronage.getUser().equals(user)) {
-				throw new IllegalArgumentException("User " + patronage.getUser().getId() + " is associated with patronage " + patronage.displayMembershipId());
-			}
+		if(patronage != null && patronage.getUser() != null && !patronage.getUser().equals(user)) {
+			throw new IllegalArgumentException("User " + patronage.getUser().getId() + " is associated with patronage " + patronage.displayMembershipId());
 		}
 		User updatedUser = userRepository.save(user.withEmail(userWrapper.email).withFirstName(userWrapper.firstName).withLastName(userWrapper.lastName).withRoles(userWrapper.roles()).withPatronage(patronage));
 		addLocationHeader(response, updatedUser);

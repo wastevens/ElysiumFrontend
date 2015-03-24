@@ -14,6 +14,7 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 	public final String firstName;
 	public final String lastName;
 	public final String email;
+	public final String password;
 	public final Set<Integer> roles;
 	public final String patronageId;
 	public final Boolean activePatron;
@@ -21,14 +22,15 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 	//Jackson only
     @Deprecated
 	private DisplayableUser() {
-		this(null, null, null, null, set(), null, null);
+		this(null, null, null, null, null, set(), null, null);
 	}
 	
-	private DisplayableUser(Integer id, String firstName, String lastName, String email, Set<Integer> roles, String patronageId, Boolean activePatron) {
+	private DisplayableUser(Integer id, String firstName, String lastName, String email, String password, Set<Integer> roles, String patronageId, Boolean activePatron) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.password = password;
 		this.roles = roles;
 		this.patronageId = patronageId;
 		this.activePatron = activePatron;
@@ -48,7 +50,7 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 					membershipId = t.getPatronage().displayMembershipId();
 					activePatronage = t.getPatronage().isActiveAsOf(date);
 				}
-				return new DisplayableUser(t.getId(), t.getFirstName(), t.getLastName(), t.getEmail(), 
+				return new DisplayableUser(t.getId(), t.getFirstName(), t.getLastName(), t.getEmail(), null,
 						                   t.getRoles().stream().map((Role r) -> r.ordinal()).collect(Collectors.toSet()),
 						                   membershipId, activePatronage);
 			}
@@ -75,6 +77,10 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 		return roles;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+	
 	@Override
 	public int compareTo(DisplayableUser that) {
 		return Comparator.comparing((DisplayableUser t) -> t.lastName == null ? "" : t.lastName).

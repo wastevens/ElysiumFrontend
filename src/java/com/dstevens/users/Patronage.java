@@ -56,10 +56,6 @@ public class Patronage {
     	this(null, year, expiration, null);
     }
     
-    public Patronage(Integer year, Date expiration, User user) {
-    	this(null, year, expiration, user);
-    }
-    
 	public Patronage(Integer id, Integer year, Date expiration, User user) {
 		this.id = id;
 		this.year = year;

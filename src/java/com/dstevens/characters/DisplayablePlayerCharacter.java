@@ -11,7 +11,7 @@ import static com.dstevens.collections.Lists.sort;
 
 public class DisplayablePlayerCharacter {
 
-	public final String id;
+	public final Integer id;
 	public final String name;
 	public final int setting;
 	public final int status;
@@ -41,7 +41,7 @@ public class DisplayablePlayerCharacter {
 		this(null, null, -1, -1, -1, null, null, null, 0, 0, 0, null, null, null, null, null, null, null, null, null, null, null, null);
 	}
     
-    private DisplayablePlayerCharacter(String id, String name, int setting, int status, int approval, Integer clan, Integer bloodline, List<Integer> inClanDisciplines,
+    private DisplayablePlayerCharacter(Integer id, String name, int setting, int status, int approval, Integer clan, Integer bloodline, List<Integer> inClanDisciplines,
     		                           int physicalAttribute, int socialAttribute, int mentalAttribute,
     		                           List<Integer> physicalAttributeFocuses, List<Integer> socialAttributeFocuses, List<Integer> mentalAttributeFocuses,
     		                           List<DisplayableCharacterSkill> skills, List<DisplayableCharacterBackground> backgrounds, 
