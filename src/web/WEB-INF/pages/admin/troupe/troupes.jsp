@@ -12,8 +12,8 @@
 </head>
 <body ng-app="admin.troupe">
 
-	<list-troupes csrf='{"header": "${_csrf.headerName}", "token": "${_csrf.token}"}'></list-troupes>
-	<add-troupe csrf='{"header": "${_csrf.headerName}", "token": "${_csrf.token}"}'></add-troupe>
+	<list-troupes></list-troupes>
+	<add-troupe></add-troupe>
 
 </body>
 </html>

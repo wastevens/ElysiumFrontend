@@ -8,14 +8,14 @@ factory('troupeRepository', ['$resource', 'csrfResource', function($resource, cs
 		getTroupe: function(id) {
 			return $resource(this.url + '/' + id, {}).get();
 		},
-		addTroupe: function(troupeToPost, csrfHeader, csrfToken) {
-			return csrfResource.post(this.url, troupeToPost, csrfHeader, csrfToken);
+		addTroupe: function(troupeToPost) {
+			return csrfResource.post(this.url, troupeToPost);
 		},
-		updateTroupe: function(troupe, csrfHeader, csrfToken) {
-			return csrfResource.post(this.url + '/' + troupe.id, troupe, csrfHeader, csrfToken);
+		updateTroupe: function(troupe) {
+			return csrfResource.post(this.url + '/' + troupe.id, troupe);
 		},
-		deleteTroupe: function(id, csrfHeader, csrfToken) {
-			return csrfResource.delete(this.url + '/' + id, csrfHeader, csrfToken);
+		deleteTroupe: function(id) {
+			return csrfResource.delete(this.url + '/' + id);
 		}
 	};
 }]);

@@ -14,7 +14,7 @@
 </head>
 <body ng-app="user.character">
 
-	<list-characters csrf='{"header": "${_csrf.headerName}", "token": "${_csrf.token}"}'></list-characters>
+	<list-characters></list-characters>
 	<p><a href="/user/page/character/create">Create a new characters</a>
 
 </body>

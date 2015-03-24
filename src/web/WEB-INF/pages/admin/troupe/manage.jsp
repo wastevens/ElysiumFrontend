@@ -13,7 +13,7 @@
 </head>
 <body ng-app="admin.troupe">
 
-	<manage-troupe troupe='${troupe}' csrf='{"header": "${_csrf.headerName}", "token": "${_csrf.token}"}'></list-troupes>
+	<manage-troupe troupe='${troupe}'></list-troupes>
 
 </body>
 </html>

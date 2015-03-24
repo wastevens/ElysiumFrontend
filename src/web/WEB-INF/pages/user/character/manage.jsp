@@ -25,7 +25,7 @@
 </head>
 <body ng-app="user.character.manage">
 
-	<manage-character character='${character}' csrf='{"header": "${_csrf.headerName}", "token": "${_csrf.token}"}'></manage-character>
+	<manage-character character='${character}'></manage-character>
 
 </body>
 </html>

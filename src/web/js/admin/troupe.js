@@ -12,9 +12,9 @@ controller('updateTroupe', ['$scope', '$rootScope', 'redirect', 'troupeRepositor
 		
 	$scope.storytellers = $scope.troupe.storytellers;
 	
-	$scope.submit = function(csrfHeader, csrfToken) {
+	$scope.submit = function() {
 		$scope.troupe.storytellers = $scope.storytellers;
-		troupeRepository.updateTroupe($scope.troupe, csrfHeader, csrfToken).
+		troupeRepository.updateTroupe($scope.troupe).
 			success(function(data, status, headers, config) {redirect.toUrl('/admin/page/troupes')}).
 			error(function(data, status, headers, config) {console.log("addTroupe failed")});
 		console.log('Update troupe ' + $scope.troupe);
@@ -22,8 +22,8 @@ controller('updateTroupe', ['$scope', '$rootScope', 'redirect', 'troupeRepositor
 }]).
 
 controller('deleteTroupe', ['$scope', '$rootScope', 'troupeRepository', function($scope, $rootScope, troupeRepository) {
-	$scope.deleteTroupe = function(id, csrfHeader, csrfToken) {
-		troupeRepository.deleteTroupe(id, csrfHeader, csrfToken).
+	$scope.deleteTroupe = function(id) {
+		troupeRepository.deleteTroupe(id).
 			success(function(data, status, headers, config) {$rootScope.$broadcast('troupesUpdated')}).
 			error(function(data, status, headers, config) {console.log("deleteTroupe failed")});
 	};
@@ -34,8 +34,8 @@ controller('addTroupe', ['$scope', '$rootScope', 'troupeRepository', 'settingsSo
 		$scope.settings[i] = {label: settingsSource.get()[i], value: i};
 	}
  	$scope.setting = $scope.settings[0];
-	$scope.submit = function(csrfHeader, csrfToken) {
-		troupeRepository.addTroupe({'name': $scope.name, 'setting': $scope.setting.value}, csrfHeader, csrfToken).
+	$scope.submit = function() {
+		troupeRepository.addTroupe({'name': $scope.name, 'setting': $scope.setting.value}).
 			success(function(data, status, headers, config) {$rootScope.$broadcast('troupesUpdated')}).
 			error(function(data, status, headers, config) {console.log("addTroupe failed")});
 	};
@@ -46,7 +46,6 @@ directive('manageTroupe', ['troupeRepository', function(troupeRepository) {
 	return {
 		restrict: 'E',
 		scope: {
-			csrf: '=',
 			troupe: '='
 		},
 		templateUrl: '/js/admin/troupe/manage.html'
@@ -55,9 +54,6 @@ directive('manageTroupe', ['troupeRepository', function(troupeRepository) {
 directive('listTroupes', ['troupeRepository', function(troupeRepository) {
 	return {
 		restrict: 'E',
-		scope: {
-			csrf: '='
-		},
 		link: function(scope, iElement, iAttrs) {
 			scope.troupes = troupeRepository.getTroupes();
 			scope.$on('troupesUpdated', function(event) {
@@ -70,9 +66,6 @@ directive('listTroupes', ['troupeRepository', function(troupeRepository) {
 directive('addTroupe', [function() {
 	return {
 		restrict: 'E',
-		scope: {
-			csrf: '='
-		},
 		templateUrl: '/js/admin/troupe/add.html'
 	};
 }]);

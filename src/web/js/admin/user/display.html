@@ -1,7 +1,7 @@
 <table>
   <tr><th>Email</th><th>Name</th><th>Roles</th></tr>
   <tr ng-repeat="user in users">
-    <td ng-controller="manageUser"><a href ng-click="manageUser(user.id, csrf.header, csrf.token)">{{user.email}}</a></td>
+    <td ng-controller="manageUser"><a href ng-click="manageUser(user.id)">{{user.email}}</a></td>
     <td>{{user.firstName}} {{user.lastName}}</td>
     <td>{{user.roles|roles|joinBy:', '}}</td>
   </tr>

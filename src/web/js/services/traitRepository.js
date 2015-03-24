@@ -1,5 +1,5 @@
-angular.module('services.traits', ['ngResource', 'services.csrfResource']).
-factory('traitsRepository', ['$resource', 'csrfResource', function($resource, csrfResource) {
+angular.module('services.traits', ['ngResource']).
+factory('traitsRepository', ['$resource', function($resource) {
 	return {
 		url: '/traits/',
 		getVampireTraits: function(traitType, successFunction) {

@@ -11,8 +11,6 @@
 		    <tr><td>Email:</td><td><input type='text' name='email' value=''></td></tr>
 			<tr><td colspan='2'><input name="submit" type="submit" value="submit" /></td></tr>
 		   </table>
-		   
-		   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		</form>
 	</div>
  

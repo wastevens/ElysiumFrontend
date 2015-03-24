@@ -5,11 +5,11 @@ factory('characterRepository', ['$resource', 'csrfResource', function($resource,
 		getCharacters: function() {
 			return $resource(this.url, {}).query();
 		},
-		addCharacter: function(characterToPost, csrfHeader, csrfToken) {
-			return csrfResource.post(this.url, characterToPost, csrfHeader, csrfToken);
+		addCharacter: function(characterToPost) {
+			return csrfResource.post(this.url, characterToPost);
 		},
-		addRequestsToCharacter: function(characterId, requests, csrfHeader, csrfToken) {
-			return csrfResource.post(this.url + "/" + characterId, requests, csrfHeader, csrfToken);
+		addRequestsToCharacter: function(characterId, requests) {
+			return csrfResource.post(this.url + "/" + characterId, requests);
 		}
 	};
 }]);

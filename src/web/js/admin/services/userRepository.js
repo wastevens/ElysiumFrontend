@@ -11,8 +11,8 @@ factory('userRepository', ['$resource', 'csrfResource', function($resource, csrf
 		getUserWithId: function(id) {
 			return csrfResource.get(this.url + '/' + id);
 		},
-		updateUser: function(userToUpdate, csrfHeader, csrfToken) {
-			return csrfResource.put(this.url + '/' + userToUpdate.id, userToUpdate, csrfHeader, csrfToken);
+		updateUser: function(userToUpdate) {
+			return csrfResource.put(this.url + '/' + userToUpdate.id, userToUpdate);
 		}
 	};
 }]);

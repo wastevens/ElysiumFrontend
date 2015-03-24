@@ -13,7 +13,7 @@
 </head>
 <body ng-app="user.character.creation">
 
-	<create-character csrf='{"header": "${_csrf.headerName}", "token": "${_csrf.token}"}'></create-character>
+	<create-character></create-character>
 
 </body>
 </html>

@@ -22,7 +22,6 @@
                 </button>
             </td></tr>
 		   </table>
-		   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		</form>
             <button class="btn btn-info" onclick="window.location.href='/requestPasswordReset'">
                 <span class="glyphicon glyphicon-save"></span> Password Reset

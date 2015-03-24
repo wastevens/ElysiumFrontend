@@ -1,23 +1,25 @@
 angular.module('services.csrfResource', []).
-factory('csrfResource', ['$http', function($http) {
+factory('csrfResource', ['$http', '$window', function($http, $window) {
 	return {
 		get: function(url) {
+			var headers = {};
+			headers.authorization = $window.sessionStorage.token;
 			return $http.get(url); 
 		},
-		post: function(url, body, csrfHeader, csrfToken) {
+		post: function(url, body) {
 			var headers = {};
-			headers[csrfHeader] = csrfToken;
-			return $http.post(url, body, {'headers': headers}); 
+			headers.authorization = $window.sessionStorage.token;
+			return $http.post(url, body); 
 		},
-		put: function(url, body, csrfHeader, csrfToken) {
+		put: function(url, body) {
 			var headers = {};
-			headers[csrfHeader] = csrfToken;
-			return $http.put(url, body, {'headers': headers}); 
+			headers.authorization = $window.sessionStorage.token;
+			return $http.put(url, body); 
 		},
-		delete: function(url, csrfHeader, csrfToken) {
+		delete: function(url) {
 			var headers = {};
-			headers[csrfHeader] = csrfToken;
-			return $http.delete(url, {'headers': headers}); 
+			headers.authorization = $window.sessionStorage.token;
+			return $http.delete(url); 
 		}
 	}
 }]);

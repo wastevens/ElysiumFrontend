@@ -11,8 +11,8 @@
 </head>
 <body ng-app="admin.user">
 
-	<list-users csrf='{"header": "${_csrf.headerName}", "token": "${_csrf.token}"}'></list-users>
-	<modify-user csrf='{"header": "${_csrf.headerName}", "token": "${_csrf.token}"}'></modify-user>
+	<list-users></list-users>
+	<modify-user></modify-user>
 
 </body>
 </html>

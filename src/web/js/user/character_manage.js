@@ -1,4 +1,4 @@
-angular.module('user.character.manage.services', ['ngResource', 'services.redirection', 'services.csrfResource', 'services.troupes', 'services.characters']);
+angular.module('user.character.manage.services', ['ngResource', 'services.redirection', 'services.troupes', 'services.characters']);
 
 var ratings = [{value: 0, display: "Remove"},
                {value: 1, display: "1"},
@@ -378,8 +378,8 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	//--------------------------------------------------------
 	
-	$scope.submit = function(csrfHeader, csrfToken) {
-		characterRepository.addRequestsToCharacter($scope.character.id, $scope.requests, csrfHeader, csrfToken).
+	$scope.submit = function() {
+		characterRepository.addRequestsToCharacter($scope.character.id, $scope.requests).
 			success(function(data, status, headers, config) {redirect.toUrl('/user/page/characters')}).
 			error(function(data, status, headers, config) {console.log("addRequestsToCharacter failed")});
 	};
@@ -391,7 +391,6 @@ directive('manageCharacter', ['characterRepository', function(characterRepositor
 		restrict: 'E',
 		scope: {
 			character: '=',
-			csrf: '='
 		},
 		templateUrl: '/js/user/character/manage.html'
 	};

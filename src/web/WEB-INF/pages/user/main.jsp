@@ -2,7 +2,7 @@
 <%@page session="true"%>
 <html>
 <body>
-	<form id="logoutForm" action="/logout" method="post"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /></form>
+	<form id="logoutForm" action="/logout" method="post"></form>
 	<script>
 		function formSubmit() {
 			document.getElementById("logoutForm").submit();
