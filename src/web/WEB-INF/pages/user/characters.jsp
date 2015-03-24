@@ -9,6 +9,7 @@
 <script src="/js/sources/player_status.js"></script>
 <script src="/js/filters/player_status.js"></script>
 <script src="/js/services/csrfResource.js"></script>
+<script src="/js/services/authorization.js"></script>
 <script src="/js/services/characterRepository.js"></script>
 <script src="/js/user/character.js"></script>
 </head>

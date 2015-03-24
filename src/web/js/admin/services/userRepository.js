@@ -1,4 +1,4 @@
-angular.module('admin.services.users', ['ngResource', 'services.csrfResource']).
+angular.module('admin.services.users', ['ngResource', 'services.csrfResource', 'configuration.authorization']).
 factory('userRepository', ['$resource', 'csrfResource', function($resource, csrfResource) {
 	return {
 		url: '/admin/users',

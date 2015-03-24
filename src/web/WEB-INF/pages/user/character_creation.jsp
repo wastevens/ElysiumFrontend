@@ -7,6 +7,7 @@
 <script src="/js/filters/setting.js"></script>
 <script src="/js/services/redirection.js"></script>
 <script src="/js/services/csrfResource.js"></script>
+<script src="/js/services/authorization.js"></script>
 <script src="/js/services/troupeRepository.js"></script>
 <script src="/js/services/characterRepository.js"></script>
 <script src="/js/user/character_creation.js"></script>

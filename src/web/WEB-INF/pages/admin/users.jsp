@@ -6,6 +6,7 @@
 <script src="/js/filters/role.js"></script>
 <script src="/js/filters/joinBy.js"></script>
 <script src="/js/services/csrfResource.js"></script>
+<script src="/js/services/authorization.js"></script>
 <script src="/js/admin/services/userRepository.js"></script>
 <script src="/js/admin/user.js"></script>
 </head>
