@@ -1,15 +1,15 @@
-angular.module('services.characters', ['ngResource', 'services.csrfResource']).
-factory('characterRepository', ['$resource', 'csrfResource', function($resource, csrfResource) {
+angular.module('services.characters', ['ngResource']).
+factory('characterRepository', ['$resource', '$http', function($resource, $http) {
 	return {
 		url: '/characters',
 		getCharacters: function() {
 			return $resource(this.url, {}).query();
 		},
 		addCharacter: function(characterToPost) {
-			return csrfResource.post(this.url, characterToPost);
+			return $http.post(this.url, characterToPost);
 		},
 		addRequestsToCharacter: function(characterId, requests) {
-			return csrfResource.post(this.url + "/" + characterId, requests);
+			return $http.post(this.url + "/" + characterId, requests);
 		}
 	};
 }]);

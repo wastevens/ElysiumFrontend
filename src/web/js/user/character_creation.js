@@ -1,4 +1,4 @@
-angular.module('user.character.creation.services', ['ngResource', 'services.redirection', 'services.csrfResource', 'services.troupes', 'services.characters']);
+angular.module('user.character.creation.services', ['ngResource', 'services.redirection', 'services.troupes', 'services.characters']);
 
 angular.module('user.character.creation.controllers', ['user.character.creation.services', 'sources.settings']).
 controller('addCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'troupeRepository', 'settingsSource', function($scope, $rootScope, redirect, characterRepository, troupeRepository, settingsSource) {

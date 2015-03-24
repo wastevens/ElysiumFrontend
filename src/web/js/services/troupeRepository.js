@@ -1,5 +1,5 @@
-angular.module('services.troupes', ['ngResource', 'services.csrfResource']).
-factory('troupeRepository', ['$resource', 'csrfResource', function($resource, csrfResource) {
+angular.module('services.troupes', ['ngResource']).
+factory('troupeRepository', ['$resource', '$http', function($resource, $http) {
 	return {
 		url: '/troupes',
 		getTroupes: function() {
@@ -9,13 +9,13 @@ factory('troupeRepository', ['$resource', 'csrfResource', function($resource, cs
 			return $resource(this.url + '/' + id, {}).get();
 		},
 		addTroupe: function(troupeToPost) {
-			return csrfResource.post(this.url, troupeToPost);
+			return $http.post(this.url, troupeToPost);
 		},
 		updateTroupe: function(troupe) {
-			return csrfResource.post(this.url + '/' + troupe.id, troupe);
+			return $http.post(this.url + '/' + troupe.id, troupe);
 		},
 		deleteTroupe: function(id) {
-			return csrfResource.delete(this.url + '/' + id);
+			return $http.delete(this.url + '/' + id);
 		}
 	};
 }]);

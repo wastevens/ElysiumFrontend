@@ -1,5 +1,5 @@
-angular.module('admin.services.users', ['ngResource', 'services.csrfResource', 'configuration.authorization']).
-factory('userRepository', ['$resource', 'csrfResource', function($resource, csrfResource) {
+angular.module('admin.services.users', ['ngResource', 'configuration.authorization']).
+factory('userRepository', ['$resource', '$http', function($resource, $http) {
 	return {
 		url: '/admin/users',
 		getUsers: function() {
@@ -9,10 +9,10 @@ factory('userRepository', ['$resource', 'csrfResource', function($resource, csrf
 			return $resource(this.url + '/role/' + role, {}).query();
 		},
 		getUserWithId: function(id) {
-			return csrfResource.get(this.url + '/' + id);
+			return $http.get(this.url + '/' + id);
 		},
 		updateUser: function(userToUpdate) {
-			return csrfResource.put(this.url + '/' + userToUpdate.id, userToUpdate);
+			return $http.put(this.url + '/' + userToUpdate.id, userToUpdate);
 		}
 	};
 }]);

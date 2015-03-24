@@ -6,7 +6,6 @@
 <script src="/js/sources/settings.js"></script>
 <script src="/js/filters/setting.js"></script>
 <script src="/js/services/redirection.js"></script>
-<script src="/js/services/csrfResource.js"></script>
 <script src="/js/services/authorization.js"></script>
 <script src="/js/services/troupeRepository.js"></script>
 <script src="/js/admin/services/userRepository.js"></script>
