@@ -1,4 +1,4 @@
-angular.module('admin.troupe.services', ['services.redirection', 'services.troupes', 'admin.services.users', 'configuration.authorization'])
+angular.module('admin.troupe.services', ['services.redirection', 'services.troupes', 'admin.services.users'])
 
 angular.module('admin.troupe.controllers', ['admin.troupe.services', 'sources.settings']).
 controller('updateTroupe', ['$scope', '$rootScope', 'redirect', 'troupeRepository', 'userRepository', 'settingsSource', function($scope, $rootScope, redirect, troupeRepository, userRepository, settingsSource) {

@@ -1,4 +1,4 @@
-angular.module('services.characters', ['ngResource']).
+angular.module('services.characters', ['ngResource', 'configuration.authorization']).
 factory('characterRepository', ['$resource', '$http', function($resource, $http) {
 	return {
 		url: '/characters',

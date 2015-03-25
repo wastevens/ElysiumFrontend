@@ -1,9 +1,8 @@
-angular.module('admin.user.services', ['admin.services.users', 'configuration.authorization']);
+angular.module('admin.user.services', ['admin.services.users']);
 
 angular.module('admin.user.controllers', ['admin.user.services']).
 controller('manageUser', ['$scope', '$rootScope', function($scope, $rootScope) {
 	$scope.manageUser = function(id) {
-		console.log("manage user with id " + id);
 		$rootScope.$broadcast('userSelected', id);
 	};
 }]).

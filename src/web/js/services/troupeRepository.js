@@ -1,4 +1,4 @@
-angular.module('services.troupes', ['ngResource']).
+angular.module('services.troupes', ['ngResource', 'configuration.authorization']).
 factory('troupeRepository', ['$resource', '$http', function($resource, $http) {
 	return {
 		url: '/troupes',
