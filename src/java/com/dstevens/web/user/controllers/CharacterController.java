@@ -48,7 +48,7 @@ public class CharacterController {
 	}
 	
 	@RequestMapping(value = "/user/page/characters/{id}", method = RequestMethod.GET)
-	public ModelAndView getCharacterPage(@PathVariable String id) {
+	public ModelAndView getCharacterPage(@PathVariable Integer id) {
 		PlayerCharacter character = playerCharacterService.getCharacter(id);
 		if(character == null) {
 			throw new UnknownCharacterException("Could not find character with id " + id);
@@ -61,7 +61,7 @@ public class CharacterController {
 	}
 	
 	@RequestMapping(value = "/characters/{id}", method = RequestMethod.POST)
-	public @ResponseBody void addRequests(@PathVariable String id, @RequestBody final List<RawTraitChange> requests) {
+	public @ResponseBody void addRequests(@PathVariable Integer id, @RequestBody final List<RawTraitChange> requests) {
 		PlayerCharacter character = playerCharacterService.getCharacter(id);
 		if(character == null) {
 			throw new UnknownCharacterException("Could not find character with id " + id);

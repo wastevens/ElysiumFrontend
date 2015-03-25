@@ -36,8 +36,8 @@ public class PlayerCharacterService {
 	
 	public PlayerCharacter createCharacter(User user, Troupe troupe, String characterName) {
 		PlayerCharacter character = repository.update(factory.createPlayerCharacter(characterName, troupe.getSetting()).
-				                               beginCreation().
-				                               changeActivityStatus(secondaryCharacterStatus()));
+				                                              beginCreation().
+				                                              changeActivityStatus(secondaryCharacterStatus()));
 		userRepository.save(user.withCharacter(character));
 		troupeRepository.save(troupe.withCharacter(character));
 		return character;
@@ -47,7 +47,7 @@ public class PlayerCharacterService {
 		return new PlayerStatusChange(PlayerStatus.SECONDARY, Date.from(clockSupplier.get().instant()));
 	}
 	
-	public PlayerCharacter getCharacter(String id) {
+	public PlayerCharacter getCharacter(Integer id) {
 		return repository.findWithId(id);
 	}
 
