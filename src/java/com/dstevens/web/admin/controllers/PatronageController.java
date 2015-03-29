@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.dstevens.users.DisplayablePatronage;
-import com.dstevens.users.Patronage;
-import com.dstevens.users.PatronageRepository;
 import com.dstevens.users.User;
 import com.dstevens.users.UserRepository;
+import com.dstevens.users.patronages.DisplayablePatronage;
+import com.dstevens.users.patronages.Patronage;
+import com.dstevens.users.patronages.PatronageRepository;
 import com.google.gson.Gson;
 
 @Controller

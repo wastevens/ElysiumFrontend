@@ -1,9 +1,11 @@
-package com.dstevens.users;
+package com.dstevens.users.patronages;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.UniqueConstraint;
@@ -19,6 +22,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.ForeignKey;
+
+import com.dstevens.users.User;
+
+import static com.dstevens.collections.Lists.list;
 
 @SuppressWarnings("deprecation")
 @Entity
@@ -46,21 +53,28 @@ public class Patronage {
     @ForeignKey(name="Patronage_User_FK", inverseName="User_Patronage_FK")
 	private final User user;
 	
+    @ElementCollection
+    @JoinColumn(name="patronage_id", referencedColumnName="id")
+    @OrderColumn(name="order_by")
+    @ForeignKey(name="Patronage_PatronagePaymentReceipt_FK")
+    private final List<PatronagePaymentReceipt> payments = list();
+    
 	//Hibernate only
     @Deprecated
     public Patronage() {
-    	this(null, null, null, null);
+    	this(null, null, null, null, list());
     }
     
     public Patronage(Integer year, Date expiration) {
-    	this(null, year, expiration, null);
+    	this(null, year, expiration, null, list());
     }
     
-	public Patronage(Integer id, Integer year, Date expiration, User user) {
+	public Patronage(Integer id, Integer year, Date expiration, User user, List<PatronagePaymentReceipt> payments) {
 		this.id = id;
 		this.year = year;
 		this.expiration = expiration;
 		this.user = user;
+		this.payments.addAll(payments);
 	}
 
 	public String displayMembershipId() {
@@ -75,16 +89,25 @@ public class Patronage {
 		return user;
 	}
 	
+	public List<PatronagePaymentReceipt> getPayments() {
+		return payments;
+	}
+	
 	public boolean isActiveAsOf(Date date) {
 		return expiration.after(date);
 	}
 	
 	public Patronage expiringOn(Date expiration) {
-		return new Patronage(id, year, expiration, user);
+		return new Patronage(id, year, expiration, user, payments);
 	}
 	
 	public Patronage forUser(User user) {
-		return new Patronage(id, year, expiration, user);
+		return new Patronage(id, year, expiration, user, payments);
+	}
+	
+	public Patronage withPayment(PatronagePaymentReceipt payment) {
+		payments.add(payment);
+		return new Patronage(id, year, expiration, user, payments);
 	}
 	
 	@Override

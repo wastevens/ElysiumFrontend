@@ -1,7 +1,9 @@
-package com.dstevens.users;
+package com.dstevens.users.patronages;
 
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class DisplayablePatronage implements Comparable<DisplayablePatronage> {
@@ -9,15 +11,17 @@ public class DisplayablePatronage implements Comparable<DisplayablePatronage> {
     public String membershipId;
 	public String expiration;
 	public Integer userId;
+	public List<DisplayablePatronagePaymentReceipt> payments;
 	
 	public DisplayablePatronage() {
-		this(null, null, null);
+		this(null, null, null, null);
 	}
 	
-	public DisplayablePatronage(String membershipId, String expiration, Integer userId) {
+	public DisplayablePatronage(String membershipId, String expiration, Integer userId, List<DisplayablePatronagePaymentReceipt> payments) {
 		this.membershipId = membershipId;
 		this.expiration = expiration;
 		this.userId = userId;
+		this.payments = payments;
 	}
 
 	public static DisplayablePatronage from(Patronage patronage) {
@@ -25,7 +29,8 @@ public class DisplayablePatronage implements Comparable<DisplayablePatronage> {
 		if(patronage.getUser() != null) {
 			id = patronage.getUser().getId();
 		}
-		return new DisplayablePatronage(patronage.displayMembershipId(), new SimpleDateFormat("yyyy-MM-dd").format(patronage.getExpiration()), id);
+		return new DisplayablePatronage(patronage.displayMembershipId(), new SimpleDateFormat("yyyy-MM-dd").format(patronage.getExpiration()), id,
+				                        patronage.getPayments().stream().map((PatronagePaymentReceipt t) -> DisplayablePatronagePaymentReceipt.from(t)).collect(Collectors.toList()));
 	}
 
 	@Override

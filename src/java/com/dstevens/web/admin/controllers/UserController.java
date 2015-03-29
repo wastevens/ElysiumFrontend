@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.users.DisplayableUser;
-import com.dstevens.users.Patronage;
-import com.dstevens.users.PatronageRepository;
 import com.dstevens.users.Role;
 import com.dstevens.users.User;
 import com.dstevens.users.UserRepository;
+import com.dstevens.users.patronages.Patronage;
+import com.dstevens.users.patronages.PatronageRepository;
 import com.google.gson.Gson;
 
 @Controller

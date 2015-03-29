@@ -1,4 +1,4 @@
-package com.dstevens.users;
+package com.dstevens.users.patronages;
 
 import org.springframework.data.repository.CrudRepository;
 
