@@ -1,4 +1,4 @@
-package com.dstevens.config;
+package com.dstevens.config.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

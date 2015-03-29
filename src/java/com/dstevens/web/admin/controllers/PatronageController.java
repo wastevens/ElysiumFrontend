@@ -19,10 +19,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.dstevens.config.exceptions.ResourceNotFoundException;
 import com.dstevens.users.User;
 import com.dstevens.users.UserRepository;
 import com.dstevens.users.patronages.DisplayablePatronage;
+import com.dstevens.users.patronages.DisplayablePatronagePaymentReceipt;
 import com.dstevens.users.patronages.Patronage;
+import com.dstevens.users.patronages.PatronagePaymentReceipt;
 import com.dstevens.users.patronages.PatronageRepository;
 import com.google.gson.Gson;
 
@@ -69,8 +72,33 @@ public class PatronageController {
 	
 	@RequestMapping(value = "/admin/patronages/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getPatronage(@PathVariable String id) {
-		Patronage findPatronageByMembershipId = patronageRepository.findPatronageByMembershipId(id);
-		return new Gson().toJson(DisplayablePatronage.from(findPatronageByMembershipId));
+		return new Gson().toJson(DisplayablePatronage.from(findPatronage(id)));
+	}
+
+	private Patronage findPatronage(String id) {
+		Patronage patronage = patronageRepository.findPatronageByMembershipId(id);
+		if(patronage == null) {
+			throw new ResourceNotFoundException("Did not find patronage with membership id " + id);
+		}
+		return patronage;
+	}
+	
+	@RequestMapping(value = "/admin/patronages/{id}/payments", method = RequestMethod.GET)
+	public @ResponseBody String getPatronagePayments(@PathVariable String id) {
+		return new Gson().toJson(findPatronage(id).getPayments().stream().map((PatronagePaymentReceipt t) -> DisplayablePatronagePaymentReceipt.from(t)).collect(Collectors.toList()));
+	}
+	
+	@RequestMapping(value = "/admin/patronages/{id}/payments/{paymentIndex}", method = RequestMethod.GET)
+	public @ResponseBody String getPatronagePayment(@PathVariable String id, @PathVariable int paymentIndex) {
+		return new Gson().toJson(DisplayablePatronagePaymentReceipt.from(findPatronagePaymentReceipt(id, paymentIndex)));
+	}
+
+	private PatronagePaymentReceipt findPatronagePaymentReceipt(String id, int paymentIndex) {
+		Patronage findPatronage = findPatronage(id);
+		if(findPatronage.getPayments().size() > paymentIndex && paymentIndex >= 0) {
+			return findPatronage.getPayments().get(paymentIndex);
+		}
+		throw new ResourceNotFoundException("Did not find payment with index " + paymentIndex);
 	}
 	
 	
@@ -93,7 +121,7 @@ public class PatronageController {
 	
 	@RequestMapping(value = "/admin/patronages/{id}", method = RequestMethod.PUT)
 	public @ResponseBody String updatePatronage(@PathVariable String id, @RequestBody RawRequestBody requestBody, HttpServletResponse response) {
-		Patronage patronage = patronageRepository.findPatronageByMembershipId(id);
+		Patronage patronage = findPatronage(id);
 		if(patronage == null) {
 			throw new IllegalArgumentException("No patronage " + id + " found");
 		}
