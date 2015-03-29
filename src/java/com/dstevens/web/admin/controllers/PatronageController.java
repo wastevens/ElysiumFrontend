@@ -149,6 +149,20 @@ public class PatronageController {
 		return new Gson().toJson(DisplayablePatronage.from(updatedPatronage));
 	}
 
+	@RequestMapping(value = "/admin/patronages/{id}/payments/{paymentIndex}", method = RequestMethod.PUT)
+	public @ResponseBody String updatePatronagePayment(@RequestBody RawCreatePatronagePaymentReceiptBody requestBody, @PathVariable String id, @PathVariable int paymentIndex, HttpServletResponse response) {
+		findPatronagePaymentReceipt(id, paymentIndex);
+		Patronage patronage = findPatronage(id);
+		
+		patronage.getPayments().set(paymentIndex, requestBody.toPaymentReceipt());
+		Patronage updatedPatronage = patronageRepository.save(patronage);
+		
+		List<PatronagePaymentReceipt> payments = updatedPatronage.getPayments();
+		
+		addPatronageReceiptLocationHeader(response, updatedPatronage, paymentIndex);
+		return new Gson().toJson(DisplayablePatronagePaymentReceipt.from(payments.get(paymentIndex)));
+	}
+	
 	private void addPatronageLocationHeader(HttpServletResponse response, Patronage patronage) {
 		response.addHeader("LOCATION", "/admin/patronages/" + patronage.displayMembershipId());
 	}
@@ -187,7 +201,7 @@ public class PatronageController {
 		private Date paymentDateAsDate() {
 			try {
 				return new SimpleDateFormat("yyyy-MM-dd").parse(paymentDate);
-			} catch (ParseException e) {
+			} catch (ParseException | NullPointerException e) {
 				throw new BadRequestException("Could not parse " + paymentDate + "; please make sure expiration dates are in yyyy-MM-dd format");
 			}
 		}
