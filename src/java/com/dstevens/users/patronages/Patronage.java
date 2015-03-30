@@ -59,21 +59,25 @@ public class Patronage {
     @ForeignKey(name="Patronage_PatronagePaymentReceipt_FK")
     private final List<PatronagePaymentReceipt> payments = list();
     
+    @Column(name="original_username")
+    private final String originalUsername;
+    
 	//Hibernate only
     @Deprecated
     public Patronage() {
-    	this(null, null, null, null, list());
+    	this(null, null, null, null, null, list());
     }
     
-    public Patronage(Integer year, Date expiration) {
-    	this(null, year, expiration, null, list());
+    public Patronage(Integer year, Date expiration, String originalUsername) {
+    	this(null, year, expiration, null, originalUsername, list());
     }
     
-	public Patronage(Integer id, Integer year, Date expiration, User user, List<PatronagePaymentReceipt> payments) {
+	public Patronage(Integer id, Integer year, Date expiration, User user, String originalUsername, List<PatronagePaymentReceipt> payments) {
 		this.id = id;
 		this.year = year;
 		this.expiration = expiration;
 		this.user = user;
+		this.originalUsername = originalUsername;
 		this.payments.addAll(payments);
 	}
 
@@ -89,6 +93,10 @@ public class Patronage {
 		return user;
 	}
 	
+	public String getOriginalUsername() {
+		return originalUsername;
+	}
+	
 	public List<PatronagePaymentReceipt> getPayments() {
 		return payments;
 	}
@@ -98,16 +106,20 @@ public class Patronage {
 	}
 	
 	public Patronage expiringOn(Date expiration) {
-		return new Patronage(id, year, expiration, user, payments);
+		return new Patronage(id, year, expiration, user, originalUsername, payments);
 	}
 	
 	public Patronage forUser(User user) {
-		return new Patronage(id, year, expiration, user, payments);
+		return new Patronage(id, year, expiration, user, originalUsername, payments);
 	}
 	
 	public Patronage withPayment(PatronagePaymentReceipt payment) {
 		payments.add(payment);
-		return new Patronage(id, year, expiration, user, payments);
+		return new Patronage(id, year, expiration, user, originalUsername, payments);
+	}
+
+	public Patronage withOriginalUsername(String originalUsername) {
+		return new Patronage(id, year, expiration, user, originalUsername, payments);
 	}
 	
 	@Override

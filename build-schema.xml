@@ -52,11 +52,10 @@ insert into Patronage(id, year, expiration) values (43, 2014, '2016-12-31');
 insert into Patronage(id, year, expiration) values (44, 2014, '2014-12-31');
 insert into Patronage(id, year, expiration) values (45, 2014, '2020-12-31');
 
-insert into Patronage_payments(Patronage_id, payment_date, payment_receipt_identifier, payment_type, order_by) values (42, '2014-02-01', '', 3, 0);
-insert into Patronage_payments(Patronage_id, payment_date, payment_receipt_identifier, payment_type, order_by) values (43, '2014-02-01', '', 1, 0);
-insert into Patronage_payments(Patronage_id, payment_date, payment_receipt_identifier, payment_type, order_by) values (43, '2015-02-01', '', 1, 1);
-insert into Patronage_payments(Patronage_id, payment_date, payment_receipt_identifier, payment_type, order_by) values (44, '2014-02-01', '', 1, 0);
-
+insert into Patronage(id, year, expiration, original_username) values (42, 2014, '2020-12-31', null);
+insert into Patronage(id, year, expiration, original_username) values (43, 2014, '2016-12-31', 'old database username 1');
+insert into Patronage(id, year, expiration, original_username) values (44, 2014, '2014-12-31', 'old database username 2');
+insert into Patronage(id, year, expiration, original_username) values (45, 2014, '2020-12-31', null);
 	
 insert into User_roles(user_id, roles) values (2, 0);
 insert into User_roles(user_id, roles) values (2, 1);

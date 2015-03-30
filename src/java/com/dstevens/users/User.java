@@ -20,6 +20,8 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.UniqueConstraint;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.ForeignKey;
 import org.springframework.context.annotation.Scope;
@@ -209,6 +211,16 @@ public class User implements UserDetails {
 	
 	public boolean isPatronageActiveAsOf(Date date) {
 		return patronage.isActiveAsOf(date);
+	}
+	
+	@Override
+	public boolean equals(Object that) {
+		return EqualsBuilder.reflectionEquals(this, that);
+	}
+	
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
 	}
 	
 	@Override

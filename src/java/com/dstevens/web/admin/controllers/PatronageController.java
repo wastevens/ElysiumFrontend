@@ -144,7 +144,7 @@ public class PatronageController {
 		if(user != null && user.getPatronage() != null && !user.getPatronage().equals(patronage)) {
 			throw new BadRequestException("Patronage " + user.getPatronage().displayMembershipId() + " is associated with user " + user.getId());
 		}
-		Patronage updatedPatronage = patronageRepository.save(requestBody.toPatronage().forUser(user));
+		Patronage updatedPatronage = patronageRepository.save(patronage.expiringOn(requestBody.expirationAsDate()).withOriginalUsername(requestBody.originalUsername).forUser(user));
 		addPatronageLocationHeader(response, updatedPatronage);
 		return new Gson().toJson(DisplayablePatronage.from(updatedPatronage));
 	}
@@ -175,9 +175,10 @@ public class PatronageController {
 		public Integer year;
 		public String expiration;
 		public Integer userId;
+		public String originalUsername;
 
 		private Patronage toPatronage() {
-			return new Patronage(year, expirationAsDate());
+			return new Patronage(year, expirationAsDate(), originalUsername);
 		}
 		
 		private Date expirationAsDate() {

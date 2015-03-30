@@ -76,7 +76,7 @@ create table Disciplines (id integer not null, rating integer, trait integer not
 create table ExperienceAward (id integer not null, awardedFor varchar(255), awardedOn datetime, experience integer, primary key (id));
 create table Flaws (id integer not null, specialization varchar(255), trait integer not null, character_id integer, primary key (id));
 create table Merits (id integer not null, specialization varchar(255), trait integer not null, character_id integer, primary key (id));
-create table Patronage (id integer not null, expiration datetime, year integer, primary key (id));
+create table Patronage (id integer not null, expiration datetime, original_username varchar(255), year integer, primary key (id));
 create table Patronage_payments (Patronage_id integer not null, payment_date datetime, payment_receipt_identifier varchar(255), payment_type integer, order_by integer not null, primary key (Patronage_id, order_by));
 create table PlayerCharacter (id integer not null, approvalStatus integer, awardedXp integer, baseXp integer, bloodline integer, clan integer, groundXp integer, mental_attribute integer, name varchar(255), physical_attribute integer, primary_necromantic_path integer, primary_thaumaturgical_path integer, setting integer, social_attribute integer, appliedSpentXp integer, pendingSpentXp integer, primary key (id));
 create table PlayerCharacter_AppliedTraitChanges (PlayerCharacter_id integer not null, appliedTraitChanges_id bigint not null, order_by integer not null, primary key (PlayerCharacter_id, order_by));
