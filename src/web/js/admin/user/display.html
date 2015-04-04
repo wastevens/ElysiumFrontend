@@ -1,8 +1,3 @@
-<table>
-  <tr><th>Email</th><th>Name</th><th>Roles</th></tr>
-  <tr ng-repeat="user in users">
-    <td ng-controller="manageUser"><a href ng-click="manageUser(user.id)">{{user.email}}</a></td>
-    <td>{{user.firstName}} {{user.lastName}}</td>
-    <td>{{user.roles|roles|joinBy:', '}}</td>
-  </tr>
-</table>
+<select ng-controller="viewUsers" ng-model="users.selectedUser" ng-change="change()" ng-options="user.email group by user.type for user in users">
+	<option value="">-- Choose User --</option>
+</select>
