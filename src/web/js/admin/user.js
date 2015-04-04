@@ -1,9 +1,8 @@
 angular.module('admin.user.services', ['admin.services.users']);
 
 angular.module('admin.user.controllers', ['admin.user.services']).
-controller('viewUsers', ['$scope', 'userRepository', function($scope, userRepository) {
-	var foo = userRepository.getUsers();
-	foo.$promise.then(function(users) {
+controller('manageUsers', ['$scope', 'userRepository', function($scope, userRepository) {
+	userRepository.getUsers().$promise.then(function(users) {
 		$scope.users = users;
 		$scope.users.forEach(function(user, index, array) {
 			user.type = 'Client';
@@ -28,23 +27,14 @@ controller('viewUsers', ['$scope', 'userRepository', function($scope, userReposi
 			return typeCodeComparison;
 		});
 	});
-}]).
-controller('manageUser', ['$scope', '$rootScope', function($scope, $rootScope) {
-}]).
-controller('updateUser', ['$scope', '$rootScope', 'userRepository', function($scope, $rootScope, userRepository) {
+	
 }]);
 
 angular.module('admin.user.directives', ['admin.user.services']).
-directive('listUsers', ['userRepository', function(userRepository) {
+directive('manageUsers', [function() {
 	return {
 		restrict: 'E',
 		templateUrl: '/js/admin/user/display.html'
-	};
-}]).
-directive('modifyUser', ['userRepository', function(userRepository) {
-	return {
-		restrict: 'E',
-		templateUrl: '/js/admin/user/manage.html'
 	};
 }]);
 

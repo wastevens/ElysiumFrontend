@@ -11,8 +11,7 @@
 </head>
 <body ng-app="admin.user">
 
-	<list-users></list-users>
-	<modify-user></modify-user>
+	<manage-users></manage-users>
 
 </body>
 </html>

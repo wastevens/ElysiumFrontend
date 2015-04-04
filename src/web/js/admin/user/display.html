@@ -1,3 +1,16 @@
-<select ng-controller="viewUsers" ng-model="users.selectedUser" ng-change="change()" ng-options="user.email group by user.type for user in users">
-	<option value="">-- Choose User --</option>
-</select>
+<form ng-submit="submit()" ng-controller="manageUsers">
+
+
+<table>
+  <tr><th>Email</th><td>
+  	<select ng-model="selectedUser" ng-options="user.email group by user.type for user in users">
+	  <option value="">-- Choose User --</option>
+	</select>
+  </td></tr>
+  <tr><th>First Name</th><td><input type='text' ng-model='selectedUser.firstName' /></td></tr>
+  <tr><th>Last Name</th><td><input type='text' ng-model='selectedUser.lastName' /></td></tr>
+  <tr><th>Membership Id</th><td>{{selectedUser.membershipId}}</td></tr>
+  <tr><th>Active?</th><td>{{selectedUser.activePatron}}</td></tr>
+</table>
+<br><input name="submit" type="submit" value="submit" />
+</form>
