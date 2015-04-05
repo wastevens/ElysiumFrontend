@@ -3,14 +3,21 @@
 
 <table>
   <tr><th>Email</th><td>
-  	<select ng-model="selectedUser" ng-options="user.email group by user.type for user in users">
+  	<select ng-model="selectedUser" ng-options="user.email group by user.type for user in users" ng-change="changeUser()">
 	  <option value="">-- Choose User --</option>
 	</select>
   </td></tr>
-  <tr><th>First Name</th><td><input type='text' ng-model='selectedUser.firstName' /></td></tr>
-  <tr><th>Last Name</th><td><input type='text' ng-model='selectedUser.lastName' /></td></tr>
-  <tr><th>Membership Id</th><td>{{selectedUser.membershipId}}</td></tr>
-  <tr><th>Active?</th><td>{{selectedUser.activePatron}}</td></tr>
+  <tr ng-show='selectedUser'><th>First Name</th><td><input type='text' ng-model='selectedUser.firstName' /></td></tr>
+  <tr ng-show='selectedUser'><th>Last Name</th><td><input type='text' ng-model='selectedUser.lastName' /></td></tr>
+  <tr ng-show='selectedUser.membershipId'><th>Membership Id</th><td>{{selectedUser.membershipId}}</td></tr>
+  <tr ng-show='selectedUser.membershipId'><th>Active?</th><td>{{selectedUser.activePatron}}</td></tr>
+  <tr ng-show='selectedPatronage'><th>Patronage Expiration</th><td><input type='text' ng-model='selectedPatronage.expiration' /></td></tr>
+  <tr ng-show='selectedPatronage'><th>Username in Old Database</th><td><input type='text' ng-model='selectedPatronage.originalUsername' /></td></tr>
+  <tr ng-show='selectedPatronage.payments' ng-repeat-start='payment in selectedPatronage.payments'></tr>
+  <tr><th colspan=2>Payment {{$index +1}}</th></tr>
+  <tr><th>Payment Date</th><td><input type='text' ng-model='payment.paymentDate' /></td></tr>
+  <tr><th>Payment Type</th><td><input type='text' ng-model='payment.paymentType' /></td></tr>
+  <tr ng-repeat-end><th>Payment Identifier</th><td><input type='text' ng-model='payment.paymentReceiptIdentifier' /></td></tr>
 </table>
 <br><input name="submit" type="submit" value="submit" />
 </form>

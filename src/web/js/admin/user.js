@@ -1,8 +1,8 @@
-angular.module('admin.user.services', ['admin.services.users']);
+angular.module('admin.user.services', ['admin.services.users', 'admin.services.patronage']);
 
 angular.module('admin.user.controllers', ['admin.user.services']).
-controller('manageUsers', ['$scope', 'userRepository', function($scope, userRepository) {
-	userRepository.getUsers().$promise.then(function(users) {
+controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', function($scope, userRepository, patronageRepository) {
+	userRepository.getUsers().then(function(users) {
 		$scope.users = users;
 		$scope.users.forEach(function(user, index, array) {
 			user.type = 'Client';
@@ -27,6 +27,17 @@ controller('manageUsers', ['$scope', 'userRepository', function($scope, userRepo
 			return typeCodeComparison;
 		});
 	});
+	
+	$scope.changeUser = function() {
+		console.log($scope.selectedUser);
+		if($scope.selectedUser.membershipId) {
+			patronageRepository.getPatronage($scope.selectedUser.membershipId).then(function(patronage, status, headers, config) {
+				$scope.selectedPatronage = patronage;
+			});
+		} else {
+			console.log('Grab all patronages, in order to assign one');
+		}
+	}
 	
 }]);
 

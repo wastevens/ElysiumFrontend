@@ -7,6 +7,7 @@
 <script src="/js/filters/joinBy.js"></script>
 <script src="/js/services/authorization.js"></script>
 <script src="/js/admin/services/userRepository.js"></script>
+<script src="/js/admin/services/patronageRepository.js"></script>
 <script src="/js/admin/user.js"></script>
 </head>
 <body ng-app="admin.user">

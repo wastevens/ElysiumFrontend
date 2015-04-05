@@ -3,16 +3,16 @@ factory('userRepository', ['$resource', '$http', function($resource, $http) {
 	return {
 		url: '/admin/users',
 		getUsers: function() {
-			return $resource(this.url, {}).query();
+			return $resource(this.url, {}).query().$promise;
 		},
 		getUsersWithRole: function(role) {
-			return $resource(this.url + '/role/' + role, {}).query();
+			return $resource(this.url + '/role/' + role, {}).query().$promise;
 		},
 		getUserWithId: function(id) {
-			return $http.get(this.url + '/' + id);
+			return $resource(this.url + '/' + id).get().$promise;
 		},
 		updateUser: function(userToUpdate) {
-			return $http.put(this.url + '/' + userToUpdate.id, userToUpdate);
+			return $resource(this.url + '/' + userToUpdate.id, userToUpdate).put().$promise;
 		}
 	};
 }]);
