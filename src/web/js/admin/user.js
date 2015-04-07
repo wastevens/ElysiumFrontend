@@ -1,10 +1,9 @@
 angular.module('admin.user.services', ['admin.services.users', 'admin.services.patronage']);
 
-angular.module('admin.user.controllers', ['admin.user.services']).
-controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', function($scope, userRepository, patronageRepository) {
+function _loadUsers(scope, userRepository) {
 	userRepository.getUsers().then(function(users) {
-		$scope.users = users;
-		$scope.users.forEach(function(user, index, array) {
+		scope.users = users;
+		scope.users.forEach(function(user, index, array) {
 			user.type = 'Client';
 			user.typeId = 3;
 			if(user.membershipId) {
@@ -17,7 +16,7 @@ controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', fu
 				}
 			}
 		});
-		$scope.users.sort(function(userA, userB) {
+		scope.users.sort(function(userA, userB) {
 			var typeCodeComparison = userA.typeId - userB.typeId;
 			if(typeCodeComparison == 0) {
 				if(userA.email < userB.email) return -1;
@@ -27,7 +26,11 @@ controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', fu
 			return typeCodeComparison;
 		});
 	});
-	
+}
+
+angular.module('admin.user.controllers', ['admin.user.services']).
+controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', function($scope, userRepository, patronageRepository) {
+	_loadUsers($scope, userRepository);
 	$scope.changeUser = function() {
 		$scope.selectedUserPatronage = null;
 		$scope.selectedPatronage = null;
@@ -46,13 +49,15 @@ controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', fu
 	}
 	
 	$scope.submit = function() {
-		userRepository.updateUser($scope.selectedUser);
 		if($scope.selectedUserPatronage) {
-			patronageRepository.updatePatronage($scope.selectedUserPatronage);
-		} else {
+//			patronageRepository.updatePatronage($scope.selectedUserPatronage);
+		} else if ($scope.selectedPatronage) {
 			$scope.selectedPatronage.userId = $scope.selectedUser.id;
-			patronageRepository.updatePatronage($scope.selectedPatronage);
+			$scope.selectedUser.membershipId = $scope.selectedPatronage.membershipId;
+//			patronageRepository.updatePatronage($scope.selectedPatronage);
 		}
+		userRepository.updateUser($scope.selectedUser);
+		patronageRepository.updatePatronage($scope.selectedPatronage);
 	}
 	
 }]);

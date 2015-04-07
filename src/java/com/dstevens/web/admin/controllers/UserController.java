@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dstevens.config.exceptions.BadRequestException;
+import com.dstevens.config.exceptions.ResourceNotFoundException;
 import com.dstevens.users.DisplayableUser;
 import com.dstevens.users.Role;
 import com.dstevens.users.User;
@@ -66,11 +68,11 @@ public class UserController {
 	public @ResponseBody String updateUser(@PathVariable Integer id, @RequestBody DisplayableUser userWrapper, HttpServletResponse response) {
 		User user = userRepository.findUser(id);
 		if(user == null) {
-			throw new IllegalArgumentException("No user " + id + " found");
+			throw new ResourceNotFoundException("No user " + id + " found");
 		}
 		Patronage patronage = patronageRepository.findPatronageByMembershipId(userWrapper.membershipId);
-		if(patronage != null && patronage.getUser() != null && !patronage.getUser().equals(user)) {
-			throw new IllegalArgumentException("User " + patronage.getUser().getId() + " is associated with patronage " + patronage.displayMembershipId());
+		if(!user.matchingPatronage(patronage)) {
+			throw new BadRequestException("User " + patronage.getUser().getId() + " is associated with patronage " + patronage.displayMembershipId());
 		}
 		User updatedUser = userRepository.save(user.withEmail(userWrapper.email).withFirstName(userWrapper.firstName).withLastName(userWrapper.lastName).withRoles(userWrapper.roles()).withPatronage(patronage));
 		addLocationHeader(response, updatedUser);

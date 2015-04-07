@@ -137,7 +137,13 @@ public class User implements UserDetails {
 	public Patronage getPatronage() {
 		return patronage;
 	}
-
+	
+	public boolean matchingPatronage(Patronage patronage) {
+		if(this.patronage == null || patronage == null) {
+			return this.patronage == patronage;
+		}
+		return (this.patronage.getId() == patronage.getId());
+	}
 
 	public User withEmail(String email) {
 		return new User(id, email, password, roles, characters, firstName, lastName, patronage);

@@ -85,6 +85,10 @@ public class Patronage {
 		return year + String.format("%06d", id);
 	}
 	
+	public Integer getId() {
+		return id;
+	}
+	
 	public Date getExpiration() {
 		return expiration;
 	}
@@ -99,6 +103,13 @@ public class Patronage {
 	
 	public List<PatronagePaymentReceipt> getPayments() {
 		return payments;
+	}
+	
+	public boolean matchingUser(User user) {
+		if(this.user == null || user == null) {
+			return this.user == user;
+		}
+		return (this.user.getId() == user.getId());
 	}
 	
 	public boolean isActiveAsOf(Date date) {
