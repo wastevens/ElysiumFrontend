@@ -29,14 +29,21 @@ controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', fu
 	});
 	
 	$scope.changeUser = function() {
-		console.log($scope.selectedUser);
+		$scope.selectedUserPatronage = null;
+		$scope.selectedPatronage = null;
 		if($scope.selectedUser.membershipId) {
 			patronageRepository.getPatronage($scope.selectedUser.membershipId).then(function(patronage, status, headers, config) {
-				$scope.selectedPatronage = patronage;
+				$scope.selectedUserPatronage = patronage;
 			});
 		} else {
-			console.log('Grab all patronages, in order to assign one');
+			patronageRepository.getPatronages().then(function(patronages, status, headers, config) {
+				$scope.patronages = patronages;
+			});
 		}
+	}
+	
+	$scope.changePatronage = function() {
+		console.log($scope.selectedPatronage);
 	}
 	
 }]);
