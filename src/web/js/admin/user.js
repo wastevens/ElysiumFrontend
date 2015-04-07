@@ -50,14 +50,13 @@ controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', fu
 	
 	$scope.submit = function() {
 		if($scope.selectedUserPatronage) {
-//			patronageRepository.updatePatronage($scope.selectedUserPatronage);
+			patronageRepository.updatePatronage($scope.selectedUserPatronage);
 		} else if ($scope.selectedPatronage) {
 			$scope.selectedPatronage.userId = $scope.selectedUser.id;
 			$scope.selectedUser.membershipId = $scope.selectedPatronage.membershipId;
-//			patronageRepository.updatePatronage($scope.selectedPatronage);
+			patronageRepository.updatePatronage($scope.selectedPatronage);
 		}
 		userRepository.updateUser($scope.selectedUser);
-		patronageRepository.updatePatronage($scope.selectedPatronage);
 	}
 	
 }]);
