@@ -11,8 +11,9 @@ factory('userRepository', ['$resource', '$http', function($resource, $http) {
 		getUserWithId: function(id) {
 			return $resource(this.url + '/' + id).get().$promise;
 		},
-		updateUser: function(userToUpdate) {
-			return $resource(this.url + '/' + userToUpdate.id, userToUpdate).put().$promise;
+		updateUser: function(user) {
+			var action = { 'put': { method:'PUT' } };
+			return $resource(this.url + '/:id' , null, action).put({id: user.id}, user).$promise;
 		}
 	};
 }]);

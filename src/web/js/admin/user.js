@@ -43,7 +43,16 @@ controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', fu
 	}
 	
 	$scope.changePatronage = function() {
-		console.log($scope.selectedPatronage);
+	}
+	
+	$scope.submit = function() {
+		userRepository.updateUser($scope.selectedUser);
+		if($scope.selectedUserPatronage) {
+			patronageRepository.updatePatronage($scope.selectedUserPatronage);
+		} else {
+			$scope.selectedPatronage.userId = $scope.selectedUser.id;
+			patronageRepository.updatePatronage($scope.selectedPatronage);
+		}
 	}
 	
 }]);

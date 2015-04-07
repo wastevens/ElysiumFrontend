@@ -10,6 +10,10 @@ factory('patronageRepository', ['$resource', '$http', function($resource, $http)
 		},
 		getPatronage: function(id) {
 			return $resource(this.url + '/' + id).get().$promise;
+		},
+		updatePatronage: function(patronage) {
+			var action = { 'put': { method:'PUT' } };
+			return $resource(this.url + '/:id' , null, action).put({id: patronage.membershipId}, patronage).$promise;
 		}
 	};
 }]);

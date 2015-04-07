@@ -43,7 +43,7 @@ public class PatronageController {
 	@RequestMapping(value = "/admin/patronages", method = RequestMethod.GET)
 	public @ResponseBody String getPatronages() {
 		List<DisplayablePatronage> collect = StreamSupport.stream(patronageRepository.findAllUndeleted().spliterator(), false).
-                map((Patronage t) -> DisplayablePatronage.from(t)).
+                map((Patronage t) -> DisplayablePatronage.fromOn(t, new Date())).
                 sorted().
                 collect(Collectors.toList());
 		return new Gson().toJson(collect);
@@ -51,7 +51,7 @@ public class PatronageController {
 	
 	@RequestMapping(value = "/admin/patronages/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getPatronage(@PathVariable String id) {
-		return new Gson().toJson(DisplayablePatronage.from(findPatronage(id)));
+		return new Gson().toJson(DisplayablePatronage.fromOn(findPatronage(id), new Date()));
 	}
 	
 	private Patronage findPatronage(String id) {
@@ -66,7 +66,7 @@ public class PatronageController {
 	public @ResponseBody String getUnassignedPatronages() {
 		List<DisplayablePatronage> collect = StreamSupport.stream(patronageRepository.findAllUndeleted().spliterator(), false).
 				filter((Patronage t) -> t.getUser() == null).
-				map((Patronage t) -> DisplayablePatronage.from(t)).
+				map((Patronage t) -> DisplayablePatronage.fromOn(t, new Date())).
 				sorted().
 				collect(Collectors.toList());
 		return new Gson().toJson(collect);
@@ -76,7 +76,7 @@ public class PatronageController {
 	public @ResponseBody String getAssignedPatronages() {
 		List<DisplayablePatronage> collect = StreamSupport.stream(patronageRepository.findAllUndeleted().spliterator(), false).
 				filter((Patronage t) -> t.getUser() != null).
-				map((Patronage t) -> DisplayablePatronage.from(t)).
+				map((Patronage t) -> DisplayablePatronage.fromOn(t, new Date())).
 				sorted().
 				collect(Collectors.toList());
 		return new Gson().toJson(collect);
@@ -96,7 +96,7 @@ public class PatronageController {
 			patronage = patronageRepository.save(patronage);
 		}
 		addPatronageLocationHeader(response, patronage);
-		return new Gson().toJson(DisplayablePatronage.from(patronage));
+		return new Gson().toJson(DisplayablePatronage.fromOn(patronage, new Date()));
 	}
 	
 	@RequestMapping(value = "/admin/patronages/{id}", method = RequestMethod.PUT)
@@ -111,7 +111,7 @@ public class PatronageController {
 		}
 		Patronage updatedPatronage = patronageRepository.save(patronage.expiringOn(requestBody.expirationAsDate()).withOriginalUsername(requestBody.originalUsername).forUser(user));
 		addPatronageLocationHeader(response, updatedPatronage);
-		return new Gson().toJson(DisplayablePatronage.from(updatedPatronage));
+		return new Gson().toJson(DisplayablePatronage.fromOn(updatedPatronage, new Date()));
 	}
 
 	private void addPatronageLocationHeader(HttpServletResponse response, Patronage patronage) {

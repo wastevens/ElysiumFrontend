@@ -2,6 +2,7 @@ package com.dstevens.users.patronages;
 
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,25 +14,28 @@ public class DisplayablePatronage implements Comparable<DisplayablePatronage> {
 	public Integer userId;
 	public String originalUsername;
 	public List<DisplayablePatronagePaymentReceipt> payments;
+	public boolean activePatron;
 	
 	public DisplayablePatronage() {
-		this(null, null, null, null, null);
+		this(null, null, null, false, null, null);
 	}
 	
-	public DisplayablePatronage(String membershipId, String expiration, Integer userId, String originalUsername, List<DisplayablePatronagePaymentReceipt> payments) {
+	public DisplayablePatronage(String membershipId, String expiration, Integer userId, boolean activePatron, String originalUsername, List<DisplayablePatronagePaymentReceipt> payments) {
 		this.membershipId = membershipId;
 		this.expiration = expiration;
 		this.userId = userId;
+		this.activePatron = activePatron;
 		this.originalUsername = originalUsername;
 		this.payments = payments;
 	}
 
-	public static DisplayablePatronage from(Patronage patronage) {
+	public static DisplayablePatronage fromOn(Patronage patronage, Date date) {
 		Integer id = null;
 		if(patronage.getUser() != null) {
 			id = patronage.getUser().getId();
 		}
-		return new DisplayablePatronage(patronage.displayMembershipId(), new SimpleDateFormat("yyyy-MM-dd").format(patronage.getExpiration()), id, patronage.getOriginalUsername(), 
+		boolean activePatronage = patronage.isActiveAsOf(date);
+		return new DisplayablePatronage(patronage.displayMembershipId(), new SimpleDateFormat("yyyy-MM-dd").format(patronage.getExpiration()), id, activePatronage, patronage.getOriginalUsername(), 
 				                        patronage.getPayments().stream().map((PatronagePaymentReceipt t) -> DisplayablePatronagePaymentReceipt.from(t)).collect(Collectors.toList()));
 	}
 
