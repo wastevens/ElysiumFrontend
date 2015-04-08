@@ -1,8 +1,5 @@
 <form ng-submit="submit()" ng-controller="manageUsers">
 
-
-{{selectedUser}}
-<br>
 <table>
   <tr><th>Email</th><td>
   	<select ng-model="selectedUser" ng-options="user.email group by user.type for user in users" ng-change="changeUser()">
@@ -17,9 +14,9 @@
   <tr ng-show='selectedUserPatronage'><th>Username in Old Database</th><td><input type='text' ng-model='selectedUserPatronage.originalUsername' /></td></tr>
   <tr ng-show='selectedUserPatronage.payments' ng-repeat-start='payment in selectedUserPatronage.payments'></tr>
   <tr><th colspan=2>Payment {{$index +1}}</th></tr>
-  <tr><th>Payment Date</th><td>{{payment.paymentDate}}</td></tr>
-  <tr><th>Payment Type</th><td>{{payment.paymentType}}</td></tr>
-  <tr ng-repeat-end><th>Payment Identifier</th><td>{{payment.paymentReceiptIdentifier}}</td></tr>
+  <tr><th>Payment Date</th><td><input type='text' ng-model='payment.paymentDate' /></td></tr>
+  <tr><th>Payment Type</th><td><input type='text' ng-model='payment.paymentType' /></td></tr>
+  <tr ng-repeat-end><th>Payment Identifier</th><td><input type='text' ng-model='payment.paymentReceiptIdentifier' /></td></tr>
   
   <tr ng-show='patronages'><th>Membership Id</th><td>
   	<select ng-model="selectedPatronage" ng-options="patronage.membershipId for patronage in patronages" ng-change="changePatronage()">
@@ -31,9 +28,9 @@
   <tr ng-show='selectedPatronage'><th>Username in Old Database</th><td><input type='text' ng-model='selectedPatronage.originalUsername' /></td></tr>
   <tr ng-show='selectedPatronage.payments' ng-repeat-start='payment in selectedPatronage.payments'></tr>
   <tr><th colspan=2>Payment {{$index +1}}</th></tr>
-  <tr><th>Payment Date</th><td>{{payment.paymentDate}}</td></tr>
-  <tr><th>Payment Type</th><td>{{payment.paymentType}}</td></tr>
-  <tr ng-repeat-end><th>Payment Identifier</th><td>{{payment.paymentReceiptIdentifier}}</td></tr>
+  <tr><th>Payment Date</th><td><input type='text' ng-model='payment.paymentDate' /></td></tr>
+  <tr><th>Payment Type</th><td><input type='text' ng-model='payment.paymentType' /></td></tr>
+  <tr ng-repeat-end><th>Payment Identifier</th><td><input type='text' ng-model='payment.paymentReceiptIdentifier' /></td></tr>
 </table>
 <br><input name="submit" type="submit" value="submit" />
 </form>

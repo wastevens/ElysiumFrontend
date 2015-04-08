@@ -25,7 +25,9 @@ import com.dstevens.users.User;
 import com.dstevens.users.UserRepository;
 import com.dstevens.users.patronages.DisplayablePatronage;
 import com.dstevens.users.patronages.Patronage;
+import com.dstevens.users.patronages.PatronagePaymentReceipt;
 import com.dstevens.users.patronages.PatronageRepository;
+import com.dstevens.users.patronages.PaymentType;
 import com.google.gson.Gson;
 
 @Controller
@@ -106,10 +108,28 @@ public class PatronageController {
 			throw new ResourceNotFoundException("No patronage " + id + " found");
 		}
 		User user = userRepository.findUser(requestBody.userId);
-		if(!patronage.matchingUser(user)) {
-			throw new BadRequestException("Patronage " + patronage.displayMembershipId() + " is associated with user " + user.getId());
+		Patronage patronageToSave = requestBody.toPatronage();
+		
+		if(user == null) {
+			if(patronage.getUser() != null) {
+				throw new BadRequestException("Patronage " + patronage.displayMembershipId() + " is associated with user " + patronage.getUser().getId());
+			}
+		} else {
+			if(patronage.getUser() != null && user.getPatronage() != null) {
+				if(patronage.getUser().getId() == user.getId() &&
+				   patronage.getId() == user.getPatronage().getId()) {
+					patronageToSave = patronageToSave.forUser(user);
+			   } else {
+				   throw new BadRequestException("Patronage " + patronage.displayMembershipId() + " is associated with user " + patronage.getUser().getId());
+			   }
+			} else if(patronage.getUser() == null && user.getPatronage() == null) {
+				patronageToSave = patronageToSave.forUser(user);
+			} else {
+				throw new BadRequestException("Could not associate patronage " + patronage.displayMembershipId() + " with user " + user);
+			}
 		}
-		Patronage updatedPatronage = patronageRepository.save(patronage.expiringOn(requestBody.expirationAsDate()).withOriginalUsername(requestBody.originalUsername).forUser(user));
+		
+		Patronage updatedPatronage = patronageRepository.save(patronage.updateTo(patronageToSave));
 		addPatronageLocationHeader(response, updatedPatronage);
 		return new Gson().toJson(DisplayablePatronage.fromOn(updatedPatronage, new Date()));
 	}
@@ -123,9 +143,13 @@ public class PatronageController {
 		public String expiration;
 		public Integer userId;
 		public String originalUsername;
+		public List<RawPatronagePayment> payments;
 
 		private Patronage toPatronage() {
-			return new Patronage(year, expirationAsDate(), originalUsername);
+			Patronage patronage = new Patronage(year, expirationAsDate(), originalUsername);
+			List<PatronagePaymentReceipt> collect = payments.stream().map((RawPatronagePayment t) -> t.toReceipt()).collect(Collectors.toList());
+			collect.forEach((PatronagePaymentReceipt t) -> patronage.withPayment(t));
+			return patronage;
 		}
 		
 		private Date expirationAsDate() {
@@ -134,6 +158,25 @@ public class PatronageController {
 			} catch (ParseException e) {
 				throw new BadRequestException("Could not parse " + expiration + "; please make sure expiration dates are in yyyy-MM format");
 			}
+		}
+	}
+	
+	private static class RawPatronagePayment {
+		public Integer paymentType;
+		public String paymentReceiptIdentifier;
+		public String paymentDate;
+		
+		private PatronagePaymentReceipt toReceipt() {
+			return new PatronagePaymentReceipt(PaymentType.values()[paymentType], paymentReceiptIdentifier, paymentDate());
+		}
+
+		private Date paymentDate() {
+			Date date = null;
+			try {
+				date = new SimpleDateFormat("yyyy-MM-dd").parse(paymentDate);
+			} catch(ParseException e) {
+			}
+			return date;
 		}
 	}
 }

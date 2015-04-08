@@ -39,7 +39,7 @@ controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', fu
 				$scope.selectedUserPatronage = patronage;
 			});
 		} else {
-			patronageRepository.getPatronages().then(function(patronages, status, headers, config) {
+			patronageRepository.getUnassignedPatronages().then(function(patronages, status, headers, config) {
 				$scope.patronages = patronages;
 			});
 		}

@@ -105,6 +105,16 @@ public class Patronage {
 		return payments;
 	}
 	
+
+	public Patronage updateTo(Patronage patronage) {
+		Patronage updatedPatronage = this.withOriginalUsername(patronage.getOriginalUsername()).
+		                                  expiringOn(patronage.getExpiration()).
+		                                  forUser(patronage.getUser());
+		updatedPatronage.payments.clear();
+		updatedPatronage.payments.addAll(patronage.getPayments());
+		return updatedPatronage;
+	}
+	
 	public boolean matchingUser(User user) {
 		if(this.user == null || user == null) {
 			return this.user == user;

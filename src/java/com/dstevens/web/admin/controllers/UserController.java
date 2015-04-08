@@ -70,15 +70,34 @@ public class UserController {
 		if(user == null) {
 			throw new ResourceNotFoundException("No user " + id + " found");
 		}
+		User userToSave = user.withEmail(userWrapper.email).withFirstName(userWrapper.firstName).withLastName(userWrapper.lastName).withRoles(userWrapper.roles());
+		
 		Patronage patronage = patronageRepository.findPatronageByMembershipId(userWrapper.membershipId);
-		if(!user.matchingPatronage(patronage)) {
-			throw new BadRequestException("User " + patronage.getUser().getId() + " is associated with patronage " + patronage.displayMembershipId());
+		if(patronage == null) {
+			if(user.getPatronage() != null) {
+				throw new BadRequestException("User " + user.getId() + " is associated with patronage " + user.getPatronage().displayMembershipId());
+			}
+		} else {
+			if(patronage.getUser() != null && user.getPatronage() != null) {
+				if(patronage.getUser().getId() == user.getId() &&
+				   patronage.getId() == user.getPatronage().getId()) {
+				   userToSave = userToSave.withPatronage(patronage);
+			   } else {
+				   throw new BadRequestException("User " + user.getId() + " is associated with patronage " + user.getPatronage().displayMembershipId());
+			   }
+			} else if(patronage.getUser() == null && user.getPatronage() == null) {
+				userToSave = userToSave.withPatronage(patronage);
+			} else {
+				throw new BadRequestException("Could not associate user " + user.getId() + " cannot be associated with patronage " + patronage);
+			}
 		}
-		User updatedUser = userRepository.save(user.withEmail(userWrapper.email).withFirstName(userWrapper.firstName).withLastName(userWrapper.lastName).withRoles(userWrapper.roles()).withPatronage(patronage));
+		
+		User updatedUser = userRepository.save(userToSave);
 		addLocationHeader(response, updatedUser);
 		return new Gson().toJson(DisplayableUser.fromUserOn(new Date()).apply(updatedUser));
+
 	}
-	
+
 	private void addLocationHeader(HttpServletResponse response, User user) {
 		response.addHeader("LOCATION", "/admin/users/" + user.getId());
 	}
