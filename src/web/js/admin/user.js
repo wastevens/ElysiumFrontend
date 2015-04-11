@@ -40,6 +40,7 @@ controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', fu
 	$scope.changeUser = function() {
 		$scope.selectedUserPatronage = null;
 		$scope.selectedPatronage = null;
+		$scope.patronages = null;
 		if($scope.selectedUser.membershipId) {
 			patronageRepository.getPatronage($scope.selectedUser.membershipId).then(function(patronage, status, headers, config) {
 				$scope.selectedUserPatronage = patronage;
@@ -47,6 +48,14 @@ controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', fu
 		} else {
 			patronageRepository.getUnassignedPatronages().then(function(patronages, status, headers, config) {
 				$scope.patronages = patronages;
+				var addNewPatronage = {
+						membershipId: 'Create New Patronage',
+						activePatron: false,
+						expiration: '',
+						originalUsername: '',
+						payments: []
+				}
+				$scope.patronages.unshift(addNewPatronage)
 			});
 		}
 	}
@@ -60,11 +69,19 @@ controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', fu
 			promise = patronageRepository.updatePatronage($scope.selectedUserPatronage);
 		} else if ($scope.selectedPatronage) {
 			$scope.selectedPatronage.userId = $scope.selectedUser.id;
-			$scope.selectedUser.membershipId = $scope.selectedPatronage.membershipId;
-			promise = patronageRepository.updatePatronage($scope.selectedPatronage);
+			if($scope.selectedPatronage.membershipId === 'Create New Patronage') {
+				var patronageToCreate = $scope.selectedPatronage;
+				patronageToCreate.membershipId = null;
+				patronageToCreate.year = new Date().getFullYear();
+				promise = patronageRepository.createPatronage(patronageToCreate);
+			} else {
+				promise = patronageRepository.updatePatronage($scope.selectedPatronage);
+			}
 		}
+		
 		if(promise) {
 			promise.then(function(updatedPatronage, status, headers, config) {
+				$scope.selectedUser.membershipId = updatedPatronage.membershipId;
 				promise = userRepository.updateUser($scope.selectedUser);
 			});
 		} else {
