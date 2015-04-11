@@ -15,12 +15,18 @@ function _loadUsers(scope, userRepository) {
 					user.type = 'Inactive Patron';
 				}
 			}
+			if(scope.selectedUser && scope.selectedUser.id == user.id) {
+				scope.selectedUser = user;
+				scope.changeUser();
+			}
 		});
 		scope.users.sort(function(userA, userB) {
 			var typeCodeComparison = userA.typeId - userB.typeId;
 			if(typeCodeComparison == 0) {
 				if(userA.email < userB.email) return -1;
 				if(userA.email > userB.email) return 1;
+				if(userA.id < userB.id) return -1;
+				if(userA.id > userB.id) return 1;
 				return 0;				
 			}
 			return typeCodeComparison;
@@ -49,14 +55,25 @@ controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', fu
 	}
 	
 	$scope.submit = function() {
+		var promise = null;
 		if($scope.selectedUserPatronage) {
-			patronageRepository.updatePatronage($scope.selectedUserPatronage);
+			promise = patronageRepository.updatePatronage($scope.selectedUserPatronage);
 		} else if ($scope.selectedPatronage) {
 			$scope.selectedPatronage.userId = $scope.selectedUser.id;
 			$scope.selectedUser.membershipId = $scope.selectedPatronage.membershipId;
-			patronageRepository.updatePatronage($scope.selectedPatronage);
+			promise = patronageRepository.updatePatronage($scope.selectedPatronage);
 		}
-		userRepository.updateUser($scope.selectedUser);
+		if(promise) {
+			promise.then(function(updatedPatronage, status, headers, config) {
+				promise = userRepository.updateUser($scope.selectedUser);
+			});
+		} else {
+			promise = userRepository.updateUser($scope.selectedUser);
+		}
+		
+		promise.then(function(updatedUser, status, headers, config) {
+			_loadUsers($scope, userRepository);
+		});
 	}
 	
 }]);

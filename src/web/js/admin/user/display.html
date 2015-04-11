@@ -1,5 +1,8 @@
 <form ng-submit="submit()" ng-controller="manageUsers">
 
+{{selectedUser}}
+<br>
+
 <table>
   <tr><th>Email</th><td>
   	<select ng-model="selectedUser" ng-options="user.email group by user.type for user in users" ng-change="changeUser()">
