@@ -38,12 +38,11 @@ angular.module('admin.user.controllers', ['admin.user.services']).
 controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', function($scope, userRepository, patronageRepository) {
 	_loadUsers($scope, userRepository);
 	$scope.changeUser = function() {
-		$scope.selectedUserPatronage = null;
 		$scope.selectedPatronage = null;
 		$scope.patronages = null;
 		if($scope.selectedUser.membershipId) {
 			patronageRepository.getPatronage($scope.selectedUser.membershipId).then(function(patronage, status, headers, config) {
-				$scope.selectedUserPatronage = patronage;
+				$scope.selectedPatronage = patronage;
 			});
 		} else {
 			patronageRepository.getUnassignedPatronages().then(function(patronages, status, headers, config) {
@@ -63,10 +62,14 @@ controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', fu
 	$scope.changePatronage = function() {
 	}
 	
+	$scope.addPayment = function() {
+		
+	}
+	
 	$scope.submit = function() {
 		var promise = null;
-		if($scope.selectedUserPatronage) {
-			promise = patronageRepository.updatePatronage($scope.selectedUserPatronage);
+		if($scope.selectedUser.membershipId) {
+			promise = patronageRepository.updatePatronage($scope.selectedPatronage);
 		} else if ($scope.selectedPatronage) {
 			$scope.selectedPatronage.userId = $scope.selectedUser.id;
 			if($scope.selectedPatronage.membershipId === 'Create New Patronage') {
