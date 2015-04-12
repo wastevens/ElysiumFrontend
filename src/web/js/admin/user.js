@@ -38,6 +38,7 @@ angular.module('admin.user.controllers', ['admin.user.services']).
 controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', function($scope, userRepository, patronageRepository) {
 	_loadUsers($scope, userRepository);
 	$scope.changeUser = function() {
+		$scope.newPayment = {};
 		$scope.selectedPatronage = null;
 		$scope.patronages = null;
 		if($scope.selectedUser.membershipId) {
@@ -63,7 +64,17 @@ controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', fu
 	}
 	
 	$scope.addPayment = function() {
-		
+		var paymentToAdd = {
+			"paymentDate": $scope.newPayment.paymentDate,
+			"paymentType": $scope.newPayment.paymentType,
+			"paymentReceiptIdentifier": $scope.newPayment.paymentReceiptIdentifier
+		};
+		$scope.selectedPatronage.payments.push(paymentToAdd);
+		$scope.newPayment = {};
+	}
+	
+	$scope.removePayment = function(index) {
+		$scope.selectedPatronage.payments.splice(index, 1);
 	}
 	
 	$scope.submit = function() {
@@ -95,7 +106,6 @@ controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', fu
 			_loadUsers($scope, userRepository);
 		});
 	}
-	
 }]);
 
 angular.module('admin.user.directives', ['admin.user.services']).
