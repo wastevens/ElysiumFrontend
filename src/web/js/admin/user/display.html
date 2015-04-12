@@ -1,5 +1,4 @@
 <form ng-submit="submit()" ng-controller="manageUsers">
-
 <table>
   <tr><th>Email</th><td>
   	<select ng-model="selectedUser" ng-options="user.email group by user.type for user in users" ng-change="changeUser()">
@@ -20,13 +19,21 @@
   <tr ng-show='selectedPatronage.payments' ng-repeat-start='payment in selectedPatronage.payments'></tr>
   <tr><th colspan=2>Payment {{$index +1}}</th></tr>
   <tr><th>Payment Date</th><td><input type='text' ng-model='payment.paymentDate' /></td></tr>
-  <tr><th>Payment Type</th><td><input type='text' ng-model='payment.paymentType' /></td></tr>
+  <tr><th>Payment Type</th><td>
+  	<select ng-model="payment.paymentType" ng-options="paymentType.ordinal as paymentType.name for paymentType in paymentTypes">
+  		<option value="">-- Choose Payment Type --</option>
+  	</select>
+  </td></tr>
   <tr><th>Payment Identifier</th><td><input type='text' ng-model='payment.paymentReceiptIdentifier' /></td></tr>
   <tr ng-repeat-end><td colspan=2><a href="#" ng-click="removePayment($index)">Remove this payment</a></td></tr>
   
   <tr ng-show='selectedPatronage'><td colspan=2><hr/></td></tr>
   <tr ng-show='selectedPatronage'><th>Payment Date</th><td><input type='text' ng-model='newPayment.paymentDate' /></td></tr>
-  <tr ng-show='selectedPatronage'><th>Payment Type</th><td><input type='text' ng-model='newPayment.paymentType' /></td></tr>
+  <tr ng-show='selectedPatronage'><th>Payment Type</th><td>
+  	<select ng-model="newPayment.paymentType" ng-options="paymentType.ordinal as paymentType.name for paymentType in paymentTypes">
+  		<option value="">-- Choose Payment Type --</option>
+  	</select>
+  </td></tr>
   <tr ng-show='selectedPatronage'><th>Payment Identifier</th><td><input type='text' ng-model='newPayment.paymentReceiptIdentifier' /></td></tr>
   <tr ng-show='selectedPatronage'><td colspan=2><a href="#" ng-click="addPayment()">Add payment</a></td></tr>
 </table>

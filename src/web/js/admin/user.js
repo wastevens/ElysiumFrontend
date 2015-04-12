@@ -1,4 +1,5 @@
 angular.module('admin.user.services', ['admin.services.users', 'admin.services.patronage']);
+angular.module('admin.user.sources', ['admin.user.services', 'sources.paymenttypes']);
 
 function _loadUsers(scope, userRepository) {
 	userRepository.getUsers().then(function(users) {
@@ -34,8 +35,9 @@ function _loadUsers(scope, userRepository) {
 	});
 }
 
-angular.module('admin.user.controllers', ['admin.user.services']).
-controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', function($scope, userRepository, patronageRepository) {
+angular.module('admin.user.controllers', ['admin.user.services', 'admin.user.sources']).
+controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', 'paymentTypesSource', function($scope, userRepository, patronageRepository, paymentTypesSource) {
+	$scope.paymentTypes = paymentTypesSource.get();
 	_loadUsers($scope, userRepository);
 	$scope.changeUser = function() {
 		$scope.newPayment = {};
@@ -116,6 +118,4 @@ directive('manageUsers', [function() {
 	};
 }]);
 
-angular.module('admin.user.filters', ['filters.role', 'filters.joinBy']);
-
-angular.module('admin.user', ['admin.user.filters', 'admin.user.controllers', 'admin.user.directives', 'admin.user.services']);
+angular.module('admin.user', ['admin.user.controllers', 'admin.user.directives', 'admin.user.services', 'admin.user.sources']);
