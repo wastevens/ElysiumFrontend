@@ -108,30 +108,25 @@ function initializeElderPowers(scope, elderPowerSource) {
 	_initializeCharacterPossessedTraits(scope, 'elderPowers', 'characterElderPowers', elderPowerSource);
 }
 
-function initializeNecromanticRituals(scope, necromanticRitualSource) {
-	necromanticRitualSource.get().then(function(traits) {
-		scope['necromanticRituals'] = traits;
-		scope['characterNecromanticRituals'] = [];
-		scope.character['necromanticRituals'].forEach(function(characterTrait, index, array) {
+function _initializeFetchedCharacterPossessedTraits(scope, traitName, existingTraits, traitSource) {
+	traitSource.get().then(function(traits) {
+		scope[traitName] = traits;
+		scope[existingTraits] = [];
+		scope.character[traitName].forEach(function(characterTrait, index, array) {
 			var copiedTrait = copyTrait(characterTrait);
 			copiedTrait.name = traits[characterTrait.ordinal].name;
 			copiedTrait.possession = possession[1];
-			scope['characterNecromanticRituals'].push(copiedTrait);
+			scope[existingTraits].push(copiedTrait);
 		});
 	});
 }
 
+function initializeNecromanticRituals(scope, necromanticRitualSource) {
+	_initializeFetchedCharacterPossessedTraits(scope, 'necromanticRituals', 'characterNecromanticRituals', necromanticRitualSource);
+}
+
 function initializeThaumaturgicalRituals(scope, thaumaturgicalRitualSource) {
-	thaumaturgicalRitualSource.get().then(function(traits) {
-		scope['thaumaturgicalRituals'] = traits;
-		scope['characterThaumaturgicalRituals'] = [];
-		scope.character['thaumaturgicalRituals'].forEach(function(characterTrait, index, array) {
-			var copiedTrait = copyTrait(characterTrait);
-			copiedTrait.name = traits[characterTrait.ordinal].name;
-			copiedTrait.possession = possession[1];
-			scope['characterThaumaturgicalRituals'].push(copiedTrait);
-		});
-	});
+	_initializeFetchedCharacterPossessedTraits(scope, 'thaumaturgicalRituals', 'characterThaumaturgicalRituals', thaumaturgicalRitualSource);
 }
 
 function initializeMerits(scope, meritSource) {
