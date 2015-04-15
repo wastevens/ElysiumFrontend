@@ -4,7 +4,7 @@ factory('traitsRepository', ['$resource', function($resource) {
 		url: '/traits/',
 		getVampireTraits: function(traitType, successFunction) {
 			var resource = $resource(this.url + "vampire/:traitType", {traitType: '@traitType'});
-			return resource.query({traitType: traitType}, successFunction);
+			return resource.query({traitType: traitType}, successFunction).$promise;
 		}
 	};
 }]);

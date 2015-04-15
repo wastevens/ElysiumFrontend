@@ -109,11 +109,20 @@ function initializeElderPowers(scope, elderPowerSource) {
 }
 
 function initializeNecromanticRituals(scope, necromanticRitualSource) {
-	_initializeCharacterPossessedTraits(scope, 'necromanticRituals', 'characterNecromanticRituals', necromanticRitualSource);
+	necromanticRitualSource.get().then(function(traits) {
+		scope['necromanticRituals'] = traits;
+		scope['characterNecromanticRituals'] = [];
+		scope.character['necromanticRituals'].forEach(function(characterTrait, index, array) {
+			var copiedTrait = copyTrait(characterTrait);
+			copiedTrait.name = traits[characterTrait.ordinal].name;
+			copiedTrait.possession = possession[1];
+			scope['characterNecromanticRituals'].push(copiedTrait);
+		});
+	});
 }
 
 function initializeThaumaturgicalRituals(scope, thaumaturgicalRitualSource) {
-	thaumaturgicalRitualSource.get().$promise.then(function(traits) {
+	thaumaturgicalRitualSource.get().then(function(traits) {
 		scope['thaumaturgicalRituals'] = traits;
 		scope['characterThaumaturgicalRituals'] = [];
 		scope.character['thaumaturgicalRituals'].forEach(function(characterTrait, index, array) {
