@@ -36,16 +36,21 @@ public enum DisplayableThaumaturgicalRitual implements DisplayableTraitSource {
     STONE_OF_THE_TRUE_FORM             ("Stone of the True Form",             ThaumaturgicalRitual.STONE_OF_THE_TRUE_FORM.rating())
     ;
 	
-	private final String name;
+	private final String display;
 	private final int rating;
 
-    private DisplayableThaumaturgicalRitual(String name, int rating) {
-        this.name = name;
+    private DisplayableThaumaturgicalRitual(String display, int rating) {
+        this.display = display;
 		this.rating = rating;
     }
-
-	@Override
-	public DisplayableTrait toDisplayableTrait() {
-		return new DisplayableTrait(name, ordinal(), rating);
-	}
+    
+    @Override
+    public String display() {
+    	return display;
+    }
+    
+    @Override
+    public int rating() {
+    	return rating;
+    }
 }

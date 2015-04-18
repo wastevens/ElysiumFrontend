@@ -27,16 +27,21 @@ public enum DisplayableNecromanticRitual implements DisplayableTraitSource {
     WEIGHT_OF_THE_TOMB       ("Weight of the Tomb",        NecromanticRitual.WEIGHT_OF_THE_TOMB.rating())
     ;
 	
-	private final String name;
+	private final String display;
 	private final int rating;
 
-    private DisplayableNecromanticRitual(String name, int rating) {
-        this.name = name;
+    private DisplayableNecromanticRitual(String display, int rating) {
+        this.display = display;
 		this.rating = rating;
     }
 
-	@Override
-	public DisplayableTrait toDisplayableTrait() {
-		return new DisplayableTrait(name, ordinal(), rating);
-	}
+    @Override
+    public String display() {
+    	return display;
+    }
+    
+    @Override
+    public int rating() {
+    	return rating;
+    }
 }
