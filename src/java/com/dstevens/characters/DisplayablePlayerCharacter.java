@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import com.dstevens.characters.traits.distinctions.flaws.CharacterFlaw;
 import com.dstevens.characters.traits.distinctions.merits.CharacterMerit;
+import com.dstevens.characters.traits.powers.magic.necromancy.NecromanticRitual;
+import com.dstevens.characters.traits.powers.magic.thaumaturgy.ThaumaturgicalRitual;
 import com.google.gson.Gson;
 
 import static com.dstevens.collections.Lists.sort;
@@ -32,8 +34,8 @@ public class DisplayablePlayerCharacter {
 	public final List<DisplayableCharacterDiscipline> disciplines;
 	public final List<DisplayableTechnique> techniques;
 	public final List<DisplayableElderPower> elderPowers;
-	public final List<DisplayableNecromanticRitual> necromanticRituals;
-	public final List<DisplayableThaumaturgicalRitual> thaumaturgicalRituals;
+	public final List<DisplayableTrait> necromanticRituals;
+	public final List<DisplayableTrait> thaumaturgicalRituals;
 	public final List<DisplayableTrait> merits;
 	public final List<DisplayableTrait> flaws;
 	
@@ -49,7 +51,7 @@ public class DisplayablePlayerCharacter {
     		                           List<DisplayableCharacterSkill> skills, List<DisplayableCharacterBackground> backgrounds, 
     		                           List<DisplayableCharacterDiscipline> disciplines, 
     		                           List<DisplayableTechnique> techniques, List<DisplayableElderPower> elderPowers,
-    		                           List<DisplayableNecromanticRitual> necromanticRituals, List<DisplayableThaumaturgicalRitual> thaumaturgicalRituals,
+    		                           List<DisplayableTrait> necromanticRituals, List<DisplayableTrait> thaumaturgicalRituals,
     		                           List<DisplayableTrait> merits, List<DisplayableTrait> flaws) {
 		this.id = id;
 		this.name = name;
@@ -97,8 +99,8 @@ public class DisplayablePlayerCharacter {
 				                                                     sort(t.getDisciplines().stream().map(DisplayableCharacterDiscipline.fromDiscipline()).collect(Collectors.toList()), displayableCharacterTraitComparator),
 				                                                     sort(t.getTechniques().stream().map(DisplayableTechnique.fromTechnique()).collect(Collectors.toList()), displayableCharacterTraitComparator),
 				                                                     sort(t.getElderPowers().stream().map(DisplayableElderPower.fromElderPower()).collect(Collectors.toList()), displayableCharacterTraitComparator),
-				                                                     sort(t.getNecromanticRituals().stream().map(DisplayableNecromanticRitual.fromNecromanticRitual()).collect(Collectors.toList()), displayableCharacterTraitComparator),
-				                                                     sort(t.getThaumaturgicalRituals().stream().map(DisplayableThaumaturgicalRitual.fromThaumaturgicalRitual()).collect(Collectors.toList()), displayableCharacterTraitComparator),
+				                                                     sort(t.getNecromanticRituals().stream().map((NecromanticRitual m) -> new DisplayableTrait(m.ordinal())).collect(Collectors.toList())),
+				                                                     sort(t.getThaumaturgicalRituals().stream().map((ThaumaturgicalRitual m) -> new DisplayableTrait(m.ordinal())).collect(Collectors.toList())),
 				                                                     sort(t.getMerits().stream().map((CharacterMerit m) -> new DisplayableTrait(m.trait().ordinal(), m.getSpecialization())).collect(Collectors.toList())),
 				                                                     sort(t.getFlaws().stream().map((CharacterFlaw m) -> new DisplayableTrait(m.trait().ordinal(), m.getSpecialization())).collect(Collectors.toList()))
 				                                                     );

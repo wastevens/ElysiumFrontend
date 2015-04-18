@@ -7,8 +7,6 @@ import org.apache.commons.lang3.ObjectUtils;
 
 import com.google.gson.Gson;
 
-import static com.dstevens.collections.Sets.set;
-
 public class DisplayableTrait implements Comparable<DisplayableTrait> {
 
 	private final int ordinal;
@@ -17,15 +15,15 @@ public class DisplayableTrait implements Comparable<DisplayableTrait> {
 	private final Collection<String> focuses;
 
 	public DisplayableTrait(int ordinal) {
-		this(ordinal, null, null, set());
+		this(ordinal, null, null, null);
 	}
 	
 	public DisplayableTrait(int ordinal, Integer rating) {
-		this(ordinal, rating, null, set());
+		this(ordinal, rating, null, null);
 	}
 	
 	public DisplayableTrait(int ordinal, String specialization) {
-		this(ordinal, null, specialization, set());
+		this(ordinal, null, specialization, null);
 	}
 	
 	public DisplayableTrait(int ordinal, Integer rating, String specialization, Collection<String> focuses) {
