@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.dstevens.config.exceptions.BadRequestException;
-import com.dstevens.config.exceptions.ResourceNotFoundException;
+import com.dstevens.config.controllers.BadRequestException;
+import com.dstevens.config.controllers.ResourceNotFoundException;
 import com.dstevens.user.patronage.DisplayablePatronagePaymentReceipt;
 import com.dstevens.user.patronage.Patronage;
 import com.dstevens.user.patronage.PatronagePaymentReceipt;

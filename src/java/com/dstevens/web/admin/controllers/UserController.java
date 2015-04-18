@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dstevens.config.exceptions.BadRequestException;
-import com.dstevens.config.exceptions.ResourceNotFoundException;
+import com.dstevens.config.controllers.BadRequestException;
+import com.dstevens.config.controllers.ResourceNotFoundException;
 import com.dstevens.user.DisplayableUser;
 import com.dstevens.user.Role;
 import com.dstevens.user.User;
