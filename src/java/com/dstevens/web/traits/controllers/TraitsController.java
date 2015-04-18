@@ -27,14 +27,14 @@ public class TraitsController {
 
 	private String vampireTraits(String type) {
 		switch(type.toLowerCase()) {
-			case "thaumaturgicalrituals": return new Gson().toJson(list(DisplayableThaumaturgicalRituals.values()).stream().map((DisplayableTraitSource t) -> t.toDisplayableTrait()).collect(Collectors.toList()));
+			case "thaumaturgicalrituals": return new Gson().toJson(list(DisplayableThaumaturgicalRitual.values()).stream().map((DisplayableTraitSource t) -> t.toDisplayableTrait()).collect(Collectors.toList()));
 			case "necromanticrituals": return foo();
 		}
 		return null;
 	}
 
 	private String foo() {
-		List<DisplayableNecromanticRituals> list = list(DisplayableNecromanticRituals.values());
+		List<DisplayableNecromanticRitual> list = list(DisplayableNecromanticRitual.values());
 		List<DisplayableTrait> collect = list.stream().map((DisplayableTraitSource t1) -> t1.toDisplayableTrait()).collect(Collectors.toList());
 		return new Gson().toJson(collect);
 	}
