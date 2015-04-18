@@ -1,31 +1,38 @@
 package com.dstevens.characters;
 
-import java.util.function.Function;
+import java.util.Collection;
+import java.util.Comparator;
 
-import com.dstevens.characters.traits.RatedTrait;
-import com.dstevens.characters.traits.Trait;
+import org.apache.commons.lang3.ObjectUtils;
+
 import com.google.gson.Gson;
+
+import static com.dstevens.collections.Sets.set;
 
 public class DisplayableTrait implements Comparable<DisplayableTrait> {
 
 	private final int ordinal;
 	private final Integer rating;
+	private final String specialization;
+	private final Collection<String> focuses;
 
+	public DisplayableTrait(int ordinal) {
+		this(ordinal, null, null, set());
+	}
+	
 	public DisplayableTrait(int ordinal, Integer rating) {
+		this(ordinal, rating, null, set());
+	}
+	
+	public DisplayableTrait(int ordinal, String specialization) {
+		this(ordinal, null, specialization, set());
+	}
+	
+	public DisplayableTrait(int ordinal, Integer rating, String specialization, Collection<String> focuses) {
 		this.ordinal = ordinal;
 		this.rating = rating;
-	}
-
-	public static Function<? super Trait, DisplayableTrait> fromTrait() {
-		return (Trait t) -> new DisplayableTrait(t.ordinal(), null);
-	}
-	
-	public static Function<? super RatedTrait, DisplayableTrait> fromRatedTrait() {
-		return (RatedTrait t) -> new DisplayableTrait(t.trait().ordinal(), t.rating());
-	}
-	
-	public static Function<? super RatedTrait, DisplayableTrait> fromSpecializedTrait() {
-		return (RatedTrait t) -> new DisplayableTrait(t.trait().ordinal(), t.rating());
+		this.specialization = specialization;
+		this.focuses = focuses;
 	}
 	
 	public int ordinal() {
@@ -36,13 +43,43 @@ public class DisplayableTrait implements Comparable<DisplayableTrait> {
 		return rating;
 	}
 	
+	public String getSpecialization() {
+		return specialization;
+	}
+	
+	public Collection<String> getFocuses() {
+		return focuses;
+	}
+	
 	public String serialized() {
 		return new Gson().toJson(this);
 	}
 
 	@Override
-	public int compareTo(DisplayableTrait o) {
-		return ordinal - o.ordinal;
+	public int compareTo(DisplayableTrait that) {
+		return DisplayTraitComparator.ORDINAL.thenComparing(DisplayTraitComparator.RATING).thenComparing(DisplayTraitComparator.SPECIALIZATOIN).compare(this, that);
 	}
-
+	
+	private static enum DisplayTraitComparator implements Comparator<DisplayableTrait> {
+		
+		ORDINAL {
+			@Override
+			public int compare(DisplayableTrait o1, DisplayableTrait o2) {
+				return ObjectUtils.compare(o1.ordinal, o2.ordinal, false);
+			}
+		},
+		RATING {
+			@Override
+			public int compare(DisplayableTrait o1, DisplayableTrait o2) {
+				return ObjectUtils.compare(o1.rating, o2.rating, false);
+			}
+		},
+		SPECIALIZATOIN {
+			@Override
+			public int compare(DisplayableTrait o1, DisplayableTrait o2) {
+				return ObjectUtils.compare(o1.specialization, o2.specialization, false);
+			}
+		}
+		;
+	}
 }
