@@ -1,4 +1,4 @@
-package com.dstevens.web.trait.displayable;
+package com.dstevens.web.trait;
 
 public interface DisplayableTraitSource {
 
