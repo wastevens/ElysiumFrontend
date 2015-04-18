@@ -1,4 +1,4 @@
-package com.dstevens.web.trait.displayable.vampire;
+package com.dstevens.web.trait.vampire;
 
 import com.dstevens.characters.traits.powers.magic.necromancy.NecromanticRitual;
 import com.dstevens.web.trait.DisplayableTraitSource;
