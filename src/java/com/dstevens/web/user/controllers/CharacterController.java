@@ -2,7 +2,6 @@ package com.dstevens.web.user.controllers;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +22,19 @@ import com.dstevens.characters.traits.changes.TraitChangeFactoryProvider;
 import com.dstevens.troupe.Troupe;
 import com.dstevens.troupe.TroupeRepository;
 import com.dstevens.user.User;
+import com.dstevens.web.config.RequestingUserProvider;
 import com.google.gson.Gson;
 
 @Controller
 public class CharacterController {
 
 	private final PlayerCharacterService playerCharacterService;
-	private final Supplier<User> requestingUserSupplier;
+	private final RequestingUserProvider requestingUserSupplier;
 	private final TroupeRepository troupeRepository;
 	private final TraitChangeFactoryProvider traitChangeFactoryProvider;
 
 	@Autowired
-	public CharacterController(Supplier<User> requestingUserSupplier, PlayerCharacterService playerCharacterService,
+	public CharacterController(RequestingUserProvider requestingUserSupplier, PlayerCharacterService playerCharacterService,
 							   TroupeRepository troupeRepository, TraitChangeFactoryProvider traitChangeFactoryProvider) {
 		this.requestingUserSupplier = requestingUserSupplier;
 		this.playerCharacterService = playerCharacterService;

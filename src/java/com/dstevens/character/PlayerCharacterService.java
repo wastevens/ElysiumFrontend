@@ -1,8 +1,6 @@
 package com.dstevens.character;
 
-import java.time.Clock;
 import java.util.Date;
-import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +10,7 @@ import com.dstevens.characters.PlayerCharacterFactory;
 import com.dstevens.characters.PlayerCharacterRepository;
 import com.dstevens.characters.status.PlayerStatus;
 import com.dstevens.characters.status.PlayerStatusChange;
+import com.dstevens.suppliers.ClockSupplier;
 import com.dstevens.troupe.Troupe;
 import com.dstevens.troupe.TroupeRepository;
 import com.dstevens.user.User;
@@ -24,12 +23,12 @@ public class PlayerCharacterService {
 	private final PlayerCharacterFactory factory;
 	private final UserRepository userRepository;
 	private final TroupeRepository troupeRepository;
-	private final Supplier<Clock> clockSupplier;
+	private final ClockSupplier clockSupplier;
 
 	@Autowired
 	public PlayerCharacterService(PlayerCharacterRepository repository, PlayerCharacterFactory factory,
 			                      UserRepository userRepository, TroupeRepository troupeRepository,
-			                      Supplier<Clock> clockSupplier) {
+			                      ClockSupplier clockSupplier) {
 		this.repository = repository;
 		this.factory = factory;
 		this.userRepository = userRepository;
