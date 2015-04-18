@@ -1,4 +1,4 @@
-package com.dstevens.web.config.controller;
+package com.dstevens.web.config.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
