@@ -11,8 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.dstevens.mail.MailMessageFactory;
-import com.dstevens.users.User;
-import com.dstevens.users.UserDao;
+import com.dstevens.user.User;
+import com.dstevens.user.UserDao;
 import com.dstevens.users.security.UserPasswordResetTokenService;
 
 @Controller

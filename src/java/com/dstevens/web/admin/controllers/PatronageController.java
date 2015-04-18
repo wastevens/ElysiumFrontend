@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.dstevens.config.exceptions.BadRequestException;
 import com.dstevens.config.exceptions.ResourceNotFoundException;
-import com.dstevens.users.User;
-import com.dstevens.users.UserRepository;
+import com.dstevens.user.User;
+import com.dstevens.user.UserRepository;
 import com.dstevens.users.patronages.DisplayablePatronage;
 import com.dstevens.users.patronages.Patronage;
 import com.dstevens.users.patronages.PatronagePaymentReceipt;

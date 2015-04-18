@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.dstevens.users.ElysiumUserDetailsService;
+import com.dstevens.user.ElysiumUserDetailsService;
  
 @Configuration
 @EnableWebSecurity

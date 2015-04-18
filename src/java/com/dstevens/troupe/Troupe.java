@@ -13,7 +13,7 @@ import org.hibernate.annotations.ForeignKey;
 
 import com.dstevens.characters.PlayerCharacter;
 import com.dstevens.players.Setting;
-import com.dstevens.users.User;
+import com.dstevens.user.User;
 import com.dstevens.utilities.ObjectExtensions;
 
 import javax.persistence.CascadeType;

@@ -14,8 +14,8 @@ import com.dstevens.characters.status.PlayerStatus;
 import com.dstevens.characters.status.PlayerStatusChange;
 import com.dstevens.troupe.Troupe;
 import com.dstevens.troupe.TroupeRepository;
-import com.dstevens.users.User;
-import com.dstevens.users.UserRepository;
+import com.dstevens.user.User;
+import com.dstevens.user.UserRepository;
 
 @Service
 public class PlayerCharacterService {

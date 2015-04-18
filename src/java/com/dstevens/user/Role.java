@@ -1,4 +1,4 @@
-package com.dstevens.users;
+package com.dstevens.user;
 
 public enum Role {
 

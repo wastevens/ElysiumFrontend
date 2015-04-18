@@ -22,10 +22,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.config.exceptions.BadRequestException;
 import com.dstevens.config.exceptions.ResourceNotFoundException;
-import com.dstevens.users.DisplayableUser;
-import com.dstevens.users.Role;
-import com.dstevens.users.User;
-import com.dstevens.users.UserRepository;
+import com.dstevens.user.DisplayableUser;
+import com.dstevens.user.Role;
+import com.dstevens.user.User;
+import com.dstevens.user.UserRepository;
 import com.dstevens.users.patronages.Patronage;
 import com.dstevens.users.patronages.PatronageRepository;
 import com.google.gson.Gson;

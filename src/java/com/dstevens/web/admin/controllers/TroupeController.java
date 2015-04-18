@@ -22,9 +22,9 @@ import com.dstevens.troupe.DisplayableTroupe;
 import com.dstevens.troupe.Troupe;
 import com.dstevens.troupe.TroupeRepository;
 import com.dstevens.troupe.UnknownTroupeException;
-import com.dstevens.users.DisplayableUser;
-import com.dstevens.users.User;
-import com.dstevens.users.UserRepository;
+import com.dstevens.user.DisplayableUser;
+import com.dstevens.user.User;
+import com.dstevens.user.UserRepository;
 import com.google.gson.Gson;
 
 @Controller

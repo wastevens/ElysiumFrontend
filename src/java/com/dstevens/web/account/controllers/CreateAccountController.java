@@ -15,9 +15,9 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.dstevens.mail.MailMessageFactory;
 import com.dstevens.suppliers.ClockSupplier;
-import com.dstevens.users.Role;
-import com.dstevens.users.User;
-import com.dstevens.users.UserDao;
+import com.dstevens.user.Role;
+import com.dstevens.user.User;
+import com.dstevens.user.UserDao;
 import com.dstevens.users.patronages.Patronage;
 import com.dstevens.users.patronages.PatronagePaymentReceipt;
 import com.dstevens.users.patronages.PaymentType;

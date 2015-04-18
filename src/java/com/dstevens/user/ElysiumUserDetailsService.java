@@ -1,4 +1,4 @@
-package com.dstevens.users;
+package com.dstevens.user;
 
 import java.util.Map;
 import java.util.Map.Entry;

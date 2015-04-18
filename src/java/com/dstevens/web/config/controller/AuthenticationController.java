@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dstevens.config.Authorization;
 import com.dstevens.config.exceptions.ForbiddenException;
-import com.dstevens.users.ElysiumUserDetailsService;
+import com.dstevens.user.ElysiumUserDetailsService;
 import com.google.gson.Gson;
 
 @Controller

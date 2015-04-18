@@ -23,7 +23,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.ForeignKey;
 
-import com.dstevens.users.User;
+import com.dstevens.user.User;
 
 import static com.dstevens.collections.Lists.list;
 

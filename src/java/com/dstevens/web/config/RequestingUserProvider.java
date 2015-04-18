@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.dstevens.users.User;
-import com.dstevens.users.UserRepository;
+import com.dstevens.user.User;
+import com.dstevens.user.UserRepository;
 
 @Service
 public class RequestingUserProvider implements Supplier<User> {

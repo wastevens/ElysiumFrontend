@@ -1,4 +1,4 @@
-package com.dstevens.users;
+package com.dstevens.user;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

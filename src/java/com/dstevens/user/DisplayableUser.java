@@ -1,4 +1,4 @@
-package com.dstevens.users;
+package com.dstevens.user;
 
 import java.util.Comparator;
 import java.util.Date;

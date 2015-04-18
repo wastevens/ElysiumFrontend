@@ -7,7 +7,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.dstevens.character.DisplayablePlayerCharacter;
-import com.dstevens.users.DisplayableUser;
+import com.dstevens.user.DisplayableUser;
 import com.dstevens.utilities.ObjectExtensions;
 
 import static com.dstevens.collections.Sets.set;

@@ -14,7 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.dstevens.users.ElysiumUserDetailsService;
+import com.dstevens.user.ElysiumUserDetailsService;
 
 @Component
 public class ElysiumAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
