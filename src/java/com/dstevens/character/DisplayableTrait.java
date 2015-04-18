@@ -1,4 +1,4 @@
-package com.dstevens.characters;
+package com.dstevens.character;
 
 import java.util.Collection;
 import java.util.Comparator;

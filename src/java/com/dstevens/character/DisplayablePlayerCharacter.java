@@ -1,10 +1,11 @@
-package com.dstevens.characters;
+package com.dstevens.character;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.dstevens.characters.PlayerCharacter;
 import com.dstevens.characters.traits.backgrounds.CharacterBackground;
 import com.dstevens.characters.traits.distinctions.flaws.CharacterFlaw;
 import com.dstevens.characters.traits.distinctions.merits.CharacterMerit;

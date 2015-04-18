@@ -1,4 +1,4 @@
-package com.dstevens.characters;
+package com.dstevens.character;
 
 public class UnknownCharacterException extends RuntimeException {
 
