@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dstevens.web.trait.displayable.DisplayableTraitSource;
+import com.dstevens.web.trait.displayable.vampire.DisplayableNecromanticRitual;
+import com.dstevens.web.trait.displayable.vampire.DisplayableThaumaturgicalRitual;
 import com.google.gson.Gson;
 
 import static com.dstevens.collections.Lists.list;
