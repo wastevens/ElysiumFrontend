@@ -1,4 +1,4 @@
-package com.dstevens.web.traits.controllers;
+package com.dstevens.web.trait.controllers;
 
 import java.util.stream.Collectors;
 

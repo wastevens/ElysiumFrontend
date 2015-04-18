@@ -1,4 +1,4 @@
-package com.dstevens.users.patronage;
+package com.dstevens.user.patronage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

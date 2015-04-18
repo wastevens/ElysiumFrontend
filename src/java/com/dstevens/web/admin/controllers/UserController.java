@@ -26,8 +26,8 @@ import com.dstevens.user.DisplayableUser;
 import com.dstevens.user.Role;
 import com.dstevens.user.User;
 import com.dstevens.user.UserRepository;
-import com.dstevens.users.patronage.Patronage;
-import com.dstevens.users.patronage.PatronageRepository;
+import com.dstevens.user.patronage.Patronage;
+import com.dstevens.user.patronage.PatronageRepository;
 import com.google.gson.Gson;
 
 @Controller

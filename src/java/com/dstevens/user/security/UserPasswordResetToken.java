@@ -1,4 +1,4 @@
-package com.dstevens.users.security;
+package com.dstevens.user.security;
 
 import java.time.Clock;
 import java.util.Date;
