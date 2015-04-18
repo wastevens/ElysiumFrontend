@@ -1,4 +1,4 @@
-package com.dstevens.troupes;
+package com.dstevens.troupe;
 
 public class UnknownTroupeException extends RuntimeException {
 

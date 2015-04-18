@@ -1,4 +1,4 @@
-package com.dstevens.troupes;
+package com.dstevens.troupe;
 
 import static com.dstevens.collections.Sets.set;
 import static com.dstevens.collections.Sets.setWith;

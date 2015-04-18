@@ -1,4 +1,4 @@
-package com.dstevens.troupes;
+package com.dstevens.troupe;
 
 import org.springframework.stereotype.Service;
 

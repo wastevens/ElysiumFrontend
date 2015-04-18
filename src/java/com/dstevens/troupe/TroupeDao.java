@@ -1,4 +1,4 @@
-package com.dstevens.troupes;
+package com.dstevens.troupe;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

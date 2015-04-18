@@ -12,8 +12,8 @@ import com.dstevens.characters.PlayerCharacterFactory;
 import com.dstevens.characters.PlayerCharacterRepository;
 import com.dstevens.characters.status.PlayerStatus;
 import com.dstevens.characters.status.PlayerStatusChange;
-import com.dstevens.troupes.Troupe;
-import com.dstevens.troupes.TroupeRepository;
+import com.dstevens.troupe.Troupe;
+import com.dstevens.troupe.TroupeRepository;
 import com.dstevens.users.User;
 import com.dstevens.users.UserRepository;
 

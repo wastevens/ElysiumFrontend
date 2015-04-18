@@ -1,4 +1,4 @@
-package com.dstevens.troupes;
+package com.dstevens.troupe;
 
 import java.util.Comparator;
 import java.util.Date;

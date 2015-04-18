@@ -20,8 +20,8 @@ import com.dstevens.character.UnknownCharacterException;
 import com.dstevens.characters.PlayerCharacter;
 import com.dstevens.characters.traits.changes.TraitChange;
 import com.dstevens.characters.traits.changes.TraitChangeFactoryProvider;
-import com.dstevens.troupes.Troupe;
-import com.dstevens.troupes.TroupeRepository;
+import com.dstevens.troupe.Troupe;
+import com.dstevens.troupe.TroupeRepository;
 import com.dstevens.users.User;
 import com.google.gson.Gson;
 
