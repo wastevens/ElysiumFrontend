@@ -23,7 +23,7 @@ public class DisplayableCharacterDiscipline implements DisplayableCharacterTrait
 	}
 
 	public static Function<CharacterDiscipline, DisplayableCharacterDiscipline> fromDiscipline() {
-		return (CharacterDiscipline t) -> new DisplayableCharacterDiscipline(t.getTrait().ordinal(), t.rating());
+		return (CharacterDiscipline t) -> new DisplayableCharacterDiscipline(t.trait().ordinal(), t.rating());
 	}
 	
 	public String serialized() {
