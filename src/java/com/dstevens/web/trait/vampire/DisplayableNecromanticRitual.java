@@ -42,7 +42,7 @@ public enum DisplayableNecromanticRitual implements DisplayableTraitSource {
     }
     
     @Override
-    public int rating() {
+    public Integer rating() {
     	return rating;
     }
 }

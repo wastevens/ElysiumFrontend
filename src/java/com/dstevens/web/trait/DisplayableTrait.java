@@ -4,12 +4,14 @@ public class DisplayableTrait {
 
 	public String name;
 	public int ordinal;
-	public int rating;
+	public Integer rating;
+	public Boolean requiresSpecialization;
 	
-	public DisplayableTrait(String name, int ordinal, int rating) {
+	public DisplayableTrait(String name, int ordinal, Integer rating, Boolean requiresSpecialization) {
 		this.name = name;
 		this.ordinal = ordinal;
 		this.rating = rating;
+		this.requiresSpecialization = requiresSpecialization;
 	}
 	
 }

@@ -4,7 +4,7 @@ import com.dstevens.characters.traits.powers.magic.thaumaturgy.ThaumaturgicalRit
 import com.dstevens.web.trait.DisplayableTraitSource;
 
 public enum DisplayableThaumaturgicalRitual implements DisplayableTraitSource {
-
+	
 	BLOOD_MASTERY                      ("Blood Mastery",                      ThaumaturgicalRitual.BLOOD_MASTERY.rating()),
     BIND_THE_ACCUSING_TONGUE           ("Bind the Accusing Tongue",           ThaumaturgicalRitual.BIND_THE_ACCUSING_TONGUE.rating()),
     COMMUNICATE_WITH_KINDRED_SIRE      ("Communicate with Kindred Sire",      ThaumaturgicalRitual.COMMUNICATE_WITH_KINDRED_SIRE.rating()),
@@ -51,7 +51,7 @@ public enum DisplayableThaumaturgicalRitual implements DisplayableTraitSource {
     }
     
     @Override
-    public int rating() {
+    public Integer rating() {
     	return rating;
     }
 }
