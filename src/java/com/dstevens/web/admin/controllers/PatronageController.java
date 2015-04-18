@@ -23,11 +23,11 @@ import com.dstevens.config.exceptions.BadRequestException;
 import com.dstevens.config.exceptions.ResourceNotFoundException;
 import com.dstevens.user.User;
 import com.dstevens.user.UserRepository;
-import com.dstevens.users.patronages.DisplayablePatronage;
-import com.dstevens.users.patronages.Patronage;
-import com.dstevens.users.patronages.PatronagePaymentReceipt;
-import com.dstevens.users.patronages.PatronageRepository;
-import com.dstevens.users.patronages.PaymentType;
+import com.dstevens.users.patronage.DisplayablePatronage;
+import com.dstevens.users.patronage.Patronage;
+import com.dstevens.users.patronage.PatronagePaymentReceipt;
+import com.dstevens.users.patronage.PatronageRepository;
+import com.dstevens.users.patronage.PaymentType;
 import com.google.gson.Gson;
 
 @Controller

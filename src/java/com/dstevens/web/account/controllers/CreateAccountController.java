@@ -18,9 +18,9 @@ import com.dstevens.suppliers.ClockSupplier;
 import com.dstevens.user.Role;
 import com.dstevens.user.User;
 import com.dstevens.user.UserDao;
-import com.dstevens.users.patronages.Patronage;
-import com.dstevens.users.patronages.PatronagePaymentReceipt;
-import com.dstevens.users.patronages.PaymentType;
+import com.dstevens.users.patronage.Patronage;
+import com.dstevens.users.patronage.PatronagePaymentReceipt;
+import com.dstevens.users.patronage.PaymentType;
 
 import static com.dstevens.collections.Sets.set;
  

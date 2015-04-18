@@ -31,7 +31,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.dstevens.characters.PlayerCharacter;
-import com.dstevens.users.patronages.Patronage;
+import com.dstevens.users.patronage.Patronage;
 
 import static com.dstevens.collections.Sets.set;
 import static com.dstevens.collections.Sets.setWith;

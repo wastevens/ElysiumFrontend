@@ -1,4 +1,4 @@
-package com.dstevens.users.patronages;
+package com.dstevens.users.patronage;
 
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
