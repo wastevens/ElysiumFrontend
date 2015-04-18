@@ -1,6 +1,5 @@
 package com.dstevens.web.traits.controllers;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
@@ -28,14 +27,8 @@ public class TraitsController {
 	private String vampireTraits(String type) {
 		switch(type.toLowerCase()) {
 			case "thaumaturgicalrituals": return new Gson().toJson(list(DisplayableThaumaturgicalRitual.values()).stream().map((DisplayableTraitSource t) -> t.toDisplayableTrait()).collect(Collectors.toList()));
-			case "necromanticrituals": return foo();
+			case "necromanticrituals":    return new Gson().toJson(list(DisplayableNecromanticRitual.values()).stream().map((DisplayableTraitSource t1) -> t1.toDisplayableTrait()).collect(Collectors.toList()));
 		}
 		return null;
-	}
-
-	private String foo() {
-		List<DisplayableNecromanticRitual> list = list(DisplayableNecromanticRitual.values());
-		List<DisplayableTrait> collect = list.stream().map((DisplayableTraitSource t1) -> t1.toDisplayableTrait()).collect(Collectors.toList());
-		return new Gson().toJson(collect);
 	}
 }
