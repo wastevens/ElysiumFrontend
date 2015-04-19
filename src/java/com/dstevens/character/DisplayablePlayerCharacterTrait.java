@@ -7,26 +7,26 @@ import org.apache.commons.lang3.ObjectUtils;
 
 import com.google.gson.Gson;
 
-public class DisplayableTrait implements Comparable<DisplayableTrait> {
+public class DisplayablePlayerCharacterTrait implements Comparable<DisplayablePlayerCharacterTrait> {
 
 	private final int ordinal;
 	private final Integer rating;
 	private final String specialization;
 	private final Collection<String> focuses;
 
-	public DisplayableTrait(int ordinal) {
+	public DisplayablePlayerCharacterTrait(int ordinal) {
 		this(ordinal, null, null, null);
 	}
 	
-	public DisplayableTrait(int ordinal, Integer rating) {
+	public DisplayablePlayerCharacterTrait(int ordinal, Integer rating) {
 		this(ordinal, rating, null, null);
 	}
 	
-	public DisplayableTrait(int ordinal, String specialization) {
+	public DisplayablePlayerCharacterTrait(int ordinal, String specialization) {
 		this(ordinal, null, specialization, null);
 	}
 	
-	public DisplayableTrait(int ordinal, Integer rating, String specialization, Collection<String> focuses) {
+	public DisplayablePlayerCharacterTrait(int ordinal, Integer rating, String specialization, Collection<String> focuses) {
 		this.ordinal = ordinal;
 		this.rating = rating;
 		this.specialization = specialization;
@@ -54,27 +54,27 @@ public class DisplayableTrait implements Comparable<DisplayableTrait> {
 	}
 
 	@Override
-	public int compareTo(DisplayableTrait that) {
+	public int compareTo(DisplayablePlayerCharacterTrait that) {
 		return DisplayTraitComparator.ORDINAL.thenComparing(DisplayTraitComparator.RATING).thenComparing(DisplayTraitComparator.SPECIALIZATOIN).compare(this, that);
 	}
 	
-	private static enum DisplayTraitComparator implements Comparator<DisplayableTrait> {
+	private static enum DisplayTraitComparator implements Comparator<DisplayablePlayerCharacterTrait> {
 		
 		ORDINAL {
 			@Override
-			public int compare(DisplayableTrait o1, DisplayableTrait o2) {
+			public int compare(DisplayablePlayerCharacterTrait o1, DisplayablePlayerCharacterTrait o2) {
 				return ObjectUtils.compare(o1.ordinal, o2.ordinal, false);
 			}
 		},
 		RATING {
 			@Override
-			public int compare(DisplayableTrait o1, DisplayableTrait o2) {
+			public int compare(DisplayablePlayerCharacterTrait o1, DisplayablePlayerCharacterTrait o2) {
 				return ObjectUtils.compare(o1.rating, o2.rating, false);
 			}
 		},
 		SPECIALIZATOIN {
 			@Override
-			public int compare(DisplayableTrait o1, DisplayableTrait o2) {
+			public int compare(DisplayablePlayerCharacterTrait o1, DisplayablePlayerCharacterTrait o2) {
 				return ObjectUtils.compare(o1.specialization, o2.specialization, false);
 			}
 		}
