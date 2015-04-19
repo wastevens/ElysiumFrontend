@@ -84,7 +84,7 @@ function initializeBackgrounds(scope, backgroundSource) {
 }
 
 function initializeDisciplines(scope, disciplineSource) {
-	_initializeCharacterOptionalTraits(scope, 'disciplines', 'characterDisciplines', disciplineSource);
+	_initializeFetchedCharacterPossessedTraits(scope, 'disciplines', 'characterDisciplines', disciplineSource);
 }
 
 function _initializeCharacterPossessedTraits(scope, traitName, existingTraits, traitSource) {
@@ -96,6 +96,9 @@ function _initializeCharacterPossessedTraits(scope, traitName, existingTraits, t
 		var copiedTrait = copyTrait(characterTrait);
 		copiedTrait.name = traits[characterTrait.ordinal].name;
 		copiedTrait.possession = possession[1];
+		if(characterTrait.rating) {
+			copiedTrait.rating = ratings[characterTrait.rating];
+		}
 		scope[existingTraits].push(copiedTrait);
 	});
 }
@@ -116,6 +119,9 @@ function _initializeFetchedCharacterPossessedTraits(scope, traitName, existingTr
 			var copiedTrait = copyTrait(characterTrait);
 			copiedTrait.name = traits[characterTrait.ordinal].name;
 			copiedTrait.possession = possession[1];
+			if(characterTrait.rating) {
+				copiedTrait.rating = ratings[characterTrait.rating];
+			}
 			scope[existingTraits].push(copiedTrait);
 		});
 	});
@@ -163,13 +169,15 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	if(!isNaN($scope.character.bloodline)) {
 		$scope.bloodlines.bloodline = bloodlineSource.get()[$scope.character.bloodline];
-		$scope.disciplineOptions = $scope.bloodlines.bloodline.disciplines;
+//		$scope.disciplineOptions = $scope.bloodlines.bloodline.disciplines;
 	}
-	if($scope.character.inClanDisciplines) {
-		$scope.character.inClanDisciplines.forEach(function(discipline, index, array) {
-			$scope.disciplineOptions[index].discipline  = disciplineSource.get()[discipline];
-		});
-	}
+//	if($scope.character.inClanDisciplines) {
+//		$scope.character.inClanDisciplines.forEach(function(discipline, index, array) {
+//			disciplineSource.get().then(function(disciplines) {
+//				$scope.disciplineOptions[index].discipline  = disciplines[discipline];
+//			})
+//		});
+//	}
 	
 	var attributePriorities = [{priority: "Primary (7)", value: 7}, 
 	                           {priority: "Secondary (5)", value: 5}, 
@@ -214,7 +222,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	initializeBackgrounds($scope, backgroundSource);
 	initializeDisciplines($scope, disciplineSource);
 	initializeTechniques($scope, techniqueSource);
-	initializeElderPowers($scope, elderPowerSource);
+//	initializeElderPowers($scope, elderPowerSource);
 	initializeNecromanticRituals($scope, necromanticRitualSource);
 	initializeThaumaturgicalRituals($scope, thaumaturgicalRitualSource);
 	initializeMerits($scope, meritSource);

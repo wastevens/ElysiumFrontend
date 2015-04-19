@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dstevens.web.trait.DisplayableTraitSource;
+import com.dstevens.web.trait.vampire.DisplayableDiscipline;
 import com.dstevens.web.trait.vampire.DisplayableNecromanticRitual;
 import com.dstevens.web.trait.vampire.DisplayableThaumaturgicalRitual;
 import com.google.gson.Gson;
@@ -31,6 +32,7 @@ public class TraitsController {
 		switch(type.toLowerCase()) {
 			case "thaumaturgicalrituals": return new Gson().toJson(list(DisplayableThaumaturgicalRitual.values()).stream().map((DisplayableTraitSource t) -> t.toDisplayableTrait()).collect(Collectors.toList()));
 			case "necromanticrituals":    return new Gson().toJson(list(DisplayableNecromanticRitual.values()).stream().map((DisplayableTraitSource t1) -> t1.toDisplayableTrait()).collect(Collectors.toList()));
+			case "disciplines":           return new Gson().toJson(list(DisplayableDiscipline.values()).stream().map((DisplayableTraitSource t1) -> t1.toDisplayableTrait()).collect(Collectors.toList()));
 		}
 		return null;
 	}
