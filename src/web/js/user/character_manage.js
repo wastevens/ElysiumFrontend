@@ -24,7 +24,8 @@ function copyTrait(traitToCopy) {
 		"ordinal": traitToCopy.ordinal,
 		"rating": traitToCopy.rating,
 		"requiresSpecialization": traitToCopy.requiresSpecialization,
-		"specialization": traitToCopy.specialization
+		"specialization": traitToCopy.specialization,
+		"displayableTrait": traitToCopy.displayableTrait
 	};
 }
 
@@ -83,8 +84,16 @@ function initializeBackgrounds(scope, backgroundSource) {
 	_initializeCharacterOptionalTraits(scope, 'backgrounds', 'characterBackgrounds', backgroundSource);
 }
 
-function initializeDisciplines(scope, disciplineSource) {
-	_initializeFetchedCharacterPossessedTraits(scope, 'disciplines', 'characterDisciplines', disciplineSource);
+function initializeTechniques(scope, techniqueSource) {
+	_initializeCharacterPossessedTraits(scope, 'techniques', 'characterTechniques', techniqueSource);
+}
+
+function initializeMerits(scope, meritSource) {
+	_initializeCharacterPossessedTraits(scope, 'merits', 'characterMerits', meritSource);
+}
+
+function initializeFlaws(scope, flawSource) {
+	_initializeCharacterPossessedTraits(scope, 'flaws', 'characterFlaws', flawSource);
 }
 
 function _initializeCharacterPossessedTraits(scope, traitName, existingTraits, traitSource) {
@@ -93,38 +102,22 @@ function _initializeCharacterPossessedTraits(scope, traitName, existingTraits, t
 	scope[traitName] = traits;
 	scope[existingTraits] = [];
 	scope.character[traitName].forEach(function(characterTrait, index, array) {
-		var copiedTrait = copyTrait(characterTrait);
-		copiedTrait.name = traits[characterTrait.ordinal].name;
-		copiedTrait.possession = possession[1];
+		var copiedTrait = copyTrait(traits[characterTrait.ordinal]);
 		if(characterTrait.rating) {
 			copiedTrait.rating = ratings[characterTrait.rating];
+		} else {
+			copiedTrait.possession = possession[1];
 		}
 		scope[existingTraits].push(copiedTrait);
 	});
 }
 
-function initializeTechniques(scope, techniqueSource) {
-	_initializeCharacterPossessedTraits(scope, 'techniques', 'characterTechniques', techniqueSource);
+function initializeDisciplines(scope, disciplineSource) {
+	_initializeFetchedCharacterPossessedTraits(scope, 'disciplines', 'characterDisciplines', disciplineSource);
 }
 
 function initializeElderPowers(scope, elderPowerSource) {
-	_initializeCharacterPossessedTraits(scope, 'elderPowers', 'characterElderPowers', elderPowerSource);
-}
-
-function _initializeFetchedCharacterPossessedTraits(scope, traitName, existingTraits, traitSource) {
-	traitSource.get().then(function(traits) {
-		scope[traitName] = traits;
-		scope[existingTraits] = [];
-		scope.character[traitName].forEach(function(characterTrait, index, array) {
-			var copiedTrait = copyTrait(characterTrait);
-			copiedTrait.name = traits[characterTrait.ordinal].name;
-			copiedTrait.possession = possession[1];
-			if(characterTrait.rating) {
-				copiedTrait.rating = ratings[characterTrait.rating];
-			}
-			scope[existingTraits].push(copiedTrait);
-		});
-	});
+	_initializeFetchedCharacterPossessedTraits(scope, 'elderPowers', 'characterElderPowers', elderPowerSource);
 }
 
 function initializeNecromanticRituals(scope, necromanticRitualSource) {
@@ -135,12 +128,20 @@ function initializeThaumaturgicalRituals(scope, thaumaturgicalRitualSource) {
 	_initializeFetchedCharacterPossessedTraits(scope, 'thaumaturgicalRituals', 'characterThaumaturgicalRituals', thaumaturgicalRitualSource);
 }
 
-function initializeMerits(scope, meritSource) {
-	_initializeCharacterPossessedTraits(scope, 'merits', 'characterMerits', meritSource);
-}
-
-function initializeFlaws(scope, flawSource) {
-	_initializeCharacterPossessedTraits(scope, 'flaws', 'characterFlaws', flawSource);
+function _initializeFetchedCharacterPossessedTraits(scope, traitName, existingTraits, traitSource) {
+	traitSource.get().then(function(traits) {
+		scope[traitName] = traits;
+		scope[existingTraits] = [];
+		scope.character[traitName].forEach(function(characterTrait, index, array) {
+			var copiedTrait = copyTrait(traits[characterTrait.ordinal]);
+			if(characterTrait.rating) {
+				copiedTrait.rating = ratings[characterTrait.rating];
+			} else {
+				copiedTrait.possession = possession[1];
+			}
+			scope[existingTraits].push(copiedTrait);
+		});
+	});
 }
 
 angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds', 'sources.techniques', 'sources.elderPowers', 'sources.rituals.necromantic', 'sources.rituals.thaumaturgical', 'sources.merits', 'sources.flaws']).
@@ -222,7 +223,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	initializeBackgrounds($scope, backgroundSource);
 	initializeDisciplines($scope, disciplineSource);
 	initializeTechniques($scope, techniqueSource);
-//	initializeElderPowers($scope, elderPowerSource);
+	initializeElderPowers($scope, elderPowerSource);
 	initializeNecromanticRituals($scope, necromanticRitualSource);
 	initializeThaumaturgicalRituals($scope, thaumaturgicalRitualSource);
 	initializeMerits($scope, meritSource);

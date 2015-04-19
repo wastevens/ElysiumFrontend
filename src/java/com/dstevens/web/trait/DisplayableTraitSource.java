@@ -3,9 +3,9 @@ package com.dstevens.web.trait;
 public interface DisplayableTraitSource {
 
 	default DisplayableTrait toDisplayableTrait() {
-		return new DisplayableTrait(display(), ordinal(), rating(), requiresSpecialization(), subcategory());
+		return new DisplayableTrait(display(), ordinal(), rating(), requiresSpecialization(), subcategory(), displayableTrait());
 	}
-	
+
 	int ordinal();
 	String display();
 	
@@ -22,6 +22,10 @@ public interface DisplayableTraitSource {
 	}
 	
 	default String subcategory() {
+		return null;
+	}
+	
+	default DisplayableTrait displayableTrait() {
 		return null;
 	}
 }
