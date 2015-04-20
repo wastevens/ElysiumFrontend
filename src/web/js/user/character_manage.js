@@ -288,7 +288,10 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 			$scope.disciplineOptions = [];
 		}
 	}
-	$scope.inClanDisciplineChange = function(index) {
+	$scope.inClanDisciplineChange = function(index, originalDisciplineOrdinal) {
+		if(originalDisciplineOrdinal) {
+			$scope.requests.push({"traitType": 0, "traitChange": 3, "trait": originalDisciplineOrdinal});
+		}
 		if($scope.disciplineOptions[index].discipline) {
 			$scope.requests.push({"traitType": 0, "traitChange": 2, "trait": $scope.disciplineOptions[index].discipline.ordinal});
 		}
