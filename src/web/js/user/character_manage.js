@@ -158,27 +158,51 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	$scope.disciplineOptions = [];
 	
 	$scope.clans = {
-        list: clanSource.get(),
-		clan: clanSource.get()[$scope.character.clan]
+		list: [],
+		clan: null
 	}
+	
 	$scope.bloodlines = {
 	    list: [],
 	    bloodline: null
 	}
-	if(!isNaN($scope.character.clan)) {
-		$scope.bloodlines.list = $scope.clans.clan.bloodlines;
-	}
-	if(!isNaN($scope.character.bloodline)) {
-		$scope.bloodlines.bloodline = bloodlineSource.get()[$scope.character.bloodline];
-//		$scope.disciplineOptions = $scope.bloodlines.bloodline.disciplines;
-	}
-//	if($scope.character.inClanDisciplines) {
-//		$scope.character.inClanDisciplines.forEach(function(discipline, index, array) {
-//			disciplineSource.get().then(function(disciplines) {
-//				$scope.disciplineOptions[index].discipline  = disciplines[discipline];
-//			})
-//		});
-//	}
+	
+	clanSource.get().then(function(clans) {
+		$scope.clans.list = clans;
+		$scope.clans.clan = clans[$scope.character.clan];
+		if(!isNaN($scope.character.clan)) {		
+			$scope.bloodlines.list = $scope.clans.clan.bloodlines;
+		}
+		if(!isNaN($scope.character.bloodline)) {
+			console.log($scope.bloodlines.list);
+			console.log($scope.character.bloodline);
+			
+			$scope.bloodlines.list.forEach(function(bloodline, index) {
+				if(bloodline.ordinal == $scope.character.bloodline) {
+					$scope.bloodlines.bloodline = bloodline;
+				}
+			});
+			
+			$scope.disciplineOptions = $scope.bloodlines.bloodline.disciplines;
+		}
+		
+		
+		if($scope.disciplineOptions && $scope.character.inClanDisciplines) {
+			$scope.character.inClanDisciplines.forEach(function(inClanDisciplineOrdinal, index) {
+				if($scope.disciplineOptions[index]) {
+					$scope.disciplineOptions[index].discipline = null;
+					if($scope.disciplineOptions[index].length == 1) {
+						$scope.disciplineOptions[index].discipline = $scope.disciplineOptions[index][0];
+					}
+					$scope.disciplineOptions[index].forEach(function(discipline) {
+						if(discipline.ordinal == inClanDisciplineOrdinal) {
+							$scope.disciplineOptions[index].discipline = discipline;
+						}
+					})
+				}
+			});
+		}
+	});
 	
 	var attributePriorities = [{priority: "Primary (7)", value: 7}, 
 	                           {priority: "Secondary (5)", value: 5}, 
@@ -233,7 +257,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	
 	$scope.clanChange = function() {
 		if($scope.clans.clan) {
-			$scope.requests.push({"traitType": 0, "traitChange": 0, "trait": $scope.clans.clan.id});
+			$scope.requests.push({"traitType": 0, "traitChange": 0, "trait": $scope.clans.clan.ordinal});
 			$scope.bloodlines.list = $scope.clans.clan.bloodlines;
 			$scope.bloodlines.bloodline = null;
 			if($scope.bloodlines.list.length == 1) {
@@ -251,7 +275,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		});
 		
 		if($scope.bloodlines.bloodline) {
-			$scope.requests.push({"traitType": 0, "traitChange": 1, "trait": $scope.bloodlines.bloodline.id});
+			$scope.requests.push({"traitType": 0, "traitChange": 1, "trait": $scope.bloodlines.bloodline.ordinal});
 			$scope.disciplineOptions = $scope.bloodlines.bloodline.disciplines;
 			$scope.disciplineOptions.forEach(function(disciplines, index, array) {
 				$scope.disciplineOptions[index].discipline = null;

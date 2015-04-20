@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dstevens.web.trait.DisplayableTraitSource;
+import com.dstevens.web.trait.vampire.DisplayableBloodline;
+import com.dstevens.web.trait.vampire.DisplayableClan;
 import com.dstevens.web.trait.vampire.DisplayableDiscipline;
 import com.dstevens.web.trait.vampire.DisplayableElderPower;
 import com.dstevens.web.trait.vampire.DisplayableNecromanticRitual;
@@ -31,6 +33,8 @@ public class TraitsController {
 
 	private String vampireTraits(String type) {
 		switch(type.toLowerCase()) {
+		    case "clans":                 return new Gson().toJson(list(DisplayableClan.values()).stream().map((DisplayableTraitSource t1) -> t1.toDisplayableTrait()).collect(Collectors.toList()));
+		    case "bloodlines":            return new Gson().toJson(list(DisplayableBloodline.values()).stream().map((DisplayableTraitSource t1) -> t1.toDisplayableTrait()).collect(Collectors.toList()));
 			case "thaumaturgicalrituals": return new Gson().toJson(list(DisplayableThaumaturgicalRitual.values()).stream().map((DisplayableTraitSource t) -> t.toDisplayableTrait()).collect(Collectors.toList()));
 			case "necromanticrituals":    return new Gson().toJson(list(DisplayableNecromanticRitual.values()).stream().map((DisplayableTraitSource t1) -> t1.toDisplayableTrait()).collect(Collectors.toList()));
 			case "disciplines":           return new Gson().toJson(list(DisplayableDiscipline.values()).stream().map((DisplayableTraitSource t1) -> t1.toDisplayableTrait()).collect(Collectors.toList()));
