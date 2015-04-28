@@ -84,10 +84,6 @@ function initializeBackgrounds(scope, backgroundSource) {
 	_initializeCharacterOptionalTraits(scope, 'backgrounds', 'characterBackgrounds', backgroundSource);
 }
 
-function initializeTechniques(scope, techniqueSource) {
-	_initializeCharacterPossessedTraits(scope, 'techniques', 'characterTechniques', techniqueSource);
-}
-
 function initializeMerits(scope, meritSource) {
 	_initializeCharacterPossessedTraits(scope, 'merits', 'characterMerits', meritSource);
 }
@@ -118,6 +114,11 @@ function initializeDisciplines(scope, disciplineSource) {
 
 function initializeElderPowers(scope, elderPowerSource) {
 	_initializeFetchedCharacterPossessedTraits(scope, 'elderPowers', 'characterElderPowers', elderPowerSource);
+}
+
+
+function initializeTechniques(scope, techniqueSource) {
+	_initializeFetchedCharacterPossessedTraits(scope, 'techniques', 'characterTechniques', techniqueSource);
 }
 
 function initializeNecromanticRituals(scope, necromanticRitualSource) {

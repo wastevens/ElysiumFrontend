@@ -14,6 +14,7 @@ import com.dstevens.web.trait.vampire.DisplayableClan;
 import com.dstevens.web.trait.vampire.DisplayableDiscipline;
 import com.dstevens.web.trait.vampire.DisplayableElderPower;
 import com.dstevens.web.trait.vampire.DisplayableNecromanticRitual;
+import com.dstevens.web.trait.vampire.DisplayableTechnique;
 import com.dstevens.web.trait.vampire.DisplayableThaumaturgicalRitual;
 import com.google.gson.Gson;
 
@@ -39,6 +40,7 @@ public class TraitsController {
 			case "necromanticrituals":    return new Gson().toJson(list(DisplayableNecromanticRitual.values()).stream().map((DisplayableTraitSource t1) -> t1.toDisplayableTrait()).collect(Collectors.toList()));
 			case "disciplines":           return new Gson().toJson(list(DisplayableDiscipline.values()).stream().map((DisplayableTraitSource t1) -> t1.toDisplayableTrait()).collect(Collectors.toList()));
 			case "elderpowers":           return new Gson().toJson(list(DisplayableElderPower.values()).stream().map((DisplayableTraitSource t1) -> t1.toDisplayableTrait()).collect(Collectors.toList()));
+			case "techniques":            return new Gson().toJson(list(DisplayableTechnique.values()).stream().map((DisplayableTraitSource t1) -> t1.toDisplayableTrait()).collect(Collectors.toList()));
 		}
 		return null;
 	}
