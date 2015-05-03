@@ -42,24 +42,6 @@ public class CharacterController {
 		this.traitChangeFactoryProvider = traitChangeFactoryProvider;
 	}
 	
-	@RequestMapping(value = "/user/page/characters", method = RequestMethod.GET)
-	public ModelAndView getCharactersPage() {
-		return new ModelAndView("/user/characters");
-	}
-	
-	@RequestMapping(value = "/user/page/characters/{id}", method = RequestMethod.GET)
-	public ModelAndView getCharacterPage(@PathVariable Integer id) {
-		PlayerCharacter character = playerCharacterService.getCharacter(id);
-		if(character == null) {
-			throw new UnknownCharacterException("Could not find character with id " + id);
-		}
-		//Push this to PlayerCharacter; get the character with all current requests applied
-		character.getRequestedTraitChanges().forEach((TraitChange t) -> character.apply(t));
-		ModelAndView modelAndView = new ModelAndView("/user/character/manage");
-		modelAndView.addObject("character", DisplayablePlayerCharacter.fromCharacter().apply(character).serialized());
-		return modelAndView;
-	}
-	
 	@RequestMapping(value = "/characters/{id}", method = RequestMethod.POST)
 	public @ResponseBody void addRequests(@PathVariable Integer id, @RequestBody final List<RawTraitChange> requests) {
 		PlayerCharacter character = playerCharacterService.getCharacter(id);
