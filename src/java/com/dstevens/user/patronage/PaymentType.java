@@ -1,5 +1,6 @@
 package com.dstevens.user.patronage;
 
+
 public enum PaymentType {
 
 	OTHER,

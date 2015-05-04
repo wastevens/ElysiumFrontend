@@ -1,1 +1,18 @@
-Hello world from display.html
+<table ng-controller="viewPatronage">
+  <tr><th>Email</th><td>{{user.email}}</td></tr>
+  <tr><th>First Name</th><td>{{user.firstName}}</td></tr>
+  <tr><th>Last Name</th><td>{{user.lastName}}</td></tr>
+  <tr ng-show='user.membershipId'><th>Membership Id</th><td>{{user.membershipId}}</td></tr>
+  <tr ng-show='user.membershipId'><th>Active?</th><td>{{user.activePatron}}</td></tr>
+  <tr ng-show='user.patronage'><th>Patronage Expiration</th><td>{{user.patronage.expiration}}</td></tr>
+  <tr ng-show='user.patronage'><th>Username in Old Database</th><td>{{user.patronage.originalUsername}}</td></tr>
+  <tr ng-show='user.patronage' ng-repeat-start='payment in user.patronage.payments'></tr>
+  <tr><th colspan=2>Payment {{$index +1}}</th></tr>
+  <tr><th>Payment Date</th><td>{{payment.paymentDate}}</td></tr>
+  <tr><th>Payment Type</th><td>{{payment.paymentType|payment_type}}</td></tr>
+  <tr ng-repeat-end><th>Payment Identifier</th><td>{{payment.paymentReceiptIdentifier}}</td></tr>
+</table>
+
+<br>User: {{user}}
+
+

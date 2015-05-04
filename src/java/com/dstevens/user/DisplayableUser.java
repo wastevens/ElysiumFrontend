@@ -6,6 +6,8 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.dstevens.user.patronage.DisplayablePatronage;
+
 import static com.dstevens.collections.Sets.set;
 
 public class DisplayableUser implements Comparable<DisplayableUser> {
@@ -18,20 +20,22 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 	public final Set<Integer> roles;
 	public final String membershipId;
 	public final Boolean activePatron;
+	public final DisplayablePatronage patronage;
 	
 	//Jackson only
     @Deprecated
 	private DisplayableUser() {
-		this(null, null, null, null, null, set(), null, null);
+		this(null, null, null, null, null, set(), null, null, null);
 	}
 	
-	private DisplayableUser(Integer id, String firstName, String lastName, String email, String password, Set<Integer> roles, String membershipId, Boolean activePatron) {
+	private DisplayableUser(Integer id, String firstName, String lastName, String email, String password, Set<Integer> roles, DisplayablePatronage patronage, String membershipId, Boolean activePatron) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
 		this.roles = roles;
+		this.patronage = patronage;
 		this.membershipId = membershipId;
 		this.activePatron = activePatron;
 	}
@@ -44,15 +48,17 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 		return new Function<User, DisplayableUser>() {
 			@Override
 			public DisplayableUser apply(User t) {
+				DisplayablePatronage patronage = null;
 				String membershipId = null;
 				boolean activePatronage = false;
 				if(t.getPatronage() != null) {
 					membershipId = t.getPatronage().displayMembershipId();
 					activePatronage = t.getPatronage().isActiveAsOf(date);
+					patronage = DisplayablePatronage.fromOn(t.getPatronage(), date);
 				}
 				return new DisplayableUser(t.getId(), t.getFirstName(), t.getLastName(), t.getEmail(), null,
 						                   t.getRoles().stream().map((Role r) -> r.ordinal()).collect(Collectors.toSet()),
-						                   membershipId, activePatronage);
+						                   patronage, membershipId, activePatronage);
 			}
 		};
 	}
