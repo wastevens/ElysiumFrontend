@@ -118,4 +118,6 @@ directive('manageUsers', [function() {
 	};
 }]);
 
-angular.module('admin.user', ['admin.user.controllers', 'admin.user.directives', 'admin.user.services', 'admin.user.sources']);
+angular.module('user.user.filters', ['filters.payment_type']);
+
+angular.module('admin.user', ['admin.user.controllers', 'admin.user.directives', 'admin.user.services', 'admin.user.sources', 'user.user.filters']);
