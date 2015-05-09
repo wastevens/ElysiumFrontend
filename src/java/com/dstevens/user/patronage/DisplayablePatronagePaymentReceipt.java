@@ -1,5 +1,6 @@
 package com.dstevens.user.patronage;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
@@ -7,7 +8,7 @@ import java.util.function.Function;
 
 public class DisplayablePatronagePaymentReceipt implements Comparable<DisplayablePatronagePaymentReceipt> {
 
-	public Integer paymentType;
+	public DisplayablePaymentType paymentType;
 	public String paymentReceiptIdentifier;
 	public String paymentDate;
 	
@@ -15,20 +16,31 @@ public class DisplayablePatronagePaymentReceipt implements Comparable<Displayabl
 		this(null, null, null);
 	}
 	
-	public DisplayablePatronagePaymentReceipt(Integer paymentType, String paymentReceiptIdentifier, String paymentDate) {
+	public DisplayablePatronagePaymentReceipt(DisplayablePaymentType paymentType, String paymentReceiptIdentifier, String paymentDate) {
 		this.paymentType = paymentType;
 		this.paymentReceiptIdentifier = paymentReceiptIdentifier;
 		this.paymentDate = paymentDate;
 	}
 
 	public static DisplayablePatronagePaymentReceipt from(PatronagePaymentReceipt payment) {
-		PaymentType paymentType2 = payment.getPaymentType();
-		int ordinal = paymentType2.ordinal();
-		String paymentReceiptIdentifier2 = payment.getPaymentReceiptIdentifier();
-		Date paymentDate2 = payment.getPaymentDate();
-		return new DisplayablePatronagePaymentReceipt(ordinal, paymentReceiptIdentifier2, new SimpleDateFormat("yyyy-MM-dd").format(paymentDate2));
+		return new DisplayablePatronagePaymentReceipt(DisplayablePaymentType.from(payment.getPaymentType()), 
+				                                      payment.getPaymentReceiptIdentifier(), 
+				                                      new SimpleDateFormat("yyyy-MM-dd").format(payment.getPaymentDate()));
 	}
 
+	public PatronagePaymentReceipt toReceipt() {
+		return new PatronagePaymentReceipt(paymentType.to(), paymentReceiptIdentifier, paymentDate());
+	}
+
+	private Date paymentDate() {
+		Date date = null;
+		try {
+			date = new SimpleDateFormat("yyyy-MM-dd").parse(paymentDate);
+		} catch(ParseException e) {
+		}
+		return date;
+	}
+	
 	@Override
 	public int compareTo(DisplayablePatronagePaymentReceipt that) {
 		Function<DisplayablePatronagePaymentReceipt, String> byDate = ((DisplayablePatronagePaymentReceipt p) -> p.paymentDate);

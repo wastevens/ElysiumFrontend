@@ -2,6 +2,10 @@ package com.dstevens.web.admin.controllers;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.Year;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,10 +28,10 @@ import com.dstevens.config.controllers.ResourceNotFoundException;
 import com.dstevens.user.User;
 import com.dstevens.user.UserRepository;
 import com.dstevens.user.patronage.DisplayablePatronage;
+import com.dstevens.user.patronage.DisplayablePaymentType;
 import com.dstevens.user.patronage.Patronage;
 import com.dstevens.user.patronage.PatronagePaymentReceipt;
 import com.dstevens.user.patronage.PatronageRepository;
-import com.dstevens.user.patronage.PaymentType;
 import com.google.gson.Gson;
 
 @Controller
@@ -86,12 +90,12 @@ public class PatronageController {
 	
 	@RequestMapping(value = "/admin/patronages", method = RequestMethod.POST)
 	@ResponseStatus(value=HttpStatus.CREATED)
-	public @ResponseBody String createPatronage(@RequestBody RawCreatePatronageBody requestBody, HttpServletResponse response) {
+	public @ResponseBody String createPatronage(@RequestBody DisplayablePatronage requestBody, HttpServletResponse response) {
 		User user = userRepository.findUser(requestBody.userId);
 		if(user != null && user.getPatronage() != null) {
 			throw new BadRequestException("User " + requestBody.userId + " already has a patronage.");
 		}
-		Patronage patronage = patronageRepository.save(requestBody.toPatronage());
+		Patronage patronage = patronageRepository.save(requestBody.toPatronage(Year.now().getValue()));
 		if(user != null) {
 			patronage = patronage.forUser(user);
 			user = user.withPatronage(patronage);
@@ -102,13 +106,13 @@ public class PatronageController {
 	}
 	
 	@RequestMapping(value = "/admin/patronages/{id}", method = RequestMethod.PUT)
-	public @ResponseBody String updatePatronage(@PathVariable String id, @RequestBody RawCreatePatronageBody requestBody, HttpServletResponse response) {
+	public @ResponseBody String updatePatronage(@PathVariable String id, @RequestBody DisplayablePatronage requestBody, HttpServletResponse response) {
 		Patronage patronage = findPatronage(id);
 		if(patronage == null) {
 			throw new ResourceNotFoundException("No patronage " + id + " found");
 		}
 		User user = userRepository.findUser(requestBody.userId);
-		Patronage patronageToSave = requestBody.toPatronage();
+		Patronage patronageToSave = requestBody.toPatronage(Year.now().getValue());
 		
 		if(user == null) {
 			if(patronage.getUser() != null) {
@@ -138,36 +142,13 @@ public class PatronageController {
 		response.addHeader("LOCATION", "/admin/patronages/" + patronage.displayMembershipId());
 	}
 	
-	private static class RawCreatePatronageBody {
-		public Integer year;
-		public String expiration;
-		public Integer userId;
-		public String originalUsername;
-		public List<RawPatronagePayment> payments;
-
-		private Patronage toPatronage() {
-			Patronage patronage = new Patronage(year, expirationAsDate(), originalUsername);
-			List<PatronagePaymentReceipt> collect = payments.stream().map((RawPatronagePayment t) -> t.toReceipt()).collect(Collectors.toList());
-			collect.forEach((PatronagePaymentReceipt t) -> patronage.withPayment(t));
-			return patronage;
-		}
-		
-		private Date expirationAsDate() {
-			try {
-				return new SimpleDateFormat("yyyy-MM").parse(expiration);
-			} catch (ParseException e) {
-				throw new BadRequestException("Could not parse " + expiration + "; please make sure expiration dates are in yyyy-MM format");
-			}
-		}
-	}
-	
 	private static class RawPatronagePayment {
-		public Integer paymentType;
+		public DisplayablePaymentType paymentType;
 		public String paymentReceiptIdentifier;
 		public String paymentDate;
 		
 		private PatronagePaymentReceipt toReceipt() {
-			return new PatronagePaymentReceipt(PaymentType.values()[paymentType], paymentReceiptIdentifier, paymentDate());
+			return new PatronagePaymentReceipt(paymentType.to(), paymentReceiptIdentifier, paymentDate());
 		}
 
 		private Date paymentDate() {

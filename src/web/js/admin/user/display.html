@@ -20,7 +20,7 @@
   <tr><th colspan=2>Payment {{$index +1}}</th></tr>
   <tr><th>Payment Date</th><td><input type='text' ng-model='payment.paymentDate' /></td></tr>
   <tr><th>Payment Type</th><td>
-  	<select ng-model="payment.paymentType" ng-options="paymentType as (paymentType|payment_type) for paymentType in paymentTypes">
+  	<select ng-model="payment.paymentType" ng-options="paymentType as (paymentType.id|payment_type) for paymentType in paymentTypes">
   		<option value="">-- Choose Payment Type --</option>
   	</select>
   </td></tr>

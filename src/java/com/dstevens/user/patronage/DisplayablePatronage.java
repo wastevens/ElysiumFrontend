@@ -1,10 +1,13 @@
 package com.dstevens.user.patronage;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.dstevens.config.controllers.BadRequestException;
 
 
 public class DisplayablePatronage implements Comparable<DisplayablePatronage> {
@@ -44,5 +47,20 @@ public class DisplayablePatronage implements Comparable<DisplayablePatronage> {
 		return Comparator.comparing((DisplayablePatronage t) -> t.expiration == null ? "" : t.expiration).
 				thenComparing(Comparator.comparing((DisplayablePatronage t) -> t.membershipId)).
 				compare(this, that);
+	}
+
+	public Patronage toPatronage(int year) {
+		Patronage patronage = new Patronage(year, expirationAsDate(), originalUsername);
+		List<PatronagePaymentReceipt> collect = payments.stream().map((DisplayablePatronagePaymentReceipt t) -> t.toReceipt()).collect(Collectors.toList());
+		collect.forEach((PatronagePaymentReceipt t) -> patronage.withPayment(t));
+		return patronage;
+	}
+	
+	private Date expirationAsDate() {
+		try {
+			return new SimpleDateFormat("yyyy-MM").parse(expiration);
+		} catch (ParseException e) {
+			throw new BadRequestException("Could not parse " + expiration + "; please make sure expiration dates are in yyyy-MM format");
+		}
 	}
 }
