@@ -9,7 +9,8 @@
   <tr ng-show='user.patronage' ng-repeat-start='payment in user.patronage.payments'></tr>
   <tr><th colspan=2>Payment {{$index +1}}</th></tr>
   <tr><th>Payment Date</th><td>{{payment.paymentDate}}</td></tr>
-  <tr><th>Payment Type</th><td>{{payment.paymentType|payment_type}}</td></tr>
+  <tr><th>Payment Type</th><td>{{payment.paymentType.id|payment_type}}</td></tr>
+  <tr><th>Payment Amount</th><td>{{payment.paymentAmount}}</td></tr>
   <tr ng-repeat-end><th>Payment Identifier</th><td>{{payment.paymentReceiptIdentifier}}</td></tr>
 </table>
 
