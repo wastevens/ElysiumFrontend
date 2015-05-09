@@ -68,6 +68,7 @@ controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', 'p
 	$scope.addPayment = function() {
 		var paymentToAdd = {
 			"paymentDate": $scope.newPayment.paymentDate,
+			"paymentAmount": $scope.newPayment.paymentAmount,
 			"paymentType": $scope.newPayment.paymentType,
 			"paymentReceiptIdentifier": $scope.newPayment.paymentReceiptIdentifier
 		};

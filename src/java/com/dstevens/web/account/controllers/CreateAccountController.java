@@ -1,4 +1,5 @@
 package com.dstevens.web.account.controllers;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.Year;
 import java.util.Date;
@@ -60,7 +61,7 @@ public class CreateAccountController {
 			Instant now = clockSupplier.get().instant();
 			user = user.withPatronage(new Patronage(Year.now(clockSupplier.get()).getValue(), Date.from(now), originalUsername));
 			if(paymentReceiptIdentifier != null && !paymentReceiptIdentifier.trim().isEmpty()) {
-				user.getPatronage().getPayments().add(new PatronagePaymentReceipt(PaymentType.PAYPAL, paymentReceiptIdentifier, Date.from(now)));
+				user.getPatronage().getPayments().add(new PatronagePaymentReceipt(PaymentType.PAYPAL, new BigDecimal("20.00"), paymentReceiptIdentifier, Date.from(now)));
 			}
 		}
 		User newUser = userDao.save(user);

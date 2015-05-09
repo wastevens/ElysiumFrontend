@@ -1,5 +1,6 @@
 package com.dstevens.user.patronage;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -14,6 +15,8 @@ public class PatronagePaymentReceipt {
 
 	@Column(name="payment_type")
 	private final PaymentType paymentType;
+	@Column(name="payment_amount")
+	private final BigDecimal paymentAmount;
 	@Column(name="payment_receipt_identifier")
 	private final String paymentReceiptIdentifier;
 	@Column(name="payment_date")
@@ -22,11 +25,12 @@ public class PatronagePaymentReceipt {
 	//Hibernate only
     @Deprecated
     public PatronagePaymentReceipt() {
-    	this(null, null, null);
+    	this(null, null, null, null);
     }
 	
-	public PatronagePaymentReceipt(PaymentType paymentType, String paymentReceiptIdentifier, Date paymentDate) {
+	public PatronagePaymentReceipt(PaymentType paymentType, BigDecimal paymentAmount, String paymentReceiptIdentifier, Date paymentDate) {
 		this.paymentType = paymentType;
+		this.paymentAmount = paymentAmount;
 		this.paymentReceiptIdentifier = paymentReceiptIdentifier;
 		this.paymentDate = paymentDate;
 	}
@@ -35,6 +39,10 @@ public class PatronagePaymentReceipt {
 		return paymentType;
 	}
 
+	public BigDecimal getPaymentAmount() {
+		return paymentAmount;
+	}
+	
 	public String getPaymentReceiptIdentifier() {
 		return paymentReceiptIdentifier;
 	}

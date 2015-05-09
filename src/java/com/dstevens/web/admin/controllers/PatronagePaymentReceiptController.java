@@ -1,8 +1,5 @@
 package com.dstevens.web.admin.controllers;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,13 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.dstevens.config.controllers.BadRequestException;
 import com.dstevens.config.controllers.ResourceNotFoundException;
 import com.dstevens.user.patronage.DisplayablePatronagePaymentReceipt;
 import com.dstevens.user.patronage.Patronage;
 import com.dstevens.user.patronage.PatronagePaymentReceipt;
 import com.dstevens.user.patronage.PatronageRepository;
-import com.dstevens.user.patronage.PaymentType;
 import com.google.gson.Gson;
 
 @Controller
@@ -65,9 +60,9 @@ public class PatronagePaymentReceiptController {
 	
 	@RequestMapping(value = "/admin/patronages/{id}/payments", method = RequestMethod.POST)
 	@ResponseStatus(value=HttpStatus.CREATED)
-	public @ResponseBody String createPatronagePayment(@RequestBody RawCreatePatronagePaymentReceiptBody requestBody, @PathVariable String id, HttpServletResponse response) {
+	public @ResponseBody String createPatronagePayment(@RequestBody DisplayablePatronagePaymentReceipt requestBody, @PathVariable String id, HttpServletResponse response) {
 		Patronage patronage = findPatronage(id);
-		patronage.getPayments().add(requestBody.toPaymentReceipt());
+		patronage.getPayments().add(requestBody.to());
 		Patronage updatedPatronage = patronageRepository.save(patronage);
 		
 		List<PatronagePaymentReceipt> payments = updatedPatronage.getPayments();
@@ -78,11 +73,11 @@ public class PatronagePaymentReceiptController {
 	}
 	
 	@RequestMapping(value = "/admin/patronages/{id}/payments/{paymentIndex}", method = RequestMethod.PUT)
-	public @ResponseBody String updatePatronagePayment(@RequestBody RawCreatePatronagePaymentReceiptBody requestBody, @PathVariable String id, @PathVariable int paymentIndex, HttpServletResponse response) {
+	public @ResponseBody String updatePatronagePayment(@RequestBody DisplayablePatronagePaymentReceipt requestBody, @PathVariable String id, @PathVariable int paymentIndex, HttpServletResponse response) {
 		findPatronagePaymentReceipt(id, paymentIndex);
 		Patronage patronage = findPatronage(id);
 		
-		patronage.getPayments().set(paymentIndex, requestBody.toPaymentReceipt());
+		patronage.getPayments().set(paymentIndex, requestBody.to());
 		Patronage updatedPatronage = patronageRepository.save(patronage);
 		
 		List<PatronagePaymentReceipt> payments = updatedPatronage.getPayments();
@@ -93,23 +88,5 @@ public class PatronagePaymentReceiptController {
 	
 	private void addPatronageReceiptLocationHeader(HttpServletResponse response, Patronage patronage, int paymentIndex) {
 		response.addHeader("LOCATION", "/admin/patronages/" + patronage.displayMembershipId() + "/payments/" + paymentIndex);
-	}
-	
-	private static class RawCreatePatronagePaymentReceiptBody {
-		public Integer paymentType;
-		public String paymentReceiptIdentifier;
-		public String paymentDate;
-		
-		private PatronagePaymentReceipt toPaymentReceipt() {
-			return new PatronagePaymentReceipt(PaymentType.values()[paymentType], paymentReceiptIdentifier, paymentDateAsDate());
-		}
-		
-		private Date paymentDateAsDate() {
-			try {
-				return new SimpleDateFormat("yyyy-MM-dd").parse(paymentDate);
-			} catch (ParseException | NullPointerException e) {
-				throw new BadRequestException("Could not parse " + paymentDate + "; please make sure expiration dates are in yyyy-MM-dd format");
-			}
-		}
 	}
 }

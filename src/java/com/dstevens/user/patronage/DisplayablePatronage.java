@@ -51,7 +51,7 @@ public class DisplayablePatronage implements Comparable<DisplayablePatronage> {
 
 	public Patronage toPatronage(int year) {
 		Patronage patronage = new Patronage(year, expirationAsDate(), originalUsername);
-		List<PatronagePaymentReceipt> collect = payments.stream().map((DisplayablePatronagePaymentReceipt t) -> t.toReceipt()).collect(Collectors.toList());
+		List<PatronagePaymentReceipt> collect = payments.stream().map((DisplayablePatronagePaymentReceipt t) -> t.to()).collect(Collectors.toList());
 		collect.forEach((PatronagePaymentReceipt t) -> patronage.withPayment(t));
 		return patronage;
 	}

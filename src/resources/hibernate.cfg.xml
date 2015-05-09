@@ -20,11 +20,11 @@
     <mapping class="com.dstevens.characters.traits.distinctions.merits.CharacterMerit"/>
     <mapping class="com.dstevens.characters.traits.status.CharacterStatus"/>
     
-    <mapping class="com.dstevens.troupes.Troupe"/>
-    <mapping class="com.dstevens.users.User"/>
-    <mapping class="com.dstevens.users.patronages.Patronage"/>
-    <mapping class="com.dstevens.users.patronages.PatronagePaymentReceipt"/>
-    <mapping class="com.dstevens.users.security.UserPasswordResetToken"/>
+    <mapping class="com.dstevens.troupe.Troupe"/>
+    <mapping class="com.dstevens.user.User"/>
+    <mapping class="com.dstevens.user.patronage.Patronage"/>
+    <mapping class="com.dstevens.user.patronage.PatronagePaymentReceipt"/>
+    <mapping class="com.dstevens.user.security.UserPasswordResetToken"/>
     
   </session-factory>
 </hibernate-configuration>

@@ -1,11 +1,6 @@
 package com.dstevens.web.admin.controllers;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.Year;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,9 +23,7 @@ import com.dstevens.config.controllers.ResourceNotFoundException;
 import com.dstevens.user.User;
 import com.dstevens.user.UserRepository;
 import com.dstevens.user.patronage.DisplayablePatronage;
-import com.dstevens.user.patronage.DisplayablePaymentType;
 import com.dstevens.user.patronage.Patronage;
-import com.dstevens.user.patronage.PatronagePaymentReceipt;
 import com.dstevens.user.patronage.PatronageRepository;
 import com.google.gson.Gson;
 
@@ -140,24 +133,5 @@ public class PatronageController {
 
 	private void addPatronageLocationHeader(HttpServletResponse response, Patronage patronage) {
 		response.addHeader("LOCATION", "/admin/patronages/" + patronage.displayMembershipId());
-	}
-	
-	private static class RawPatronagePayment {
-		public DisplayablePaymentType paymentType;
-		public String paymentReceiptIdentifier;
-		public String paymentDate;
-		
-		private PatronagePaymentReceipt toReceipt() {
-			return new PatronagePaymentReceipt(paymentType.to(), paymentReceiptIdentifier, paymentDate());
-		}
-
-		private Date paymentDate() {
-			Date date = null;
-			try {
-				date = new SimpleDateFormat("yyyy-MM-dd").parse(paymentDate);
-			} catch(ParseException e) {
-			}
-			return date;
-		}
 	}
 }
