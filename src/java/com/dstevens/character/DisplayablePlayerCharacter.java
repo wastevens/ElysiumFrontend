@@ -14,6 +14,7 @@ import com.dstevens.character.trait.power.discipline.Technique;
 import com.dstevens.character.trait.power.magic.necromancy.NecromanticRitual;
 import com.dstevens.character.trait.power.magic.thaumaturgy.ThaumaturgicalRitual;
 import com.dstevens.character.trait.skill.CharacterSkill;
+import com.dstevens.player.DisplayableSetting;
 import com.google.gson.Gson;
 
 import static com.dstevens.collections.Lists.sort;
@@ -22,7 +23,7 @@ public class DisplayablePlayerCharacter {
 
 	public final Integer id;
 	public final String name;
-	public final int setting;
+	public final DisplayableSetting setting;
 	public final int status;
 	public final int approval;
 	public final Integer clan;
@@ -47,10 +48,10 @@ public class DisplayablePlayerCharacter {
 	//Jackson only
     @Deprecated
 	private DisplayablePlayerCharacter() {
-		this(null, null, -1, -1, -1, null, null, null, 0, 0, 0, null, null, null, null, null, null, null, null, null, null, null, null);
+		this(null, null, null, -1, -1, null, null, null, 0, 0, 0, null, null, null, null, null, null, null, null, null, null, null, null);
 	}
     
-    private DisplayablePlayerCharacter(Integer id, String name, int setting, int status, int approval, Integer clan, Integer bloodline, List<Integer> inClanDisciplines,
+    private DisplayablePlayerCharacter(Integer id, String name, DisplayableSetting setting, int status, int approval, Integer clan, Integer bloodline, List<Integer> inClanDisciplines,
     		                           int physicalAttribute, int socialAttribute, int mentalAttribute,
     		                           List<Integer> physicalAttributeFocuses, List<Integer> socialAttributeFocuses, List<Integer> mentalAttributeFocuses,
     		                           List<DisplayablePlayerCharacterTrait> skills, 
@@ -89,7 +90,7 @@ public class DisplayablePlayerCharacter {
 	
 	public static Function<PlayerCharacter, DisplayablePlayerCharacter> fromCharacter() {
 		return (PlayerCharacter t) -> new DisplayablePlayerCharacter(t.getId(), t.getName(), 
-																	 t.getSetting().getId(), 
+																	 DisplayableSetting.from(t.getSetting()), 
 				                                                     t.getCurrentStatus().status().ordinal(), 
 				                                                     t.getApprovalStatus().ordinal(), 
 				                                                     Optional.ofNullable(t.getClan()).map((Enum<?> e) -> e.ordinal()).orElse(null),

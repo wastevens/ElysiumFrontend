@@ -2,11 +2,18 @@ package com.dstevens.player;
 
 public class DisplayableSetting {
 
-	public DisplayableSetting() {
+	public final Integer id;
+
+	public DisplayableSetting(Integer id) {
+		this.id = id;
+	}
+
+	public static DisplayableSetting from(Setting s) {
+		return new DisplayableSetting(s.getId());
 	}
 	
-	public static DisplayableSetting from(Setting s) {
-		return new DisplayableSetting();
+	public Setting to() {
+		return Setting.values()[id];
 	}
 	
 }

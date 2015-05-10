@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dstevens.player.Setting;
 import com.dstevens.troupe.DisplayableTroupe;
 import com.dstevens.troupe.Troupe;
 import com.dstevens.troupe.TroupeRepository;
@@ -57,8 +56,8 @@ public class TroupeController {
 	
 	@ResponseStatus(value=HttpStatus.CREATED)
 	@RequestMapping(value = "/troupes", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody void  addTroupe(@RequestBody final RawTroupe troupe) {
-		troupeRepository.ensureExists(troupe.name, troupe.setting);
+	public @ResponseBody void  addTroupe(@RequestBody final DisplayableTroupe troupe) {
+		troupeRepository.ensureExists(troupe.name, troupe.setting.to());
 	}
 	
 	@ResponseStatus(value=HttpStatus.NO_CONTENT)
@@ -71,12 +70,17 @@ public class TroupeController {
 	}
 	
 	@RequestMapping(value = "/troupes/{id}", method = RequestMethod.POST)
-	public @ResponseBody void updateTroupe(@PathVariable Integer id, @RequestBody final RawTroupe rawTroupe) {
+	public @ResponseBody void updateTroupe(@PathVariable Integer id, @RequestBody final DisplayableTroupe rawTroupe) {
 		Troupe troupe = troupeRepository.findWithId(id);
 		if(troupe == null) {
 			throw new UnknownTroupeException("Could not find troupe with id " + id);
 		}
-		troupeRepository.save(troupe.withName(rawTroupe.name).withSetting(rawTroupe.setting).withStorytellers(rawTroupe.storytellers(userRepository)));
+		//		return storytellers.stream().map((DisplayableUser t) -> userRepository.findUser(t.id)).collect(Collectors.toSet());
+		troupeRepository.save(troupe.withName(rawTroupe.name).withSetting(rawTroupe.setting.to()).withStorytellers(storytellersFor(rawTroupe)));
+	}
+
+	private Set<User> storytellersFor(final DisplayableTroupe rawTroupe) {
+		return rawTroupe.storytellers.stream().map((DisplayableUser t) -> userRepository.findUser(t.id)).collect(Collectors.toSet());
 	}
 	
 	private String getTroupe(@PathVariable Integer id) {
@@ -91,17 +95,5 @@ public class TroupeController {
 				             sorted().
 				             collect(Collectors.toList());
 		return new Gson().toJson(collect);
-	}
-	
-	private static class RawTroupe {
-
-		public String name;
-		public Setting setting;
-		public Set<DisplayableUser> storytellers; 
-		
-		public Set<User> storytellers(UserRepository userRepository) {
-			return storytellers.stream().map((DisplayableUser t) -> userRepository.findUser(t.id)).collect(Collectors.toSet());
-		}
-		
 	}
 }

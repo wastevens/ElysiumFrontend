@@ -7,6 +7,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.dstevens.character.DisplayablePlayerCharacter;
+import com.dstevens.player.DisplayableSetting;
 import com.dstevens.user.DisplayableUser;
 import com.dstevens.utilities.ObjectExtensions;
 
@@ -16,17 +17,17 @@ public class DisplayableTroupe implements Comparable<DisplayableTroupe> {
 
 	public Integer id;
 	public String name;
-	public int setting;
+	public DisplayableSetting setting;
 	public Set<DisplayableUser> storytellers;
 	public Set<DisplayablePlayerCharacter> characters;
 	
 	//Jackson only
     @Deprecated
 	private DisplayableTroupe() {
-		this(null, null, -1, set(), set());
+		this(null, null, null, set(), set());
 	}
 	
-	private DisplayableTroupe(Integer id, String name, int setting, Set<DisplayableUser> storytellers, Set<DisplayablePlayerCharacter> characters) {
+	private DisplayableTroupe(Integer id, String name, DisplayableSetting setting, Set<DisplayableUser> storytellers, Set<DisplayablePlayerCharacter> characters) {
 		this.id = id;
 		this.name = name;
 		this.setting = setting;
@@ -35,7 +36,7 @@ public class DisplayableTroupe implements Comparable<DisplayableTroupe> {
 	}
 	
 	public static Function<Troupe, DisplayableTroupe> fromTroupes() {
-		return (Troupe t) -> new DisplayableTroupe(t.getId(), t.getName(), t.getSetting().ordinal(),
+		return (Troupe t) -> new DisplayableTroupe(t.getId(), t.getName(), DisplayableSetting.from(t.getSetting()),
 				                                   t.getStorytellers().stream().map(DisplayableUser.fromUserOn(new Date())).collect(Collectors.toSet()),
 				                                   t.getCharacters().stream().map(DisplayablePlayerCharacter.fromCharacter()).collect(Collectors.toSet()));
 	}
@@ -43,8 +44,7 @@ public class DisplayableTroupe implements Comparable<DisplayableTroupe> {
 	@Override
 	public int compareTo(DisplayableTroupe that) {
 		return Comparator.comparing((DisplayableTroupe t) -> t.name).
-			              thenComparing((DisplayableTroupe t) -> t.setting).
-			              thenComparing((DisplayableTroupe t) -> t.id).
+				          thenComparing((DisplayableTroupe t) -> t.id).
 			              compare(this, that);
 	}
 	
