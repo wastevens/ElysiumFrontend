@@ -5,11 +5,8 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dstevens.characters.PlayerCharacter;
-import com.dstevens.characters.PlayerCharacterFactory;
-import com.dstevens.characters.PlayerCharacterRepository;
-import com.dstevens.characters.status.PlayerStatus;
-import com.dstevens.characters.status.PlayerStatusChange;
+import com.dstevens.character.status.PlayerStatus;
+import com.dstevens.character.status.PlayerStatusChange;
 import com.dstevens.suppliers.ClockSupplier;
 import com.dstevens.troupe.Troupe;
 import com.dstevens.troupe.TroupeRepository;

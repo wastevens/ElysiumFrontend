@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.character.DisplayablePlayerCharacter;
+import com.dstevens.character.PlayerCharacter;
 import com.dstevens.character.PlayerCharacterService;
 import com.dstevens.character.UnknownCharacterException;
-import com.dstevens.characters.PlayerCharacter;
-import com.dstevens.characters.traits.changes.TraitChange;
-import com.dstevens.characters.traits.changes.TraitChangeFactoryProvider;
+import com.dstevens.character.trait.change.TraitChange;
+import com.dstevens.character.trait.change.TraitChangeFactoryProvider;
 import com.dstevens.troupe.Troupe;
 import com.dstevens.troupe.TroupeRepository;
 import com.dstevens.user.User;

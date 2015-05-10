@@ -1,6 +1,6 @@
 package com.dstevens.web.trait.vampire;
 
-import com.dstevens.characters.traits.powers.magic.thaumaturgy.ThaumaturgicalRitual;
+import com.dstevens.character.trait.power.magic.thaumaturgy.ThaumaturgicalRitual;
 import com.dstevens.web.trait.DisplayableTraitSource;
 
 public enum DisplayableThaumaturgicalRitual implements DisplayableTraitSource {

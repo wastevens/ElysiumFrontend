@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.character.DisplayablePlayerCharacter;
+import com.dstevens.character.PlayerCharacter;
 import com.dstevens.character.PlayerCharacterService;
 import com.dstevens.character.UnknownCharacterException;
-import com.dstevens.characters.PlayerCharacter;
-import com.dstevens.characters.traits.changes.TraitChange;
+import com.dstevens.character.trait.change.TraitChange;
 
 @Controller
 public class CharacterPageController {

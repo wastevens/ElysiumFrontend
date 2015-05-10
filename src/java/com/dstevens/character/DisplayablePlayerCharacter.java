@@ -5,16 +5,15 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.dstevens.characters.PlayerCharacter;
-import com.dstevens.characters.traits.backgrounds.CharacterBackground;
-import com.dstevens.characters.traits.distinctions.flaws.CharacterFlaw;
-import com.dstevens.characters.traits.distinctions.merits.CharacterMerit;
-import com.dstevens.characters.traits.powers.disciplines.CharacterDiscipline;
-import com.dstevens.characters.traits.powers.disciplines.ElderPower;
-import com.dstevens.characters.traits.powers.disciplines.Technique;
-import com.dstevens.characters.traits.powers.magic.necromancy.NecromanticRitual;
-import com.dstevens.characters.traits.powers.magic.thaumaturgy.ThaumaturgicalRitual;
-import com.dstevens.characters.traits.skills.CharacterSkill;
+import com.dstevens.character.trait.background.CharacterBackground;
+import com.dstevens.character.trait.distinction.flaw.CharacterFlaw;
+import com.dstevens.character.trait.distinction.merit.CharacterMerit;
+import com.dstevens.character.trait.power.discipline.CharacterDiscipline;
+import com.dstevens.character.trait.power.discipline.ElderPower;
+import com.dstevens.character.trait.power.discipline.Technique;
+import com.dstevens.character.trait.power.magic.necromancy.NecromanticRitual;
+import com.dstevens.character.trait.power.magic.thaumaturgy.ThaumaturgicalRitual;
+import com.dstevens.character.trait.skill.CharacterSkill;
 import com.google.gson.Gson;
 
 import static com.dstevens.collections.Lists.sort;

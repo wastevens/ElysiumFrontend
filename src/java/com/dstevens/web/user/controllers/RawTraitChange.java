@@ -2,8 +2,8 @@ package com.dstevens.web.user.controllers;
 
 import java.util.function.Function;
 
-import com.dstevens.characters.traits.changes.TraitChange;
-import com.dstevens.characters.traits.changes.TraitChangeFactory;
+import com.dstevens.character.trait.change.TraitChange;
+import com.dstevens.character.trait.change.TraitChangeFactory;
 
 public class RawTraitChange {
 

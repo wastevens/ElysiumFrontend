@@ -1,7 +1,5 @@
 package com.dstevens.player;
 
-import com.dstevens.players.Setting;
-
 public class DisplayableSetting {
 
 	public DisplayableSetting() {

@@ -2,21 +2,21 @@ package com.dstevens.web.user.controllers;
 
 import java.util.Optional;
 
-import com.dstevens.characters.clans.Bloodline;
-import com.dstevens.characters.clans.Clan;
-import com.dstevens.characters.traits.TraitQualities;
-import com.dstevens.characters.traits.TraitQualitiesBuilder;
-import com.dstevens.characters.traits.TraitType;
-import com.dstevens.characters.traits.attributes.Attribute;
-import com.dstevens.characters.traits.attributes.focuses.MentalAttributeFocus;
-import com.dstevens.characters.traits.attributes.focuses.PhysicalAttributeFocus;
-import com.dstevens.characters.traits.attributes.focuses.SocialAttributeFocus;
-import com.dstevens.characters.traits.backgrounds.Background;
-import com.dstevens.characters.traits.changes.TraitChange;
-import com.dstevens.characters.traits.changes.TraitChangeFactory;
-import com.dstevens.characters.traits.powers.disciplines.Discipline;
-import com.dstevens.characters.traits.powers.disciplines.Technique;
-import com.dstevens.characters.traits.skills.Skill;
+import com.dstevens.character.clan.Bloodline;
+import com.dstevens.character.clan.Clan;
+import com.dstevens.character.trait.TraitQualities;
+import com.dstevens.character.trait.TraitQualitiesBuilder;
+import com.dstevens.character.trait.TraitType;
+import com.dstevens.character.trait.attribute.Attribute;
+import com.dstevens.character.trait.attribute.focus.MentalAttributeFocus;
+import com.dstevens.character.trait.attribute.focus.PhysicalAttributeFocus;
+import com.dstevens.character.trait.attribute.focus.SocialAttributeFocus;
+import com.dstevens.character.trait.background.Background;
+import com.dstevens.character.trait.change.TraitChange;
+import com.dstevens.character.trait.change.TraitChangeFactory;
+import com.dstevens.character.trait.power.discipline.Discipline;
+import com.dstevens.character.trait.power.discipline.Technique;
+import com.dstevens.character.trait.skill.Skill;
 import com.dstevens.utilities.Identified;
 
 import static com.dstevens.collections.Sets.set;

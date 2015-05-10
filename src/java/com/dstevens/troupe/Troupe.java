@@ -1,20 +1,9 @@
 package com.dstevens.troupe;
 
-import static com.dstevens.collections.Sets.set;
-import static com.dstevens.collections.Sets.setWith;
-import static com.dstevens.collections.Sets.setWithout;
-
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Set;
 import java.util.function.Function;
-
-import org.hibernate.annotations.ForeignKey;
-
-import com.dstevens.characters.PlayerCharacter;
-import com.dstevens.players.Setting;
-import com.dstevens.user.User;
-import com.dstevens.utilities.ObjectExtensions;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,6 +16,17 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+
+import org.hibernate.annotations.ForeignKey;
+
+import com.dstevens.character.PlayerCharacter;
+import com.dstevens.player.Setting;
+import com.dstevens.user.User;
+import com.dstevens.utilities.ObjectExtensions;
+
+import static com.dstevens.collections.Sets.set;
+import static com.dstevens.collections.Sets.setWith;
+import static com.dstevens.collections.Sets.setWithout;
 
 @SuppressWarnings("deprecation")
 @Entity

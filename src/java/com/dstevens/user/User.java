@@ -30,7 +30,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.dstevens.characters.PlayerCharacter;
+import com.dstevens.character.PlayerCharacter;
 import com.dstevens.user.patronage.Patronage;
 
 import static com.dstevens.collections.Sets.set;

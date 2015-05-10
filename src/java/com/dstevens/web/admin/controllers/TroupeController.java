@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dstevens.players.Setting;
+import com.dstevens.player.Setting;
 import com.dstevens.troupe.DisplayableTroupe;
 import com.dstevens.troupe.Troupe;
 import com.dstevens.troupe.TroupeRepository;

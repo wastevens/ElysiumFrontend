@@ -3,7 +3,7 @@ package com.dstevens.troupe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dstevens.players.Setting;
+import com.dstevens.player.Setting;
 
 @Service
 public class TroupeRepository {
