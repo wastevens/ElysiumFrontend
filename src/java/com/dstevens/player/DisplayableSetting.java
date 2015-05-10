@@ -2,8 +2,14 @@ package com.dstevens.player;
 
 public class DisplayableSetting {
 
-	public final Integer id;
+	public Integer id;
 
+	//Jackson only
+	@Deprecated
+	public DisplayableSetting() {
+		this(null);
+	}
+	
 	public DisplayableSetting(Integer id) {
 		this.id = id;
 	}

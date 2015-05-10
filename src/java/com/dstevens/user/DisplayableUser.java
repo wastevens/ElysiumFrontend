@@ -17,7 +17,7 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 	public final String lastName;
 	public final String email;
 	public final String password;
-	public final Set<Integer> roles;
+	public final Set<DisplayableRole> roles;
 	public final String membershipId;
 	public final Boolean activePatron;
 	public final DisplayablePatronage patronage;
@@ -28,7 +28,7 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 		this(null, null, null, null, null, set(), null, null, null);
 	}
 	
-	private DisplayableUser(Integer id, String firstName, String lastName, String email, String password, Set<Integer> roles, DisplayablePatronage patronage, String membershipId, Boolean activePatron) {
+	private DisplayableUser(Integer id, String firstName, String lastName, String email, String password, Set<DisplayableRole> roles, DisplayablePatronage patronage, String membershipId, Boolean activePatron) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -41,7 +41,7 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 	}
 	
 	public Set<Role> roles() {
-		return roles.stream().map((Integer i) -> Role.values()[i]).collect(Collectors.toSet());
+		return roles.stream().map((DisplayableRole t) -> t.to()).collect(Collectors.toSet());
 	}
 	
 	public static Function<User, DisplayableUser> fromUserOn(Date date) {
@@ -57,7 +57,7 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 					patronage = DisplayablePatronage.fromOn(t.getPatronage(), date);
 				}
 				return new DisplayableUser(t.getId(), t.getFirstName(), t.getLastName(), t.getEmail(), null,
-						                   t.getRoles().stream().map((Role r) -> r.ordinal()).collect(Collectors.toSet()),
+						                   t.getRoles().stream().map((Role r) -> DisplayableRole.from(r)).collect(Collectors.toSet()),
 						                   patronage, membershipId, activePatronage);
 			}
 		};
@@ -79,7 +79,7 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 		return email;
 	}
 
-	public Set<Integer> getRoles() {
+	public Set<DisplayableRole> getRoles() {
 		return roles;
 	}
 

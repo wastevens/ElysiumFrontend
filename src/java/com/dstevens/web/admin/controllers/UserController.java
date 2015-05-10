@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.config.controllers.BadRequestException;
 import com.dstevens.config.controllers.ResourceNotFoundException;
+import com.dstevens.user.DisplayableRole;
 import com.dstevens.user.DisplayableUser;
 import com.dstevens.user.Role;
 import com.dstevens.user.User;
@@ -54,7 +55,7 @@ public class UserController {
 		if(patronage != null && patronage.getUser() != null) {
 			throw new IllegalArgumentException("Patronage " + userWrapper.membershipId + " already has a user.");
 		}
-		User user = userRepository.save(new User(userWrapper.getEmail(), userWrapper.getPassword(), userWrapper.getRoles().stream().map((Integer t) -> Role.values()[t]).collect(Collectors.toSet())).withFirstName(userWrapper.getFirstName()).withLastName(userWrapper.getLastName()));
+		User user = userRepository.save(new User(userWrapper.getEmail(), userWrapper.getPassword(), userWrapper.getRoles().stream().map((DisplayableRole t) -> t.to()).collect(Collectors.toSet())).withFirstName(userWrapper.getFirstName()).withLastName(userWrapper.getLastName()));
 		if(patronage != null) {
 			user = user.withPatronage(patronage);
 			patronage = patronage.forUser(user);
