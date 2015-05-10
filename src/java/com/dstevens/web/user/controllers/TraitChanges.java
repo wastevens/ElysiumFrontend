@@ -166,7 +166,7 @@ public enum TraitChanges implements Identified<Integer> {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			int rating = Optional.ofNullable(trait.rating).orElse(0);
-			TraitType traitType = TraitType.values()[trait.traitType];
+			TraitType traitType = TraitType.values()[0];
 			return traitChangeFactory.traitChange(traitType, traitType.traits[trait.trait], 
 					                              new TraitQualitiesBuilder().rated(rating).specialized(trait.specialization).focused(set()).build());
 		}
@@ -175,7 +175,7 @@ public enum TraitChanges implements Identified<Integer> {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			int rating = Optional.ofNullable(trait.rating).orElse(0);
-			TraitType traitType = TraitType.values()[trait.traitType];
+			TraitType traitType = TraitType.values()[0];
 			return traitChangeFactory.traitChange(traitType, traitType.traits[trait.trait],
 					                              new TraitQualitiesBuilder().rated(rating).specialized(trait.specialization).focused(set()).build()).remove();
 		}

@@ -2,13 +2,14 @@ package com.dstevens.web.user.controllers;
 
 import java.util.function.Function;
 
+import com.dstevens.character.trait.DisplayableTraitType;
 import com.dstevens.character.trait.change.TraitChange;
 import com.dstevens.character.trait.change.TraitChangeFactory;
 
 public class RawTraitChange {
 
 	public int traitChange;
-	public int traitType;
+	public DisplayableTraitType traitType;
 	public int trait;
 	public Integer rating;
 	public String specialization;
