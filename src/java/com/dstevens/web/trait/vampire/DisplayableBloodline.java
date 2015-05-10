@@ -46,11 +46,11 @@ public enum DisplayableBloodline implements DisplayableTraitSource {
     
     NOSFERATU("None", list(DisplayableDiscipline.ANIMALISM), list(DisplayableDiscipline.OBFUSCATE), list(DisplayableDiscipline.POTENCE)),
     
-    TOREADOR("None", list(DisplayableDiscipline.AUSPEX), list(DisplayableDiscipline.CELERITY), list(DisplayableDiscipline.PRESENCE)),
+    TOREADOR("None",     list(DisplayableDiscipline.AUSPEX), list(DisplayableDiscipline.CELERITY), list(DisplayableDiscipline.PRESENCE)),
     ISHTARRI("Ishtarri", list(DisplayableDiscipline.CELERITY), list(DisplayableDiscipline.FORTITUDE), list(DisplayableDiscipline.PRESENCE)),
     VOLGIRRE("Volgirre", list(DisplayableDiscipline.AUSPEX), list(DisplayableDiscipline.CELERITY), list(DisplayableDiscipline.PRESENCE)),
 
-    TREMERE("None", list(DisplayableDiscipline.AUSPEX), list(DisplayableDiscipline.DOMINATE), list(DisplayableDiscipline.PATH_OF_BLOOD)),
+    TREMERE("None",  list(DisplayableDiscipline.AUSPEX), list(DisplayableDiscipline.DOMINATE), list(DisplayableDiscipline.PATH_OF_BLOOD)),
     TELYAV("Telyav", list(DisplayableDiscipline.AUSPEX), list(DisplayableDiscipline.PRESENCE), list(DisplayableDiscipline.PATH_OF_BLOOD)),
 
     TZIMISCE("None", list(DisplayableDiscipline.ANIMALISM), list(DisplayableDiscipline.AUSPEX), list(DisplayableDiscipline.VICISSITUDE)),
@@ -64,7 +64,7 @@ public enum DisplayableBloodline implements DisplayableTraitSource {
 	                      DisplayableDiscipline.PATH_OF_TECHNOMANCY,      
 	                      DisplayableDiscipline.PATH_OF_WEATHER_MASTERY)),
 
-    VENTRUE("None", list(DisplayableDiscipline.DOMINATE), list(DisplayableDiscipline.FORTITUDE), list(DisplayableDiscipline.PRESENCE)),
+    VENTRUE("None",      list(DisplayableDiscipline.DOMINATE), list(DisplayableDiscipline.FORTITUDE), list(DisplayableDiscipline.PRESENCE)),
     CRUSADER("Crusader", list(DisplayableDiscipline.AUSPEX), list(DisplayableDiscipline.DOMINATE), list(DisplayableDiscipline.FORTITUDE)),
 
     CATIFF("None", list(DisplayableDiscipline.ANIMALISM, DisplayableDiscipline.AUSPEX, DisplayableDiscipline.CELERITY, DisplayableDiscipline.DOMINATE, DisplayableDiscipline.FORTITUDE, DisplayableDiscipline.OBFUSCATE, DisplayableDiscipline.POTENCE, DisplayableDiscipline.PRESENCE),
@@ -81,7 +81,7 @@ public enum DisplayableBloodline implements DisplayableTraitSource {
     RAVNOS("None", list(DisplayableDiscipline.ANIMALISM), list(DisplayableDiscipline.CHIMERSTRY), list(DisplayableDiscipline.FORTITUDE)),
     BRAHMAN("Brahman", list(DisplayableDiscipline.ANIMALISM), list(DisplayableDiscipline.AUSPEX), list(DisplayableDiscipline.FORTITUDE)),                  
     
-    SALUBRI("None", list(DisplayableDiscipline.AUSPEX), list(DisplayableDiscipline.FORTITUDE), list(DisplayableDiscipline.VALEREN)),
+    SALUBRI("None",  list(DisplayableDiscipline.AUSPEX), list(DisplayableDiscipline.FORTITUDE), list(DisplayableDiscipline.VALEREN)),
     HEALER("Healer", list(DisplayableDiscipline.AUSPEX), list(DisplayableDiscipline.FORTITUDE), list(DisplayableDiscipline.OBEAH)),
     
     DAUGHTER_OF_CACOPHONY("None", list(DisplayableDiscipline.FORTITUDE), list(DisplayableDiscipline.MELPOMINEE), list(DisplayableDiscipline.PRESENCE)),
