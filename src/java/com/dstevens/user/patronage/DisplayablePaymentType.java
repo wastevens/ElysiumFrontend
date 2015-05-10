@@ -13,7 +13,7 @@ public class DisplayablePaymentType {
 	}
 	
 	public static DisplayablePaymentType from(PaymentType t) {
-		return new DisplayablePaymentType(t.id);
+		return new DisplayablePaymentType(t.getId());
 	}
 	
 	public PaymentType to() {

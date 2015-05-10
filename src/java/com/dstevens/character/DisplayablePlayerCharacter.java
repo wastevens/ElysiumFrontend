@@ -90,7 +90,7 @@ public class DisplayablePlayerCharacter {
 	
 	public static Function<PlayerCharacter, DisplayablePlayerCharacter> fromCharacter() {
 		return (PlayerCharacter t) -> new DisplayablePlayerCharacter(t.getId(), t.getName(), 
-																	 t.getSetting().ordinal(), 
+																	 t.getSetting().getId(), 
 				                                                     t.getCurrentStatus().status().ordinal(), 
 				                                                     t.getApprovalStatus().ordinal(), 
 				                                                     Optional.ofNullable(t.getClan()).map((Enum<?> e) -> e.ordinal()).orElse(null),

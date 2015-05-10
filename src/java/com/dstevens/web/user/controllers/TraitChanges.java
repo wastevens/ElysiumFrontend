@@ -17,104 +17,92 @@ import com.dstevens.characters.traits.changes.TraitChangeFactory;
 import com.dstevens.characters.traits.powers.disciplines.Discipline;
 import com.dstevens.characters.traits.powers.disciplines.Technique;
 import com.dstevens.characters.traits.skills.Skill;
+import com.dstevens.utilities.Identified;
 
 import static com.dstevens.collections.Sets.set;
 
-public enum TraitChanges {
+public enum TraitChanges implements Identified<Integer> {
 
-	// 0
-	CLAN {
+	CLAN(0) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.CLAN, Clan.values()[trait.trait], TraitQualities.NONE);
 		}
 	},
-	// 1
-	BLOODLINE {
+	BLOODLINE(1) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.BLOODLINE, Bloodline.values()[trait.trait], TraitQualities.NONE);
 		}
 	},
-	// 2
-	IN_CLAN_DISCIPLINE {
+	IN_CLAN_DISCIPLINE(2) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.DISCIPLINE, Discipline.values()[trait.trait], TraitQualities.NONE);
 		}
 	},
-	// 3
-	REMOVE_IN_CLAN_DISCIPLINE {
+	REMOVE_IN_CLAN_DISCIPLINE(3) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.DISCIPLINE, Discipline.values()[trait.trait], TraitQualities.NONE).remove();
 		}
 	},
-	// 4
-	SET_PHYSICAL_ATTRIBUTE {
+	SET_PHYSICAL_ATTRIBUTE(4) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.ATTRIBUTE, Attribute.PHYSICAL, rated(trait.trait));
 		}
 	},
-	// 5
-	SET_SOCIAL_ATTRIBUTE {
+	SET_SOCIAL_ATTRIBUTE(5) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.ATTRIBUTE, Attribute.SOCIAL, rated(trait.trait));
 		}
 	},
 	// 6
-	SET_MENTAL_ATTRIBUTE {
+	SET_MENTAL_ATTRIBUTE(6) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.ATTRIBUTE, Attribute.MENTAL, rated(trait.trait));
 		}
 	},
-	// 7
-	WITH_PHYSICAL_ATTRIBUTE_FOCUS {
+	WITH_PHYSICAL_ATTRIBUTE_FOCUS(7) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.PHYSICAL_FOCUS, PhysicalAttributeFocus.values()[trait.trait], TraitQualities.NONE);
 		}
 	},
-	// 8
-	WITH_SOCIAL_ATTRIBUTE_FOCUS {
+	WITH_SOCIAL_ATTRIBUTE_FOCUS(8) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.SOCIAL_FOCUS, SocialAttributeFocus.values()[trait.trait], TraitQualities.NONE);
 		}
 	},
-	// 9
-	WITH_MENTAL_ATTRIBUTE_FOCUS {
+	WITH_MENTAL_ATTRIBUTE_FOCUS(9) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.MENTAL_FOCUS, MentalAttributeFocus.values()[trait.trait], TraitQualities.NONE);
 		}
 	},
-	// 10
-	WITHOUT_PHYSICAL_ATTRIBUTE_FOCUS {
+	WITHOUT_PHYSICAL_ATTRIBUTE_FOCUS(10) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.PHYSICAL_FOCUS, PhysicalAttributeFocus.values()[trait.trait], TraitQualities.NONE).remove();
 		}
 	},
-	// 11
-	WITHOUT_SOCIAL_ATTRIBUTE_FOCUS {
+	WITHOUT_SOCIAL_ATTRIBUTE_FOCUS(11) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.SOCIAL_FOCUS, SocialAttributeFocus.values()[trait.trait], TraitQualities.NONE).remove();
 		}
 	},
-	// 12
-	WITHOUT_MENTAL_ATTRIBUTE_FOCUS {
+	WITHOUT_MENTAL_ATTRIBUTE_FOCUS(12) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.MENTAL_FOCUS, MentalAttributeFocus.values()[trait.trait], TraitQualities.NONE).remove();
 		}
 	},
-	// 13
-	WITH_SKILL {
+	WITH_SKILL(13) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			int rating = Optional.ofNullable(trait.rating).orElse(0);
@@ -124,15 +112,13 @@ public enum TraitChanges {
 			return traitChangeFactory.traitChange(TraitType.SKILL, Skill.values()[trait.trait], new TraitQualitiesBuilder().rated(rating).specialized(trait.specialization).focused(set()).build()).remove();
 		}
 	},
-	// 14
-	REMOVE_SKILL {
+	REMOVE_SKILL(14) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.SKILL, Skill.values()[trait.trait], new TraitQualitiesBuilder().rated(0).specialized(trait.specialization).focused(set()).build()).remove();
 		}
 	},
-	// 15
-	WITH_BACKGROUND {
+	WITH_BACKGROUND(15) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			int rating = Optional.ofNullable(trait.rating).orElse(0);
@@ -142,15 +128,13 @@ public enum TraitChanges {
 			return traitChangeFactory.traitChange(TraitType.BACKGROUND, Background.values()[trait.trait], new TraitQualitiesBuilder().rated(rating).specialized(trait.specialization).focused(set()).build()).remove();
 		}
 	},
-	// 16
-	REMOVE_BACKGROUND {
+	REMOVE_BACKGROUND(16) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.BACKGROUND, Background.values()[trait.trait], new TraitQualitiesBuilder().rated(0).specialized(trait.specialization).focused(set()).build()).remove();
 		}
 	},
-	// 17
-	WITH_DISCIPLINE {
+	WITH_DISCIPLINE(17) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			int rating = Optional.ofNullable(trait.rating).orElse(0);
@@ -160,29 +144,25 @@ public enum TraitChanges {
 			return traitChangeFactory.traitChange(TraitType.DISCIPLINE, Discipline.values()[trait.trait], rated(rating)).remove();
 		}
 	},
-	// 18
-	REMOVE_DISCIPLINE {
+	REMOVE_DISCIPLINE(18) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.DISCIPLINE, Discipline.values()[trait.trait], rated(0)).remove();
 		}
 	},
-	// 19
-	WITH_TECHNIQUE {
+	WITH_TECHNIQUE(19) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.TECHNIQUE, Technique.values()[trait.trait], TraitQualities.NONE);
 		}
 	},
-	// 20
-	REMOVE_TECHNIQUE {
+	REMOVE_TECHNIQUE(20) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			return traitChangeFactory.traitChange(TraitType.TECHNIQUE, Technique.values()[trait.trait], TraitQualities.NONE).remove();
 		}
 	},
-	//21
-	WITH_TRAIT_CHANGE {
+	WITH_TRAIT_CHANGE(21) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			int rating = Optional.ofNullable(trait.rating).orElse(0);
@@ -191,8 +171,7 @@ public enum TraitChanges {
 					                              new TraitQualitiesBuilder().rated(rating).specialized(trait.specialization).focused(set()).build());
 		}
 	},
-	//22
-	WITHOUT_TRAIT_CHANGE {
+	WITHOUT_TRAIT_CHANGE(22) {
 		@Override
 		public TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait) {
 			int rating = Optional.ofNullable(trait.rating).orElse(0);
@@ -202,6 +181,16 @@ public enum TraitChanges {
 		}
 	},
 	;
+
+	private final int id;
+
+	private TraitChanges(int id) {
+		this.id = id;
+	}
+	
+	public Integer getId() {
+		return id;
+	}
 	
 	public abstract TraitChange using(TraitChangeFactory traitChangeFactory, RawTraitChange trait);
 	
