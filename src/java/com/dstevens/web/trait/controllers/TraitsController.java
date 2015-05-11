@@ -15,10 +15,11 @@ import com.dstevens.character.clan.DisplayableClan;
 import com.dstevens.character.trait.power.discipline.Discipline;
 import com.dstevens.character.trait.power.discipline.DisplayableDiscipline;
 import com.dstevens.character.trait.power.discipline.DisplayableElderPower;
+import com.dstevens.character.trait.power.discipline.DisplayableTechnique;
 import com.dstevens.character.trait.power.discipline.ElderPower;
+import com.dstevens.character.trait.power.discipline.Technique;
 import com.dstevens.web.trait.DisplayableTraitSource;
 import com.dstevens.web.trait.vampire.DisplayableNecromanticRitual;
-import com.dstevens.web.trait.vampire.DisplayableTechnique;
 import com.dstevens.web.trait.vampire.DisplayableThaumaturgicalRitual;
 import com.google.gson.Gson;
 
@@ -44,7 +45,7 @@ public class TraitsController {
 			case "necromanticrituals":    return new Gson().toJson(list(DisplayableNecromanticRitual.values()).stream().map((DisplayableTraitSource t1) -> t1.toDisplayableTrait()).collect(Collectors.toList()));
 			case "disciplines":           return new Gson().toJson(list(Discipline.values()).stream().map((Discipline t1) -> DisplayableDiscipline.from(t1)).collect(Collectors.toList()));
 			case "elderpowers":           return new Gson().toJson(list(ElderPower.values()).stream().map((ElderPower t1) -> DisplayableElderPower.from(t1)).collect(Collectors.toList()));
-			case "techniques":            return new Gson().toJson(list(DisplayableTechnique.values()).stream().map((DisplayableTraitSource t1) -> t1.toDisplayableTrait()).collect(Collectors.toList()));
+			case "techniques":            return new Gson().toJson(list(Technique.values()).stream().map((Technique t1) -> DisplayableTechnique.from(t1)).collect(Collectors.toList()));
 		}
 		return null;
 	}
