@@ -555,6 +555,6 @@ directive('selectTrait', [function() {
 		templateUrl: '/js/user/character/selectTrait.html'
 	};
 }]);
-angular.module('user.character.manage.filters', ['filters.setting']);
+angular.module('user.character.manage.filters', ['filters.setting', 'filters.clan', 'filters.discipline']);
 
 angular.module('user.character.manage', ['user.character.manage.filters', 'user.character.manage.controllers', 'user.character.manage.directives', 'user.character.manage.services']);
