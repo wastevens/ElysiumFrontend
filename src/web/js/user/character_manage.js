@@ -175,11 +175,8 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 			$scope.bloodlines.list = $scope.clans.clan.bloodlines;
 		}
 		if(!isNaN($scope.character.bloodline)) {
-			console.log($scope.bloodlines.list);
-			console.log($scope.character.bloodline);
-			
 			$scope.bloodlines.list.forEach(function(bloodline, index) {
-				if(bloodline.ordinal == $scope.character.bloodline) {
+				if(bloodline.id == $scope.character.bloodline) {
 					$scope.bloodlines.bloodline = bloodline;
 				}
 			});
@@ -196,7 +193,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 						$scope.disciplineOptions[index].discipline = $scope.disciplineOptions[index][0];
 					}
 					$scope.disciplineOptions[index].forEach(function(discipline) {
-						if(discipline.ordinal == inClanDisciplineOrdinal) {
+						if(discipline.id == inClanDisciplineOrdinal) {
 							$scope.disciplineOptions[index].discipline = discipline;
 						}
 					})
@@ -258,7 +255,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	
 	$scope.clanChange = function() {
 		if($scope.clans.clan) {
-			$scope.requests.push({"traitType": 0, "traitChange": 0, "trait": $scope.clans.clan.ordinal});
+			$scope.requests.push({"traitType": 0, "traitChange": 0, "trait": $scope.clans.clan.id});
 			$scope.bloodlines.list = $scope.clans.clan.bloodlines;
 			$scope.bloodlines.bloodline = null;
 			if($scope.bloodlines.list.length == 1) {
@@ -271,12 +268,12 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	$scope.bloodlineChange = function() {
 		$scope.disciplineOptions.forEach(function(disciplines, index, array) {
 			if(disciplines.discipline) {
-				$scope.requests.push({"traitType": 0, "traitChange": 3, "trait": disciplines.discipline.ordinal});
+				$scope.requests.push({"traitType": 0, "traitChange": 3, "trait": disciplines.discipline.id});
 			}
 		});
 		
 		if($scope.bloodlines.bloodline) {
-			$scope.requests.push({"traitType": 0, "traitChange": 1, "trait": $scope.bloodlines.bloodline.ordinal});
+			$scope.requests.push({"traitType": 0, "traitChange": 1, "trait": $scope.bloodlines.bloodline.id});
 			$scope.disciplineOptions = $scope.bloodlines.bloodline.disciplines;
 			$scope.disciplineOptions.forEach(function(disciplines, index, array) {
 				$scope.disciplineOptions[index].discipline = null;
@@ -294,7 +291,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 			$scope.requests.push({"traitType": 0, "traitChange": 3, "trait": originalDisciplineOrdinal});
 		}
 		if($scope.disciplineOptions[index].discipline) {
-			$scope.requests.push({"traitType": 0, "traitChange": 2, "trait": $scope.disciplineOptions[index].discipline.ordinal});
+			$scope.requests.push({"traitType": 0, "traitChange": 2, "trait": $scope.disciplineOptions[index].discipline.id});
 		}
 	}
 	
@@ -555,6 +552,6 @@ directive('selectTrait', [function() {
 		templateUrl: '/js/user/character/selectTrait.html'
 	};
 }]);
-angular.module('user.character.manage.filters', ['filters.setting', 'filters.clan', 'filters.discipline']);
+angular.module('user.character.manage.filters', ['filters.setting', 'filters.clan', 'filters.bloodline', 'filters.discipline']);
 
 angular.module('user.character.manage', ['user.character.manage.filters', 'user.character.manage.controllers', 'user.character.manage.directives', 'user.character.manage.services']);
