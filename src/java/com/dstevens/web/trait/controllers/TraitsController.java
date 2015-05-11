@@ -18,9 +18,10 @@ import com.dstevens.character.trait.power.discipline.DisplayableElderPower;
 import com.dstevens.character.trait.power.discipline.DisplayableTechnique;
 import com.dstevens.character.trait.power.discipline.ElderPower;
 import com.dstevens.character.trait.power.discipline.Technique;
-import com.dstevens.web.trait.DisplayableTraitSource;
-import com.dstevens.web.trait.vampire.DisplayableNecromanticRitual;
-import com.dstevens.web.trait.vampire.DisplayableThaumaturgicalRitual;
+import com.dstevens.character.trait.power.magic.necromancy.DisplayableNecromanticRitual;
+import com.dstevens.character.trait.power.magic.necromancy.NecromanticRitual;
+import com.dstevens.character.trait.power.magic.thaumaturgy.DisplayableThaumaturgicalRitual;
+import com.dstevens.character.trait.power.magic.thaumaturgy.ThaumaturgicalRitual;
 import com.google.gson.Gson;
 
 import static com.dstevens.collections.Lists.list;
@@ -41,8 +42,8 @@ public class TraitsController {
 		switch(type.toLowerCase()) {
 		    case "clans":                 return new Gson().toJson(list(Clan.values()).stream().map((Clan t1) -> DisplayableClan.from(t1)).collect(Collectors.toList()));
 		    case "bloodlines":            return new Gson().toJson(list(Bloodline.values()).stream().map((Bloodline t1) -> DisplayableBloodline.from(t1)).collect(Collectors.toList()));
-			case "thaumaturgicalrituals": return new Gson().toJson(list(DisplayableThaumaturgicalRitual.values()).stream().map((DisplayableTraitSource t) -> t.toDisplayableTrait()).collect(Collectors.toList()));
-			case "necromanticrituals":    return new Gson().toJson(list(DisplayableNecromanticRitual.values()).stream().map((DisplayableTraitSource t1) -> t1.toDisplayableTrait()).collect(Collectors.toList()));
+			case "thaumaturgicalrituals": return new Gson().toJson(list(ThaumaturgicalRitual.values()).stream().map((ThaumaturgicalRitual t1) -> DisplayableThaumaturgicalRitual.from(t1)).collect(Collectors.toList()));
+			case "necromanticrituals":    return new Gson().toJson(list(NecromanticRitual.values()).stream().map((NecromanticRitual t1) -> DisplayableNecromanticRitual.from(t1)).collect(Collectors.toList()));
 			case "disciplines":           return new Gson().toJson(list(Discipline.values()).stream().map((Discipline t1) -> DisplayableDiscipline.from(t1)).collect(Collectors.toList()));
 			case "elderpowers":           return new Gson().toJson(list(ElderPower.values()).stream().map((ElderPower t1) -> DisplayableElderPower.from(t1)).collect(Collectors.toList()));
 			case "techniques":            return new Gson().toJson(list(Technique.values()).stream().map((Technique t1) -> DisplayableTechnique.from(t1)).collect(Collectors.toList()));
