@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.dstevens.character.clan.Clan;
+import com.dstevens.character.clan.DisplayableClan;
 import com.dstevens.character.trait.background.CharacterBackground;
 import com.dstevens.character.trait.distinction.flaw.CharacterFlaw;
 import com.dstevens.character.trait.distinction.merit.CharacterMerit;
@@ -21,37 +23,37 @@ import static com.dstevens.collections.Lists.sort;
 
 public class DisplayablePlayerCharacter {
 
-	public final Integer id;
-	public final String name;
-	public final DisplayableSetting setting;
-	public final int status;
-	public final int approval;
-	public final Integer clan;
-	public final Integer bloodline;
-	public final List<Integer> inClanDisciplines;
-	public final int physicalAttribute;
-	public final int socialAttribute;
-	public final int mentalAttribute;
-	public final List<Integer> physicalAttributeFocuses;
-	public final List<Integer> socialAttributeFocuses;
-	public final List<Integer> mentalAttributeFocuses;
-	public final List<DisplayablePlayerCharacterTrait> skills;
-	public final List<DisplayablePlayerCharacterTrait> backgrounds;
-	public final List<DisplayablePlayerCharacterTrait> disciplines;
-	public final List<DisplayablePlayerCharacterTrait> techniques;
-	public final List<DisplayablePlayerCharacterTrait> elderPowers;
-	public final List<DisplayablePlayerCharacterTrait> necromanticRituals;
-	public final List<DisplayablePlayerCharacterTrait> thaumaturgicalRituals;
-	public final List<DisplayablePlayerCharacterTrait> merits;
-	public final List<DisplayablePlayerCharacterTrait> flaws;
+	public Integer id;
+	public String name;
+	public DisplayableSetting setting;
+	public int status;
+	public int approval;
+	public DisplayableClan clan;
+	public Integer bloodline;
+	public List<Integer> inClanDisciplines;
+	public int physicalAttribute;
+	public int socialAttribute;
+	public int mentalAttribute;
+	public List<Integer> physicalAttributeFocuses;
+	public List<Integer> socialAttributeFocuses;
+	public List<Integer> mentalAttributeFocuses;
+	public List<DisplayablePlayerCharacterTrait> skills;
+	public List<DisplayablePlayerCharacterTrait> backgrounds;
+	public List<DisplayablePlayerCharacterTrait> disciplines;
+	public List<DisplayablePlayerCharacterTrait> techniques;
+	public List<DisplayablePlayerCharacterTrait> elderPowers;
+	public List<DisplayablePlayerCharacterTrait> necromanticRituals;
+	public List<DisplayablePlayerCharacterTrait> thaumaturgicalRituals;
+	public List<DisplayablePlayerCharacterTrait> merits;
+	public List<DisplayablePlayerCharacterTrait> flaws;
 	
 	//Jackson only
     @Deprecated
-	private DisplayablePlayerCharacter() {
+	public DisplayablePlayerCharacter() {
 		this(null, null, null, -1, -1, null, null, null, 0, 0, 0, null, null, null, null, null, null, null, null, null, null, null, null);
 	}
     
-    private DisplayablePlayerCharacter(Integer id, String name, DisplayableSetting setting, int status, int approval, Integer clan, Integer bloodline, List<Integer> inClanDisciplines,
+    public DisplayablePlayerCharacter(Integer id, String name, DisplayableSetting setting, int status, int approval, DisplayableClan clan, Integer bloodline, List<Integer> inClanDisciplines,
     		                           int physicalAttribute, int socialAttribute, int mentalAttribute,
     		                           List<Integer> physicalAttributeFocuses, List<Integer> socialAttributeFocuses, List<Integer> mentalAttributeFocuses,
     		                           List<DisplayablePlayerCharacterTrait> skills, 
@@ -93,7 +95,7 @@ public class DisplayablePlayerCharacter {
 																	 DisplayableSetting.from(t.getSetting()), 
 				                                                     t.getCurrentStatus().status().ordinal(), 
 				                                                     t.getApprovalStatus().ordinal(), 
-				                                                     Optional.ofNullable(t.getClan()).map((Enum<?> e) -> e.ordinal()).orElse(null),
+				                                                     Optional.ofNullable(t.getClan()).map((Clan c) -> DisplayableClan.from(c)).orElse(null),
 				                                                     Optional.ofNullable(t.getBloodline()).map((Enum<?> e) -> e.ordinal()).orElse(null),
 				                                                     t.getInClanDisciplines().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toList()),
 				                                                     t.getPhysicalAttribute(),

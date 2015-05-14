@@ -170,9 +170,13 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	
 	clanSource.get().then(function(clans) {
 		$scope.clans.list = clans;
-		$scope.clans.clan = clans[$scope.character.clan];
-		if(!isNaN($scope.character.clan)) {		
-			$scope.bloodlines.list = $scope.clans.clan.bloodlines;
+		if($scope.character.clan) {
+			clans.forEach(function(clan) {
+				if(clan.id == $scope.character.clan.id) {
+					$scope.clans.clan = clan;
+					$scope.bloodlines.list = $scope.clans.clan.bloodlines;
+				}
+			});
 		}
 		if(!isNaN($scope.character.bloodline)) {
 			$scope.bloodlines.list.forEach(function(bloodline, index) {
