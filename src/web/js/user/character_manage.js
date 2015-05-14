@@ -177,15 +177,15 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 					$scope.bloodlines.list = $scope.clans.clan.bloodlines;
 				}
 			});
-		}
-		if(!isNaN($scope.character.bloodline)) {
-			$scope.bloodlines.list.forEach(function(bloodline, index) {
-				if(bloodline.id == $scope.character.bloodline) {
-					$scope.bloodlines.bloodline = bloodline;
-				}
-			});
 			
-			$scope.disciplineOptions = $scope.bloodlines.bloodline.disciplines;
+			if($scope.character.bloodline) {
+				$scope.clans.clan.bloodlines.forEach(function(bloodline) {
+					if(bloodline.id == $scope.character.bloodline.id) {
+						$scope.bloodlines.bloodline = bloodline;
+						$scope.disciplineOptions = $scope.bloodlines.bloodline.disciplines;
+					}
+				});
+			}
 		}
 		
 		

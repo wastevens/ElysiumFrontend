@@ -5,7 +5,9 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.dstevens.character.clan.Bloodline;
 import com.dstevens.character.clan.Clan;
+import com.dstevens.character.clan.DisplayableBloodline;
 import com.dstevens.character.clan.DisplayableClan;
 import com.dstevens.character.trait.background.CharacterBackground;
 import com.dstevens.character.trait.distinction.flaw.CharacterFlaw;
@@ -29,7 +31,7 @@ public class DisplayablePlayerCharacter {
 	public int status;
 	public int approval;
 	public DisplayableClan clan;
-	public Integer bloodline;
+	public DisplayableBloodline bloodline;
 	public List<Integer> inClanDisciplines;
 	public int physicalAttribute;
 	public int socialAttribute;
@@ -53,7 +55,7 @@ public class DisplayablePlayerCharacter {
 		this(null, null, null, -1, -1, null, null, null, 0, 0, 0, null, null, null, null, null, null, null, null, null, null, null, null);
 	}
     
-    public DisplayablePlayerCharacter(Integer id, String name, DisplayableSetting setting, int status, int approval, DisplayableClan clan, Integer bloodline, List<Integer> inClanDisciplines,
+    public DisplayablePlayerCharacter(Integer id, String name, DisplayableSetting setting, int status, int approval, DisplayableClan clan, DisplayableBloodline bloodline, List<Integer> inClanDisciplines,
     		                           int physicalAttribute, int socialAttribute, int mentalAttribute,
     		                           List<Integer> physicalAttributeFocuses, List<Integer> socialAttributeFocuses, List<Integer> mentalAttributeFocuses,
     		                           List<DisplayablePlayerCharacterTrait> skills, 
@@ -96,7 +98,7 @@ public class DisplayablePlayerCharacter {
 				                                                     t.getCurrentStatus().status().ordinal(), 
 				                                                     t.getApprovalStatus().ordinal(), 
 				                                                     Optional.ofNullable(t.getClan()).map((Clan c) -> DisplayableClan.from(c)).orElse(null),
-				                                                     Optional.ofNullable(t.getBloodline()).map((Enum<?> e) -> e.ordinal()).orElse(null),
+				                                                     Optional.ofNullable(t.getBloodline()).map((Bloodline b) -> DisplayableBloodline.from(b)).orElse(null),
 				                                                     t.getInClanDisciplines().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toList()),
 				                                                     t.getPhysicalAttribute(),
 				                                                     t.getSocialAttribute(),
