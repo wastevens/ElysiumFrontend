@@ -177,30 +177,28 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 					$scope.bloodlines.list = $scope.clans.clan.bloodlines;
 				}
 			});
-			
-			if($scope.character.bloodline) {
-				$scope.clans.clan.bloodlines.forEach(function(bloodline) {
-					if(bloodline.id == $scope.character.bloodline.id) {
-						$scope.bloodlines.bloodline = bloodline;
-						$scope.disciplineOptions = $scope.bloodlines.bloodline.disciplines;
-					}
-				});
-			}
 		}
-		
-		
+		if($scope.clans.clan && $scope.character.bloodline) {
+			$scope.clans.clan.bloodlines.forEach(function(bloodline) {
+				if(bloodline.id == $scope.character.bloodline.id) {
+					$scope.bloodlines.bloodline = bloodline;
+					$scope.disciplineOptions = $scope.bloodlines.bloodline.disciplines;
+				}
+			});
+		}
 		if($scope.disciplineOptions && $scope.character.inClanDisciplines) {
-			$scope.character.inClanDisciplines.forEach(function(inClanDisciplineOrdinal, index) {
+			$scope.character.inClanDisciplines.forEach(function(inClanDiscipline, index) {
 				if($scope.disciplineOptions[index]) {
 					$scope.disciplineOptions[index].discipline = null;
 					if($scope.disciplineOptions[index].length == 1) {
 						$scope.disciplineOptions[index].discipline = $scope.disciplineOptions[index][0];
+					} else {
+						$scope.disciplineOptions[index].forEach(function(discipline) {
+							if(discipline.id == inClanDiscipline.id) {
+								$scope.disciplineOptions[index].discipline = discipline;
+							}
+						});						
 					}
-					$scope.disciplineOptions[index].forEach(function(discipline) {
-						if(discipline.id == inClanDisciplineOrdinal) {
-							$scope.disciplineOptions[index].discipline = discipline;
-						}
-					})
 				}
 			});
 		}

@@ -13,6 +13,8 @@ import com.dstevens.character.trait.background.CharacterBackground;
 import com.dstevens.character.trait.distinction.flaw.CharacterFlaw;
 import com.dstevens.character.trait.distinction.merit.CharacterMerit;
 import com.dstevens.character.trait.power.discipline.CharacterDiscipline;
+import com.dstevens.character.trait.power.discipline.Discipline;
+import com.dstevens.character.trait.power.discipline.DisplayableDiscipline;
 import com.dstevens.character.trait.power.discipline.ElderPower;
 import com.dstevens.character.trait.power.discipline.Technique;
 import com.dstevens.character.trait.power.magic.necromancy.NecromanticRitual;
@@ -32,7 +34,7 @@ public class DisplayablePlayerCharacter {
 	public int approval;
 	public DisplayableClan clan;
 	public DisplayableBloodline bloodline;
-	public List<Integer> inClanDisciplines;
+	public List<DisplayableDiscipline> inClanDisciplines;
 	public int physicalAttribute;
 	public int socialAttribute;
 	public int mentalAttribute;
@@ -55,7 +57,8 @@ public class DisplayablePlayerCharacter {
 		this(null, null, null, -1, -1, null, null, null, 0, 0, 0, null, null, null, null, null, null, null, null, null, null, null, null);
 	}
     
-    public DisplayablePlayerCharacter(Integer id, String name, DisplayableSetting setting, int status, int approval, DisplayableClan clan, DisplayableBloodline bloodline, List<Integer> inClanDisciplines,
+    public DisplayablePlayerCharacter(Integer id, String name, DisplayableSetting setting, int status, int approval, DisplayableClan clan, DisplayableBloodline bloodline, 
+    		                          List<DisplayableDiscipline> inClanDisciplines,
     		                           int physicalAttribute, int socialAttribute, int mentalAttribute,
     		                           List<Integer> physicalAttributeFocuses, List<Integer> socialAttributeFocuses, List<Integer> mentalAttributeFocuses,
     		                           List<DisplayablePlayerCharacterTrait> skills, 
@@ -99,7 +102,7 @@ public class DisplayablePlayerCharacter {
 				                                                     t.getApprovalStatus().ordinal(), 
 				                                                     Optional.ofNullable(t.getClan()).map((Clan c) -> DisplayableClan.from(c)).orElse(null),
 				                                                     Optional.ofNullable(t.getBloodline()).map((Bloodline b) -> DisplayableBloodline.from(b)).orElse(null),
-				                                                     t.getInClanDisciplines().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toList()),
+				                                                     t.getInClanDisciplines().stream().map((Discipline d) -> DisplayableDiscipline.from(d)).collect(Collectors.toList()),
 				                                                     t.getPhysicalAttribute(),
 				                                                     t.getSocialAttribute(),
 				                                                     t.getMentalAttribute(),
