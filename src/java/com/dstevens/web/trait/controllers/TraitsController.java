@@ -12,6 +12,12 @@ import com.dstevens.character.clan.Bloodline;
 import com.dstevens.character.clan.Clan;
 import com.dstevens.character.clan.DisplayableBloodline;
 import com.dstevens.character.clan.DisplayableClan;
+import com.dstevens.character.trait.attribute.focus.DisplayableMentalAttributeFocus;
+import com.dstevens.character.trait.attribute.focus.DisplayablePhysicalAttributeFocus;
+import com.dstevens.character.trait.attribute.focus.DisplayableSocialAttributeFocus;
+import com.dstevens.character.trait.attribute.focus.MentalAttributeFocus;
+import com.dstevens.character.trait.attribute.focus.PhysicalAttributeFocus;
+import com.dstevens.character.trait.attribute.focus.SocialAttributeFocus;
 import com.dstevens.character.trait.power.discipline.Discipline;
 import com.dstevens.character.trait.power.discipline.DisplayableDiscipline;
 import com.dstevens.character.trait.power.discipline.DisplayableElderPower;
@@ -40,13 +46,16 @@ public class TraitsController {
 	
 	private String vampireTraits(String type) {
 		switch(type.toLowerCase()) {
-		    case "clans":                 return new Gson().toJson(list(Clan.values()).stream().map((Clan t1) -> DisplayableClan.from(t1)).collect(Collectors.toList()));
-		    case "bloodlines":            return new Gson().toJson(list(Bloodline.values()).stream().map((Bloodline t1) -> DisplayableBloodline.from(t1)).collect(Collectors.toList()));
-			case "thaumaturgicalrituals": return new Gson().toJson(list(ThaumaturgicalRitual.values()).stream().map((ThaumaturgicalRitual t1) -> DisplayableThaumaturgicalRitual.from(t1)).collect(Collectors.toList()));
-			case "necromanticrituals":    return new Gson().toJson(list(NecromanticRitual.values()).stream().map((NecromanticRitual t1) -> DisplayableNecromanticRitual.from(t1)).collect(Collectors.toList()));
-			case "disciplines":           return new Gson().toJson(list(Discipline.values()).stream().map((Discipline t1) -> DisplayableDiscipline.from(t1)).collect(Collectors.toList()));
-			case "elderpowers":           return new Gson().toJson(list(ElderPower.values()).stream().map((ElderPower t1) -> DisplayableElderPower.from(t1)).collect(Collectors.toList()));
-			case "techniques":            return new Gson().toJson(list(Technique.values()).stream().map((Technique t1) -> DisplayableTechnique.from(t1)).collect(Collectors.toList()));
+		    case "clans":                    return new Gson().toJson(list(Clan.values()).stream().map((Clan t1) -> DisplayableClan.from(t1)).collect(Collectors.toList()));
+		    case "bloodlines":               return new Gson().toJson(list(Bloodline.values()).stream().map((Bloodline t1) -> DisplayableBloodline.from(t1)).collect(Collectors.toList()));
+			case "thaumaturgicalrituals":    return new Gson().toJson(list(ThaumaturgicalRitual.values()).stream().map((ThaumaturgicalRitual t1) -> DisplayableThaumaturgicalRitual.from(t1)).collect(Collectors.toList()));
+			case "necromanticrituals":       return new Gson().toJson(list(NecromanticRitual.values()).stream().map((NecromanticRitual t1) -> DisplayableNecromanticRitual.from(t1)).collect(Collectors.toList()));
+			case "disciplines":              return new Gson().toJson(list(Discipline.values()).stream().map((Discipline t1) -> DisplayableDiscipline.from(t1)).collect(Collectors.toList()));
+			case "elderpowers":              return new Gson().toJson(list(ElderPower.values()).stream().map((ElderPower t1) -> DisplayableElderPower.from(t1)).collect(Collectors.toList()));
+			case "techniques":               return new Gson().toJson(list(Technique.values()).stream().map((Technique t1) -> DisplayableTechnique.from(t1)).collect(Collectors.toList()));
+			case "physicalattributefocuses": return new Gson().toJson(list(PhysicalAttributeFocus.values()).stream().map((PhysicalAttributeFocus t1) -> DisplayablePhysicalAttributeFocus.from(t1)).collect(Collectors.toList()));
+			case "socialattributefocuses":   return new Gson().toJson(list(SocialAttributeFocus.values()).stream().map((SocialAttributeFocus t1) -> DisplayableSocialAttributeFocus.from(t1)).collect(Collectors.toList()));
+			case "mentalattributefocuses":   return new Gson().toJson(list(MentalAttributeFocus.values()).stream().map((MentalAttributeFocus t1) -> DisplayableMentalAttributeFocus.from(t1)).collect(Collectors.toList()));
 		}
 		return null;
 	}

@@ -9,6 +9,12 @@ import com.dstevens.character.clan.Bloodline;
 import com.dstevens.character.clan.Clan;
 import com.dstevens.character.clan.DisplayableBloodline;
 import com.dstevens.character.clan.DisplayableClan;
+import com.dstevens.character.trait.attribute.focus.DisplayableMentalAttributeFocus;
+import com.dstevens.character.trait.attribute.focus.DisplayablePhysicalAttributeFocus;
+import com.dstevens.character.trait.attribute.focus.DisplayableSocialAttributeFocus;
+import com.dstevens.character.trait.attribute.focus.MentalAttributeFocus;
+import com.dstevens.character.trait.attribute.focus.PhysicalAttributeFocus;
+import com.dstevens.character.trait.attribute.focus.SocialAttributeFocus;
 import com.dstevens.character.trait.background.CharacterBackground;
 import com.dstevens.character.trait.distinction.flaw.CharacterFlaw;
 import com.dstevens.character.trait.distinction.merit.CharacterMerit;
@@ -38,9 +44,9 @@ public class DisplayablePlayerCharacter {
 	public int physicalAttribute;
 	public int socialAttribute;
 	public int mentalAttribute;
-	public List<Integer> physicalAttributeFocuses;
-	public List<Integer> socialAttributeFocuses;
-	public List<Integer> mentalAttributeFocuses;
+	public List<DisplayablePhysicalAttributeFocus> physicalAttributeFocuses;
+	public List<DisplayableSocialAttributeFocus> socialAttributeFocuses;
+	public List<DisplayableMentalAttributeFocus> mentalAttributeFocuses;
 	public List<DisplayablePlayerCharacterTrait> skills;
 	public List<DisplayablePlayerCharacterTrait> backgrounds;
 	public List<DisplayablePlayerCharacterTrait> disciplines;
@@ -59,17 +65,19 @@ public class DisplayablePlayerCharacter {
     
     public DisplayablePlayerCharacter(Integer id, String name, DisplayableSetting setting, int status, int approval, DisplayableClan clan, DisplayableBloodline bloodline, 
     		                          List<DisplayableDiscipline> inClanDisciplines,
-    		                           int physicalAttribute, int socialAttribute, int mentalAttribute,
-    		                           List<Integer> physicalAttributeFocuses, List<Integer> socialAttributeFocuses, List<Integer> mentalAttributeFocuses,
-    		                           List<DisplayablePlayerCharacterTrait> skills, 
-    		                           List<DisplayablePlayerCharacterTrait> backgrounds, 
-    		                           List<DisplayablePlayerCharacterTrait> disciplines, 
-    		                           List<DisplayablePlayerCharacterTrait> techniques, 
-    		                           List<DisplayablePlayerCharacterTrait> elderPowers,
-    		                           List<DisplayablePlayerCharacterTrait> necromanticRituals, 
-    		                           List<DisplayablePlayerCharacterTrait> thaumaturgicalRituals,
-    		                           List<DisplayablePlayerCharacterTrait> merits, 
-    		                           List<DisplayablePlayerCharacterTrait> flaws) {
+    		                          int physicalAttribute, int socialAttribute, int mentalAttribute,
+    		                          List<DisplayablePhysicalAttributeFocus> physicalAttributeFocuses, 
+    		                          List<DisplayableSocialAttributeFocus> socialAttributeFocuses, 
+    		                          List<DisplayableMentalAttributeFocus> mentalAttributeFocuses,
+    		                          List<DisplayablePlayerCharacterTrait> skills, 
+    		                          List<DisplayablePlayerCharacterTrait> backgrounds, 
+    		                          List<DisplayablePlayerCharacterTrait> disciplines, 
+    		                          List<DisplayablePlayerCharacterTrait> techniques, 
+    		                          List<DisplayablePlayerCharacterTrait> elderPowers,
+    		                          List<DisplayablePlayerCharacterTrait> necromanticRituals, 
+    		                          List<DisplayablePlayerCharacterTrait> thaumaturgicalRituals,
+    		                          List<DisplayablePlayerCharacterTrait> merits, 
+    		                          List<DisplayablePlayerCharacterTrait> flaws) {
 		this.id = id;
 		this.name = name;
 		this.setting = setting;
@@ -106,9 +114,9 @@ public class DisplayablePlayerCharacter {
 				                                                     t.getPhysicalAttribute(),
 				                                                     t.getSocialAttribute(),
 				                                                     t.getMentalAttribute(),
-				                                                     sort(t.getPhysicalAttributeFocuses().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toList())),
-				                                                     sort(t.getSocialAttributeFocuses().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toList())),
-				                                                     sort(t.getMentalAttributeFocuses().stream().map((Enum<?> e) -> e.ordinal()).collect(Collectors.toList())),
+				                                                     sort(t.getPhysicalAttributeFocuses().stream().map((PhysicalAttributeFocus f) -> DisplayablePhysicalAttributeFocus.from(f)).collect(Collectors.toList())),
+				                                                     sort(t.getSocialAttributeFocuses().stream().map((SocialAttributeFocus f) -> DisplayableSocialAttributeFocus.from(f)).collect(Collectors.toList())),
+				                                                     sort(t.getMentalAttributeFocuses().stream().map((MentalAttributeFocus f) -> DisplayableMentalAttributeFocus.from(f)).collect(Collectors.toList())),
 				                                                     sort(t.getSkills().stream().map((CharacterSkill m) -> new DisplayablePlayerCharacterTrait(m.trait().ordinal(), m.rating(), m.getSpecialization(), m.getFocuses())).collect(Collectors.toList())),
 				                                                     sort(t.getBackgrounds().stream().map((CharacterBackground m) -> new DisplayablePlayerCharacterTrait(m.trait().ordinal(), m.rating(), m.getSpecialization(), m.getFocuses())).collect(Collectors.toList())),
 				                                                     sort(t.getDisciplines().stream().map((CharacterDiscipline m) -> new DisplayablePlayerCharacterTrait(m.trait().ordinal(), m.rating())).collect(Collectors.toList())),

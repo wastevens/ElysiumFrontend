@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 import com.dstevens.character.trait.power.discipline.Discipline;
 import com.dstevens.character.trait.power.discipline.DisplayableDiscipline;
 
-public class DisplayableBloodline {
+import static com.dstevens.collections.Lists.sort;
+
+public class DisplayableBloodline implements Comparable<DisplayableBloodline> {
 
 	public Integer id;
 	public List<List<DisplayableDiscipline>> disciplines;
@@ -27,11 +29,16 @@ public class DisplayableBloodline {
 	}
 
 	private static List<List<DisplayableDiscipline>> displayableDisciplinesFor(Bloodline t) {
-		return t.getDisciplines().stream().map((List<Discipline> disciplines) -> disciplines.stream().map((Discipline d) -> DisplayableDiscipline.from(d)).collect(Collectors.toList())).collect(Collectors.toList());
+		return t.getDisciplines().stream().map((List<Discipline> disciplines) -> sort(disciplines.stream().map((Discipline d) -> DisplayableDiscipline.from(d)).collect(Collectors.toList()))).collect(Collectors.toList());
 	}
 	
 	public Bloodline to() {
 		return Bloodline.values()[id];
+	}
+
+	@Override
+	public int compareTo(DisplayableBloodline that) {
+		return this.id - that.id;
 	}
 	
 }

@@ -2,7 +2,7 @@ package com.dstevens.character.trait.power.discipline;
 
 import com.dstevens.character.trait.power.DisplayablePowerType;
 
-public class DisplayableDiscipline {
+public class DisplayableDiscipline implements Comparable<DisplayableDiscipline> {
 
 	public Integer id;
 	public DisplayablePowerType powerType;
@@ -24,5 +24,10 @@ public class DisplayableDiscipline {
 	
 	public Discipline to() {
 		return Discipline.values()[id];
+	}
+
+	@Override
+	public int compareTo(DisplayableDiscipline that) {
+		return this.id - that.id;
 	}
 }

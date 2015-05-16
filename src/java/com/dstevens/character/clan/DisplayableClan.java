@@ -3,6 +3,8 @@ package com.dstevens.character.clan;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.dstevens.collections.Lists.sort;
+
 public class DisplayableClan {
 
 	public Integer id;
@@ -20,7 +22,8 @@ public class DisplayableClan {
 	}
 
 	public static DisplayableClan from(Clan t) {
-		return new DisplayableClan(t.getId(), t.getBloodlines().stream().map((Bloodline b) -> DisplayableBloodline.from(b)).collect(Collectors.toList()));
+		return new DisplayableClan(t.getId(), 
+				                   sort(t.getBloodlines().stream().map((Bloodline b) -> DisplayableBloodline.from(b)).collect(Collectors.toList())));
 	}
 	
 	public Clan to() {
