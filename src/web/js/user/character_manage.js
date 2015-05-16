@@ -145,9 +145,11 @@ function _initializeFetchedCharacterPossessedTraits(scope, traitName, existingTr
 	});
 }
 
-angular.module('user.character.manage.controllers', ['user.character.manage.services', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds', 'sources.techniques', 'sources.elderPowers', 'sources.rituals.necromantic', 'sources.rituals.thaumaturgical', 'sources.merits', 'sources.flaws']).
-controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'techniqueSource', 'elderPowerSource', 'necromanticRitualSource', 'thaumaturgicalRitualSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 'meritSource', 'flawSource',  
-                       function($scope,   $rootScope,   redirect,   characterRepository,   clanSource,   bloodlineSource,   disciplineSource,   techniqueSource,   elderPowerSource,   necromanticRitualSource,   thaumaturgicalRitualSource,   physicalFocusSource,   socialFocusSource,   mentalFocusSource,   skillSource,   backgroundSource,   meritSource,   flawSource) {
+angular.module('user.character.manage.filters', ['filters.setting', 'filters.clan', 'filters.bloodline', 'filters.discipline', 'filters.attributes.focuses']);
+
+angular.module('user.character.manage.controllers', ['user.character.manage.services', 'user.character.manage.filters', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds', 'sources.techniques', 'sources.elderPowers', 'sources.rituals.necromantic', 'sources.rituals.thaumaturgical', 'sources.merits', 'sources.flaws']).
+controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'techniqueSource', 'elderPowerSource', 'necromanticRitualSource', 'thaumaturgicalRitualSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 'meritSource', 'flawSource',  
+                       function($scope,   $rootScope,   redirect,   characterRepository,   clanSource,   bloodlineSource,   disciplineSource,   physicalFocusSource,   socialFocusSource,   mentalFocusSource,   techniqueSource,   elderPowerSource,   necromanticRitualSource,   thaumaturgicalRitualSource,   physicalFocusSource,   socialFocusSource,   mentalFocusSource,   skillSource,   backgroundSource,   meritSource,   flawSource) {
 	//--------------------------------------------
 	// Setup
 	//--------------------------------------------
@@ -217,29 +219,42 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	$scope.socialAttributeFocuses = $scope.character.socialAttributeFocuses;
 	$scope.mentalAttributeFocuses = $scope.character.mentalAttributeFocuses;
 	
+	$scope.physical_attribute_focus = function(input) {
+		console.log('physical_attribute_focus: ' + input);
+	}
+	$scope.mental_attribute_focus = function(input) {
+		console.log('mental_attribute_focus: ' + input);
+	}
+	$scope.social_attribute_focus = function(input) {
+		console.log('social_attribute_focus: ' + input);
+	}
+	
 	$scope.physical = {
 		priorities: attributePriorities,
 	    value: $scope.character.physicalAttribute,
 	    priority: attributePriority[$scope.character.physicalAttribute],
-	    focuses: physicalFocusSource.get(),
-	    focus: physicalFocusSource.get()[$scope.character.physicalAttributeFocuses[0]]
 	}
+	physicalFocusSource.get().then(function(focuses) {
+		$scope.physical.focuses = focuses;
+	});
 	
 	$scope.social = {
 		priorities: attributePriorities,
 		value: $scope.character.socialAttribute,
 		priority: attributePriority[$scope.character.socialAttribute],
-		focuses: socialFocusSource.get(),
-	    focus: socialFocusSource.get()[$scope.character.socialAttributeFocuses[0]]
 	}
+	socialFocusSource.get().then(function(focuses) {
+		$scope.social.focuses = focuses;
+	});
 	
 	$scope.mental = {
 		priorities: attributePriorities,
 		value: $scope.character.mentalAttribute,
 		priority: attributePriority[$scope.character.mentalAttribute],
-		focuses: mentalFocusSource.get(),
-	    focus: mentalFocusSource.get()[$scope.character.mentalAttributeFocuses[0]]
 	}
+	mentalFocusSource.get().then(function(focuses) {
+		$scope.mental.focuses = focuses;
+	});
 	
 	initializeSkills($scope, skillSource);
 	displaySkillsInGroups($scope);
@@ -425,7 +440,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	};
 }]);
 
-angular.module('user.character.manage.directives', ['user.character.manage.services']).
+angular.module('user.character.manage.directives', ['user.character.manage.services', 'user.character.manage.filters']).
 directive('manageCharacter', ['characterRepository', function(characterRepository) {
 	return {
 		restrict: 'E',
@@ -475,14 +490,34 @@ directive('selectAttribute', [function() {
 		templateUrl: '/js/user/character/selectAttributeValue.html'
 	};
 }]).
-directive('selectAttributeFocus', [function() {
+directive('selectPhysicalFocus', [function() {
 	return {
 		restrict: 'E',
 		scope: {
 			attributes: '=',
-			change: '&change'
+			change: '&change',
 		},
-		templateUrl: '/js/user/character/selectAttributeFocus.html'
+		templateUrl: '/js/user/character/selectPhysicalFocus.html'
+	};
+}]).
+directive('selectMentalFocus', [function() {
+	return {
+		restrict: 'E',
+		scope: {
+			attributes: '=',
+			change: '&change',
+		},
+		templateUrl: '/js/user/character/selectMentalFocus.html'
+	};
+}]).
+directive('selectSocialFocus', [function() {
+	return {
+		restrict: 'E',
+		scope: {
+			attributes: '=',
+			change: '&change',
+		},
+		templateUrl: '/js/user/character/selectSocialFocus.html'
 	};
 }]).
 directive('selectSkill', [function() {
@@ -554,6 +589,5 @@ directive('selectTrait', [function() {
 		templateUrl: '/js/user/character/selectTrait.html'
 	};
 }]);
-angular.module('user.character.manage.filters', ['filters.setting', 'filters.clan', 'filters.bloodline', 'filters.discipline']);
 
 angular.module('user.character.manage', ['user.character.manage.filters', 'user.character.manage.controllers', 'user.character.manage.directives', 'user.character.manage.services']);

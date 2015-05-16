@@ -271,6 +271,24 @@ displayableValues['en_US']['Vampire']['Background'][++i] = "Retainer" ;
 displayableValues['en_US']['Vampire']['Background'][++i] = "Rituals"
 
 var i = -1;
+displayableValues['en_US']['Vampire']['PhysicalAttributeFocus'] = [];
+displayableValues['en_US']['Vampire']['PhysicalAttributeFocus'][++i] = "Strength";
+displayableValues['en_US']['Vampire']['PhysicalAttributeFocus'][++i] = "Dexterity";
+displayableValues['en_US']['Vampire']['PhysicalAttributeFocus'][++i] = "Stamina";
+
+var i = -1;
+displayableValues['en_US']['Vampire']['SocialAttributeFocus'] = [];
+displayableValues['en_US']['Vampire']['SocialAttributeFocus'][++i] = "Charisma";
+displayableValues['en_US']['Vampire']['SocialAttributeFocus'][++i] = "Manipulation";
+displayableValues['en_US']['Vampire']['SocialAttributeFocus'][++i] = "Appearance";
+
+var i = -1;
+displayableValues['en_US']['Vampire']['MentalAttributeFocus'] = [];
+displayableValues['en_US']['Vampire']['MentalAttributeFocus'][++i] = "Intelligence";
+displayableValues['en_US']['Vampire']['MentalAttributeFocus'][++i] = "Wits";
+displayableValues['en_US']['Vampire']['MentalAttributeFocus'][++i] = "Perception";
+
+var i = -1;
 displayableValues['en_US']['User']['PaymentType'] = [];
 displayableValues['en_US']['User']['PaymentType'][++i] = "Other";
 displayableValues['en_US']['User']['PaymentType'][++i] = "Paypal";
