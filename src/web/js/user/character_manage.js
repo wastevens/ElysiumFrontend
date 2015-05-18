@@ -145,7 +145,7 @@ function _initializeFetchedCharacterPossessedTraits(scope, traitName, existingTr
 	});
 }
 
-angular.module('user.character.manage.filters', ['filters.setting', 'filters.clan', 'filters.bloodline', 'filters.discipline', 'filters.attributes.focuses']);
+angular.module('user.character.manage.filters', ['filters.setting', 'filters.clan', 'filters.bloodline', 'filters.discipline', 'filters.attributes.focuses', 'filters.picker']);
 
 angular.module('user.character.manage.controllers', ['user.character.manage.services', 'user.character.manage.filters', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds', 'sources.techniques', 'sources.elderPowers', 'sources.rituals.necromantic', 'sources.rituals.thaumaturgical', 'sources.merits', 'sources.flaws']).
 controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'techniqueSource', 'elderPowerSource', 'necromanticRitualSource', 'thaumaturgicalRitualSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 'meritSource', 'flawSource',  
@@ -490,34 +490,15 @@ directive('selectAttribute', [function() {
 		templateUrl: '/js/user/character/selectAttributeValue.html'
 	};
 }]).
-directive('selectPhysicalFocus', [function() {
+directive('selectAttributeFocus', [function() {
 	return {
 		restrict: 'E',
 		scope: {
 			attributes: '=',
 			change: '&change',
+			filter: '@'
 		},
-		templateUrl: '/js/user/character/selectPhysicalFocus.html'
-	};
-}]).
-directive('selectMentalFocus', [function() {
-	return {
-		restrict: 'E',
-		scope: {
-			attributes: '=',
-			change: '&change',
-		},
-		templateUrl: '/js/user/character/selectMentalFocus.html'
-	};
-}]).
-directive('selectSocialFocus', [function() {
-	return {
-		restrict: 'E',
-		scope: {
-			attributes: '=',
-			change: '&change',
-		},
-		templateUrl: '/js/user/character/selectSocialFocus.html'
+		templateUrl: '/js/user/character/selectAttributeFocus.html'
 	};
 }]).
 directive('selectSkill', [function() {

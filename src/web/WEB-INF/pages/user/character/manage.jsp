@@ -17,6 +17,7 @@
 <script src="/js/sources/backgrounds.js"></script>
 <script src="/js/sources/settings.js"></script>
 
+<script src="/js/filters/picker.js"></script>
 <script src="/js/filters/attributes.js"></script>
 <script src="/js/filters/setting.js"></script>
 <script src="/js/filters/clan.js"></script>
