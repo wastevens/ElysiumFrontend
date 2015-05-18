@@ -1,5 +1,5 @@
 <table><tr><td>
-	<select ng-model='newTrait' ng-options="trait.name for trait in traits">
+	<select ng-model='newTrait' ng-options="trait as (trait.id|picker:filter) for trait in traits">
 		<option value="">-- Choose {{traitTitle}} --</option>
 	</select>
 	<input type=text ng-show="newTrait.requiresSpecialization" size="9" ng-model="newTrait.specialization">

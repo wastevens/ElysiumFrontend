@@ -145,7 +145,7 @@ function _initializeFetchedCharacterPossessedTraits(scope, traitName, existingTr
 	});
 }
 
-angular.module('user.character.manage.filters', ['filters.setting', 'filters.clan', 'filters.bloodline', 'filters.discipline', 'filters.attributes.focuses', 'filters.picker']);
+angular.module('user.character.manage.filters', ['filters.setting', 'filters.clan', 'filters.bloodline', 'filters.discipline', 'filters.attributes.focuses', 'filters.picker', 'filters.thaumaturgicalritual', 'filters.necromanticritual']);
 
 angular.module('user.character.manage.controllers', ['user.character.manage.services', 'user.character.manage.filters', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds', 'sources.techniques', 'sources.elderPowers', 'sources.rituals.necromantic', 'sources.rituals.thaumaturgical', 'sources.merits', 'sources.flaws']).
 controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'techniqueSource', 'elderPowerSource', 'necromanticRitualSource', 'thaumaturgicalRitualSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 'meritSource', 'flawSource',  
@@ -549,6 +549,7 @@ directive('addTrait', [function() {
 			ratingsTitle: '@ratingstitle',
 			ratings: '=',
 			change: '&change',
+			filter: '@'
 		},
 		link: function (scope, element, attr) {
 	    },
@@ -564,6 +565,7 @@ directive('selectTrait', [function() {
 			ratingsTitle: '@ratingstitle',
 			ratings: '=',
 			change: '&change',
+			filter: '@'
 		},
 		link: function (scope, element, attr) {
 	    },

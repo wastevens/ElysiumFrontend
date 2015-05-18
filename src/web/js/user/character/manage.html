@@ -45,44 +45,44 @@ Name: {{character.name}}
 	<tr><td colspan=6>
 	<table border="1">
 		<tr>
-			<td><select-trait traittitle="Background" traits="characterBackgrounds" ratingstitle="Rating" ratings="ratings" change="traitChange('characterBackgrounds', 6, traitIndex)"></select-trait></td>
-			<td><select-trait traittitle="Discipline" traits="characterDisciplines" ratingstitle="Rating" ratings="ratings" change="traitChange('characterDisciplines', 9, traitIndex)"></select-trait></td>
+			<td><select-trait traittitle="Background" traits="characterBackgrounds" ratingstitle="Rating" ratings="ratings" change="traitChange('characterBackgrounds', 6, traitIndex)" filter="background"></select-trait></td>
+			<td><select-trait traittitle="Discipline" traits="characterDisciplines" ratingstitle="Rating" ratings="ratings" change="traitChange('characterDisciplines', 9, traitIndex)" filter="discipline"></select-trait></td>
 		</tr><tr>
-			<td><add-trait traittitle="Background" traits="backgrounds" ratingstitle="Rating" ratings="ratings" change="addTrait('characterBackgrounds', 6, trait)"></add-trait></td>
-			<td><add-trait traittitle="Discipline" traits="disciplines" ratingstitle="Rating" ratings="ratings" change="addTrait('characterDisciplines', 9, trait)"></add-trait></td>
+			<td><add-trait traittitle="Background" traits="backgrounds" ratingstitle="Rating" ratings="ratings" change="addTrait('characterBackgrounds', 6, trait)" filter="background"></add-trait></td>
+			<td><add-trait traittitle="Discipline" traits="disciplines" ratingstitle="Rating" ratings="ratings" change="addTrait('characterDisciplines', 9, trait)" filter="discipline"></add-trait></td>
 		</tr>
 	</table>
 	</td></tr>
 	<tr><td colspan=6>
 	<table border="1">
 		<tr>
-			<td><select-trait traittitle="Technique" traits="characterTechniques" ratingstitle="Possession" ratings="possession" change="traitChange('characterTechniques', 11, traitIndex)"></select-trait></td>
-			<td><select-trait traittitle="Elder Power" traits="characterElderPowers" ratingstitle="Possession" ratings="possession" change="traitChange('characterElderPowers', 10, traitIndex)"></select-trait></td>
+			<td><select-trait traittitle="Technique" traits="characterTechniques" ratingstitle="Possession" ratings="possession" change="traitChange('characterTechniques', 11, traitIndex)" filter="technique"></select-trait></td>
+			<td><select-trait traittitle="Elder Power" traits="characterElderPowers" ratingstitle="Possession" ratings="possession" change="traitChange('characterElderPowers', 10, traitIndex)" filter="elder_power"></select-trait></td>
 		</tr><tr>
-			<td><add-trait traittitle="Technique" traits="techniques" ratingstitle="Possession" ratings="possession" change="addTrait('characterTechniques', 11, trait)"></add-trait></td>
-			<td><add-trait traittitle="Elder Power" traits="elderPowers" ratingstitle="Possession" ratings="possession" change="addTrait('characterElderPowers', 10, trait)"></add-trait></td>
+			<td><add-trait traittitle="Technique" traits="techniques" ratingstitle="Possession" ratings="possession" change="addTrait('characterTechniques', 11, trait)" filter="technique"></add-trait></td>
+			<td><add-trait traittitle="Elder Power" traits="elderPowers" ratingstitle="Possession" ratings="possession" change="addTrait('characterElderPowers', 10, trait)" filter="elder_power"></add-trait></td>
 		</tr>
 	</table>
 	</td></tr>
 	<tr><td colspan=6>
 	<table border="1">
 		<tr>
-			<td><select-trait traittitle="Thaumaturgical Ritual" traits="characterThaumaturgicalRituals" ratingstitle="Possession" ratings="possession" change="traitChange('characterThaumaturgicalRituals', 13, traitIndex)"></select-trait></td>
-			<td><select-trait traittitle="Necromantic Ritual" traits="characterNecromanticRituals" ratingstitle="Possession" ratings="possession" change="traitChange('characterNecromanticRituals', 12, traitIndex)"></select-trait></td>
+			<td><select-trait traittitle="Thaumaturgical Ritual" traits="characterThaumaturgicalRituals" ratingstitle="Possession" ratings="possession" change="traitChange('characterThaumaturgicalRituals', 13, traitIndex)" filter="thaumaturgical_ritual"></select-trait></td>
+			<td><select-trait traittitle="Necromantic Ritual" traits="characterNecromanticRituals" ratingstitle="Possession" ratings="possession" change="traitChange('characterNecromanticRituals', 12, traitIndex)" filter="necromantic_ritual"></select-trait></td>
 		</tr><tr>
-			<td><add-trait traittitle="Thaumaturgical Rituals" traits="thaumaturgicalRituals" ratingstitle="Possession" ratings="possession" change="addTrait('characterThaumaturgicalRituals', 13, trait)"></add-trait></td>
-			<td><add-trait traittitle="Necromantic Rituals" traits="necromanticRituals" ratingstitle="Possession" ratings="possession" change="addTrait('characterNecromanticRituals', 12, trait)"></add-trait></td>
+			<td><add-trait traittitle="Thaumaturgical Rituals" traits="thaumaturgicalRituals" ratingstitle="Possession" ratings="possession" change="addTrait('characterThaumaturgicalRituals', 13, trait)" filter="thaumaturgical_ritual"></add-trait></td>
+			<td><add-trait traittitle="Necromantic Rituals" traits="necromanticRituals" ratingstitle="Possession" ratings="possession" change="addTrait('characterNecromanticRituals', 12, trait)" filter="necromantic_ritual"></add-trait></td>
 		</tr>
 	</table>
 	</td></tr>
 	<tr><td colspan=6>
 	<table border="1">
 		<tr>
-			<td><select-trait traittitle="Merit" traits="characterMerits" ratingstitle="Possession" ratings="possession" change="traitChange('characterMerits', 8, traitIndex)"></select-trait></td>
-			<td><select-trait traittitle="Flaw" traits="characterFlaws" ratingstitle="Possession" ratings="possession" change="traitChange('characterFlaws', 7, traitIndex)"></select-trait></td>
+			<td><select-trait traittitle="Merit" traits="characterMerits" ratingstitle="Possession" ratings="possession" change="traitChange('characterMerits', 8, traitIndex)" filter="merit"></select-trait></td>
+			<td><select-trait traittitle="Flaw" traits="characterFlaws" ratingstitle="Possession" ratings="possession" change="traitChange('characterFlaws', 7, traitIndex)" filter="flaw"></select-trait></td>
 		</tr><tr>
-			<td><add-trait traittitle="Merit" traits="merits" ratingstitle="Possession" ratings="possession" change="addTrait('characterMerits', 8, trait)"></add-trait></td>
-			<td><add-trait traittitle="Flaw" traits="flaws" ratingstitle="Possession" ratings="possession" change="addTrait('characterFlaws', 7, trait)"></add-trait></td>
+			<td><add-trait traittitle="Merit" traits="merits" ratingstitle="Possession" ratings="possession" change="addTrait('characterMerits', 8, trait)" filter="merit"></add-trait></td>
+			<td><add-trait traittitle="Flaw" traits="flaws" ratingstitle="Possession" ratings="possession" change="addTrait('characterFlaws', 7, trait)" filter="flaw"></add-trait></td>
 		</tr>
 	</table>
 	</td></tr>
