@@ -25,6 +25,7 @@
 <script src="/js/filters/discipline.js"></script>
 <script src="/js/filters/necromantic_ritual.js"></script>
 <script src="/js/filters/thaumaturgical_ritual.js"></script>
+<script src="/js/filters/background.js"></script>
 
 <script src="/js/services/redirection.js"></script>
 <script src="/js/services/authorization.js"></script>

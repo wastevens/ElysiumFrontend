@@ -18,6 +18,8 @@ import com.dstevens.character.trait.attribute.focus.DisplayableSocialAttributeFo
 import com.dstevens.character.trait.attribute.focus.MentalAttributeFocus;
 import com.dstevens.character.trait.attribute.focus.PhysicalAttributeFocus;
 import com.dstevens.character.trait.attribute.focus.SocialAttributeFocus;
+import com.dstevens.character.trait.background.Background;
+import com.dstevens.character.trait.background.DisplayableBackground;
 import com.dstevens.character.trait.power.discipline.Discipline;
 import com.dstevens.character.trait.power.discipline.DisplayableDiscipline;
 import com.dstevens.character.trait.power.discipline.DisplayableElderPower;
@@ -53,6 +55,7 @@ public class TraitsController {
 			case "disciplines":              return new Gson().toJson(list(Discipline.values()).stream().map((Discipline t1) -> DisplayableDiscipline.from(t1)).collect(Collectors.toList()));
 			case "elderpowers":              return new Gson().toJson(list(ElderPower.values()).stream().map((ElderPower t1) -> DisplayableElderPower.from(t1)).collect(Collectors.toList()));
 			case "techniques":               return new Gson().toJson(list(Technique.values()).stream().map((Technique t1) -> DisplayableTechnique.from(t1)).collect(Collectors.toList()));
+			case "backgrounds":              return new Gson().toJson(list(Background.values()).stream().map((Background t1) -> DisplayableBackground.from(t1)).collect(Collectors.toList()));
 			case "physicalattributefocuses": return new Gson().toJson(list(PhysicalAttributeFocus.values()).stream().map((PhysicalAttributeFocus t1) -> DisplayablePhysicalAttributeFocus.from(t1)).collect(Collectors.toList()));
 			case "socialattributefocuses":   return new Gson().toJson(list(SocialAttributeFocus.values()).stream().map((SocialAttributeFocus t1) -> DisplayableSocialAttributeFocus.from(t1)).collect(Collectors.toList()));
 			case "mentalattributefocuses":   return new Gson().toJson(list(MentalAttributeFocus.values()).stream().map((MentalAttributeFocus t1) -> DisplayableMentalAttributeFocus.from(t1)).collect(Collectors.toList()));
