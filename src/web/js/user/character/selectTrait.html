@@ -1,5 +1,5 @@
 <table><tr ng-repeat="trait in traits">
-<td>{{trait.id|picker:filter}} <input type=text ng-show="trait.specialization" size="9" ng-model="trait.specialization"></td>
+<td>{{trait|picker:filter}} <input type=text ng-show="trait.specialization" size="9" ng-model="trait.specialization"></td>
 <td>
 	<select ng-model="trait.rating" ng-change="change({traitIndex: $index})" ng-options="rating.display for rating in ratings track by rating.value">
 		<option value="">-- {{ratingsTitle}} --</option>

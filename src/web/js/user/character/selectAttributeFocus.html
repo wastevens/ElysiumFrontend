@@ -1,3 +1,3 @@
-<select ng-model='attributes.focus' ng-change="change()" ng-options="focus as (focus.id|picker:filter) for focus in attributes.focuses">
+<select ng-model='attributes.focus' ng-change="change()" ng-options="focus as (focus|picker:filter) for focus in attributes.focuses">
     <option value="">-- Choose Focus --</option>
 </select>
