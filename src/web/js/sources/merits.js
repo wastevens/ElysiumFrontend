@@ -1,5 +1,6 @@
-angular.module('sources.merits', ['sources.clans', 'sources.settings']).
-factory('meritSource', ['clanSource', 'bloodlineSource', 'settingsSource', function(clanSource, bloodlineSource, settingsSource) {
+angular.module('sources.merits', ['sources.vampire', 'sources.settings']).
+factory('meritSource', ['clanSource', 'bloodlineSource', 'settingsSource', 
+               function(clanSource,    bloodlineSource,   settingsSource) {
 	var map = [];
 	var i = -1;
 	var types = ['GENERAL', 'MORALITY', 'RARITY', 'CLAN', 'BLOODLINE', 'SETTING'];

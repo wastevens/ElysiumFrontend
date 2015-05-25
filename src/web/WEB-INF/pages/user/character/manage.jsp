@@ -4,17 +4,11 @@
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-resource.js"></script>
 <script src="/js/sources/displayableValues.js"></script>
+<script src="/js/sources/vampire.js"></script>
 <script src="/js/sources/attributes.js"></script>
-<script src="/js/sources/clans.js"></script>
 <script src="/js/sources/merits.js"></script>
 <script src="/js/sources/flaws.js"></script>
-<script src="/js/sources/disciplines.js"></script>
-<script src="/js/sources/techniques.js"></script>
-<script src="/js/sources/elderPowers.js"></script>
-<script src="/js/sources/necromanticRituals.js"></script>
-<script src="/js/sources/thaumaturgicalRituals.js"></script>
 <script src="/js/sources/skills.js"></script>
-<script src="/js/sources/backgrounds.js"></script>
 <script src="/js/sources/settings.js"></script>
 
 <script src="/js/filters/picker.js"></script>
