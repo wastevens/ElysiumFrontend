@@ -1,9 +1,9 @@
-angular.module('sources.flaws', ['sources.settings']).
-factory('flawSource', ['settingsSource', function(settingsSource) {
+angular.module('sources.flaws', ['sources.vampire']).
+factory('flawSource', ['settingSource', function(settingSource) {
 	var map = [];
 	var i = -1;
 	var types = ['GENERAL', 'MORALITY', 'RARITY', 'CLAN', 'BLOODLINE', 'SETTING'];
-	var settings = settingsSource.get(0);
+	var settings = settingSource.get(0);
 	var bi = -1;
 	map[++i] = {"name": "Addiction", "ordinal": i, "type": types[0], "rating": 2};
     map[++i] = {"name": "Amnesia", "ordinal": i, "type": types[0], "rating": 1};

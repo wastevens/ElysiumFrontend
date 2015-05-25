@@ -1,12 +1,12 @@
-angular.module('sources.merits', ['sources.vampire', 'sources.settings']).
-factory('meritSource', ['clanSource', 'bloodlineSource', 'settingsSource', 
-               function(clanSource,    bloodlineSource,   settingsSource) {
+angular.module('sources.merits', ['sources.vampire']).
+factory('meritSource', ['clanSource', 'bloodlineSource', 'settingSource', 
+               function(clanSource,    bloodlineSource,   settingSource) {
 	var map = [];
 	var i = -1;
 	var types = ['GENERAL', 'MORALITY', 'RARITY', 'CLAN', 'BLOODLINE', 'SETTING'];
 	var clans = clanSource.get();
 	var bloodlines = bloodlineSource.get();
-	var settings = settingsSource.get(0);
+	var settings = settingSource.get(0);
 	var bi = -1;
 	map[++i] = {"name": "Acute Sense",                       "ordinal": i, "requiresSpecialization": true, "type": types[0], "rating": 1};
     map[++i] = {"name": "Additional Common Discipline",      "ordinal": i, "requiresSpecialization": true, "type": types[0], "rating": 4};

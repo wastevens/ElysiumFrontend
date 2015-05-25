@@ -2,7 +2,7 @@ package com.dstevens.troupe;
 
 import org.springframework.stereotype.Service;
 
-import com.dstevens.player.Setting;
+import com.dstevens.character.Setting;
 
 @Service
 public class TroupeFactory {

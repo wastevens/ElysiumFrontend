@@ -9,11 +9,9 @@
 <script src="/js/sources/merits.js"></script>
 <script src="/js/sources/flaws.js"></script>
 <script src="/js/sources/skills.js"></script>
-<script src="/js/sources/settings.js"></script>
 
 <script src="/js/filters/picker.js"></script>
 <script src="/js/filters/attributes.js"></script>
-<script src="/js/filters/setting.js"></script>
 <script src="/js/filters/vampire.js"></script>
 
 <script src="/js/services/redirection.js"></script>

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dstevens.character.DisplayableSetting;
+import com.dstevens.character.Setting;
 import com.dstevens.character.clan.Bloodline;
 import com.dstevens.character.clan.Clan;
 import com.dstevens.character.clan.DisplayableBloodline;
@@ -48,6 +50,7 @@ public class TraitsController {
 	
 	private String vampireTraits(String type) {
 		switch(type.toLowerCase()) {
+		    case "settings":                 return new Gson().toJson(list(Setting.values()).stream().map((Setting t1) -> DisplayableSetting.from(t1)).collect(Collectors.toList()));
 		    case "clans":                    return new Gson().toJson(list(Clan.values()).stream().map((Clan t1) -> DisplayableClan.from(t1)).collect(Collectors.toList()));
 		    case "bloodlines":               return new Gson().toJson(list(Bloodline.values()).stream().map((Bloodline t1) -> DisplayableBloodline.from(t1)).collect(Collectors.toList()));
 			case "thaumaturgicalrituals":    return new Gson().toJson(list(ThaumaturgicalRitual.values()).stream().map((ThaumaturgicalRitual t1) -> DisplayableThaumaturgicalRitual.from(t1)).collect(Collectors.toList()));

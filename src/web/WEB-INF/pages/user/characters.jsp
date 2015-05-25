@@ -2,8 +2,9 @@
 <head>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-resource.js"></script>
-<script src="/js/sources/settings.js"></script>
-<script src="/js/filters/setting.js"></script>
+<script src="/js/sources/displayableValues.js"></script>
+<script src="/js/sources/vampire.js"></script>
+<script src="/js/filters/vampire.js"></script>
 <script src="/js/sources/approval_status.js"></script>
 <script src="/js/filters/approval_status.js"></script>
 <script src="/js/sources/player_status.js"></script>

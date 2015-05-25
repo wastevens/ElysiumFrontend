@@ -1,10 +1,10 @@
 angular.module('admin.troupe.services', ['services.redirection', 'services.troupes', 'admin.services.users'])
 
-angular.module('admin.troupe.controllers', ['admin.troupe.services', 'sources.settings']).
-controller('updateTroupe', ['$scope', '$rootScope', 'redirect', 'troupeRepository', 'userRepository', 'settingsSource', function($scope, $rootScope, redirect, troupeRepository, userRepository, settingsSource) {
+angular.module('admin.troupe.controllers', ['admin.troupe.services', 'sources.vampire']).
+controller('updateTroupe', ['$scope', '$rootScope', 'redirect', 'troupeRepository', 'userRepository', 'settingSource', function($scope, $rootScope, redirect, troupeRepository, userRepository, settingSource) {
 	$scope.settings = [];
-	for(var i = 0; i< settingsSource.get().length; i++) {
-		$scope.settings[i] = {label: settingsSource.get()[i], value: i};
+	for(var i = 0; i< settingSource.get().length; i++) {
+		$scope.settings[i] = {label: settingSource.get()[i], value: i};
 	}
 	$scope.setting = $scope.settings[$scope.troupe.setting];
 	
@@ -28,10 +28,10 @@ controller('deleteTroupe', ['$scope', '$rootScope', 'troupeRepository', function
 			error(function(data, status, headers, config) {console.log("deleteTroupe failed")});
 	};
 }]).
-controller('addTroupe', ['$scope', '$rootScope', 'troupeRepository', 'settingsSource', function($scope, $rootScope, troupeRepository, settingsSource) {
+controller('addTroupe', ['$scope', '$rootScope', 'troupeRepository', 'settingSource', function($scope, $rootScope, troupeRepository, settingSource) {
 	$scope.settings = [];
-	for(var i = 0; i< settingsSource.get().length; i++) {
-		$scope.settings[i] = {label: settingsSource.get()[i], value: i};
+	for(var i = 0; i< settingSource.get().length; i++) {
+		$scope.settings[i] = {label: settingSource.get()[i], value: i};
 	}
  	$scope.setting = $scope.settings[0];
 	$scope.submit = function() {
@@ -70,6 +70,6 @@ directive('addTroupe', [function() {
 	};
 }]);
 
-angular.module('admin.troupe.filters', ['filters.setting']);
+angular.module('admin.troupe.filters', ['filters.vampire']);
 
 angular.module('admin.troupe', ['admin.troupe.filters', 'admin.troupe.controllers', 'admin.troupe.directives', 'admin.troupe.services']);

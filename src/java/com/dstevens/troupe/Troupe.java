@@ -20,7 +20,7 @@ import javax.persistence.TableGenerator;
 import org.hibernate.annotations.ForeignKey;
 
 import com.dstevens.character.PlayerCharacter;
-import com.dstevens.player.Setting;
+import com.dstevens.character.Setting;
 import com.dstevens.user.User;
 import com.dstevens.utilities.ObjectExtensions;
 

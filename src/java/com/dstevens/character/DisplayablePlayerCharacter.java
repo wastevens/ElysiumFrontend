@@ -26,7 +26,6 @@ import com.dstevens.character.trait.power.discipline.Technique;
 import com.dstevens.character.trait.power.magic.necromancy.NecromanticRitual;
 import com.dstevens.character.trait.power.magic.thaumaturgy.ThaumaturgicalRitual;
 import com.dstevens.character.trait.skill.CharacterSkill;
-import com.dstevens.player.DisplayableSetting;
 import com.google.gson.Gson;
 
 import static com.dstevens.collections.Lists.sort;
