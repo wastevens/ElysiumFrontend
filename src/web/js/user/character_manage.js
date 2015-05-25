@@ -116,7 +116,6 @@ function initializeElderPowers(scope, elderPowerSource) {
 	_initializeFetchedCharacterPossessedTraits(scope, 'elderPowers', 'characterElderPowers', elderPowerSource);
 }
 
-
 function initializeTechniques(scope, techniqueSource) {
 	_initializeFetchedCharacterPossessedTraits(scope, 'techniques', 'characterTechniques', techniqueSource);
 }
@@ -145,7 +144,7 @@ function _initializeFetchedCharacterPossessedTraits(scope, traitName, existingTr
 	});
 }
 
-angular.module('user.character.manage.filters', ['filters.setting', 'filters.clan', 'filters.bloodline', 'filters.discipline', 'filters.attributes.focuses', 'filters.picker', 'filters.thaumaturgicalritual', 'filters.necromanticritual', 'filters.background']);
+angular.module('user.character.manage.filters', ['filters.setting', 'filters.vampire', 'filters.attributes.focuses', 'filters.picker']);
 
 angular.module('user.character.manage.controllers', ['user.character.manage.services', 'user.character.manage.filters', 'sources.settings', 'sources.clans', 'sources.attributes.focuses', 'sources.skills', 'sources.backgrounds', 'sources.techniques', 'sources.elderPowers', 'sources.rituals.necromantic', 'sources.rituals.thaumaturgical', 'sources.merits', 'sources.flaws']).
 controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'techniqueSource', 'elderPowerSource', 'necromanticRitualSource', 'thaumaturgicalRitualSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 'meritSource', 'flawSource',  

@@ -20,12 +20,7 @@
 <script src="/js/filters/picker.js"></script>
 <script src="/js/filters/attributes.js"></script>
 <script src="/js/filters/setting.js"></script>
-<script src="/js/filters/clan.js"></script>
-<script src="/js/filters/bloodline.js"></script>
-<script src="/js/filters/discipline.js"></script>
-<script src="/js/filters/necromantic_ritual.js"></script>
-<script src="/js/filters/thaumaturgical_ritual.js"></script>
-<script src="/js/filters/background.js"></script>
+<script src="/js/filters/vampire.js"></script>
 
 <script src="/js/services/redirection.js"></script>
 <script src="/js/services/authorization.js"></script>
