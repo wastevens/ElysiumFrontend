@@ -22,6 +22,8 @@ import com.dstevens.character.trait.attribute.focus.PhysicalAttributeFocus;
 import com.dstevens.character.trait.attribute.focus.SocialAttributeFocus;
 import com.dstevens.character.trait.background.Background;
 import com.dstevens.character.trait.background.DisplayableBackground;
+import com.dstevens.character.trait.distinction.merit.DisplayableMerit;
+import com.dstevens.character.trait.distinction.merit.Merit;
 import com.dstevens.character.trait.power.discipline.Discipline;
 import com.dstevens.character.trait.power.discipline.DisplayableDiscipline;
 import com.dstevens.character.trait.power.discipline.DisplayableElderPower;
@@ -62,6 +64,7 @@ public class TraitsController {
 			case "physicalattributefocuses": return new Gson().toJson(list(PhysicalAttributeFocus.values()).stream().map((PhysicalAttributeFocus t1) -> DisplayablePhysicalAttributeFocus.from(t1)).collect(Collectors.toList()));
 			case "socialattributefocuses":   return new Gson().toJson(list(SocialAttributeFocus.values()).stream().map((SocialAttributeFocus t1) -> DisplayableSocialAttributeFocus.from(t1)).collect(Collectors.toList()));
 			case "mentalattributefocuses":   return new Gson().toJson(list(MentalAttributeFocus.values()).stream().map((MentalAttributeFocus t1) -> DisplayableMentalAttributeFocus.from(t1)).collect(Collectors.toList()));
+			case "merits":                   return new Gson().toJson(list(Merit.values()).stream().map((Merit t1) -> DisplayableMerit.from(t1)).collect(Collectors.toList()));
 		}
 		return null;
 	}

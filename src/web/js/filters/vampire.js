@@ -43,4 +43,14 @@ filter('background', [function() {
 	return function(input) {
 		return displayableValues['en_US']['Vampire']['Background'][input.id];
 	};
+}]).
+filter('merit', [function() {
+	return function(input) {
+		return displayableValues['en_US']['Vampire']['Merit'][input.id];
+	};
+}]).
+filter('flaw', [function() {
+	return function(input) {
+		return displayableValues['en_US']['Vampire']['Flaw'][input.id];
+	};
 }]);

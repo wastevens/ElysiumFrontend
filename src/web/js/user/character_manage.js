@@ -80,9 +80,6 @@ function _initializeCharacterOptionalTraits(scope, traitName, existingTraits, tr
 	});
 }
 
-function initializeMerits(scope, meritSource) {
-	_initializeCharacterPossessedTraits(scope, 'merits', 'characterMerits', meritSource);
-}
 
 function initializeFlaws(scope, flawSource) {
 	_initializeCharacterPossessedTraits(scope, 'flaws', 'characterFlaws', flawSource);
@@ -102,6 +99,10 @@ function _initializeCharacterPossessedTraits(scope, traitName, existingTraits, t
 		}
 		scope[existingTraits].push(copiedTrait);
 	});
+}
+
+function initializeMerits(scope, meritSource) {
+	_initializeFetchedCharacterPossessedTraits(scope, 'merits', 'characterMerits', meritSource);
 }
 
 function initializeBackgrounds(scope, backgroundSource) {
@@ -146,7 +147,7 @@ function _initializeFetchedCharacterPossessedTraits(scope, traitName, existingTr
 
 angular.module('user.character.manage.filters', ['filters.vampire', 'filters.attributes.focuses', 'filters.picker']);
 
-angular.module('user.character.manage.controllers', ['user.character.manage.services', 'user.character.manage.filters', 'sources.vampire', 'sources.attributes.focuses', 'sources.skills', 'sources.merits', 'sources.flaws']).
+angular.module('user.character.manage.controllers', ['user.character.manage.services', 'user.character.manage.filters', 'sources.vampire', 'sources.attributes.focuses', 'sources.skills', 'sources.flaws']).
 controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'techniqueSource', 'elderPowerSource', 'necromanticRitualSource', 'thaumaturgicalRitualSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 'meritSource', 'flawSource',  
                        function($scope,   $rootScope,   redirect,   characterRepository,   clanSource,   bloodlineSource,   disciplineSource,   physicalFocusSource,   socialFocusSource,   mentalFocusSource,   techniqueSource,   elderPowerSource,   necromanticRitualSource,   thaumaturgicalRitualSource,   physicalFocusSource,   socialFocusSource,   mentalFocusSource,   skillSource,   backgroundSource,   meritSource,   flawSource) {
 	//--------------------------------------------
