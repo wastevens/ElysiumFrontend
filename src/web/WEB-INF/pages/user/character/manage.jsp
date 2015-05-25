@@ -6,7 +6,6 @@
 <script src="/js/sources/displayableValues.js"></script>
 <script src="/js/sources/vampire.js"></script>
 <script src="/js/sources/attributes.js"></script>
-<script src="/js/sources/flaws.js"></script>
 <script src="/js/sources/skills.js"></script>
 
 <script src="/js/filters/picker.js"></script>

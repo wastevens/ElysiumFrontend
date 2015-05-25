@@ -2,7 +2,6 @@ angular.module('configuration.authorization', []).
 factory('authInterceptor', function ($rootScope, $q, $window) {
   return {
     request: function (config) {
-      console.log('authorization intercepted!');
       config.headers = config.headers || {};
       if ($window.sessionStorage.token) {
         config.headers.Authorization = $window.sessionStorage.token;

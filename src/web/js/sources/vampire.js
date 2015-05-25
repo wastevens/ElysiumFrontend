@@ -78,4 +78,12 @@ factory('meritSource', ['traitsRepository', function(traitsRepository) {
 			return map;
 		}
 	}	
+}]).
+factory('flawSource', ['traitsRepository', function(traitsRepository) {
+	var map = traitsRepository.getVampireTraits("flaws");
+	return {
+		get: function() {
+			return map;
+		}
+	}	
 }]);

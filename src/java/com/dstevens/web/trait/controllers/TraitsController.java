@@ -65,6 +65,7 @@ public class TraitsController {
 			case "socialattributefocuses":   return new Gson().toJson(list(SocialAttributeFocus.values()).stream().map((SocialAttributeFocus t1) -> DisplayableSocialAttributeFocus.from(t1)).collect(Collectors.toList()));
 			case "mentalattributefocuses":   return new Gson().toJson(list(MentalAttributeFocus.values()).stream().map((MentalAttributeFocus t1) -> DisplayableMentalAttributeFocus.from(t1)).collect(Collectors.toList()));
 			case "merits":                   return new Gson().toJson(list(Merit.values()).stream().map((Merit t1) -> DisplayableMerit.from(t1)).collect(Collectors.toList()));
+			case "flaws":                    return new Gson().toJson(list(Merit.values()).stream().map((Merit t1) -> DisplayableMerit.from(t1)).collect(Collectors.toList()));
 		}
 		return null;
 	}

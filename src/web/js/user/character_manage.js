@@ -66,39 +66,8 @@ function initializeSkills(scope, skillSource) {
 	_initializeCharacterTraits(scope, 'skills');
 }
 
-function _initializeCharacterOptionalTraits(scope, traitName, existingTraits, traitSource) {
-	var traits = {};
-	traits = traitSource.get();
-	scope[traitName] = traits;
-	
-	scope[existingTraits] = [];
-	scope.character[traitName].forEach(function(characterTrait, index, array) {
-		var copiedTrait = copyTrait(characterTrait);
-		copiedTrait.name = traitSource.get()[characterTrait.ordinal].name;
-		copiedTrait.rating = ratings[characterTrait.rating];
-		scope[existingTraits].push(copiedTrait);
-	});
-}
-
-
 function initializeFlaws(scope, flawSource) {
-	_initializeCharacterPossessedTraits(scope, 'flaws', 'characterFlaws', flawSource);
-}
-
-function _initializeCharacterPossessedTraits(scope, traitName, existingTraits, traitSource) {
-	var traits = {};
-	traits = traitSource.get();
-	scope[traitName] = traits;
-	scope[existingTraits] = [];
-	scope.character[traitName].forEach(function(characterTrait, index, array) {
-		var copiedTrait = copyTrait(traits[characterTrait.ordinal]);
-		if(characterTrait.rating) {
-			copiedTrait.rating = ratings[characterTrait.rating];
-		} else {
-			copiedTrait.possession = possession[1];
-		}
-		scope[existingTraits].push(copiedTrait);
-	});
+	_initializeFetchedCharacterPossessedTraits(scope, 'flaws', 'characterFlaws', flawSource);
 }
 
 function initializeMerits(scope, meritSource) {
@@ -147,7 +116,7 @@ function _initializeFetchedCharacterPossessedTraits(scope, traitName, existingTr
 
 angular.module('user.character.manage.filters', ['filters.vampire', 'filters.attributes.focuses', 'filters.picker']);
 
-angular.module('user.character.manage.controllers', ['user.character.manage.services', 'user.character.manage.filters', 'sources.vampire', 'sources.attributes.focuses', 'sources.skills', 'sources.flaws']).
+angular.module('user.character.manage.controllers', ['user.character.manage.services', 'user.character.manage.filters', 'sources.vampire', 'sources.attributes.focuses', 'sources.skills']).
 controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'techniqueSource', 'elderPowerSource', 'necromanticRitualSource', 'thaumaturgicalRitualSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 'meritSource', 'flawSource',  
                        function($scope,   $rootScope,   redirect,   characterRepository,   clanSource,   bloodlineSource,   disciplineSource,   physicalFocusSource,   socialFocusSource,   mentalFocusSource,   techniqueSource,   elderPowerSource,   necromanticRitualSource,   thaumaturgicalRitualSource,   physicalFocusSource,   socialFocusSource,   mentalFocusSource,   skillSource,   backgroundSource,   meritSource,   flawSource) {
 	//--------------------------------------------
