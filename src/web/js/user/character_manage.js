@@ -23,7 +23,7 @@ function copyTrait(traitToCopy) {
 		"name": traitToCopy.name,
 		"id": traitToCopy.id,
 		"rating": traitToCopy.rating,
-		"requiresSpecialization": traitToCopy.requiresSpecialization,
+		"displayableDetailLevel": traitToCopy.displayableDetailLevel,
 		"specialization": traitToCopy.specialization,
 		"displayableTrait": traitToCopy.displayableTrait
 	};
@@ -103,7 +103,7 @@ function _initializeFetchedCharacterPossessedTraits(scope, traitName, existingTr
 		scope[traitName] = traits;
 		scope[existingTraits] = [];
 		scope.character[traitName].forEach(function(characterTrait, index, array) {
-			var copiedTrait = copyTrait(traits[characterTrait.id]);
+			var copiedTrait = copyTrait(characterTrait);
 			if(characterTrait.rating) {
 				copiedTrait.rating = ratings[characterTrait.rating];
 			} else {

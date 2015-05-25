@@ -116,15 +116,15 @@ public class DisplayablePlayerCharacter {
 				                                                     sort(t.getPhysicalAttributeFocuses().stream().map((PhysicalAttributeFocus f) -> DisplayablePhysicalAttributeFocus.from(f)).collect(Collectors.toList())),
 				                                                     sort(t.getSocialAttributeFocuses().stream().map((SocialAttributeFocus f) -> DisplayableSocialAttributeFocus.from(f)).collect(Collectors.toList())),
 				                                                     sort(t.getMentalAttributeFocuses().stream().map((MentalAttributeFocus f) -> DisplayableMentalAttributeFocus.from(f)).collect(Collectors.toList())),
-				                                                     sort(t.getSkills().stream().map((CharacterSkill m) -> new DisplayablePlayerCharacterTrait(m.trait().ordinal(), m.rating(), m.getSpecialization(), m.getFocuses())).collect(Collectors.toList())),
-				                                                     sort(t.getBackgrounds().stream().map((CharacterBackground m) -> new DisplayablePlayerCharacterTrait(m.trait().ordinal(), m.rating(), m.getSpecialization(), m.getFocuses())).collect(Collectors.toList())),
-				                                                     sort(t.getDisciplines().stream().map((CharacterDiscipline m) -> new DisplayablePlayerCharacterTrait(m.trait().ordinal(), m.rating())).collect(Collectors.toList())),
-				                                                     sort(t.getTechniques().stream().map((Technique m) -> new DisplayablePlayerCharacterTrait(m.ordinal())).collect(Collectors.toList())),
-				                                                     sort(t.getElderPowers().stream().map((ElderPower m) -> new DisplayablePlayerCharacterTrait(m.ordinal())).collect(Collectors.toList())),
-				                                                     sort(t.getNecromanticRituals().stream().map((NecromanticRitual m) -> new DisplayablePlayerCharacterTrait(m.ordinal())).collect(Collectors.toList())),
-				                                                     sort(t.getThaumaturgicalRituals().stream().map((ThaumaturgicalRitual m) -> new DisplayablePlayerCharacterTrait(m.ordinal())).collect(Collectors.toList())),
-				                                                     sort(t.getMerits().stream().map((CharacterMerit m) -> new DisplayablePlayerCharacterTrait(m.trait().ordinal(), m.getSpecialization())).collect(Collectors.toList())),
-				                                                     sort(t.getFlaws().stream().map((CharacterFlaw m) -> new DisplayablePlayerCharacterTrait(m.trait().ordinal(), m.getSpecialization())).collect(Collectors.toList()))
+				                                                     sort(t.getSkills().stream().map((CharacterSkill m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating(), m.trait().detailLevel(), m.getSpecialization(), m.getFocuses())).collect(Collectors.toList())),
+				                                                     sort(t.getBackgrounds().stream().map((CharacterBackground m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating(), m.trait().detailLevel(), m.getSpecialization(), m.getFocuses())).collect(Collectors.toList())),
+				                                                     sort(t.getDisciplines().stream().map((CharacterDiscipline m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating())).collect(Collectors.toList())),
+				                                                     sort(t.getTechniques().stream().map((Technique m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),
+				                                                     sort(t.getElderPowers().stream().map((ElderPower m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),
+				                                                     sort(t.getNecromanticRituals().stream().map((NecromanticRitual m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),
+				                                                     sort(t.getThaumaturgicalRituals().stream().map((ThaumaturgicalRitual m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),
+				                                                     sort(t.getMerits().stream().map((CharacterMerit m) -> new DisplayablePlayerCharacterTrait(m.trait(), null, m.getSpecialization())).collect(Collectors.toList())),
+				                                                     sort(t.getFlaws().stream().map((CharacterFlaw m) -> new DisplayablePlayerCharacterTrait(m.trait(), null, m.getSpecialization())).collect(Collectors.toList()))
 				                                                     );
 	}
 	
