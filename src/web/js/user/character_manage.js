@@ -21,7 +21,7 @@ function chunk(arr, size) {
 function copyTrait(traitToCopy) {
 	return {
 		"name": traitToCopy.name,
-		"ordinal": traitToCopy.ordinal,
+		"id": traitToCopy.id,
 		"rating": traitToCopy.rating,
 		"requiresSpecialization": traitToCopy.requiresSpecialization,
 		"specialization": traitToCopy.specialization,
@@ -103,7 +103,7 @@ function _initializeFetchedCharacterPossessedTraits(scope, traitName, existingTr
 		scope[traitName] = traits;
 		scope[existingTraits] = [];
 		scope.character[traitName].forEach(function(characterTrait, index, array) {
-			var copiedTrait = copyTrait(traits[characterTrait.ordinal]);
+			var copiedTrait = copyTrait(traits[characterTrait.id]);
 			if(characterTrait.rating) {
 				copiedTrait.rating = ratings[characterTrait.rating];
 			} else {
@@ -394,11 +394,11 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	$scope.setTrait = function(traitType, trait) {
-		$scope.requests.push({"traitType": traitType, "traitChange": 21, "trait": trait.ordinal, "rating": trait.rating.value, "specialization": trait.specialization});
+		$scope.requests.push({"traitType": traitType, "traitChange": 21, "trait": trait.id, "rating": trait.rating.value, "specialization": trait.specialization});
 	}
 	
 	$scope.removeTrait = function(traitType, trait) {
-		$scope.requests.push({"traitType": traitType, "traitChange": 22, "trait": trait.ordinal, "rating": trait.rating.value, "specialization": trait.specialization});
+		$scope.requests.push({"traitType": traitType, "traitChange": 22, "trait": trait.id, "rating": trait.rating.value, "specialization": trait.specialization});
 	}
 	//--------------------------------------------------------
 	
