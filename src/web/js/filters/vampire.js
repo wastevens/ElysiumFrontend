@@ -1,7 +1,7 @@
 angular.module('filters.vampire', []).
 filter('setting', [function() {
 	return function(input) {
-		return displayableValues['en_US']['Vampire']['Setting'][input.id];
+		return settings[input.id];
 	};
 }]).
 filter('clan', [function() {

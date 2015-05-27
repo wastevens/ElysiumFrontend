@@ -3,13 +3,6 @@ displayableValues['en_US'] = [[[]]];
 displayableValues['en_US']['Vampire'] = [[]];
 
 var i = -1;
-displayableValues['en_US']['Vampire']['Setting'] = [];
-displayableValues['en_US']['Vampire']['Setting'][++i] = "Camarilla";              
-displayableValues['en_US']['Vampire']['Setting'][++i] = "Anarch";                
-displayableValues['en_US']['Vampire']['Setting'][++i] = "Sabbat";       
-displayableValues['en_US']['Vampire']['Setting'][++i] = "Independent Alliance";               
-
-var i = -1;
 displayableValues['en_US']['Vampire']['Clan'] = [];
 displayableValues['en_US']['Vampire']['Clan'][++i] = "Assamite";              
 displayableValues['en_US']['Vampire']['Clan'][++i] = "Brujah";                

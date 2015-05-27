@@ -1,7 +1,8 @@
 angular.module('user.character.creation.services', ['ngResource', 'services.redirection', 'services.troupes', 'services.characters']);
 
-angular.module('user.character.creation.controllers', ['user.character.creation.services', 'sources.vampire']).
-controller('addCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'troupeRepository', 'settingSource', function($scope, $rootScope, redirect, characterRepository, troupeRepository, settingSource) {
+angular.module('user.character.creation.controllers', ['user.character.creation.services']).
+controller('addCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'troupeRepository', 
+                    function($scope, $rootScope, redirect, characterRepository, troupeRepository) {
 	$scope.troupes = troupeRepository.getTroupes();
  	$scope.troupe = $scope.troupes[0];
 	$scope.submit = function() {
@@ -19,6 +20,6 @@ directive('createCharacter', ['troupeRepository', function(troupeRepository) {
 	};
 }]);
 
-angular.module('user.character.creation.filters', ['filters.vampire']);
+angular.module('user.character.creation.filters', []);
 
 angular.module('user.character.creation', ['user.character.creation.filters', 'user.character.creation.controllers', 'user.character.creation.directives', 'user.character.creation.services']);

@@ -1,4 +1,4 @@
-angular.module('sources.vampire', []).
+angular.module('sources.vampire', ['services.traits']).
 factory('settingSource', ['traitsRepository', function(traitsRepository) {
 	var map = traitsRepository.getVampireTraits("settings");
 	return {

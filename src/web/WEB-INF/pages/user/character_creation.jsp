@@ -3,6 +3,7 @@
 <base href="/" />
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-resource.js"></script>
+<script src="/js/services/traitRepository.js"></script>
 <script src="/js/services/redirection.js"></script>
 <script src="/js/services/authorization.js"></script>
 <script src="/js/services/troupeRepository.js"></script>
