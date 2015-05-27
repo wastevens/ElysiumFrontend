@@ -1,16 +1,16 @@
 angular.module('filters.attributes.focuses', []).
 filter('physical_attribute_focus', [function() {
 	return function(input) {
-		return displayableValues['en_US']['Character']['PhysicalAttributeFocus'][input.id];
+		return physical[input.id];
 	};
 }]).
 filter('mental_attribute_focus', [function() {
 	return function(input) {
-		return displayableValues['en_US']['Character']['MentalAttributeFocus'][input.id];
+		return mental[input.id];
 	};
 }]).
 filter('social_attribute_focus', [function() {
 	return function(input) {
-		return displayableValues['en_US']['Character']['SocialAttributeFocus'][input.id];
+		return social[input.id];
 	};
 }]);

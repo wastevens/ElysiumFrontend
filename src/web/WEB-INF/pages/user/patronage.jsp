@@ -2,7 +2,7 @@
 <head>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-resource.js"></script>
-<script src="/js/sources/displayableValues.js"></script>
+<script src="/js/resources/en_US/user/paymentTypes.js"></script>
 <script src="/js/services/authorization.js"></script>
 <script src="/js/services/paymentTypeRepository.js"></script>
 <script src="/js/sources/paymentTypes.js"></script>

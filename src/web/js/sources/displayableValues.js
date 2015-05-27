@@ -1,33 +1,6 @@
 displayableValues = [[[[]]]];
 displayableValues['en_US'] = [[[]]];
-displayableValues['en_US']['User'] = [[]];
-displayableValues['en_US']['Character'] = [[]];
 displayableValues['en_US']['Vampire'] = [[]];
-
-var i = -1;
-displayableValues['en_US']['Character']['PhysicalAttributeFocus'] = [];
-displayableValues['en_US']['Character']['PhysicalAttributeFocus'][++i] = "Strength";
-displayableValues['en_US']['Character']['PhysicalAttributeFocus'][++i] = "Dexterity";
-displayableValues['en_US']['Character']['PhysicalAttributeFocus'][++i] = "Stamina";
-
-var i = -1;
-displayableValues['en_US']['Character']['SocialAttributeFocus'] = [];
-displayableValues['en_US']['Character']['SocialAttributeFocus'][++i] = "Charisma";
-displayableValues['en_US']['Character']['SocialAttributeFocus'][++i] = "Manipulation";
-displayableValues['en_US']['Character']['SocialAttributeFocus'][++i] = "Appearance";
-
-var i = -1;
-displayableValues['en_US']['Character']['MentalAttributeFocus'] = [];
-displayableValues['en_US']['Character']['MentalAttributeFocus'][++i] = "Intelligence";
-displayableValues['en_US']['Character']['MentalAttributeFocus'][++i] = "Wits";
-displayableValues['en_US']['Character']['MentalAttributeFocus'][++i] = "Perception";
-
-var i = -1;
-displayableValues['en_US']['User']['PaymentType'] = [];
-displayableValues['en_US']['User']['PaymentType'][++i] = "Other";
-displayableValues['en_US']['User']['PaymentType'][++i] = "Paypal";
-displayableValues['en_US']['User']['PaymentType'][++i] = "Award";
-displayableValues['en_US']['User']['PaymentType'][++i] = "Gift";
 
 var i = -1;
 displayableValues['en_US']['Vampire']['Setting'] = [];
