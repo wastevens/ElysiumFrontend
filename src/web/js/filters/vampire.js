@@ -6,51 +6,51 @@ filter('setting', [function() {
 }]).
 filter('clan', [function() {
 	return function(input) {
-		return displayableValues['en_US']['Vampire']['Clan'][input.id];
+		return clan[input.id];
 	};
 }]).
 filter('bloodline', [function() {
 	return function(input) {
-		return displayableValues['en_US']['Vampire']['Bloodline'][input.id];
+		return bloodline[input.id];
 	};
 }]).
 filter('discipline', [function() {
 	return function(input) {
-		return displayableValues['en_US']['Vampire']['Discipline'][input.id];
+		return discipline[input.id];
 	};
 }]).
 filter('elder_power', [function() {
 	return function(input) {
-		return displayableValues['en_US']['Vampire']['ElderPower'][input.id];
+		return elderPower[input.id];
 	};
 }]).
 filter('technique', [function() {
 	return function(input) {
-		return displayableValues['en_US']['Vampire']['Technique'][input.id];
+		return technique[input.id];
 	};
 }]).
 filter('thaumaturgical_ritual', [function() {
 	return function(input) {
-		return displayableValues['en_US']['Vampire']['ThaumaturgicalRitual'][input.id];
+		return thaumaturgicalRitual[input.id];
 	};
 }]).
 filter('necromantic_ritual', [function() {
 	return function(input) {
-		return displayableValues['en_US']['Vampire']['NecromanticRitual'][input.id];
+		return necromanticRitual[input.id];
 	};
 }]).
 filter('background', [function() {
 	return function(input) {
-		return displayableValues['en_US']['Vampire']['Background'][input.id];
+		return background[input.id];
 	};
 }]).
 filter('merit', [function() {
 	return function(input) {
-		return displayableValues['en_US']['Vampire']['Merit'][input.id];
+		return merit[input.id];
 	};
 }]).
 filter('flaw', [function() {
 	return function(input) {
-		return displayableValues['en_US']['Vampire']['Flaw'][input.id];
+		return flaw[input.id];
 	};
 }]);
