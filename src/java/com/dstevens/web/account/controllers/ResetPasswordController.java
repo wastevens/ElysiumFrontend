@@ -41,17 +41,23 @@ public class ResetPasswordController {
 		return new ModelAndView("login");
 	}
 
+	private boolean sendEmail() {
+		return Boolean.getBoolean(System.getProperty("email", "false"));
+	}
+	
 	private void passwordResetRequestMessage(String email, String token) {
 		StringBuilder body = new StringBuilder();
 		body.append("A password reset request for your email address was made of the Underground Theater character database.  If you did not make this request, feel free to ignore this message.");
 		body.append("If you would like to reset your password, please go to " + "http://localhost:8080/resetPassword");
 		body.append("Your password reset code is " + token);
-		messageFactory.message().
-		               from("database@undergroundtheater.org", "UT Database Admin").
-		               to(email).
-		               subject("Password Reset Request for your Underground Theater character database account").
-		               body(body.toString()).
-		               send();
+		if(sendEmail()) {
+			messageFactory.message().
+				from("database@undergroundtheater.org", "UT Database Admin").
+				to(email).
+				subject("Password Reset Request for your Underground Theater character database account").
+				body(body.toString()).
+				send();
+		}
 	}
 	
 	@RequestMapping(value = { "/resetPassword"}, method = RequestMethod.GET)
@@ -74,12 +80,14 @@ public class ResetPasswordController {
 	}
 
 	private void sendPasswordResetEmailTo(String email) {
-		messageFactory.message().
-					   from("database@undergroundtheater.org", "UT Database Admin").
-		               to(email).
-		               subject("Your Underground Theater password has been changed").
-		               body("Your Underground Theater account's password has been changed.").
-		               send();
+		if(sendEmail()) {
+			messageFactory.message().
+						   from("database@undergroundtheater.org", "UT Database Admin").
+			               to(email).
+			               subject("Your Underground Theater password has been changed").
+			               body("Your Underground Theater account's password has been changed.").
+			               send();
+		}
 	}
 	
 }
