@@ -8,6 +8,7 @@
 <script src="/js/services/redirection.js"></script>
 <script src="/js/services/authorization.js"></script>
 <script src="/js/services/troupeRepository.js"></script>
+<script src="/js/services/traitRepository.js"></script>
 <script src="/js/admin/services/userRepository.js"></script>
 <script src="/js/admin/troupe.js"></script>
 </head>

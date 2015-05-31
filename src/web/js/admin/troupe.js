@@ -1,12 +1,15 @@
-angular.module('admin.troupe.services', ['services.redirection', 'services.troupes', 'admin.services.users'])
+angular.module('admin.troupe.services', ['services.redirection', 'services.troupes', 'admin.services.users', 'services.traits'])
 
 angular.module('admin.troupe.controllers', ['admin.troupe.services', 'sources.vampire']).
-controller('updateTroupe', ['$scope', '$rootScope', 'redirect', 'troupeRepository', 'userRepository', 'settingSource', function($scope, $rootScope, redirect, troupeRepository, userRepository, settingSource) {
-	$scope.settings = [];
-	for(var i = 0; i< settingSource.get().length; i++) {
-		$scope.settings[i] = {label: settingSource.get()[i], value: i};
-	}
-	$scope.setting = $scope.settings[$scope.troupe.setting];
+controller('updateTroupe', ['$scope', '$rootScope', 'redirect', 'troupeRepository', 'userRepository', 'venueSource', 
+                    function($scope,   $rootScope,   redirect,   troupeRepository,   userRepository,   venueSource) {
+	$scope.venues = [];
+	venueSource.get().then(function(venues) {
+		$scope.venues = venues;
+		if($scope.troupe && $scope.troupe.venue) {
+			$scope.venue = $scope.venues[$scope.troupe.venue.id];
+		}
+	});
 	
 	$scope.all_storytellers = userRepository.getUsersWithRole(1);
 		
@@ -28,14 +31,14 @@ controller('deleteTroupe', ['$scope', '$rootScope', 'troupeRepository', function
 			error(function(data, status, headers, config) {console.log("deleteTroupe failed")});
 	};
 }]).
-controller('addTroupe', ['$scope', '$rootScope', 'troupeRepository', 'settingSource', function($scope, $rootScope, troupeRepository, settingSource) {
-	$scope.settings = [];
-	for(var i = 0; i< settingSource.get().length; i++) {
-		$scope.settings[i] = {label: settingSource.get()[i], value: i};
-	}
- 	$scope.setting = $scope.settings[0];
+controller('addTroupe', ['$scope', '$rootScope', 'troupeRepository', 'venueSource', 
+                 function($scope,   $rootScope,   troupeRepository,   venueSource) {
+	$scope.venues = [];
+	venueSource.get().then(function(venues) {
+		$scope.venues = venues;
+	});
 	$scope.submit = function() {
-		troupeRepository.addTroupe({'name': $scope.name, 'setting': $scope.setting.value}).
+		troupeRepository.addTroupe({'name': $scope.name, 'venue': $scope.venue}).
 			success(function(data, status, headers, config) {$rootScope.$broadcast('troupesUpdated')}).
 			error(function(data, status, headers, config) {console.log("addTroupe failed")});
 	};

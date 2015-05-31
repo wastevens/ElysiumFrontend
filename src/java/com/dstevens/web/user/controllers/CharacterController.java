@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.dstevens.character.DisplayablePlayerCharacter;
 import com.dstevens.character.PlayerCharacter;
 import com.dstevens.character.PlayerCharacterService;
+import com.dstevens.character.Setting;
 import com.dstevens.character.UnknownCharacterException;
 import com.dstevens.character.trait.change.TraitChange;
 import com.dstevens.character.trait.change.TraitChangeFactoryProvider;
@@ -73,7 +74,8 @@ public class CharacterController {
 	public ModelAndView createCharacter(@RequestBody final RawCharacter rawCharacter) {
 		User user = requestingUserSupplier.get();
 		Troupe troupe = troupeRepository.findWithId(rawCharacter.troupeId);
-		playerCharacterService.createCharacter(user, troupe, rawCharacter.name);
+		Setting setting = Setting.INDEPENDENT_ALLIANCE;
+		playerCharacterService.createCharacter(user, troupe, setting, rawCharacter.name);
 		
 		return new ModelAndView("/user/characters");
 	}

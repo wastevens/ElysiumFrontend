@@ -63,9 +63,9 @@ insert into User_roles(user_id, roles) values (3, 1);
 insert into User_roles(user_id, roles) values (4, 1);
 insert into User_roles(user_id, roles) values (5, 1);
 
-insert into Troupe(id, name, setting) values(1, 'Cam Troupe', 0);
-insert into Troupe(id, name, setting) values(2, 'Anarch Troupe', 1);
-insert into Troupe(id, name, setting) values(3, 'Sabbat Troupe', 2);
+insert into Troupe(id, name, venue) values(1, 'Cam Troupe', 0);
+insert into Troupe(id, name, venue) values(2, 'Anarch Troupe', 0);
+insert into Troupe(id, name, venue) values(3, 'Sabbat Troupe', 1);
 	
 insert into ID_Sequences(sequence_name, sequence_next_hi_value) values('troupe', 50);
 insert into ID_Sequences(sequence_name, sequence_next_hi_value) values('user', 50);

@@ -57,7 +57,7 @@ public class TroupeController {
 	@ResponseStatus(value=HttpStatus.CREATED)
 	@RequestMapping(value = "/troupes", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody void  addTroupe(@RequestBody final DisplayableTroupe troupe) {
-		troupeRepository.ensureExists(troupe.name, troupe.setting.to());
+		troupeRepository.ensureExists(troupe.name, troupe.venue.to());
 	}
 	
 	@ResponseStatus(value=HttpStatus.NO_CONTENT)
@@ -76,7 +76,7 @@ public class TroupeController {
 			throw new UnknownTroupeException("Could not find troupe with id " + id);
 		}
 		//		return storytellers.stream().map((DisplayableUser t) -> userRepository.findUser(t.id)).collect(Collectors.toSet());
-		troupeRepository.save(troupe.withName(displayedTroupe.name).withSetting(displayedTroupe.setting.to()).withStorytellers(storytellersFor(displayedTroupe)));
+		troupeRepository.save(troupe.withName(displayedTroupe.name).withVenue(displayedTroupe.venue.to()).withStorytellers(storytellersFor(displayedTroupe)));
 	}
 
 	private Set<User> storytellersFor(final DisplayableTroupe displayedTroupe) {

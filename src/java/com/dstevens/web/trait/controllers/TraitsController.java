@@ -34,6 +34,8 @@ import com.dstevens.character.trait.power.magic.necromancy.DisplayableNecromanti
 import com.dstevens.character.trait.power.magic.necromancy.NecromanticRitual;
 import com.dstevens.character.trait.power.magic.thaumaturgy.DisplayableThaumaturgicalRitual;
 import com.dstevens.character.trait.power.magic.thaumaturgy.ThaumaturgicalRitual;
+import com.dstevens.troupe.DisplayableVenue;
+import com.dstevens.troupe.Venue;
 import com.google.gson.Gson;
 
 import static com.dstevens.collections.Lists.list;
@@ -52,6 +54,7 @@ public class TraitsController {
 	
 	private String vampireTraits(String type) {
 		switch(type.toLowerCase()) {
+		    case "venues":                   return new Gson().toJson(list(Venue.values()).stream().map((Venue t1) -> DisplayableVenue.from(t1)).collect(Collectors.toList()));
 		    case "settings":                 return new Gson().toJson(list(Setting.values()).stream().map((Setting t1) -> DisplayableSetting.from(t1)).collect(Collectors.toList()));
 		    case "clans":                    return new Gson().toJson(list(Clan.values()).stream().map((Clan t1) -> DisplayableClan.from(t1)).collect(Collectors.toList()));
 		    case "bloodlines":               return new Gson().toJson(list(Bloodline.values()).stream().map((Bloodline t1) -> DisplayableBloodline.from(t1)).collect(Collectors.toList()));

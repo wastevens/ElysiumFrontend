@@ -33,8 +33,8 @@ public class PlayerCharacterService {
 		this.clockSupplier = clockSupplier;
 	}
 	
-	public PlayerCharacter createCharacter(User user, Troupe troupe, String characterName) {
-		PlayerCharacter character = repository.update(factory.createPlayerCharacter(characterName, troupe.getSetting()).
+	public PlayerCharacter createCharacter(User user, Troupe troupe, Setting setting, String characterName) {
+		PlayerCharacter character = repository.update(factory.createPlayerCharacter(characterName, setting).
 				                                              beginCreation().
 				                                              changeActivityStatus(secondaryCharacterStatus()));
 		userRepository.save(user.withCharacter(character));

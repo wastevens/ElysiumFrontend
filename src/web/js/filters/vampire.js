@@ -1,4 +1,9 @@
 angular.module('filters.vampire', []).
+filter('venue', [function() {
+	return function(input) {
+		return venues[input.id];
+	};
+}]).
 filter('setting', [function() {
 	return function(input) {
 		return settings[input.id];

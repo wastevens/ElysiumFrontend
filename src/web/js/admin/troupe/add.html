@@ -6,9 +6,9 @@
 		<td><input type='text' ng-model='name' name='name' required='true' value='' /></td>
 	</tr>
 	<tr>
-		<td>Setting:</td>
+		<td>Venue:</td>
 		<td>
-			<select ng-model='setting' name='setting' required='true' ng-options="setting.label for setting in settings track by setting.value"></select>
+			<select ng-model='venue' name='venue' required='true' ng-options="venue as (venue|venue) for venue in venues"></select>
 		</td>
 	</tr>
 	<tr>

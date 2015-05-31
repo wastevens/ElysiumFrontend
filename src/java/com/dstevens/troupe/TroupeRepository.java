@@ -3,8 +3,6 @@ package com.dstevens.troupe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dstevens.character.Setting;
-
 @Service
 public class TroupeRepository {
 
@@ -17,12 +15,12 @@ public class TroupeRepository {
         this.factory = factory;
     }
 
-    public Troupe ensureExists(String troupeName, Setting setting) {
+    public Troupe ensureExists(String troupeName, Venue venue) {
         Troupe troupe = dao.findUndeletedNamed(troupeName);
         if (troupe != null) {
             return troupe;
         }
-        return dao.save(factory.createTroupe(troupeName, setting));
+        return dao.save(factory.createTroupe(troupeName, venue));
     }
 
     public Troupe findWithId(Integer id) {

@@ -20,7 +20,6 @@ import javax.persistence.TableGenerator;
 import org.hibernate.annotations.ForeignKey;
 
 import com.dstevens.character.PlayerCharacter;
-import com.dstevens.character.Setting;
 import com.dstevens.user.User;
 import com.dstevens.utilities.ObjectExtensions;
 
@@ -42,8 +41,8 @@ public class Troupe implements Comparable<Troupe> {
     @Column(name="name")
     private String name;
     
-    @Column(name="setting")
-    private Setting setting;
+    @Column(name="venue")
+    private Venue venue;
     
     @ManyToMany(cascade={CascadeType.ALL})
 	@JoinTable(name="Troupe_PlayerCharacters", joinColumns = @JoinColumn(name="troupe_id"), 
@@ -68,14 +67,14 @@ public class Troupe implements Comparable<Troupe> {
         this(null, null, null, set(), set(), null);
     }
     
-    Troupe(Integer id, String name, Setting setting) {
-        this(id, name, setting, set(), set(), null);
+    Troupe(Integer id, String name, Venue venue) {
+        this(id, name, venue, set(), set(), null);
     }
     
-    private Troupe(Integer id, String name, Setting setting, Set<PlayerCharacter> characters, Set<User> storytellers, Date deleteTimestamp) {
+    private Troupe(Integer id, String name, Venue venue, Set<PlayerCharacter> characters, Set<User> storytellers, Date deleteTimestamp) {
         this.id = id;
         this.name = name;
-        this.setting = setting;
+        this.venue = venue;
         this.characters = characters;
 		this.storytellers = storytellers;
         this.deleteTimestamp = deleteTimestamp;
@@ -94,21 +93,21 @@ public class Troupe implements Comparable<Troupe> {
         return name;
     }
 
-    public Troupe withSetting(Setting setting) {
-        this.setting = setting;
+    public Troupe withVenue(Venue venue) {
+        this.venue = venue;
         return this;
     }
     
-    public Setting getSetting() {
-        return setting;
+    public Venue getVenue() {
+        return venue;
     }
 
     public Troupe withCharacter(PlayerCharacter character) {
-        return new Troupe(id, name, setting, setWith(characters, character), storytellers, deleteTimestamp);
+        return new Troupe(id, name, venue, setWith(characters, character), storytellers, deleteTimestamp);
     }
     
     public Troupe withoutCharacter(PlayerCharacter character) {
-        return new Troupe(id, name, setting, setWithout(characters, character), storytellers, deleteTimestamp);
+        return new Troupe(id, name, venue, setWithout(characters, character), storytellers, deleteTimestamp);
     }
     
     public Set<PlayerCharacter> getCharacters() {
@@ -116,15 +115,15 @@ public class Troupe implements Comparable<Troupe> {
     }
     
     public Troupe withStorytellers(Set<User> storytellers) {
-    	return new Troupe(id, name, setting, characters, storytellers, deleteTimestamp);
+    	return new Troupe(id, name, venue, characters, storytellers, deleteTimestamp);
     }
     
     public Troupe withStoryteller(User storyteller) {
-    	return new Troupe(id, name, setting, characters, setWith(storytellers, storyteller), deleteTimestamp);
+    	return new Troupe(id, name, venue, characters, setWith(storytellers, storyteller), deleteTimestamp);
     }
     
     public Troupe withoutStoryteller(User storyteller) {
-    	return new Troupe(id, name, setting, characters, setWithout(storytellers, storyteller), deleteTimestamp);
+    	return new Troupe(id, name, venue, characters, setWithout(storytellers, storyteller), deleteTimestamp);
     }
     
     public Set<User> getStorytellers() {
@@ -132,11 +131,11 @@ public class Troupe implements Comparable<Troupe> {
     }
 
     public Troupe delete(Date deleteTimestamp) {
-        return new Troupe(id, name, setting, characters, storytellers, deleteTimestamp);
+        return new Troupe(id, name, venue, characters, storytellers, deleteTimestamp);
     }
     
     public Troupe undelete() {
-        return new Troupe(id, name, setting, characters, storytellers, null);
+        return new Troupe(id, name, venue, characters, storytellers, null);
     }
     
     @Override
