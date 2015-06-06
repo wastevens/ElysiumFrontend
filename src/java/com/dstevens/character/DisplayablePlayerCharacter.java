@@ -35,7 +35,6 @@ public class DisplayablePlayerCharacter {
 	public Integer id;
 	public String name;
 	public DisplayableSetting setting;
-	public int status;
 	public int approval;
 	public DisplayableClan clan;
 	public DisplayableBloodline bloodline;
@@ -59,28 +58,26 @@ public class DisplayablePlayerCharacter {
 	//Jackson only
     @Deprecated
 	public DisplayablePlayerCharacter() {
-		this(null, null, null, -1, -1, null, null, null, 0, 0, 0, null, null, null, null, null, null, null, null, null, null, null, null);
+		this(null, null, null, -1, null, null, null, 0, 0, 0, null, null, null, null, null, null, null, null, null, null, null, null);
 	}
     
-    public DisplayablePlayerCharacter(Integer id, String name, DisplayableSetting setting, int status, int approval, DisplayableClan clan, DisplayableBloodline bloodline, 
-    		                          List<DisplayableDiscipline> inClanDisciplines,
-    		                          int physicalAttribute, int socialAttribute, int mentalAttribute,
-    		                          List<DisplayablePhysicalAttributeFocus> physicalAttributeFocuses, 
+    public DisplayablePlayerCharacter(Integer id, String name, DisplayableSetting setting, int approval, DisplayableClan clan, DisplayableBloodline bloodline, List<DisplayableDiscipline> inClanDisciplines, 
+    		                          int physicalAttribute,
+    		                          int socialAttribute, int mentalAttribute, List<DisplayablePhysicalAttributeFocus> physicalAttributeFocuses,
     		                          List<DisplayableSocialAttributeFocus> socialAttributeFocuses, 
-    		                          List<DisplayableMentalAttributeFocus> mentalAttributeFocuses,
-    		                          List<DisplayablePlayerCharacterTrait> skills, 
+    		                          List<DisplayableMentalAttributeFocus> mentalAttributeFocuses, 
+    		                          List<DisplayablePlayerCharacterTrait> skills,
     		                          List<DisplayablePlayerCharacterTrait> backgrounds, 
     		                          List<DisplayablePlayerCharacterTrait> disciplines, 
     		                          List<DisplayablePlayerCharacterTrait> techniques, 
-    		                          List<DisplayablePlayerCharacterTrait> elderPowers,
-    		                          List<DisplayablePlayerCharacterTrait> necromanticRituals, 
-    		                          List<DisplayablePlayerCharacterTrait> thaumaturgicalRituals,
-    		                          List<DisplayablePlayerCharacterTrait> merits, 
+    		                          List<DisplayablePlayerCharacterTrait> elderPowers, 
+    		                          List<DisplayablePlayerCharacterTrait> necromanticRituals,
+    		                          List<DisplayablePlayerCharacterTrait> thaumaturgicalRituals, 
+    		                          List<DisplayablePlayerCharacterTrait> merits,
     		                          List<DisplayablePlayerCharacterTrait> flaws) {
 		this.id = id;
 		this.name = name;
 		this.setting = setting;
-		this.status = status;
 		this.approval = approval;
 		this.clan = clan;
 		this.bloodline = bloodline;
@@ -105,9 +102,8 @@ public class DisplayablePlayerCharacter {
 	public static Function<PlayerCharacter, DisplayablePlayerCharacter> fromCharacter() {
 		return (PlayerCharacter t) -> new DisplayablePlayerCharacter(t.getId(), t.getName(), 
 																	 DisplayableSetting.from(t.getSetting()), 
-				                                                     t.getCurrentStatus().status().ordinal(), 
 				                                                     t.getApprovalStatus().ordinal(), 
-				                                                     Optional.ofNullable(t.getClan()).map((Clan c) -> DisplayableClan.from(c)).orElse(null),
+				                                                     Optional.ofNullable(t.getClan()).map((Clan c) -> DisplayableClan.from(c)).orElse(null), 
 				                                                     Optional.ofNullable(t.getBloodline()).map((Bloodline b) -> DisplayableBloodline.from(b)).orElse(null),
 				                                                     t.getInClanDisciplines().stream().map((Discipline d) -> DisplayableDiscipline.from(d)).collect(Collectors.toList()),
 				                                                     t.getPhysicalAttribute(),

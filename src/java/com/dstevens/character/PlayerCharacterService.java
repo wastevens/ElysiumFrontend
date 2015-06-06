@@ -5,7 +5,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dstevens.character.status.PlayerStatus;
+import com.dstevens.character.status.PlayerCharacterStatus;
 import com.dstevens.character.status.PlayerStatusChange;
 import com.dstevens.suppliers.ClockSupplier;
 import com.dstevens.troupe.Troupe;
@@ -36,15 +36,14 @@ public class PlayerCharacterService {
 	
 	public PlayerCharacter createCharacter(User user, Troupe troupe, Setting setting, String characterName) {
 		PlayerCharacter character = repository.update(factory.createPlayerCharacter(characterName, setting).
-				                                              beginCreation().
-				                                              changeActivityStatus(secondaryCharacterStatus()));
-		userRepository.save(user.withCharacter(new PlayerCharacterOwnership(user, character, troupe.getVenue(), PlayerStatus.SECONDARY)));
+				                                              beginCreation());
+		userRepository.save(user.withCharacter(new PlayerCharacterOwnership(user, character, troupe.getVenue(), secondaryCharacterStatus())));
 		troupeRepository.save(troupe.withCharacter(character));
 		return character;
 	}
 
 	private PlayerStatusChange secondaryCharacterStatus() {
-		return new PlayerStatusChange(PlayerStatus.SECONDARY, Date.from(clockSupplier.get().instant()));
+		return new PlayerStatusChange(PlayerCharacterStatus.SECONDARY, Date.from(clockSupplier.get().instant()));
 	}
 	
 	public PlayerCharacter getCharacter(Integer id) {

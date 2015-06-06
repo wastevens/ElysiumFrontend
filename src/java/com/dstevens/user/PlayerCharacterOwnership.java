@@ -1,6 +1,9 @@
 package com.dstevens.user;
 
+import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
@@ -17,8 +21,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.ForeignKey;
 
 import com.dstevens.character.PlayerCharacter;
-import com.dstevens.character.status.PlayerStatus;
+import com.dstevens.character.status.PlayerCharacterStatus;
+import com.dstevens.character.status.PlayerStatusChange;
 import com.dstevens.troupe.Venue;
+
+import static com.dstevens.collections.Lists.last;
+import static com.dstevens.collections.Lists.list;
+import static com.dstevens.collections.Lists.sort;
 
 @SuppressWarnings("deprecation")
 @Entity
@@ -44,8 +53,10 @@ public class PlayerCharacterOwnership {
 	@Column(name="venue")
 	private final Venue venue;
 	
-	@Column(name="status")
-	private final PlayerStatus status;
+	@ElementCollection
+	@JoinColumn(name="playerCharacterOwnership_id", referencedColumnName="id")
+    @OrderColumn(name="order_by")
+	private final List<PlayerStatusChange> statusChanges;
 	
 	//Hibernate only
     @Deprecated
@@ -54,16 +65,16 @@ public class PlayerCharacterOwnership {
 		
 	}
     
-    public PlayerCharacterOwnership(User user, PlayerCharacter character, Venue venue, PlayerStatus status) {
-    	this(null, user, character, venue, status);
+    public PlayerCharacterOwnership(User user, PlayerCharacter character, Venue venue, PlayerStatusChange statusChange) {
+    	this(null, user, character, venue, list(statusChange));
     }
 	
-    private PlayerCharacterOwnership(Integer id, User user, PlayerCharacter character, Venue venue, PlayerStatus status) {
+    private PlayerCharacterOwnership(Integer id, User user, PlayerCharacter character, Venue venue, List<PlayerStatusChange> statusChanges) {
 		this.id = id;
 		this.user = user;
 		this.character = character;
 		this.venue = venue;
-		this.status = status;
+		this.statusChanges = statusChanges;
     }
     
 	public Integer getId() {
@@ -82,8 +93,8 @@ public class PlayerCharacterOwnership {
 		return venue;
 	}
 
-	public PlayerStatus getStatus() {
-		return status;
+	public PlayerCharacterStatus getStatus() {
+		return last(sort(statusChanges)).status();
 	}
 
 	@Override
