@@ -10,6 +10,7 @@ import com.dstevens.character.status.PlayerStatusChange;
 import com.dstevens.suppliers.ClockSupplier;
 import com.dstevens.troupe.Troupe;
 import com.dstevens.troupe.TroupeRepository;
+import com.dstevens.user.PlayerCharacterOwnership;
 import com.dstevens.user.User;
 import com.dstevens.user.UserRepository;
 
@@ -37,7 +38,7 @@ public class PlayerCharacterService {
 		PlayerCharacter character = repository.update(factory.createPlayerCharacter(characterName, setting).
 				                                              beginCreation().
 				                                              changeActivityStatus(secondaryCharacterStatus()));
-		userRepository.save(user.withCharacter(character));
+		userRepository.save(user.withCharacter(new PlayerCharacterOwnership(user, character, troupe.getVenue(), PlayerStatus.SECONDARY)));
 		troupeRepository.save(troupe.withCharacter(character));
 		return character;
 	}

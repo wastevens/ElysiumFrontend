@@ -14,7 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
@@ -62,13 +62,9 @@ public class User implements UserDetails {
     @ForeignKey(name="User_Roles_FK")
     private final Set<Role> roles;
 
-	@ManyToMany(cascade={CascadeType.ALL})
-	@JoinTable(name="User_PlayerCharacters", 
-	           joinColumns = @JoinColumn(name="user_id"), 
-	           inverseJoinColumns = @JoinColumn(name="playerCharacter_id"),
-	           uniqueConstraints= {@UniqueConstraint(columnNames={"user_id", "playerCharacter_id"})})
-	@ForeignKey(name="User_PlayerCharacters_FK", inverseName="PlayerCharacters_User_FK")
-    private final Set<PlayerCharacter> characters;
+	@OneToMany(cascade={CascadeType.ALL})
+	@ForeignKey(name="User_PlayerCharacterOwnerships_FK", inverseName="PlayerCharacterOwnerships_User_FK")
+    private final Set<PlayerCharacterOwnership> characters;
 	
     @Column(name="firstName")
     private final String firstName;
@@ -95,7 +91,7 @@ public class User implements UserDetails {
     	this(null, email, password, roles, set(), null, null, null);
     }
     
-    private User(Integer id, String email, String password, Set<Role> roles, Set<PlayerCharacter> characters, String firstName, String lastName, Patronage patronage) {
+    private User(Integer id, String email, String password, Set<Role> roles, Set<PlayerCharacterOwnership> characters, String firstName, String lastName, Patronage patronage) {
 		this.id = id;
 		this.email = email;
 		this.password = password;
@@ -123,7 +119,7 @@ public class User implements UserDetails {
 	}
 
     public Set<PlayerCharacter> getCharacters() {
-    	return characters;
+    	return characters.stream().map((PlayerCharacterOwnership p) -> p.getCharacter()).collect(Collectors.toSet()); 
     }
     
 	public String getFirstName() {
@@ -165,11 +161,11 @@ public class User implements UserDetails {
 		return new User(id, email, password, setWithout(roles, role), characters, firstName, lastName, patronage);
 	}
 	
-	public User withCharacter(PlayerCharacter character) {
+	public User withCharacter(PlayerCharacterOwnership character) {
 		return new User(id, email, password, roles, setWith(characters, character), firstName, lastName, patronage);
 	}
 	
-	public User withoutCharacter(PlayerCharacter character) {
+	public User withoutCharacter(PlayerCharacterOwnership character) {
 		return new User(id, email, password, roles, setWithout(characters, character), firstName, lastName, patronage);
 	}
 	
