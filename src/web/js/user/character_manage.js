@@ -83,22 +83,9 @@ function initializeThaumaturgicalRituals(scope, thaumaturgicalRitualSource) {
 	_initializeFetchedCharacterPossessedTraits(scope, 'thaumaturgicalRituals', 'characterThaumaturgicalRituals', thaumaturgicalRitualSource);
 }
 
-function _initializeFetchedCharacterPossessedTraits(scope, traitName, existingTraits, traitSource, groupResultFunction) {
+function _initializeFetchedCharacterPossessedTraits(scope, traitName, ignore, traitSource) {
 	traitSource.get().then(function(traits) {
 		scope[traitName] = traits;
-		scope[existingTraits] = [];
-		scope.character[traitName].forEach(function(characterTrait, index, array) {
-			var copiedTrait = copyTrait(characterTrait);
-			if(characterTrait.rating) {
-				copiedTrait.rating = ratings[characterTrait.rating];
-			} else {
-				copiedTrait.possession = possession[1];
-			}
-			scope[existingTraits].push(copiedTrait);
-		});
-		if(groupResultFunction) {
-			groupResultFunction(scope);
-		}
 	});
 }
 
@@ -360,7 +347,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	//--------------------------------------------------------
 	$scope.addTrait = function(characterTraitsName, traitType, trait) {
 		if(trait.rating && trait.rating != 'Remove') {
-			$scope[characterTraitsName].push(trait);
+			$scope.character[characterTraitsName].push(trait);
 			$scope.setTrait(traitType, trait);
 			$scope.newTrait = null;
 		}
@@ -370,9 +357,9 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		if(trait.rating && trait.rating != 'Remove') {
 			$scope.setTrait(traitType, trait);
 		} else {
-			for(var i=0;i<$scope[characterTraitsName].length;i++) {
-				if($scope[characterTraitsName][i].id == trait.id && $scope[characterTraitsName][i].specialization == trait.specialization) {
-					$scope[characterTraitsName].splice(i, 1);
+			for(var i=0;i<$scope.character[characterTraitsName].length;i++) {
+				if($scope.character[characterTraitsName][i].id == trait.id && $scope.character[characterTraitsName][i].specialization == trait.specialization) {
+					$scope.character[characterTraitsName].splice(i, 1);
 				}
 			}
 			$scope.removeTrait(traitType, trait);
