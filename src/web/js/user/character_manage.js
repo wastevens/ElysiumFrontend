@@ -33,15 +33,20 @@ function displaySkillsInGroups(scope) {
 }
 
 function initializeSkills(scope, skillSource) {
-	skillSource.get().then(function(traits) {
-		scope['skills'] = traits;
-		for(var i=0;i<scope.skills.length;i++) {
-			for(var j=0;j<scope.character.skills.length;j++) {
-				if(scope.skills[i].id == scope.character.skills[j].id) {
-					scope.skills[i].rating = scope.character.skills[j].rating;
+	skillSource.get().then(function(skills) {
+		scope.character.skills.forEach(function(characterSkill) {
+			for(var i=0;i<skills.length;i++) {
+				if(skills[i].id == characterSkill.id) {
+					if(characterSkill.specialization) {
+						skills.splice(i+1, 0, copyTrait(characterSkill));
+					} else {
+						skills[i].rating = characterSkill.rating;
+					}
+					break;
 				}
 			}
-		}
+		});
+		scope.skills = skills;
 		displaySkillsInGroups(scope);
 	});
 }
@@ -317,10 +322,10 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	$scope.skillChange = function(skill) {
-		if(skill.rating == 0) {
-			$scope.removeSkill(skill);
-		} else {
+		if(skill.rating) {
 			$scope.setSkill(skill);
+		} else {
+			$scope.removeSkill(skill);
 		}
 		
 		displaySkillsInGroups($scope);
@@ -328,13 +333,13 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	
 	$scope.setSkill = function(skill) {
 		console.log(skill);
-		$scope.requests.push({"traitType": 0, "traitChange": 13, "trait": skill.id, "rating": skill.rating, "specialization": skill.specialization});
+		$scope.requests.push({"traitType": 14, "traitChange": 13, "trait": skill.id, "rating": skill.rating, "specialization": skill.specialization});
 		if(skill.specialization) {
 			for(var i=0;i<$scope.skills.length;i++) {
 				if($scope.skills[i].ordinal == skill.ordinal && $scope.skills[i].specialization == skill.specialization) {
 					$scope.skills.splice(i+1, 0, copyTrait(skill));
-					$scope.skills[i+1].rating = "";
-					$scope.skills[i+1].specialization = "";
+					$scope.skills[i+1].rating = null;
+					$scope.skills[i+1].specialization = null;
 					break;
 				}
 			}
@@ -342,7 +347,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	$scope.removeSkill = function(skill) {
-		$scope.requests.push({"traitType": 0, "traitChange": 14, "trait": skill.ordinal, "specialization": skill.specialization});
+		$scope.requests.push({"traitType": 14, "traitChange": 14, "trait": skill.id, "specialization": skill.specialization});
 		if(skill.specialization) {
 			for(var i=0;i<$scope.skills.length;i++) {
 				if($scope.skills[i].ordinal == skill.ordinal && $scope.skills[i].specialization == skill.specialization) {
@@ -355,17 +360,15 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	
 	//--------------------------------------------------------
 	$scope.addTrait = function(characterTraitsName, traitType, trait) {
-		if(trait.rating.value > 0) {
+		if(trait.rating) {
 			$scope[characterTraitsName].push(trait);
 			$scope.setTrait(traitType, trait);
 			$scope.newTrait = null;
 		}
 	}
 	
-	$scope.traitChange = function(characterTraitsName, traitType, traitIndex) {
-		var trait = $scope[characterTraitsName][traitIndex];
-		
-		if(trait.rating.value == 0) {
+	$scope.traitChange = function(characterTraitsName, traitType, trait) {
+		if(trait.rating) {
 			$scope[characterTraitsName].splice(traitIndex, 1);
 			$scope.removeTrait(traitType, trait);
 		} else {
@@ -374,11 +377,11 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	$scope.setTrait = function(traitType, trait) {
-		$scope.requests.push({"traitType": traitType, "traitChange": 21, "trait": trait.id, "rating": trait.rating.value, "specialization": trait.specialization});
+		$scope.requests.push({"traitType": traitType, "traitChange": 21, "trait": trait.id, "rating": trait.rating, "specialization": trait.specialization});
 	}
 	
 	$scope.removeTrait = function(traitType, trait) {
-		$scope.requests.push({"traitType": traitType, "traitChange": 22, "trait": trait.id, "rating": trait.rating.value, "specialization": trait.specialization});
+		$scope.requests.push({"traitType": traitType, "traitChange": 22, "trait": trait.id, "rating": trait.rating, "specialization": trait.specialization});
 	}
 	//--------------------------------------------------------
 	

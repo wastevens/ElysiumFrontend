@@ -39,7 +39,7 @@ Name: {{character.name}}
 	<td>
 	<table><tr>
 	<td ng-repeat="skills in skillGroups">
-		<select-trait traittitle="Skill" traits="skills" ratingstitle="Rating" ratings="ratings" change="traitChange('characterSkills', 13, trait)" filter="skill"></select-trait>
+		<select-trait traittitle="Skill" traits="skills" ratingstitle="Rating" ratings="ratings" change="skillChange(trait)" filter="skill"></select-trait>
 	</td>
 	</table>
 	</td>
