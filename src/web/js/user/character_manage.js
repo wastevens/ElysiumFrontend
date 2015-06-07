@@ -350,9 +350,8 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		$scope.requests.push({"traitType": 14, "traitChange": 14, "trait": skill.id, "specialization": skill.specialization});
 		if(skill.specialization) {
 			for(var i=0;i<$scope.skills.length;i++) {
-				if($scope.skills[i].ordinal == skill.ordinal && $scope.skills[i].specialization == skill.specialization) {
+				if($scope.skills[i].id == skill.id && $scope.skills[i].specialization == skill.specialization) {
 					$scope.skills.splice(i, 1);
-					break;
 				}
 			}
 		}
@@ -360,7 +359,7 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	
 	//--------------------------------------------------------
 	$scope.addTrait = function(characterTraitsName, traitType, trait) {
-		if(trait.rating) {
+		if(trait.rating && trait.rating != 'Remove') {
 			$scope[characterTraitsName].push(trait);
 			$scope.setTrait(traitType, trait);
 			$scope.newTrait = null;
@@ -368,11 +367,15 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	$scope.traitChange = function(characterTraitsName, traitType, trait) {
-		if(trait.rating) {
-			$scope[characterTraitsName].splice(traitIndex, 1);
-			$scope.removeTrait(traitType, trait);
-		} else {
+		if(trait.rating && trait.rating != 'Remove') {
 			$scope.setTrait(traitType, trait);
+		} else {
+			for(var i=0;i<$scope[characterTraitsName].length;i++) {
+				if($scope[characterTraitsName][i].id == trait.id && $scope[characterTraitsName][i].specialization == trait.specialization) {
+					$scope[characterTraitsName].splice(i, 1);
+				}
+			}
+			$scope.removeTrait(traitType, trait);
 		}
 	}
 	

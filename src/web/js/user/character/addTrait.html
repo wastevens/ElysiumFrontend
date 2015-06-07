@@ -4,7 +4,7 @@
 	</select>
 	<input type=text ng-show="newTrait.displayableDetailLevel && (newTrait.displayableDetailLevel.id == 3 || newTrait.displayableDetailLevel.id == 4)" size="9" ng-model="newTrait.specialization">
 </td><td>
-	<select ng-model="newTrait.rating" ng-change="change({trait: newTrait})" ng-options="rating.display for rating in ratings track by rating.value">
+	<select ng-model="newTrait.rating" ng-change="change({trait: newTrait})" ng-options="rating as rating for rating in ratings">
 		<option value="">-- {{ratingsTitle}} --</option>
 	</select>
 </td></tr></table>
