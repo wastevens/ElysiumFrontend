@@ -1,14 +1,8 @@
 angular.module('user.character.manage.services', ['ngResource', 'services.redirection', 'services.troupes', 'services.characters']);
 
-var ratings = [{value: 0, display: "Remove"},
-               {value: 1, display: "1"},
-               {value: 2, display: "2"},
-               {value: 3, display: "3"},
-               {value: 4, display: "4"},
-               {value: 5, display: "5"}];
+var ratings = [1,2,3,4,5];
 
-var possession = [{value: 0, display: "Remove"},
-                  {value: 1, display: "Acquire"}];
+var possession = ['Remove', 'Acquire'];
 
 function chunk(arr, size) {
 	var newArr = [];
@@ -39,7 +33,17 @@ function displaySkillsInGroups(scope) {
 }
 
 function initializeSkills(scope, skillSource) {
-	_initializeFetchedCharacterPossessedTraits(scope, 'skills', 'characterSkills', skillSource, displaySkillsInGroups);
+	skillSource.get().then(function(traits) {
+		scope['skills'] = traits;
+		for(var i=0;i<scope.skills.length;i++) {
+			for(var j=0;j<scope.character.skills.length;j++) {
+				if(scope.skills[i].id == scope.character.skills[j].id) {
+					scope.skills[i].rating = scope.character.skills[j].rating;
+				}
+			}
+		}
+		displaySkillsInGroups(scope);
+	});
 }
 
 function initializeFlaws(scope, flawSource) {
@@ -312,10 +316,8 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 		}
 	}
 	
-	$scope.skillChange = function(groupIndex, skillIndex) {
-		var skill = $scope.skillGroups[groupIndex][skillIndex];
-		
-		if(skill.rating.value == 0) {
+	$scope.skillChange = function(skill) {
+		if(skill.rating == 0) {
 			$scope.removeSkill(skill);
 		} else {
 			$scope.setSkill(skill);
@@ -325,7 +327,8 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	$scope.setSkill = function(skill) {
-		$scope.requests.push({"traitType": 0, "traitChange": 13, "trait": skill.ordinal, "rating": skill.rating.value, "specialization": skill.specialization});
+		console.log(skill);
+		$scope.requests.push({"traitType": 0, "traitChange": 13, "trait": skill.id, "rating": skill.rating, "specialization": skill.specialization});
 		if(skill.specialization) {
 			for(var i=0;i<$scope.skills.length;i++) {
 				if($scope.skills[i].ordinal == skill.ordinal && $scope.skills[i].specialization == skill.specialization) {

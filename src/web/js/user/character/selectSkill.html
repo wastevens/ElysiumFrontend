@@ -1,10 +1,11 @@
 <table><tr>
 	<td ng-repeat="skills in skillgroups">
 	<table><tr ng-repeat="skill in skills">
-		<td>{{skill|skill}} <input type=text ng-show="skill.displayableDetailLevel && (trait.displayableDetailLevel.id == 3 || trait.displayableDetailLevel.id == 4)" size="9" ng-model="skill.specialization"></td>
-		<td><select ng-model="skill.rating" ng-change="change({groupIndex: $parent.$index, skillIndex: $index})" ng-options="rating.display for rating in ratings track by rating.value">
+		<td>{{skill|skill}} <input type=text ng-show="skill.displayableDetailLevel && (skill.displayableDetailLevel.id == 3 || skill.displayableDetailLevel.id == 4)" size="9" ng-model="skill.specialization"></td>
+		<td><select ng-model="skill.rating" ng-change="change({skill: skill})" ng-options="rating as rating for rating in ratings">
 			<option value="">-- {{ratingsTitle}} --</option>
 			</select></td>
-	</tr></table>
+	</tr>
+	</table>
 	</td>
 </tr></table>
