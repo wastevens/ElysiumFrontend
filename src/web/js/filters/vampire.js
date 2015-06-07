@@ -49,6 +49,11 @@ filter('background', [function() {
 		return background[input.id];
 	};
 }]).
+filter('skill', [function() {
+	return function(input) {
+		return skill[input.id];
+	};
+}]).
 filter('merit', [function() {
 	return function(input) {
 		return merit[input.id];

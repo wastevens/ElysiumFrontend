@@ -38,32 +38,8 @@ function displaySkillsInGroups(scope) {
 	scope.skillGroups = chunk(skillsToDisplay, skillsToDisplay.length / numberOfColumns);
 }
 
-function _initializeTraits(scope, traitName, traitSource) {
-	scope[traitName] = [];
-	traitSource.get().forEach(function(trait, index, array) {
-		scope[traitName].push(trait);
-	});
-}
-
-function _initializeCharacterTraits(scope, traitName) {
-	var traits = scope[traitName];
-	scope.character[traitName].forEach(function(characterTrait, index, array){
-		for(var i=0;i<traits.length;i++) {
-			if(traits[i].ordinal == characterTrait.ordinal) {
-				if(traits[i].requiresSpecialization) {
-					traits.splice(i, 0, copyTrait(traits[i]));
-					traits[i].specialization = characterTrait.specialization;
-				}
-				traits[i].rating = ratings[characterTrait.rating];
-				break;
-			}
-		}
-	});
-}
-
 function initializeSkills(scope, skillSource) {
-	_initializeTraits(scope, 'skills', skillSource);
-	_initializeCharacterTraits(scope, 'skills');
+	_initializeFetchedCharacterPossessedTraits(scope, 'skills', 'characterSkills', skillSource, displaySkillsInGroups);
 }
 
 function initializeFlaws(scope, flawSource) {
@@ -98,7 +74,7 @@ function initializeThaumaturgicalRituals(scope, thaumaturgicalRitualSource) {
 	_initializeFetchedCharacterPossessedTraits(scope, 'thaumaturgicalRituals', 'characterThaumaturgicalRituals', thaumaturgicalRitualSource);
 }
 
-function _initializeFetchedCharacterPossessedTraits(scope, traitName, existingTraits, traitSource) {
+function _initializeFetchedCharacterPossessedTraits(scope, traitName, existingTraits, traitSource, groupResultFunction) {
 	traitSource.get().then(function(traits) {
 		scope[traitName] = traits;
 		scope[existingTraits] = [];
@@ -111,12 +87,15 @@ function _initializeFetchedCharacterPossessedTraits(scope, traitName, existingTr
 			}
 			scope[existingTraits].push(copiedTrait);
 		});
+		if(groupResultFunction) {
+			groupResultFunction(scope);
+		}
 	});
 }
 
 angular.module('user.character.manage.filters', ['filters.vampire', 'filters.attributes.focuses', 'filters.picker']);
 
-angular.module('user.character.manage.controllers', ['user.character.manage.services', 'user.character.manage.filters', 'sources.vampire', 'sources.attributes.focuses', 'sources.skills']).
+angular.module('user.character.manage.controllers', ['user.character.manage.services', 'user.character.manage.filters', 'sources.vampire', 'sources.attributes.focuses']).
 controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRepository', 'clanSource', 'bloodlineSource', 'disciplineSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'techniqueSource', 'elderPowerSource', 'necromanticRitualSource', 'thaumaturgicalRitualSource', 'physicalFocusSource', 'socialFocusSource', 'mentalFocusSource', 'skillSource', 'backgroundSource', 'meritSource', 'flawSource',  
                        function($scope,   $rootScope,   redirect,   characterRepository,   clanSource,   bloodlineSource,   disciplineSource,   physicalFocusSource,   socialFocusSource,   mentalFocusSource,   techniqueSource,   elderPowerSource,   necromanticRitualSource,   thaumaturgicalRitualSource,   physicalFocusSource,   socialFocusSource,   mentalFocusSource,   skillSource,   backgroundSource,   meritSource,   flawSource) {
 	//--------------------------------------------
@@ -226,8 +205,6 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	});
 	
 	initializeSkills($scope, skillSource);
-	displaySkillsInGroups($scope);
-	
 	initializeBackgrounds($scope, backgroundSource);
 	initializeDisciplines($scope, disciplineSource);
 	initializeTechniques($scope, techniqueSource);
@@ -475,38 +452,14 @@ directive('selectSkill', [function() {
 		restrict: 'E',
 		scope: {
 			skillgroups: '=',
+			ratingsTitle: '@ratingstitle',
+			ratings: '=',			
 			change: '&change'
 		},
 		link: function (scope) {
 		      scope.ratings = ratings;
 	    },
 		templateUrl: '/js/user/character/selectSkill.html'
-	};
-}]).
-directive('addBackground', [function() {
-	return {
-		restrict: 'E',
-		scope: {
-			backgrounds: '=',
-			change: '&change'
-		},
-		link: function (scope) {
-		      scope.ratings = ratings;
-	    },
-		templateUrl: '/js/user/character/addBackground.html'
-	};
-}]).
-directive('selectBackground', [function() {
-	return {
-		restrict: 'E',
-		scope: {
-			backgrounds: '=',
-			change: '&change'
-		},
-		link: function (scope) {
-		      scope.ratings = ratings;
-	    },
-		templateUrl: '/js/user/character/selectBackground.html'
 	};
 }]).
 directive('addTrait', [function() {

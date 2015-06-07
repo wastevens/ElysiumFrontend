@@ -79,6 +79,14 @@ factory('backgroundSource', ['traitsRepository', function(traitsRepository) {
 		}
 	}	
 }]).
+factory('skillSource', ['traitsRepository', function(traitsRepository) {
+	var map = traitsRepository.getVampireTraits("skills");
+	return {
+		get: function() {
+			return map;
+		}
+	}	
+}]).
 factory('meritSource', ['traitsRepository', function(traitsRepository) {
 	var map = traitsRepository.getVampireTraits("merits");
 	return {

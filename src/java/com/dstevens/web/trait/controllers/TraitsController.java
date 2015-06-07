@@ -34,6 +34,8 @@ import com.dstevens.character.trait.power.magic.necromancy.DisplayableNecromanti
 import com.dstevens.character.trait.power.magic.necromancy.NecromanticRitual;
 import com.dstevens.character.trait.power.magic.thaumaturgy.DisplayableThaumaturgicalRitual;
 import com.dstevens.character.trait.power.magic.thaumaturgy.ThaumaturgicalRitual;
+import com.dstevens.character.trait.skill.DisplayableSkill;
+import com.dstevens.character.trait.skill.Skill;
 import com.dstevens.troupe.DisplayableVenue;
 import com.dstevens.troupe.Venue;
 import com.google.gson.Gson;
@@ -64,6 +66,7 @@ public class TraitsController {
 			case "elderpowers":              return new Gson().toJson(list(ElderPower.values()).stream().map((ElderPower t1) -> DisplayableElderPower.from(t1)).collect(Collectors.toList()));
 			case "techniques":               return new Gson().toJson(list(Technique.values()).stream().map((Technique t1) -> DisplayableTechnique.from(t1)).collect(Collectors.toList()));
 			case "backgrounds":              return new Gson().toJson(list(Background.values()).stream().map((Background t1) -> DisplayableBackground.from(t1)).collect(Collectors.toList()));
+			case "skills":                   return new Gson().toJson(list(Skill.values()).stream().map((Skill t1) -> DisplayableSkill.from(t1)).collect(Collectors.toList()));
 			case "physicalattributefocuses": return new Gson().toJson(list(PhysicalAttributeFocus.values()).stream().map((PhysicalAttributeFocus t1) -> DisplayablePhysicalAttributeFocus.from(t1)).collect(Collectors.toList()));
 			case "socialattributefocuses":   return new Gson().toJson(list(SocialAttributeFocus.values()).stream().map((SocialAttributeFocus t1) -> DisplayableSocialAttributeFocus.from(t1)).collect(Collectors.toList()));
 			case "mentalattributefocuses":   return new Gson().toJson(list(MentalAttributeFocus.values()).stream().map((MentalAttributeFocus t1) -> DisplayableMentalAttributeFocus.from(t1)).collect(Collectors.toList()));
