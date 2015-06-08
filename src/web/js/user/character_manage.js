@@ -345,12 +345,12 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	//--------------------------------------------------------
-	$scope.addTrait = function(traitName, traitType) {
-		var trait = copyTrait($scope.newTrait);
+	$scope.addTrait = function(traitName, traitType, newTraitName) {
+		var trait = copyTrait($scope[newTraitName]);
 		if(trait.rating && trait.rating != 'Remove') {
 			$scope.character[traitName].push(trait);
 			$scope.setTrait(traitType, trait);
-			$scope.newTrait = null;
+			$scope[newTraitName] = null;
 		}
 	}
 	
