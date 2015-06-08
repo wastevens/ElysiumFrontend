@@ -345,7 +345,8 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	//--------------------------------------------------------
-	$scope.addTrait = function(characterTraitsName, traitType, trait) {
+	$scope.addTrait = function(characterTraitsName, traitType) {
+		var trait = copyTrait($scope.newTrait);
 		if(trait.rating && trait.rating != 'Remove') {
 			$scope.character[characterTraitsName].push(trait);
 			$scope.setTrait(traitType, trait);
@@ -464,6 +465,7 @@ directive('addTrait', [function() {
 		scope: {
 			traitTitle: '@traittitle',
 			traits: '=',
+			trait: '=',
 			ratingsTitle: '@ratingstitle',
 			ratings: '=',
 			change: '&change',

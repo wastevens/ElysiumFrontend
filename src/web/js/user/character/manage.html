@@ -51,8 +51,8 @@ Name: {{character.name}}
 			<td><select-trait traittitle="Background" traits="character.backgrounds" ratingstitle="Rating" ratings="ratings" change="traitChange('backgrounds', 6, trait)" filter="background"></select-trait></td>
 			<td><select-trait traittitle="Discipline" traits="character.disciplines" ratingstitle="Rating" ratings="ratings" change="traitChange('disciplines', 9, trait)" filter="discipline"></select-trait></td>
 		</tr><tr>
-			<td><add-trait traittitle="Background" traits="backgrounds" ratingstitle="Rating" ratings="ratings" change="addTrait('backgrounds', 6, trait)" filter="background"></add-trait></td>
-			<td><add-trait traittitle="Discipline" traits="disciplines" ratingstitle="Rating" ratings="ratings" change="addTrait('disciplines', 9, trait)" filter="discipline"></add-trait></td>
+			<td><add-trait traittitle="Background" traits="backgrounds" trait="newTrait" ratingstitle="Rating" ratings="ratings" change="addTrait('backgrounds', 6)" filter="background"></add-trait></td>
+			<td><add-trait traittitle="Discipline" traits="disciplines" trait="newTrait" ratingstitle="Rating" ratings="ratings" change="addTrait('disciplines', 9)" filter="discipline"></add-trait></td>
 		</tr>
 	</table>
 	</td></tr>
