@@ -57,7 +57,7 @@
 	<classpathentry kind="lib" path="lib/default/spring-beans-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-beans.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-context-javadoc.jar"/>
-	<classpathentry kind="lib" path="lib/default/spring-context.jar"/>
+	<classpathentry kind="lib" path="lib/default/spring-context.jar" sourcepath="lib/sources/spring-context-sources.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-core.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-data-commons.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-data-jpa.jar"/>
