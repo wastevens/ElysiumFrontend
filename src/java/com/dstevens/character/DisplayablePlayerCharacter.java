@@ -2,12 +2,14 @@ package com.dstevens.character;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.dstevens.character.clan.Bloodline;
 import com.dstevens.character.clan.Clan;
 import com.dstevens.character.clan.DisplayableBloodline;
 import com.dstevens.character.clan.DisplayableClan;
+import com.dstevens.character.trait.DetailLevel;
 import com.dstevens.character.trait.attribute.focus.DisplayableMentalAttributeFocus;
 import com.dstevens.character.trait.attribute.focus.DisplayablePhysicalAttributeFocus;
 import com.dstevens.character.trait.attribute.focus.DisplayableSocialAttributeFocus;
@@ -25,6 +27,7 @@ import com.dstevens.character.trait.power.discipline.Technique;
 import com.dstevens.character.trait.power.magic.necromancy.NecromanticRitual;
 import com.dstevens.character.trait.power.magic.thaumaturgy.ThaumaturgicalRitual;
 import com.dstevens.character.trait.skill.CharacterSkill;
+import com.dstevens.character.trait.skill.Skill;
 
 import static com.dstevens.collections.Lists.sort;
 
@@ -98,7 +101,18 @@ public class DisplayablePlayerCharacter {
     }
 	
     public static DisplayablePlayerCharacter from(PlayerCharacter t) {
-    	return new DisplayablePlayerCharacter(t.getId(), t.getName(), 
+    	Skill[] allSkills = Skill.values();
+    	Set<CharacterSkill> characterSkills = t.getSkills();
+    	for (Skill skill : allSkills) {
+			if(skill.detailLevel().equals(DetailLevel.REQUIRES_SPECIALIZATION) ||
+			  characterSkills.stream().noneMatch((CharacterSkill cs) -> cs.trait().equals(skill))) {
+				characterSkills.add(new CharacterSkill(skill, 0, null, null));
+			}
+		}
+    	
+    	
+		List<DisplayablePlayerCharacterTrait> displayableSkills = characterSkills.stream().map((CharacterSkill m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating(), m.trait().detailLevel(), m.getSpecialization(), m.getFocuses())).collect(Collectors.toList());
+		return new DisplayablePlayerCharacter(t.getId(), t.getName(), 
 				 DisplayableSetting.from(t.getSetting()), 
                  t.getApprovalStatus().ordinal(), 
                  Optional.ofNullable(t.getClan()).map((Clan c) -> DisplayableClan.from(c)).orElse(null), 
@@ -110,7 +124,7 @@ public class DisplayablePlayerCharacter {
                  sort(t.getPhysicalAttributeFocuses().stream().map((PhysicalAttributeFocus f) -> DisplayablePhysicalAttributeFocus.from(f)).collect(Collectors.toList())),
                  sort(t.getSocialAttributeFocuses().stream().map((SocialAttributeFocus f) -> DisplayableSocialAttributeFocus.from(f)).collect(Collectors.toList())),
                  sort(t.getMentalAttributeFocuses().stream().map((MentalAttributeFocus f) -> DisplayableMentalAttributeFocus.from(f)).collect(Collectors.toList())),
-                 sort(t.getSkills().stream().map((CharacterSkill m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating(), m.trait().detailLevel(), m.getSpecialization(), m.getFocuses())).collect(Collectors.toList())),
+                 sort(displayableSkills),
                  sort(t.getBackgrounds().stream().map((CharacterBackground m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating(), m.trait().detailLevel(), m.getSpecialization(), m.getFocuses())).collect(Collectors.toList())),
                  sort(t.getDisciplines().stream().map((CharacterDiscipline m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating())).collect(Collectors.toList())),
                  sort(t.getTechniques().stream().map((Technique m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),

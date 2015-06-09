@@ -23,9 +23,9 @@ function copyTrait(traitToCopy) {
 	};
 }
 
-function displaySkillsInGroups(scope) {
+function displaySkillsInGroups(scope, skills) {
 	var numberOfColumns = 3;
-	var skillsToDisplay = scope.skills.slice(0);
+	var skillsToDisplay = skills.slice(0);
 	while(skillsToDisplay.length % numberOfColumns != 0) {
 		skillsToDisplay.push({});
 	}
@@ -33,22 +33,7 @@ function displaySkillsInGroups(scope) {
 }
 
 function initializeSkills(scope, skillSource) {
-	skillSource.get().then(function(skills) {
-		scope.character.skills.forEach(function(characterSkill) {
-			for(var i=0;i<skills.length;i++) {
-				if(skills[i].id == characterSkill.id) {
-					if(characterSkill.specialization) {
-						skills.splice(i+1, 0, copyTrait(characterSkill));
-					} else {
-						skills[i].rating = characterSkill.rating;
-					}
-					break;
-				}
-			}
-		});
-		scope.skills = skills;
-		displaySkillsInGroups(scope);
-	});
+	displaySkillsInGroups(scope, scope.character.skills);
 }
 
 function initializeFlaws(scope, flawSource) {
@@ -315,18 +300,18 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 			$scope.removeSkill(skill);
 		}
 		
-		displaySkillsInGroups($scope);
+		displaySkillsInGroups($scope, $scope.character.skills);
 	}
 	
 	$scope.setSkill = function(skill) {
 		console.log(skill);
 		$scope.requests.push({"traitType": 14, "traitChange": 13, "trait": skill.id, "rating": skill.rating, "specialization": skill.specialization});
 		if(skill.specialization) {
-			for(var i=0;i<$scope.skills.length;i++) {
-				if($scope.skills[i].ordinal == skill.ordinal && $scope.skills[i].specialization == skill.specialization) {
-					$scope.skills.splice(i+1, 0, copyTrait(skill));
-					$scope.skills[i+1].rating = null;
-					$scope.skills[i+1].specialization = null;
+			for(var i=0;i<$scope.character.skills.length;i++) {
+				if($scope.character.skills[i].ordinal == skill.ordinal && $scope.character.skills[i].specialization == skill.specialization) {
+					$scope.character.skills.splice(i+1, 0, copyTrait(skill));
+					$scope.character.skills[i+1].rating = null;
+					$scope.character.skills[i+1].specialization = null;
 					break;
 				}
 			}
@@ -336,9 +321,9 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	$scope.removeSkill = function(skill) {
 		$scope.requests.push({"traitType": 14, "traitChange": 14, "trait": skill.id, "specialization": skill.specialization});
 		if(skill.specialization) {
-			for(var i=0;i<$scope.skills.length;i++) {
-				if($scope.skills[i].id == skill.id && $scope.skills[i].specialization == skill.specialization) {
-					$scope.skills.splice(i, 1);
+			for(var i=0;i<$scope.character.skills.length;i++) {
+				if($scope.character.skills[i].id == skill.id && $scope.character.skills[i].specialization == skill.specialization) {
+					$scope.character.skills.splice(i, 1);
 				}
 			}
 		}
