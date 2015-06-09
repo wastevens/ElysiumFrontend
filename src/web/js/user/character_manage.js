@@ -353,10 +353,16 @@ controller('manageCharacter', ['$scope', '$rootScope', 'redirect', 'characterRep
 	}
 	
 	$scope.setTrait = function(traitType, trait) {
+		if(trait.rating == 'Acquire') {
+			trait.rating = 1;
+		}
 		$scope.requests.push({"traitType": traitType, "traitChange": 21, "trait": trait.id, "rating": trait.rating, "specialization": trait.specialization});
 	}
 	
 	$scope.removeTrait = function(traitType, trait) {
+		if(trait.rating == 'Remove') {
+			trait.rating = null;
+		}
 		$scope.requests.push({"traitType": traitType, "traitChange": 22, "trait": trait.id, "rating": trait.rating, "specialization": trait.specialization});
 	}
 	//--------------------------------------------------------
