@@ -7,6 +7,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.dstevens.character.DisplayablePlayerCharacter;
+import com.dstevens.character.PlayerCharacter;
 import com.dstevens.user.DisplayableUser;
 import com.dstevens.utilities.ObjectExtensions;
 
@@ -37,7 +38,7 @@ public class DisplayableTroupe implements Comparable<DisplayableTroupe> {
 	public static Function<Troupe, DisplayableTroupe> fromTroupes() {
 		return (Troupe t) -> new DisplayableTroupe(t.getId(), t.getName(), DisplayableVenue.from(t.getVenue()),
 				                                   t.getStorytellers().stream().map(DisplayableUser.fromUserOn(new Date())).collect(Collectors.toSet()),
-				                                   t.getCharacters().stream().map(DisplayablePlayerCharacter.fromCharacter()).collect(Collectors.toSet()));
+				                                   t.getCharacters().stream().map((PlayerCharacter pc) -> DisplayablePlayerCharacter.from(pc)).collect(Collectors.toSet()));
 	}
 	
 	@Override

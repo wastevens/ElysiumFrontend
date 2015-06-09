@@ -2,7 +2,6 @@ package com.dstevens.character;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.dstevens.character.clan.Bloodline;
@@ -26,7 +25,6 @@ import com.dstevens.character.trait.power.discipline.Technique;
 import com.dstevens.character.trait.power.magic.necromancy.NecromanticRitual;
 import com.dstevens.character.trait.power.magic.thaumaturgy.ThaumaturgicalRitual;
 import com.dstevens.character.trait.skill.CharacterSkill;
-import com.google.gson.Gson;
 
 import static com.dstevens.collections.Lists.sort;
 
@@ -99,33 +97,28 @@ public class DisplayablePlayerCharacter {
 		this.flaws = flaws;
     }
 	
-	public static Function<PlayerCharacter, DisplayablePlayerCharacter> fromCharacter() {
-		return (PlayerCharacter t) -> new DisplayablePlayerCharacter(t.getId(), t.getName(), 
-																	 DisplayableSetting.from(t.getSetting()), 
-				                                                     t.getApprovalStatus().ordinal(), 
-				                                                     Optional.ofNullable(t.getClan()).map((Clan c) -> DisplayableClan.from(c)).orElse(null), 
-				                                                     Optional.ofNullable(t.getBloodline()).map((Bloodline b) -> DisplayableBloodline.from(b)).orElse(null),
-				                                                     t.getInClanDisciplines().stream().map((Discipline d) -> DisplayableDiscipline.from(d)).collect(Collectors.toList()),
-				                                                     t.getPhysicalAttribute(),
-				                                                     t.getSocialAttribute(),
-				                                                     t.getMentalAttribute(),
-				                                                     sort(t.getPhysicalAttributeFocuses().stream().map((PhysicalAttributeFocus f) -> DisplayablePhysicalAttributeFocus.from(f)).collect(Collectors.toList())),
-				                                                     sort(t.getSocialAttributeFocuses().stream().map((SocialAttributeFocus f) -> DisplayableSocialAttributeFocus.from(f)).collect(Collectors.toList())),
-				                                                     sort(t.getMentalAttributeFocuses().stream().map((MentalAttributeFocus f) -> DisplayableMentalAttributeFocus.from(f)).collect(Collectors.toList())),
-				                                                     sort(t.getSkills().stream().map((CharacterSkill m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating(), m.trait().detailLevel(), m.getSpecialization(), m.getFocuses())).collect(Collectors.toList())),
-				                                                     sort(t.getBackgrounds().stream().map((CharacterBackground m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating(), m.trait().detailLevel(), m.getSpecialization(), m.getFocuses())).collect(Collectors.toList())),
-				                                                     sort(t.getDisciplines().stream().map((CharacterDiscipline m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating())).collect(Collectors.toList())),
-				                                                     sort(t.getTechniques().stream().map((Technique m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),
-				                                                     sort(t.getElderPowers().stream().map((ElderPower m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),
-				                                                     sort(t.getNecromanticRituals().stream().map((NecromanticRitual m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),
-				                                                     sort(t.getThaumaturgicalRituals().stream().map((ThaumaturgicalRitual m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),
-				                                                     sort(t.getMerits().stream().map((CharacterMerit m) -> new DisplayablePlayerCharacterTrait(m.trait(), null, m.getSpecialization())).collect(Collectors.toList())),
-				                                                     sort(t.getFlaws().stream().map((CharacterFlaw m) -> new DisplayablePlayerCharacterTrait(m.trait(), null, m.getSpecialization())).collect(Collectors.toList()))
-				                                                     );
-	}
-	
-	public String serialized() {
-		return new Gson().toJson(this);
-	}
-	
+    public static DisplayablePlayerCharacter from(PlayerCharacter t) {
+    	return new DisplayablePlayerCharacter(t.getId(), t.getName(), 
+				 DisplayableSetting.from(t.getSetting()), 
+                 t.getApprovalStatus().ordinal(), 
+                 Optional.ofNullable(t.getClan()).map((Clan c) -> DisplayableClan.from(c)).orElse(null), 
+                 Optional.ofNullable(t.getBloodline()).map((Bloodline b) -> DisplayableBloodline.from(b)).orElse(null),
+                 t.getInClanDisciplines().stream().map((Discipline d) -> DisplayableDiscipline.from(d)).collect(Collectors.toList()),
+                 t.getPhysicalAttribute(),
+                 t.getSocialAttribute(),
+                 t.getMentalAttribute(),
+                 sort(t.getPhysicalAttributeFocuses().stream().map((PhysicalAttributeFocus f) -> DisplayablePhysicalAttributeFocus.from(f)).collect(Collectors.toList())),
+                 sort(t.getSocialAttributeFocuses().stream().map((SocialAttributeFocus f) -> DisplayableSocialAttributeFocus.from(f)).collect(Collectors.toList())),
+                 sort(t.getMentalAttributeFocuses().stream().map((MentalAttributeFocus f) -> DisplayableMentalAttributeFocus.from(f)).collect(Collectors.toList())),
+                 sort(t.getSkills().stream().map((CharacterSkill m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating(), m.trait().detailLevel(), m.getSpecialization(), m.getFocuses())).collect(Collectors.toList())),
+                 sort(t.getBackgrounds().stream().map((CharacterBackground m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating(), m.trait().detailLevel(), m.getSpecialization(), m.getFocuses())).collect(Collectors.toList())),
+                 sort(t.getDisciplines().stream().map((CharacterDiscipline m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating())).collect(Collectors.toList())),
+                 sort(t.getTechniques().stream().map((Technique m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),
+                 sort(t.getElderPowers().stream().map((ElderPower m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),
+                 sort(t.getNecromanticRituals().stream().map((NecromanticRitual m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),
+                 sort(t.getThaumaturgicalRituals().stream().map((ThaumaturgicalRitual m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),
+                 sort(t.getMerits().stream().map((CharacterMerit m) -> new DisplayablePlayerCharacterTrait(m.trait(), null, m.getSpecialization())).collect(Collectors.toList())),
+                 sort(t.getFlaws().stream().map((CharacterFlaw m) -> new DisplayablePlayerCharacterTrait(m.trait(), null, m.getSpecialization())).collect(Collectors.toList()))
+                 );
+    }
 }

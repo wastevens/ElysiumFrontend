@@ -65,7 +65,7 @@ public class CharacterController {
 	@RequestMapping(value = "/characters", method = RequestMethod.GET)
 	public @ResponseBody String getCharacters() {
 		User user = requestingUserSupplier.get();
-		Set<DisplayablePlayerCharacter> characters = user.getCharacters().stream().map(DisplayablePlayerCharacter.fromCharacter()).collect(Collectors.toSet());
+		Set<DisplayablePlayerCharacter> characters = user.getCharacters().stream().map((PlayerCharacter pc) -> DisplayablePlayerCharacter.from(pc)).collect(Collectors.toSet());
 		
 		return new Gson().toJson(characters);
 	}

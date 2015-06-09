@@ -12,6 +12,7 @@ import com.dstevens.character.PlayerCharacter;
 import com.dstevens.character.PlayerCharacterService;
 import com.dstevens.character.UnknownCharacterException;
 import com.dstevens.character.trait.change.TraitChange;
+import com.google.gson.Gson;
 
 @Controller
 public class CharacterPageController {
@@ -37,7 +38,7 @@ public class CharacterPageController {
 		//Push this to PlayerCharacter; get the character with all current requests applied
 		character.getRequestedTraitChanges().forEach((TraitChange t) -> character.apply(t));
 		ModelAndView modelAndView = new ModelAndView("/user/character/manage");
-		modelAndView.addObject("character", DisplayablePlayerCharacter.fromCharacter().apply(character).serialized());
+		modelAndView.addObject("character", new Gson().toJson(DisplayablePlayerCharacter.from(character)));
 		return modelAndView;
 	}
 	
