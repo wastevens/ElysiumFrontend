@@ -435,21 +435,6 @@ directive('selectAttributeFocus', [function() {
 		templateUrl: '/js/user/character/selectAttributeFocus.html'
 	};
 }]).
-directive('selectSkill', [function() {
-	return {
-		restrict: 'E',
-		scope: {
-			skillgroups: '=',
-			ratingsTitle: '@ratingstitle',
-			ratings: '=',			
-			change: '&change'
-		},
-		link: function (scope) {
-		      scope.ratings = ratings;
-	    },
-		templateUrl: '/js/user/character/selectSkill.html'
-	};
-}]).
 directive('addTrait', [function() {
 	return {
 		restrict: 'E',
