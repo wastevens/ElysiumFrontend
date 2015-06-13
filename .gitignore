@@ -7,3 +7,5 @@
 /.classpath
 /.project
 /app.properties
+/dev.app.properties
+/uat.app.properties
