@@ -3,10 +3,12 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.Year;
 import java.util.Date;
+import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,13 +30,15 @@ import static com.dstevens.collections.Sets.set;
 @Controller
 public class CreateAccountController {
 	
-	private UserDao userDao;
-	private MailMessageFactory messageFactory;
-	private ClockSupplier clockSupplier;
+	private final UserDao userDao;
+	private final MailMessageFactory messageFactory;
+	private final ClockSupplier clockSupplier;
+	private final Supplier<PasswordEncoder> passwordEncoderSupplier;
 
 	@Autowired
-	public CreateAccountController(UserDao userDao, MailMessageFactory messageFactory, ClockSupplier clockSupplier) {
+	public CreateAccountController(UserDao userDao, Supplier<PasswordEncoder> passwordEncoderSupplier, MailMessageFactory messageFactory, ClockSupplier clockSupplier) {
 		this.userDao = userDao;
+		this.passwordEncoderSupplier = passwordEncoderSupplier;
 		this.messageFactory = messageFactory;
 		this.clockSupplier = clockSupplier;
 	}
@@ -56,7 +60,7 @@ public class CreateAccountController {
 			model.addObject("error", "An account already exists for user with email address " + email);
 			return model;
 		}
-		User user = new User(email, password, set(Role.USER)).withFirstName(firstName).withLastName(lastName);
+		User user = new User(email, passwordEncoderSupplier.get().encode(password), set(Role.USER)).withFirstName(firstName).withLastName(lastName);
 		if(originalUsername != null && !originalUsername.trim().isEmpty()) {
 			Instant now = clockSupplier.get().instant();
 			user = user.withPatronage(new Patronage(Year.now(clockSupplier.get()).getValue(), Date.from(now), originalUsername));
