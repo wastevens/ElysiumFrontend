@@ -5,6 +5,10 @@ import java.time.Year;
 import java.util.Date;
 import java.util.function.Supplier;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.dstevens.config.Authorization;
 import com.dstevens.mail.MailMessageFactory;
 import com.dstevens.suppliers.ClockSupplier;
+import com.dstevens.user.ElysiumUserDetailsService;
 import com.dstevens.user.Role;
 import com.dstevens.user.User;
 import com.dstevens.user.UserDao;
@@ -34,11 +40,14 @@ public class CreateAccountController {
 	private final MailMessageFactory messageFactory;
 	private final ClockSupplier clockSupplier;
 	private final Supplier<PasswordEncoder> passwordEncoderSupplier;
+	private final ElysiumUserDetailsService userService;
 
 	@Autowired
-	public CreateAccountController(UserDao userDao, Supplier<PasswordEncoder> passwordEncoderSupplier, MailMessageFactory messageFactory, ClockSupplier clockSupplier) {
+	public CreateAccountController(UserDao userDao, Supplier<PasswordEncoder> passwordEncoderSupplier, ElysiumUserDetailsService userService, 
+			                       MailMessageFactory messageFactory, ClockSupplier clockSupplier) {
 		this.userDao = userDao;
 		this.passwordEncoderSupplier = passwordEncoderSupplier;
+		this.userService = userService;
 		this.messageFactory = messageFactory;
 		this.clockSupplier = clockSupplier;
 	}
@@ -49,7 +58,8 @@ public class CreateAccountController {
 	}
 	
 	@RequestMapping(value = { "/createAccount"}, method = RequestMethod.POST)
-	public ModelAndView createAccount(@RequestParam(value = "email") String email,
+	public ModelAndView createAccount(HttpServletRequest request, HttpServletResponse response, 
+			                          @RequestParam(value = "email") String email,
 			                          @RequestParam(value = "password") String password,
 			                          @RequestParam(value = "firstName", required=false) String firstName,
 			                          @RequestParam(value = "lastName", required=false) String lastName,
@@ -71,7 +81,15 @@ public class CreateAccountController {
 		User newUser = userDao.save(user);
 		sendConfirmatoryEmailTo(email);
 		sendAdminEmailFor(newUser);
-		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(newUser, null, newUser.getAuthorities()));
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(newUser, null, newUser.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+			
+		Authorization authorization = userService.authorize(authentication);
+		response.addHeader("AUTHORIZATION", authorization.getToken());
+		Cookie cookie = new Cookie("AUTHORIZATION", authorization.getToken());
+		cookie.setPath("/");
+		response.addCookie(cookie);
+			
 		return new ModelAndView(new RedirectView("/user/main"));
 	}
 
