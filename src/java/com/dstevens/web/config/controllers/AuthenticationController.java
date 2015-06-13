@@ -1,8 +1,11 @@
 package com.dstevens.web.config.controllers;
 
+import java.util.function.Supplier;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,18 +20,22 @@ import com.google.gson.Gson;
 @Controller
 public class AuthenticationController {
 
-	private ElysiumUserDetailsService userService;
+	
+	private final ElysiumUserDetailsService userService;
+	private final Supplier<PasswordEncoder> passwordEncoder;
 
 	@Autowired
-	public AuthenticationController(ElysiumUserDetailsService userService) {
+	public AuthenticationController(ElysiumUserDetailsService userService, Supplier<PasswordEncoder> passwordEncoder) {
 		this.userService = userService;
+		this.passwordEncoder = passwordEncoder;
 	}
 	
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public @ResponseBody String authenticate(@RequestBody AuthorizationRequest request) {
 		UserDetails userDetails = userService.loadUserByUsername(request.username);
+		System.out.println(passwordEncoder.get().encode(request.password));
 		if(userDetails.getUsername().equals(request.username) &&
-		   userDetails.getPassword().equals(request.password)) {
+		   passwordEncoder.get().matches(request.password, userDetails.getPassword())) {
 			Authorization authorize = userService.authorize(new UsernamePasswordAuthenticationToken(request.username, request.password, userDetails.getAuthorities()));
 			return new Gson().toJson(DisplayableAuthorization.from(authorize));
 		}

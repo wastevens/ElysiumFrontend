@@ -32,9 +32,9 @@
     <hibernatetool destdir="${basedir}/src/resources">
       <classpath refid="schemaExportClasspath"/>
       <annotationConfiguration configurationfile="${basedir}/src/resources/hibernate.cfg.xml"/>
-      <hbm2ddl outputfilename="${project.name}-schema.sql" export="false" update="false" drop="true" create="true"/>
+      <hbm2ddl outputfilename="${project.name}-schema-install.sql" export="false" update="false" drop="false" create="true"/>
     </hibernatetool>
-	<replace file="${basedir}/src/resources/${project.name}-schema.sql">
+	<replace file="${basedir}/src/resources/${project.name}-schema-install.sql">
     	<replacefilter token="create table ID_Sequences ( sequence_name varchar(255),  sequence_next_hi_value integer );" value="create table ID_Sequences ( sequence_name varchar(255),  sequence_next_hi_value bigint );"/>
     </replace>
 </target>
@@ -42,10 +42,10 @@
 <target name="create-default-users" description="Inserts to create some default users">
 <delete file="${basedir}/src/resources/${project.name}-default-users.sql"/>
 <echo file="${basedir}/src/resources/${project.name}-default-users.sql">
-insert into User(id, email, password) values (2, 'admin@ut.org', 'password');
-insert into User(id, email, password) values (3, 'patron@ut.org', 'password');
-insert into User(id, email, password) values (4, 'expired-patron@ut.org', 'password');
-insert into User(id, email, password) values (5, 'user@ut.org', 'password');
+insert into User(id, email, password) values (2, 'admin@ut.org', '6f5be8fc9cabab316797482174fa6a5d3c2f0faee9e8d133a85514a5f15d67bc4f45343aa76062c7');
+insert into User(id, email, password) values (3, 'patron@ut.org', '98cb5da4d5c8b11e1155d7bdd21538bf9afba0e6711d7a2093aceec7102df71768045e07e254cf30');
+insert into User(id, email, password) values (4, 'expired-patron@ut.org', '4ab23102f8d466c1b6a0a3f6ae6072c0cbdf7cef1336110ccc48706e7f0efd01d83160194fc3cb3b');
+insert into User(id, email, password) values (5, 'user@ut.org', '9f08938d6e18d1624e1d47744ab26a458dea6cb24e52d6d40df10b5b2c835628f773e05fdb2c7950');
 
 insert into Patronage(id, year, expiration, original_username) values (42, 2014, '2020-12-31', null);
 insert into Patronage(id, year, expiration, original_username) values (43, 2014, '2016-12-31', 'old database username 1');
