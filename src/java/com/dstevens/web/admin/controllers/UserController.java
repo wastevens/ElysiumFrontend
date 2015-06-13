@@ -22,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.config.controllers.BadRequestException;
 import com.dstevens.config.controllers.ResourceNotFoundException;
-import com.dstevens.user.DisplayableRole;
 import com.dstevens.user.DisplayableUser;
 import com.dstevens.user.Role;
 import com.dstevens.user.User;
@@ -50,30 +49,30 @@ public class UserController {
 	
 	@RequestMapping(value = "/admin/users", method = RequestMethod.POST)
 	@ResponseStatus(value=HttpStatus.CREATED)
-	public @ResponseBody String createUser(@RequestBody DisplayableUser userWrapper, HttpServletResponse response) {
-		Patronage patronage = patronageRepository.findPatronageByMembershipId(userWrapper.membershipId);
+	public @ResponseBody String createUser(@RequestBody DisplayableUser displayableUser, HttpServletResponse response) {
+		Patronage patronage = patronageRepository.findPatronageByMembershipId(displayableUser.membershipId);
 		if(patronage != null && patronage.getUser() != null) {
-			throw new IllegalArgumentException("Patronage " + userWrapper.membershipId + " already has a user.");
+			throw new IllegalArgumentException("Patronage " + displayableUser.membershipId + " already has a user.");
 		}
-		User user = userRepository.save(new User(userWrapper.getEmail(), userWrapper.getPassword(), userWrapper.getRoles().stream().map((DisplayableRole t) -> t.to()).collect(Collectors.toSet())).withFirstName(userWrapper.getFirstName()).withLastName(userWrapper.getLastName()));
+		User user = userRepository.save(displayableUser.to());
 		if(patronage != null) {
 			user = user.withPatronage(patronage);
 			patronage = patronage.forUser(user);
 			user = userRepository.save(user);
 		}
 		addLocationHeader(response, user);
-		return new Gson().toJson(DisplayableUser.fromUserOn(new Date()).apply(user));
+		return new Gson().toJson(DisplayableUser.fromOn(user, new Date()));
 	}
 	
 	@RequestMapping(value = "/admin/users/{id}", method = RequestMethod.PUT)
-	public @ResponseBody String updateUser(@PathVariable Integer id, @RequestBody DisplayableUser userWrapper, HttpServletResponse response) {
+	public @ResponseBody String updateUser(@PathVariable Integer id, @RequestBody DisplayableUser displayableUser, HttpServletResponse response) {
 		User user = userRepository.findUser(id);
 		if(user == null) {
 			throw new ResourceNotFoundException("No user " + id + " found");
 		}
-		User userToSave = user.withEmail(userWrapper.email).withFirstName(userWrapper.firstName).withLastName(userWrapper.lastName).withRoles(userWrapper.roles());
+		User userToSave = displayableUser.to();
 		
-		Patronage patronage = patronageRepository.findPatronageByMembershipId(userWrapper.membershipId);
+		Patronage patronage = patronageRepository.findPatronageByMembershipId(displayableUser.membershipId);
 		if(patronage == null) {
 			if(user.getPatronage() != null) {
 				throw new BadRequestException("User " + user.getId() + " is associated with patronage " + user.getPatronage().displayMembershipId());
@@ -95,7 +94,7 @@ public class UserController {
 		
 		User updatedUser = userRepository.save(userToSave);
 		addLocationHeader(response, updatedUser);
-		return new Gson().toJson(DisplayableUser.fromUserOn(new Date()).apply(updatedUser));
+		return new Gson().toJson(DisplayableUser.fromOn(updatedUser, new Date()));
 
 	}
 
@@ -106,7 +105,7 @@ public class UserController {
 	@RequestMapping(value = "/admin/users", method = RequestMethod.GET)
 	public @ResponseBody String getUsers() {
 		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
-				                                      map(DisplayableUser.fromUserOn(new Date())).
+				                                      map((User u) -> DisplayableUser.fromOn(u, new Date())).
 				                                      sorted().
 				                                      collect(Collectors.toList());
 		return new Gson().toJson(collect);
@@ -114,13 +113,13 @@ public class UserController {
 	
 	@RequestMapping(value = "/admin/users/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getUser(@PathVariable Integer id) {
-		return new Gson().toJson(DisplayableUser.fromUserOn(new Date()).apply(userRepository.findUser(id)));
+		return new Gson().toJson(DisplayableUser.fromOn(userRepository.findUser(id), new Date()));
 	}
 	
 	@RequestMapping(value = "/admin/users/clients", method = RequestMethod.GET)
 	public @ResponseBody String getClients() {
 		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findClients().spliterator(), false).
-				map(DisplayableUser.fromUserOn(new Date())).
+				map((User u) -> DisplayableUser.fromOn(u, new Date())).
 				sorted().
 				collect(Collectors.toList());
 		return new Gson().toJson(collect);
@@ -129,7 +128,7 @@ public class UserController {
 	@RequestMapping(value = "/admin/users/patrons", method = RequestMethod.GET)
 	public @ResponseBody String getPatrons() {
 		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findPatrons().spliterator(), false).
-				map(DisplayableUser.fromUserOn(new Date())).
+				map((User u) -> DisplayableUser.fromOn(u, new Date())).
 				sorted().
 				collect(Collectors.toList());
 		return new Gson().toJson(collect);
@@ -138,7 +137,7 @@ public class UserController {
 	@RequestMapping(value = "/admin/users/patrons/active", method = RequestMethod.GET)
 	public @ResponseBody String getActivePatrons() {
 		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findPatrons().spliterator(), false).
-				map(DisplayableUser.fromUserOn(new Date())).
+				map((User u) -> DisplayableUser.fromOn(u, new Date())).
 				filter((DisplayableUser t) -> t.activePatron).
 				sorted().
 				collect(Collectors.toList());
@@ -148,7 +147,7 @@ public class UserController {
 	@RequestMapping(value = "/admin/users/patrons/active/{year}/{month}", method = RequestMethod.GET)
 	public @ResponseBody String getActivePatronsOn(@PathVariable int year, @PathVariable int month) {
 		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findPatrons().spliterator(), false).
-				map(DisplayableUser.fromUserOn(dateOf(year, month))).
+				map((User u) -> DisplayableUser.fromOn(u, dateOf(year, month))).
 				filter((DisplayableUser t) -> t.activePatron).
 				sorted().
 				collect(Collectors.toList());
@@ -158,7 +157,7 @@ public class UserController {
 	@RequestMapping(value = "/admin/users/patrons/expired", method = RequestMethod.GET)
 	public @ResponseBody String getInactivePatrons() {
 		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
-				map(DisplayableUser.fromUserOn(new Date())).
+				map((User u) -> DisplayableUser.fromOn(u, new Date())).
 				filter((DisplayableUser t) -> t.membershipId != null && !t.activePatron).
 				sorted().
 				collect(Collectors.toList());
@@ -168,7 +167,7 @@ public class UserController {
 	@RequestMapping(value = "/admin/users/patrons/expired/{year}/{month}", method = RequestMethod.GET)
 	public @ResponseBody String getInactivePatronsOn(@PathVariable int year, @PathVariable int month) {
 		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findPatrons().spliterator(), false).
-				map(DisplayableUser.fromUserOn(dateOf(year, month))).
+				map((User u) -> DisplayableUser.fromOn(u, dateOf(year, month))).
 				filter((DisplayableUser t) -> !t.activePatron).
 				sorted().
 				collect(Collectors.toList());
@@ -183,7 +182,7 @@ public class UserController {
 	public @ResponseBody String getUsersWithRole(@PathVariable int roleId) {
 		List<DisplayableUser> collect = StreamSupport.stream(userRepository.findAllUndeleted().spliterator(), false).
 				filter((User t) -> t.getRoles().contains(Role.values()[roleId])).
-				map(DisplayableUser.fromUserOn(new Date())).
+				map((User u) -> DisplayableUser.fromOn(u, new Date())).
 				sorted().
 				collect(Collectors.toList());
 		return new Gson().toJson(collect);

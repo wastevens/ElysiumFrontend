@@ -85,13 +85,13 @@ public class TroupeController {
 	
 	private String getTroupe(@PathVariable Integer id) {
 		Troupe troupe = troupeRepository.findWithId(id);
-		return new Gson().toJson(DisplayableTroupe.fromTroupes().apply(troupe));
+		return new Gson().toJson(DisplayableTroupe.from(troupe));
 	}
 	
 	@RequestMapping(value = "/troupes", method = RequestMethod.GET)
 	public @ResponseBody String getTroupes() {
 		List<DisplayableTroupe> collect = StreamSupport.stream(troupeRepository.findAllUndeleted().spliterator(), false).
-				             map(DisplayableTroupe.fromTroupes()).
+				             map((Troupe t) -> DisplayableTroupe.from(t)).
 				             sorted().
 				             collect(Collectors.toList());
 		return new Gson().toJson(collect);

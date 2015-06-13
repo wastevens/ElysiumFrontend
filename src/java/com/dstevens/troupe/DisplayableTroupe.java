@@ -3,12 +3,12 @@ package com.dstevens.troupe;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.dstevens.character.DisplayablePlayerCharacter;
 import com.dstevens.character.PlayerCharacter;
 import com.dstevens.user.DisplayableUser;
+import com.dstevens.user.User;
 import com.dstevens.utilities.ObjectExtensions;
 
 import static com.dstevens.collections.Sets.set;
@@ -35,10 +35,10 @@ public class DisplayableTroupe implements Comparable<DisplayableTroupe> {
 		this.characters = characters;
 	}
 	
-	public static Function<Troupe, DisplayableTroupe> fromTroupes() {
-		return (Troupe t) -> new DisplayableTroupe(t.getId(), t.getName(), DisplayableVenue.from(t.getVenue()),
-				                                   t.getStorytellers().stream().map(DisplayableUser.fromUserOn(new Date())).collect(Collectors.toSet()),
-				                                   t.getCharacters().stream().map((PlayerCharacter pc) -> DisplayablePlayerCharacter.from(pc)).collect(Collectors.toSet()));
+	public static DisplayableTroupe from(Troupe t) {
+		return new DisplayableTroupe(t.getId(), t.getName(), DisplayableVenue.from(t.getVenue()), 
+				                     t.getStorytellers().stream().map((User u) -> DisplayableUser.fromOn(u, new Date())).collect(Collectors.toSet()), 
+				                     t.getCharacters().stream().map((PlayerCharacter pc) -> DisplayablePlayerCharacter.from(pc)).collect(Collectors.toSet()));
 	}
 	
 	@Override

@@ -43,6 +43,10 @@
 <mkdir dir="${dist.dir}"/>
 </target>
 
+<target name="localTemplateInit">
+    <property name="substitution.file" location="local.app.properties"/>
+</target>
+
 <target name="devTemplateInit">
     <property name="substitution.file" location="dev.app.properties"/>
 </target>

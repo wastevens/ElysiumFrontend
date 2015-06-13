@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.suppliers.ClockSupplier;
 import com.dstevens.user.DisplayableUser;
+import com.dstevens.user.User;
 import com.dstevens.web.config.RequestingUserProvider;
 import com.google.gson.Gson;
 
@@ -29,8 +30,8 @@ public class PatronagePageController {
 	@RequestMapping(value = "/user/page/patronage", method = RequestMethod.GET)
 	public ModelAndView getCharactersPage() {
 		ModelAndView modelAndView = new ModelAndView("/user/patronage");
-		DisplayableUser displayableUser = DisplayableUser.fromUserOn(Date.from(clockSupplier.get().instant())).apply(requestingUserProvider.get());
-		String json = new Gson().toJson(displayableUser);
+		User user = requestingUserProvider.get();
+		String json = new Gson().toJson(DisplayableUser.fromOn(user, Date.from(clockSupplier.get().instant())));
 		modelAndView.addObject("user", json);
 		return modelAndView;
 	}
