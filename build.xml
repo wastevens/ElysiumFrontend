@@ -43,11 +43,38 @@
 <mkdir dir="${dist.dir}"/>
 </target>
 
+<target name="devTemplateInit">
+    <property name="substitution.file" location="dev.app.properties"/>
+</target>
+
+<target name="uatTemplateInit">
+    <property name="substitution.file" location="uat.app.properties"/>
+</target>
+
+<target name="template">
+    <echo message="Building with Env: ${substitution.file}"/>
+    <property file="${substitution.file}" prefix="s"/>
+    <delete file="${src.dir}/app.properties" quiet="true"/>
+    <copy file="app.properties.template" tofile="${src.dir}/app.properties">
+        <filterchain>
+               <replacetokens>
+                   <token key="DB_DRIVER"   value="${s.DB_DRIVER}"/>
+                   <token key="DB_HOST"     value="${s.DB_HOST}"/>
+                   <token key="DB_NAME"     value="${s.DB_NAME}"/>
+                   <token key="DB_PORT"     value="${s.DB_PORT}"/>
+                   <token key="DB_USER"     value="${s.DB_USER}"/>
+                   <token key="DB_PASSWORD" value="${s.DB_PASSWORD}"/>
+               </replacetokens>
+        </filterchain>
+    </copy>
+</target>
+
 <target name="compile" depends="init">
   <echo>Compile the source files</echo>
   <javac srcdir="${src.dir}" destdir="${build.dir}" debug="true" includeantruntime="false">
   <classpath refid="classpath"/>
   </javac>
+  <copy file="${src.dir}/app.properties" tofile="${build.dir}/app.properties" />
 </target>
 
 <target name="jar" depends="compile">
