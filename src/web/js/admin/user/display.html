@@ -18,7 +18,7 @@
 	</select>  
   </td></tr>
   <tr ng-show='selectedUser.membershipId'><th>Active?</th><td>{{selectedUser.activePatron}}</td></tr>
-  <tr ng-show='selectedPatronage'><th>Patronage Expiration</th><td><input type='text' ng-model='selectedPatronage.expiration' /></td></tr>
+  <tr ng-show='selectedPatronage'><th>Patronage Expiration (Must be yyyy-MM-dd)</th><td><input type='text' ng-model='selectedPatronage.expiration' /></td></tr>
   <tr ng-show='selectedPatronage'><th>Username in Old Database</th><td><input type='text' ng-model='selectedPatronage.originalUsername' /></td></tr>
   <tr ng-show='selectedPatronage.payments' ng-repeat-start='payment in selectedPatronage.payments'></tr>
   <tr><th colspan=2>Payment {{$index +1}}</th></tr>

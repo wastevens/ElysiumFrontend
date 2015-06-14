@@ -1,7 +1,10 @@
 package com.dstevens.user.patronage;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -58,9 +61,9 @@ public class DisplayablePatronage implements Comparable<DisplayablePatronage> {
 	
 	private Date expirationAsDate() {
 		try {
-			return new SimpleDateFormat("yyyy-MM").parse(expiration);
-		} catch (ParseException e) {
-			throw new BadRequestException("Could not parse " + expiration + "; please make sure expiration dates are in yyyy-MM format");
+			return Date.from(LocalDate.parse(expiration, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+		} catch (DateTimeParseException e) {
+			throw new BadRequestException("Could not parse " + expiration + "; please make sure expiration dates are in yyyy-MM-dd format");
 		}
 	}
 }
