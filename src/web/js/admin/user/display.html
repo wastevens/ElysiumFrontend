@@ -5,6 +5,10 @@
 	  <option value="">-- Choose User --</option>
 	</select>
   </td></tr>
+  <tr ng-show='selectedUser'><th>Roles</th><td>
+    <input type="checkbox" ng-model="selectedUser.selectedRoles[0]" /> Admin
+    <br><input type="checkbox" ng-model="selectedUser.selectedRoles[1]" /> User
+  </td></tr>
   <tr ng-show='selectedUser'><th>First Name</th><td><input type='text' ng-model='selectedUser.firstName' /></td></tr>
   <tr ng-show='selectedUser'><th>Last Name</th><td><input type='text' ng-model='selectedUser.lastName' /></td></tr>
   <tr ng-show='selectedUser.membershipId'><th>Membership Id</th><td>{{selectedUser.membershipId}}</td></tr>

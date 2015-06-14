@@ -70,7 +70,7 @@ public class UserController {
 		if(user == null) {
 			throw new ResourceNotFoundException("No user " + id + " found");
 		}
-		User userToSave = displayableUser.to();
+		User userToUpdateTo = displayableUser.to();
 		
 		Patronage patronage = patronageRepository.findPatronageByMembershipId(displayableUser.membershipId);
 		if(patronage == null) {
@@ -81,18 +81,28 @@ public class UserController {
 			if(patronage.getUser() != null && user.getPatronage() != null) {
 				if(patronage.getUser().getId() == user.getId() &&
 				   patronage.getId() == user.getPatronage().getId()) {
-				   userToSave = userToSave.withPatronage(patronage);
+				   user = user.withPatronage(patronage);
 			   } else {
 				   throw new BadRequestException("User " + user.getId() + " is associated with patronage " + user.getPatronage().displayMembershipId());
 			   }
 			} else if(patronage.getUser() == null && user.getPatronage() == null) {
-				userToSave = userToSave.withPatronage(patronage);
+				user = user.withPatronage(patronage);
 			} else {
 				throw new BadRequestException("Could not associate user " + user.getId() + " cannot be associated with patronage " + patronage);
 			}
 		}
 		
-		User updatedUser = userRepository.save(userToSave);
+		if(userToUpdateTo.getRoles() != null) {
+			user = user.withRoles(userToUpdateTo.getRoles());
+		}
+		if(userToUpdateTo.getFirstName() != null) {
+			user = user.withFirstName(userToUpdateTo.getFirstName());
+		}
+		if(userToUpdateTo.getLastName() != null) {
+			user = user.withLastName(userToUpdateTo.getLastName());
+		}
+		
+		User updatedUser = userRepository.save(user);
 		addLocationHeader(response, updatedUser);
 		return new Gson().toJson(DisplayableUser.fromOn(updatedUser, new Date()));
 

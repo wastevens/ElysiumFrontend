@@ -26,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired private ElysiumLogoutHandler logoutHandler;
 	@Autowired private HydrateUserFilter hydrateUserFilter;
 	@Autowired private Supplier<PasswordEncoder> passwordEncoderSupplier;
+	@Autowired private ElysiumAuthenticationFailureHandler failureHandler;
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -39,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.
 	         sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
-	    	 formLogin().loginPage("/login").successHandler(successHandler).failureUrl("/login?error").permitAll().and().
+	    	 formLogin().loginPage("/login").successHandler(successHandler).failureHandler(failureHandler).permitAll().and().
 	    	 logout().logoutUrl("/logout").addLogoutHandler(logoutHandler). permitAll().and().
 	    	 addFilterBefore(hydrateUserFilter, UsernamePasswordAuthenticationFilter.class).
 	    	 authorizeRequests().antMatchers("/admin/**", "/admin**").hasAnyRole("ADMIN").and().

@@ -16,6 +16,10 @@ function _loadUsers(scope, userRepository) {
 					user.type = 'Inactive Patron';
 				}
 			}
+			user.selectedRoles = [false, false];
+			user.roles.forEach(function(role) {
+				user.selectedRoles[role.id] = true;
+			});
 			if(scope.selectedUser && scope.selectedUser.id == user.id) {
 				scope.selectedUser = user;
 				scope.changeUser();
@@ -82,6 +86,14 @@ controller('manageUsers', ['$scope', 'userRepository', 'patronageRepository', 'p
 	
 	$scope.submit = function() {
 		var promise = null;
+		
+		$scope.selectedUser.roles = [];
+		$scope.selectedUser.selectedRoles.forEach(function(selectedRole, index) {
+			if(selectedRole) {
+				$scope.selectedUser.roles.push({"id": index});
+			}
+		});
+		
 		if($scope.selectedUser.membershipId) {
 			promise = patronageRepository.updatePatronage($scope.selectedPatronage);
 		} else if ($scope.selectedPatronage) {

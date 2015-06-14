@@ -56,21 +56,21 @@ public class User implements UserDetails {
     private final String email;
     
     @Column(name="password")
-    private final String password;
+    private String password;
     
 	@ElementCollection
     @ForeignKey(name="User_Roles_FK")
-    private final Set<Role> roles;
+    private Set<Role> roles;
 
 	@OneToMany(cascade={CascadeType.ALL})
 	@ForeignKey(name="User_PlayerCharacterOwnerships_FK", inverseName="PlayerCharacterOwnerships_User_FK")
-    private final Set<PlayerCharacterOwnership> characters;
+    private Set<PlayerCharacterOwnership> characters;
 	
     @Column(name="firstName")
-    private final String firstName;
+    private String firstName;
     
     @Column(name="lastName")
-    private final String lastName;
+    private String lastName;
 	
     @OneToOne(cascade={CascadeType.ALL}, optional=true)
     @JoinTable(name="User_Patronage", 
@@ -78,7 +78,7 @@ public class User implements UserDetails {
     inverseJoinColumns = @JoinColumn(name="patronage_id", nullable=true),
     uniqueConstraints={@UniqueConstraint(columnNames={"patronage_id", "user_id"}, name="User_Patronage_UC")})
     @ForeignKey(name="User_Patronage_FK", inverseName="Patronage_User_FK")
-    private final Patronage patronage;
+    private Patronage patronage;
     
     //Hibernate only
     @SuppressWarnings("unused")
@@ -140,7 +140,7 @@ public class User implements UserDetails {
 		}
 		return (this.patronage.getId() == patronage.getId());
 	}
-
+	
 	public User withEmail(String email) {
 		return new User(id, email, password, roles, characters, firstName, lastName, patronage);
 	}
