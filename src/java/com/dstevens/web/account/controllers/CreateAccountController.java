@@ -9,6 +9,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -71,12 +72,14 @@ public class CreateAccountController {
 			return model;
 		}
 		User user = new User(email, passwordEncoderSupplier.get().encode(password), set(Role.USER)).withFirstName(firstName).withLastName(lastName);
-		if(originalUsername != null && !originalUsername.trim().isEmpty()) {
-			Instant now = clockSupplier.get().instant();
-			user = user.withPatronage(new Patronage(Year.now(clockSupplier.get()).getValue(), Date.from(now), originalUsername));
-			if(paymentReceiptIdentifier != null && !paymentReceiptIdentifier.trim().isEmpty()) {
-				user.getPatronage().getPayments().add(new PatronagePaymentReceipt(PaymentType.PAYPAL, new BigDecimal("20.00"), paymentReceiptIdentifier, Date.from(now)));
+		Instant now = clockSupplier.get().instant();
+		if(!StringUtils.isBlank(originalUsername)) {
+			Patronage patronage = new Patronage(Year.now(clockSupplier.get()).getValue(), Date.from(now), null);
+			patronage = patronage.withOriginalUsername(originalUsername.trim());
+			if(!StringUtils.isBlank(paymentReceiptIdentifier)) {
+				patronage = patronage.withPayment(new PatronagePaymentReceipt(PaymentType.PAYPAL, new BigDecimal("20.00"), paymentReceiptIdentifier, Date.from(now)));
 			}
+			user = user.withPatronage(patronage);
 		}
 		User newUser = userDao.save(user);
 		sendConfirmatoryEmailTo(email);

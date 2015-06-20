@@ -65,6 +65,7 @@ public class TroupeController {
 	public @ResponseBody void deleteTroupe(@PathVariable Integer id) {
 		Troupe troupeToDelete = troupeRepository.findWithId(id);
 		if(troupeToDelete != null) {
+			troupeToDelete.withoutCharacters().withoutStorytellers();
 			troupeRepository.delete(troupeToDelete);
 		}
 	}

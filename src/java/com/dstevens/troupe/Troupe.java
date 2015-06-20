@@ -48,14 +48,14 @@ public class Troupe implements Comparable<Troupe> {
 	@JoinTable(name="Troupe_PlayerCharacters", joinColumns = @JoinColumn(name="troupe_id"), 
 	           inverseJoinColumns = @JoinColumn(name="playerCharacter_id"))
 	@ForeignKey(name="Troupe_PlayerCharacters_FK", inverseName="PlayerCharacters_Troupe_FK")
-    private final Set<PlayerCharacter> characters;
+    private Set<PlayerCharacter> characters;
     
     @ManyToMany(cascade={CascadeType.ALL})
 	@JoinTable(name="Troupe_StorytellerUsers", 
 	           joinColumns = @JoinColumn(name="troupe_id"), 
 	           inverseJoinColumns = @JoinColumn(name="user_id"))
 	@ForeignKey(name="Troupe_StorytellerUsers_FK", inverseName="StorytellerUsers_Troupe_FK")
-    private final Set<User> storytellers;
+    private Set<User> storytellers;
 
     @Column(name="deleted_at")
     private final Date deleteTimestamp;
@@ -110,6 +110,11 @@ public class Troupe implements Comparable<Troupe> {
         return new Troupe(id, name, venue, setWithout(characters, character), storytellers, deleteTimestamp);
     }
     
+	public Troupe withoutCharacters() {
+		this.characters = set();
+		return this;
+	}
+    
     public Set<PlayerCharacter> getCharacters() {
         return characters;
     }
@@ -124,6 +129,11 @@ public class Troupe implements Comparable<Troupe> {
     
     public Troupe withoutStoryteller(User storyteller) {
     	return new Troupe(id, name, venue, characters, setWithout(storytellers, storyteller), deleteTimestamp);
+    }
+    
+    public Troupe withoutStorytellers() {
+    	this.storytellers = set();
+    	return this;
     }
     
     public Set<User> getStorytellers() {
@@ -165,5 +175,4 @@ public class Troupe implements Comparable<Troupe> {
                       thenComparing(Comparator.comparing(byName)).
                       compare(this, that);
     }
-
 }

@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
@@ -40,11 +39,6 @@ public class PlayerCharacterOwnership {
 	@Column(name="id", nullable=false, unique=true)
     private final Integer id;
 	
-	@ManyToOne
-	@JoinColumn(name="user_id", referencedColumnName="id")
-    @ForeignKey(name="PlayerCharacterOwnership_User_FK", inverseName="User_PlayerCharacterOwnership_FK")
-	private final User user;
-	
 	@OneToOne
 	@JoinColumn(name="character_id", referencedColumnName="id")
     @ForeignKey(name="PlayerCharacterOwnership_PlayerCharacter_FK", inverseName="PlayerCharacter_PlayerCharacterOwnership_FK")
@@ -61,17 +55,16 @@ public class PlayerCharacterOwnership {
 	//Hibernate only
     @Deprecated
 	public PlayerCharacterOwnership() {
-    	this(null, null, null, null, null);
+    	this(null, null, null);
 		
 	}
     
-    public PlayerCharacterOwnership(User user, PlayerCharacter character, Venue venue, PlayerStatusChange statusChange) {
-    	this(null, user, character, venue, list(statusChange));
+    public PlayerCharacterOwnership(PlayerCharacter character, Venue venue, PlayerStatusChange statusChange) {
+    	this(null, character, venue, list(statusChange));
     }
 	
-    private PlayerCharacterOwnership(Integer id, User user, PlayerCharacter character, Venue venue, List<PlayerStatusChange> statusChanges) {
+    private PlayerCharacterOwnership(Integer id, PlayerCharacter character, Venue venue, List<PlayerStatusChange> statusChanges) {
 		this.id = id;
-		this.user = user;
 		this.character = character;
 		this.venue = venue;
 		this.statusChanges = statusChanges;
@@ -79,10 +72,6 @@ public class PlayerCharacterOwnership {
     
 	public Integer getId() {
 		return id;
-	}
-
-	public User getUser() {
-		return user;
 	}
 
 	public PlayerCharacter getCharacter() {

@@ -8,7 +8,10 @@ import java.time.format.DateTimeParseException;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.dstevens.config.controllers.BadRequestException;
 
@@ -41,7 +44,9 @@ public class DisplayablePatronage implements Comparable<DisplayablePatronage> {
 			id = patronage.getUser().getId();
 		}
 		boolean activePatronage = patronage.isActiveAsOf(date);
-		return new DisplayablePatronage(patronage.displayMembershipId(), new SimpleDateFormat("yyyy-MM-dd").format(patronage.getExpiration()), id, activePatronage, patronage.getOriginalUsername(), 
+		Optional<Date> expirationDate = Optional.ofNullable(patronage.getExpiration());
+		return new DisplayablePatronage(patronage.displayMembershipId(), expirationDate.map((Date d) -> new SimpleDateFormat("yyyy-MM-dd").format(d)).orElse(null), 
+				                        id, activePatronage, patronage.getOriginalUsername(), 
 				                        patronage.getPayments().stream().map((PatronagePaymentReceipt t) -> DisplayablePatronagePaymentReceipt.from(t)).collect(Collectors.toList()));
 	}
 
@@ -60,10 +65,13 @@ public class DisplayablePatronage implements Comparable<DisplayablePatronage> {
 	}
 	
 	private Date expirationAsDate() {
-		try {
-			return Date.from(LocalDate.parse(expiration, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-		} catch (DateTimeParseException e) {
-			throw new BadRequestException("Could not parse " + expiration + "; please make sure expiration dates are in yyyy-MM-dd format");
+		if(!StringUtils.isBlank(expiration)) {
+			try {
+				return Date.from(LocalDate.parse(expiration, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+			} catch (DateTimeParseException e) {
+				throw new BadRequestException("Could not parse " + expiration + "; please make sure expiration dates are in yyyy-MM-dd format");
+			}
 		}
+		return null;
 	}
 }
