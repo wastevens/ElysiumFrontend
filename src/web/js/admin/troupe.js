@@ -11,7 +11,10 @@ controller('updateTroupe', ['$scope', '$rootScope', 'redirect', 'troupeRepositor
 		}
 	});
 	
-	$scope.all_storytellers = userRepository.getUsersWithRole(1);
+	userRepository.getUsers().then(function(users) {
+		$scope.all_storytellers = users
+	});
+	
 		
 	$scope.storytellers = $scope.troupe.storytellers;
 	
