@@ -73,10 +73,10 @@
 	<classpathentry kind="lib" path="lib/default/spring-webmvc.jar" sourcepath="lib/sources/spring-webmvc-sources.jar"/>
 	<classpathentry kind="lib" path="lib/default/standard.jar"/>
 	<classpathentry kind="lib" path="lib/default/text.jar"/>
-	<classpathentry kind="lib" path="lib/default/TheWheel.jar"/>
 	<classpathentry kind="lib" path="lib/default/xml-apis.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-web.jar" sourcepath="lib/sources/spring-web-sources.jar"/>
 	<classpathentry kind="lib" path="lib/default/ant.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/default/TheWheel.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
