@@ -1,21 +1,30 @@
 <html>
+<head>
+    <link rel="stylesheet" href = "/css/bootstrap.min.css">
+</head>
 <body>
-	<form id="logoutForm" action="/logout" method="post"></form>
-	<script>
-		function formSubmit() {
-			document.getElementById("logoutForm").submit();
-		}
-	</script>
-	<h1>Title : ${title}</h1>
-	<h1>Message : ${message}</h1>
-
-	<c:if test="${pageContext.request.userPrincipal.name != null}">
-		<h2>Welcome : ${pageContext.request.userPrincipal.name}
-		
-		<p><a href="/user/page/patronage">Manage membership</a></h2>
-		<p><a href="/user/page/characters">Manage characters</a></h2>
-		
-        <p><a href="javascript:formSubmit()" >Logout</a></h2>  
-	</c:if>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Underground Theater - ${pageContext.request.userPrincipal.name}</a>
+    </div>
+    <div>
+      <form id="logoutForm" action="/logout" method="post"></form>
+      <script>
+        function formSubmit() {
+            document.getElementById("logoutForm").submit();
+        }
+      </script>      
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="/user/page/patronage">Manage Patronage</a></li>
+        <li><a href="/user/page/characters">Manage Characters</a></li>
+        <li><a href="javascript:formSubmit()">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container">
+</div>
 </body>
 </html>
