@@ -35,6 +35,13 @@
 </nav>
 <div class="container">
 	<manage-patronage user='${user}'></manage-patronage>
+	<form id="donateForm" action="/user/patronage/payments/paypal" method="post"></form>
+<script>
+function donateSubmit() {
+    document.getElementById("donateForm").submit();
+}
+</script>
+<br><a href="javascript:donateSubmit()">Make a Paypal Patronage Donation!</a>
 </div>
 </body>
 </html>

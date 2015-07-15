@@ -3,6 +3,7 @@ package com.dstevens.web.admin.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +17,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.dstevens.config.controllers.ResourceNotFoundException;
+import com.dstevens.user.User;
 import com.dstevens.user.patronage.DisplayablePatronagePaymentReceipt;
 import com.dstevens.user.patronage.Patronage;
 import com.dstevens.user.patronage.PatronagePaymentReceipt;
 import com.dstevens.user.patronage.PatronageRepository;
+import com.dstevens.web.config.RequestingUserProvider;
 import com.google.gson.Gson;
 
 @Controller
 public class PatronagePaymentReceiptController {
 
 	private final PatronageRepository patronageRepository;
+	private final RequestingUserProvider requestingUserSupplier;
 
 	@Autowired
-	public PatronagePaymentReceiptController(PatronageRepository patronageRepository) {
+	public PatronagePaymentReceiptController(PatronageRepository patronageRepository, RequestingUserProvider requestingUserSupplier) {
 		this.patronageRepository = patronageRepository;
+		this.requestingUserSupplier = requestingUserSupplier;
 	}
 	
 	@RequestMapping(value = "/admin/patronages/{id}/payments", method = RequestMethod.GET)
