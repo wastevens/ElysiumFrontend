@@ -65,10 +65,23 @@ public class PatronagePageController {
 	
 	@RequestMapping(value = "/user/patronage/payments/paypal/confirm", method = RequestMethod.POST)
 	public ModelAndView paypalPaymentConfirmSuccess(HttpServletRequest request, HttpServletResponse response) {
-		Patronage patronage = requestingUserProvider.get().getPatronage();
+		User user = requestingUserProvider.get();
+		Patronage patronage = user.getPatronage();
+		
+		if(patronage == null) {
+			patronage = createPatronageFor(user);
+		}
 		patronage.getPayments().add(paypalPayment());
 		patronageRepository.save(incrementExpirationDateOf(patronage));
 		return getPatronagePage();
+	}
+
+	private Patronage createPatronageFor(User user) {
+		Instant instant = clockSupplier.get().instant();
+		int year = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC).getYear();
+		Patronage patronage = patronageRepository.save(new Patronage(year, Date.from(instant), ""));
+		Patronage patronageWithUser = patronageRepository.save(patronage.forUser(user));
+		return patronageRepository.save(patronageWithUser);
 	}
 
 	private Patronage incrementExpirationDateOf(Patronage patronage) {
@@ -81,7 +94,7 @@ public class PatronagePageController {
 	}
 
 	private Instant getInstantToIncrement(Patronage patronage) {
-		if(patronage.getExpiration().toInstant().isAfter(clockSupplier.get().instant()))
+		if(patronage != null && patronage.getExpiration() != null && patronage.getExpiration().toInstant().isAfter(clockSupplier.get().instant()))
 			return patronage.getExpiration().toInstant();
 		return clockSupplier.get().instant();
 	}
