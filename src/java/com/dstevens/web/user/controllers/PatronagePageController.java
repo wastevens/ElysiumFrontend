@@ -25,6 +25,7 @@ import com.dstevens.user.patronage.PatronagePaymentReceipt;
 import com.dstevens.user.patronage.PatronageRepository;
 import com.dstevens.user.patronage.PaymentType;
 import com.dstevens.web.config.RequestingUserProvider;
+import com.dstevens.web.user.payment.PaypalExpressCheckout;
 import com.google.gson.Gson;
 
 @Controller
@@ -33,12 +34,14 @@ public class PatronagePageController {
 	private final PatronageRepository patronageRepository;
 	private final RequestingUserProvider requestingUserProvider;
 	private final ClockSupplier clockSupplier;
+	private final PaypalExpressCheckout paypalExpressCheckout;
 
 	@Autowired
-	public PatronagePageController(RequestingUserProvider requestingUserProvider, ClockSupplier clockSupplier, PatronageRepository patronageRepository) {
+	public PatronagePageController(RequestingUserProvider requestingUserProvider, ClockSupplier clockSupplier, PatronageRepository patronageRepository, PaypalExpressCheckout paypalExpressCheckout) {
 		this.requestingUserProvider = requestingUserProvider;
 		this.clockSupplier = clockSupplier;
 		this.patronageRepository = patronageRepository;
+		this.paypalExpressCheckout = paypalExpressCheckout;
 		
 	}
 	
@@ -53,9 +56,7 @@ public class PatronagePageController {
 	
 	@RequestMapping(value = "/user/patronage/payments/paypal", method = RequestMethod.POST)
 	public RedirectView makePaypalPayment(HttpServletRequest request, HttpServletResponse response) {
-//		System.out.println("Return url: /user/page/patronage/payments/paypal/confirm");
-//		System.out.println("Cancel url: /user/main");
-		return new RedirectView("http://www.paypal.com");
+		return new RedirectView("https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=" + paypalExpressCheckout.setUpPayment(1));
 	}
 	
 	@RequestMapping(value = "/user/page/patronage/payments/paypal/confirm", method = RequestMethod.GET)

@@ -68,6 +68,13 @@
                    <token key="DB_PORT"     value="${s.DB_PORT}"/>
                    <token key="DB_USER"     value="${s.DB_USER}"/>
                    <token key="DB_PASSWORD" value="${s.DB_PASSWORD}"/>
+                   
+                   <token key="PAYPAL_URL"        value="${s.PAYPAL_URL}"/>
+                   <token key="PAYPAL_USER"       value="${s.PAYPAL_USER}"/>
+                   <token key="PAYPAL_PASSWORD"   value="${s.PAYPAL_PASSWORD}"/>
+                   <token key="PAYPAL_SIGNATURE"  value="${s.PAYPAL_SIGNATURE}"/>
+                   <token key="PAYPAL_VERSION"    value="${s.PAYPAL_VERSION}"/>
+                   <token key="PAYPAL_RETURNHOST" value="${s.PAYPAL_RETURNHOST}"/>
                </replacetokens>
         </filterchain>
     </copy>

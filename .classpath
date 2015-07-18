@@ -54,7 +54,6 @@
 	<classpathentry kind="lib" path="lib/default/spring-aop-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-aop.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-aspects.jar"/>
-	<classpathentry kind="lib" path="lib/default/spring-beans-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-beans.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-context-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-context.jar" sourcepath="lib/sources/spring-context-sources.jar"/>
@@ -78,5 +77,11 @@
 	<classpathentry kind="lib" path="lib/default/ant.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/default/TheWheel.jar"/>
+	<classpathentry kind="lib" path="lib/default/commons-codec.jar"/>
+	<classpathentry kind="lib" path="lib/default/httpclient.jar"/>
+	<classpathentry kind="lib" path="lib/default/httpcore.jar"/>
+	<classpathentry kind="lib" path="lib/test/testDefault/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/test/testDefault/mockito-all.jar"/>
+	<classpathentry kind="lib" path="lib/test/testDefault/spring-test.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

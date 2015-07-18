@@ -55,6 +55,9 @@
         <dependency org="org.springframework" name="spring-web"        rev="4.1.1.RELEASE" conf="default;sources;javadoc"/>
         <dependency org="org.springframework" name="spring-webmvc"     rev="4.1.1.RELEASE" conf="default;sources;javadoc"/>
     	
+    	<dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5" conf="default;sources;javadoc"/>
+    	
+    	
     	<dependency org="org.springframework" name="spring-test" rev="4.0.3.RELEASE" conf="testDefault->default;testSources->sources;testJavadoc->javadoc"/>
         <dependency org="org.mockito" name="mockito-all" rev="1.8.4" conf="testDefault->default;testSources->sources;testJavadoc->javadoc"/>
     </dependencies>
