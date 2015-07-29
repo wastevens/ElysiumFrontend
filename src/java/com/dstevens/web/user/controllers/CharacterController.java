@@ -57,6 +57,16 @@ public class CharacterController {
 		playerCharacterService.save(character);
 	}
 	
+	@RequestMapping(value = "/characters/{id}", method = RequestMethod.GET)
+	public @ResponseBody String getCharacter(@PathVariable Integer id) {
+		PlayerCharacter character = playerCharacterService.getCharacter(id);
+		if(character == null) {
+			throw new UnknownCharacterException("Could not find character with id " + id);
+		}
+		
+		return new Gson().toJson(DisplayablePlayerCharacter.from(character));
+	}
+	
 	@RequestMapping(value = "/user/page/character/create", method = RequestMethod.GET)
 	public ModelAndView getCharacterCreationPage() {
 		return new ModelAndView("/user/character_creation");

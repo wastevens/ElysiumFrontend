@@ -15,7 +15,7 @@ import static com.dstevens.config.AuthorizationReader.authorizationIn;
 @Component
 public class AuthorizationGuard extends HandlerInterceptorAdapter {
 
-	private ElysiumUserDetailsService userService;
+	private final ElysiumUserDetailsService userService;
 
 	@Autowired
 	public AuthorizationGuard(ElysiumUserDetailsService userService) {

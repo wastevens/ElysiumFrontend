@@ -24,7 +24,16 @@ public class RequestingUserProvider implements Supplier<User> {
 	}
 
 	private User loggedInUser() {
-		return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(principal instanceof User) {
+			return (User)principal;
+		}
+		String username = (String)principal;
+		User user = repository.findUserWithEmail(username);
+		if(user == null) {
+			throw new IllegalStateException("User not found with name " + username);
+		}
+		return user;
 	}
 	
 }
