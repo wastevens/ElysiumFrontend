@@ -29,6 +29,11 @@ public class AuthorizationGuard extends HandlerInterceptorAdapter {
 			System.out.println("No authorization found");
 			throw new ForbiddenException("Request not authorized");
 		}
+		if(request.getRequestURI().equalsIgnoreCase("/requestPasswordReset") ||
+		   request.getRequestURI().equalsIgnoreCase("/passwordResetRequested") ||
+		   request.getRequestURI().equalsIgnoreCase("/resetPassword")) {
+			return true;
+		}
 		if(!userService.isUserAuthorized(authorization)) {
 			System.out.println("Authorization failed");
 			throw new ForbiddenException("Request not authorized");

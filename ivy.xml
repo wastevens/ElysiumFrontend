@@ -16,7 +16,7 @@
         <dependency org="com.dstevens" name="TheWheel" rev="latest.release" conf="default;sources"/>
         <dependency org="com.dstevens" name="CommonServices" rev="latest.release" conf="default;sources"/>
         <dependency org="com.dstevens" name="Elysium" rev="latest.release" conf="default;sources"/>
-        <dependency org="com.dstevens" name="Courier" rev="1.0.0" conf="default;sources"/>
+        <dependency org="com.dstevens" name="Courier" rev="latest.release" conf="default;sources"/>
         <dependency org="org.hibernate" name="hibernate-core" rev="4.3.7.Final" conf="default;sources;javadoc"/>
         <dependency org="org.hibernate" name="hibernate-entitymanager" rev="4.3.7.Final" conf="default;sources;javadoc"/>
         <dependency org="org.hibernate" name="hibernate-tools" rev="4.3.1.CR1" conf="default;sources;javadoc"/>

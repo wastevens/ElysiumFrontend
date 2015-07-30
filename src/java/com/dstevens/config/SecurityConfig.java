@@ -43,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    	 formLogin().loginPage("/login").successHandler(successHandler).failureHandler(failureHandler).permitAll().and().
 	    	 logout().logoutUrl("/logout").addLogoutHandler(logoutHandler). permitAll().and().
 	    	 addFilterBefore(hydrateUserFilter, UsernamePasswordAuthenticationFilter.class).
+	    	 authorizeRequests().antMatchers("/requestPasswordReset", "/passwordResetRequested").permitAll().and().
 	    	 authorizeRequests().antMatchers("/admin/**", "/admin**").hasAnyRole("ADMIN").and().
 		     csrf().disable(); 
  

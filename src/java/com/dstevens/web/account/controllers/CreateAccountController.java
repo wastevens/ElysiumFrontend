@@ -105,28 +105,20 @@ public class CreateAccountController {
 				body.append("\nTheir paypal receipt id for paying for patronage is " + user.getPatronage().getPayments().get(0).getPaymentReceiptIdentifier());
 			}
 		}
-		if(sendEmail()) {
-			messageFactory.message().
-			from("database@undergroundtheater.org", "UT Database").
-			to("board@undergroundtheater.org").
-			subject("A new Underground Theater User Account has been created").
-			body(body.toString()).
-			send();		
-		}
-	}
-
-	private boolean sendEmail() {
-		return Boolean.getBoolean(System.getProperty("email", "false"));
+		messageFactory.message().
+		from("database@undergroundtheater.org", "UT Database").
+		to("board@undergroundtheater.org").
+		subject("A new Underground Theater User Account has been created").
+		body(body.toString()).
+		send();		
 	}
 
 	private void sendConfirmatoryEmailTo(String email) {
-		if(sendEmail()) {
-			messageFactory.message().
-				from("database@undergroundtheater.org", "UT Database Admin").
-				to(email).
-				subject("Your Underground Theater User Account has been created").
-				body("Thank you for creating an account with Underground Theater's character database.").
-				send();
-		}
+		messageFactory.message().
+			from("database@undergroundtheater.org", "UT Database").
+			to(email).
+			subject("Your Underground Theater User Account has been created").
+			body("Thank you for creating an account with Underground Theater's character database.").
+			send();
 	}
 }
