@@ -11,3 +11,8 @@ paypal.password=@PAYPAL_PASSWORD@
 paypal.signature=@PAYPAL_SIGNATURE@
 paypal.version=@PAYPAL_VERSION@
 paypal.returnHost=@PAYPAL_RETURNHOST@
+
+mail.host=@MAIL_HOST@
+mail.port=@MAIL_PORT@
+mail.user=@MAIL_USER@
+mail.password=@MAIL_PASSWORD@

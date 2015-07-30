@@ -75,6 +75,11 @@
                    <token key="PAYPAL_SIGNATURE"  value="${s.PAYPAL_SIGNATURE}"/>
                    <token key="PAYPAL_VERSION"    value="${s.PAYPAL_VERSION}"/>
                    <token key="PAYPAL_RETURNHOST" value="${s.PAYPAL_RETURNHOST}"/>
+                   
+                   <token key="MAIL_HOST"     value="${s.MAIL_HOST}"/>
+                   <token key="MAIL_PORT"     value="${s.MAIL_PORT}"/>
+                   <token key="MAIL_USER"     value="${s.MAIL_USER}"/>
+                   <token key="MAIL_PASSWORD" value="${s.MAIL_PASSWORD}"/>
                </replacetokens>
         </filterchain>
     </copy>
