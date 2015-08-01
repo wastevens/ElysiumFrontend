@@ -1,5 +1,7 @@
 package com.dstevens.troupe;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,15 @@ public class TroupeRepository {
     }
 
     public Troupe findWithId(Integer id) {
-    	return dao.findOne(id);
+    	Troupe troupe = dao.findOne(id);
+    	if(troupe == null) {
+    		throw new UnknownTroupeException("Could not find troupe with id " + id);
+    	}
+		return troupe;
+    }
+    
+    public Optional<Troupe> findOptionalWithId(Integer id) {
+    	return Optional.ofNullable(dao.findOne(id));
     }
     
     public Troupe findNamed(String troupeName) {

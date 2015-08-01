@@ -1,7 +1,7 @@
 package com.dstevens.web.admin.controllers;
 
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -15,14 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.character.DisplayablePlayerCharacter;
 import com.dstevens.character.PlayerCharacter;
 import com.dstevens.troupe.DisplayableTroupe;
 import com.dstevens.troupe.Troupe;
 import com.dstevens.troupe.TroupeRepository;
-import com.dstevens.troupe.UnknownTroupeException;
 import com.dstevens.user.DisplayableUser;
 import com.dstevens.user.User;
 import com.dstevens.user.UserRepository;
@@ -38,51 +36,6 @@ public class TroupeController {
 	public TroupeController(TroupeRepository troupeRepository, UserRepository userRepository) {
 		this.troupeRepository = troupeRepository;
 		this.userRepository = userRepository;
-	}
-	
-	@RequestMapping(value = "/admin/page/troupes", method = RequestMethod.GET)
-	public ModelAndView getTroupesPage() {
-		return new ModelAndView("/admin/troupe/troupes");
-	}
-	
-	@RequestMapping(value = "/admin/page/troupes/{id}", method = RequestMethod.GET)
-	public ModelAndView getManageTroupePage(@PathVariable Integer id) {
-		Troupe troupe = troupeRepository.findWithId(id);
-		if(troupe == null) {
-			throw new UnknownTroupeException("Could not find troupe with id " + id);
-		}
-		ModelAndView modelAndView = new ModelAndView("/admin/troupe/manage");
-		modelAndView.addObject("troupe", getTroupe(troupe.getId()));
-		return modelAndView;
-	}
-	
-	@ResponseStatus(value=HttpStatus.CREATED)
-	@RequestMapping(value = "/troupes", method = RequestMethod.POST)
-	public @ResponseBody void  addTroupe(@RequestBody final DisplayableTroupe troupe) {
-		troupeRepository.ensureExists(troupe.name, troupe.venue.to());
-	}
-	
-	@ResponseStatus(value=HttpStatus.NO_CONTENT)
-	@RequestMapping(value = "/troupes/{id}", method = RequestMethod.DELETE)
-	public @ResponseBody void deleteTroupe(@PathVariable Integer id) {
-		Troupe troupeToDelete = troupeRepository.findWithId(id);
-		if(troupeToDelete != null) {
-			troupeToDelete.withoutCharacters().withoutStorytellers();
-			troupeRepository.delete(troupeToDelete);
-		}
-	}
-	
-	@RequestMapping(value = "/troupes/{id}", method = RequestMethod.POST)
-	public @ResponseBody void updateTroupe(@PathVariable Integer id, @RequestBody final DisplayableTroupe displayedTroupe) {
-		Troupe troupe = troupeRepository.findWithId(id);
-		if(troupe == null) {
-			throw new UnknownTroupeException("Could not find troupe with id " + id);
-		}
-		troupeRepository.save(troupe.withName(displayedTroupe.name).withVenue(displayedTroupe.venue.to()).withStorytellers(storytellersFor(displayedTroupe)));
-	}
-
-	private Set<User> storytellersFor(final DisplayableTroupe displayedTroupe) {
-		return displayedTroupe.storytellers.stream().map((DisplayableUser t) -> userRepository.findUser(t.id)).collect(Collectors.toSet());
 	}
 	
 	@RequestMapping(value = "/troupes", method = RequestMethod.GET)
@@ -101,5 +54,31 @@ public class TroupeController {
 		listable.storytellers = troupe.getStorytellers().stream().map((User t) -> DisplayableUser.listable(t)).collect(Collectors.toSet());
 		listable.characters = troupe.getCharacters().stream().map((PlayerCharacter t) -> DisplayablePlayerCharacter.listable(t)).collect(Collectors.toSet());
 		return new Gson().toJson(listable);
+	}
+	
+	@ResponseStatus(value=HttpStatus.CREATED)
+	@RequestMapping(value = "/troupes", method = RequestMethod.POST)
+	public @ResponseBody void  addTroupe(@RequestBody final DisplayableTroupe troupe) {
+		troupeRepository.ensureExists(troupe.name, troupe.venue.to());
+	}
+	
+	@ResponseStatus(value=HttpStatus.NO_CONTENT)
+	@RequestMapping(value = "/troupes/{id}", method = RequestMethod.DELETE)
+	public @ResponseBody void deleteTroupe(@PathVariable Integer id) {
+		Optional<Troupe> troupeToDelete = troupeRepository.findOptionalWithId(id);
+		if(troupeToDelete.isPresent()) {
+			troupeToDelete.get().withoutCharacters().withoutStorytellers();
+			troupeRepository.delete(troupeToDelete.get());
+		}
+	}
+	
+	@RequestMapping(value = "/troupes/{id}", method = RequestMethod.PUT)
+	public @ResponseBody void updateTroupe(@PathVariable Integer id, @RequestBody final DisplayableTroupe displayedTroupe) {
+		Troupe troupe = troupeRepository.findWithId(id);
+		troupeRepository.save(troupe.withName(displayedTroupe.name).withVenue(displayedTroupe.venue.to()).withStorytellers(storytellersFor(displayedTroupe)));
+	}
+
+	private Set<User> storytellersFor(final DisplayableTroupe displayedTroupe) {
+		return displayedTroupe.storytellers.stream().map((DisplayableUser t) -> userRepository.findUser(t.id)).collect(Collectors.toSet());
 	}
 }
