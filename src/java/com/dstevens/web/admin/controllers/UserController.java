@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.config.controllers.BadRequestException;
 import com.dstevens.config.controllers.ResourceNotFoundException;
@@ -48,11 +47,6 @@ public class UserController {
     public UserController(UserRepository userRepository, PatronageRepository patronageRepository) {
         this.userRepository = userRepository;
         this.patronageRepository = patronageRepository;
-    }
-    
-    @RequestMapping(value = "/admin/page/users", method = RequestMethod.GET)
-    public ModelAndView getUsersPage() {
-        return new ModelAndView("/admin/users");
     }
     
     @RequestMapping(value ="/admin/users/upload", method = RequestMethod.POST)
