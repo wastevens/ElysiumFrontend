@@ -11,17 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.dstevens.character.DisplayablePlayerCharacter;
 import com.dstevens.character.PlayerCharacter;
 import com.dstevens.character.PlayerCharacterService;
-import com.dstevens.character.Setting;
 import com.dstevens.character.UnknownCharacterException;
 import com.dstevens.character.trait.change.TraitChange;
 import com.dstevens.character.trait.change.TraitChangeFactoryProvider;
-import com.dstevens.troupe.Troupe;
-import com.dstevens.troupe.TroupeRepository;
 import com.dstevens.user.User;
 import com.dstevens.web.config.RequestingUserProvider;
 import com.google.gson.Gson;
@@ -31,15 +27,13 @@ public class CharacterController {
 
 	private final PlayerCharacterService playerCharacterService;
 	private final RequestingUserProvider requestingUserSupplier;
-	private final TroupeRepository troupeRepository;
 	private final TraitChangeFactoryProvider traitChangeFactoryProvider;
 
 	@Autowired
 	public CharacterController(RequestingUserProvider requestingUserSupplier, PlayerCharacterService playerCharacterService,
-							   TroupeRepository troupeRepository, TraitChangeFactoryProvider traitChangeFactoryProvider) {
+							   TraitChangeFactoryProvider traitChangeFactoryProvider) {
 		this.requestingUserSupplier = requestingUserSupplier;
 		this.playerCharacterService = playerCharacterService;
-		this.troupeRepository = troupeRepository;
 		this.traitChangeFactoryProvider = traitChangeFactoryProvider;
 	}
 	
@@ -67,33 +61,11 @@ public class CharacterController {
 		return new Gson().toJson(DisplayablePlayerCharacter.from(character));
 	}
 	
-	@RequestMapping(value = "/user/page/character/create", method = RequestMethod.GET)
-	public ModelAndView getCharacterCreationPage() {
-		return new ModelAndView("/user/character_creation");
-	}
-	
 	@RequestMapping(value = "/characters", method = RequestMethod.GET)
 	public @ResponseBody String getCharacters() {
 		User user = requestingUserSupplier.get();
 		Set<DisplayablePlayerCharacter> characters = user.getCharacters().stream().map((PlayerCharacter pc) -> DisplayablePlayerCharacter.from(pc)).collect(Collectors.toSet());
 		
 		return new Gson().toJson(characters);
-	}
-	
-	@RequestMapping(value = "/characters", method = RequestMethod.POST)
-	public ModelAndView createCharacter(@RequestBody final RawCharacter rawCharacter) {
-		User user = requestingUserSupplier.get();
-		Troupe troupe = troupeRepository.findWithId(rawCharacter.troupeId);
-		Setting setting = Setting.INDEPENDENT_ALLIANCE;
-		playerCharacterService.createCharacter(user, troupe, setting, rawCharacter.name);
-		
-		return new ModelAndView("/user/characters");
-	}
-	
-	private static class RawCharacter {
-
-		public String name;
-		public Integer troupeId;
-		
 	}
 }
