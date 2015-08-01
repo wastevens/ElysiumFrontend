@@ -25,7 +25,7 @@ import com.dstevens.user.UserDao;
 import com.dstevens.user.security.UserPasswordResetTokenService;
 
 @Controller
-public class ResetPasswordController {
+public class ResetPasswordPageController {
 
 	private final Supplier<PasswordEncoder> passwordEncoderSupplier;
 	private final UserDao userDao;
@@ -34,7 +34,7 @@ public class ResetPasswordController {
 	private final ElysiumUserDetailsService userService;
 
 	@Autowired
-	public ResetPasswordController(Supplier<PasswordEncoder> passwordEncoderSupplier, UserDao userDao, ElysiumUserDetailsService userService, MailMessageFactory messageFactory, UserPasswordResetTokenService passwordResetTokenService) {
+	public ResetPasswordPageController(Supplier<PasswordEncoder> passwordEncoderSupplier, UserDao userDao, ElysiumUserDetailsService userService, MailMessageFactory messageFactory, UserPasswordResetTokenService passwordResetTokenService) {
 		this.passwordEncoderSupplier = passwordEncoderSupplier;
 		this.userDao = userDao;
 		this.userService = userService;
