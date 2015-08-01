@@ -35,7 +35,7 @@ import com.dstevens.user.patronage.PaymentType;
 import static com.dstevens.collections.Sets.set;
  
 @Controller
-public class CreateAccountController {
+public class CreateAccountPageController {
 	
 	private final UserDao userDao;
 	private final MailMessageFactory messageFactory;
@@ -44,7 +44,7 @@ public class CreateAccountController {
 	private final ElysiumUserDetailsService userService;
 
 	@Autowired
-	public CreateAccountController(UserDao userDao, Supplier<PasswordEncoder> passwordEncoderSupplier, ElysiumUserDetailsService userService, 
+	public CreateAccountPageController(UserDao userDao, Supplier<PasswordEncoder> passwordEncoderSupplier, ElysiumUserDetailsService userService, 
 			                       MailMessageFactory messageFactory, ClockSupplier clockSupplier) {
 		this.userDao = userDao;
 		this.passwordEncoderSupplier = passwordEncoderSupplier;
