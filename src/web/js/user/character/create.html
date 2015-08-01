@@ -11,8 +11,18 @@
 			<select ng-model='troupe' name='troupe' required='true' ng-options="troupe.name for troupe in troupes track by troupe.id"></select>
 		</td>
 	</tr>
+    <tr>
+        <td>Setting:</td>
+        <td>
+            <select ng-model='setting' name='setting' required='true' ng-options="setting as (setting|setting) for setting in settings"></select>
+        </td>
+    </tr>
 	<tr>
 		<td colspan='2'><input name="submit" type="submit" value="submit" /></td>
 	</tr>
 </table>
+<br>{{troupes}}
+<br>{{troupe}}
+<br>{{settings}}
+<br>{{setting}}
 </form>

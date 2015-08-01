@@ -8,7 +8,7 @@ create table Merits (id integer not null, specialization varchar(255), trait int
 create table Patronage (id integer not null, expiration datetime, original_username varchar(255), year integer, primary key (id));
 create table Patronage_payments (Patronage_id integer not null, payment_amount decimal(19,2), payment_date datetime, payment_receipt_identifier varchar(255), payment_type integer, order_by integer not null, primary key (Patronage_id, order_by));
 create table PlayerCharacter (id integer not null, approvalStatus integer, awardedXp integer, baseXp integer, bloodline integer, clan integer, groundXp integer, mental_attribute integer, name varchar(255), physical_attribute integer, primary_necromantic_path integer, primary_thaumaturgical_path integer, setting integer, social_attribute integer, appliedSpentXp integer, pendingSpentXp integer, primary key (id));
-create table PlayerCharacterOwnership (id integer not null, venue integer, character_id integer, primary key (id));
+create table PlayerCharacterOwnership (id integer not null, venue integer, character_id integer, user_id integer, primary key (id));
 create table PlayerCharacterOwnership_statusChanges (PlayerCharacterOwnership_id integer not null, changedOn datetime, status integer, order_by integer not null, primary key (PlayerCharacterOwnership_id, order_by));
 create table PlayerCharacter_AppliedTraitChanges (PlayerCharacter_id integer not null, appliedTraitChanges_id bigint not null, order_by integer not null, primary key (PlayerCharacter_id, order_by));
 create table PlayerCharacter_ExperienceAward (PlayerCharacter_id integer not null, experienceAwards_id integer not null);
@@ -32,13 +32,11 @@ create table Troupe_StorytellerUsers (troupe_id integer not null, user_id intege
 create table User (id integer not null, email varchar(255), firstName varchar(255), lastName varchar(255), password varchar(255), primary key (id));
 create table UserPasswordResetToken (id integer not null, email varchar(255), expiresAt datetime, resetToken varchar(255), primary key (id));
 create table User_Patronage (patronage_id integer, user_id integer, primary key (patronage_id));
-create table User_PlayerCharacterOwnership (User_id integer not null, characters_id integer not null, primary key (User_id, characters_id));
 create table User_roles (User_id integer not null, roles integer);
 alter table PlayerCharacter_AppliedTraitChanges add constraint PlayerCharacter_AppliedTraitChanges_UC  unique (appliedTraitChanges_id);
 alter table PlayerCharacter_ExperienceAward add constraint PlayerCharacter_ExperienceAwards_UC  unique (experienceAwards_id);
 alter table PlayerCharacter_RequestedTraitChanges add constraint PlayerCharacter_RequestedTraitChanges_UC  unique (requesedTraitChanges_id);
 alter table User_Patronage add constraint User_Patronage_UC  unique (patronage_id, user_id);
-alter table User_PlayerCharacterOwnership add constraint UK_haba2abbndqbkj38jm2d4bdls  unique (characters_id);
 alter table Backgrounds add constraint PlayerCharacter_Backgrounds_FK foreign key (character_id) references PlayerCharacter (id);
 alter table Backgrounds_Focuses add constraint CharacterBackground_focuses_FK foreign key (CharacterBackground_id) references Backgrounds (id);
 alter table Disciplines add constraint PlayerCharacter_Disciplines_FK foreign key (character_id) references PlayerCharacter (id);
@@ -46,6 +44,7 @@ alter table Flaws add constraint PlayerCharacter_Flaws_FK foreign key (character
 alter table Merits add constraint PlayerCharacter_Merits_FK foreign key (character_id) references PlayerCharacter (id);
 alter table Patronage_payments add constraint Patronage_PatronagePaymentReceipt_FK foreign key (Patronage_id) references Patronage (id);
 alter table PlayerCharacterOwnership add constraint PlayerCharacterOwnership_PlayerCharacter_FK foreign key (character_id) references PlayerCharacter (id);
+alter table PlayerCharacterOwnership add constraint User_PlayerCharacterOwnerships_FK foreign key (user_id) references User (id);
 alter table PlayerCharacterOwnership_statusChanges add constraint PlayerCharacterOwnership_PlayerStatusChange_FK foreign key (PlayerCharacterOwnership_id) references PlayerCharacterOwnership (id);
 alter table PlayerCharacter_AppliedTraitChanges add constraint AppliedTraitChanges_PlayerCharacter_FK foreign key (appliedTraitChanges_id) references TraitChanges (id);
 alter table PlayerCharacter_AppliedTraitChanges add constraint PlayerCharacter_AppliedTraitChanges_FK foreign key (PlayerCharacter_id) references PlayerCharacter (id);
@@ -72,7 +71,5 @@ alter table Troupe_StorytellerUsers add constraint StorytellerUsers_Troupe_FK fo
 alter table Troupe_StorytellerUsers add constraint Troupe_StorytellerUsers_FK foreign key (troupe_id) references Troupe (id);
 alter table User_Patronage add constraint User_Patronage_FK foreign key (patronage_id) references Patronage (id);
 alter table User_Patronage add constraint Patronage_User_FK foreign key (user_id) references User (id);
-alter table User_PlayerCharacterOwnership add constraint PlayerCharacterOwnerships_User_FK foreign key (characters_id) references PlayerCharacterOwnership (id);
-alter table User_PlayerCharacterOwnership add constraint User_PlayerCharacterOwnerships_FK foreign key (User_id) references User (id);
 alter table User_roles add constraint User_Roles_FK foreign key (User_id) references User (id);
 create table ID_Sequences ( sequence_name varchar(255),  sequence_next_hi_value bigint );

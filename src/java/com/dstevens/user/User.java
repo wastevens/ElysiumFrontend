@@ -63,6 +63,7 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
 	@OneToMany(cascade={CascadeType.ALL})
+	@JoinColumn(name="user_id", referencedColumnName="id")
 	@ForeignKey(name="User_PlayerCharacterOwnerships_FK", inverseName="PlayerCharacterOwnerships_User_FK")
     private Set<PlayerCharacterOwnership> characters;
 	
@@ -74,9 +75,9 @@ public class User implements UserDetails {
 	
     @OneToOne(cascade={CascadeType.ALL}, optional=true)
     @JoinTable(name="User_Patronage", 
-    joinColumns = @JoinColumn(name="user_id", nullable=true), 
-    inverseJoinColumns = @JoinColumn(name="patronage_id", nullable=true),
-    uniqueConstraints={@UniqueConstraint(columnNames={"patronage_id", "user_id"}, name="User_Patronage_UC")})
+               joinColumns = @JoinColumn(name="user_id", nullable=true), 
+               inverseJoinColumns = @JoinColumn(name="patronage_id", nullable=true),
+               uniqueConstraints={@UniqueConstraint(columnNames={"patronage_id", "user_id"}, name="User_Patronage_UC")})
     @ForeignKey(name="User_Patronage_FK", inverseName="Patronage_User_FK")
     private Patronage patronage;
     

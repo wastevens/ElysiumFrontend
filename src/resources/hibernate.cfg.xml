@@ -21,8 +21,8 @@
     <mapping class="com.dstevens.character.trait.status.CharacterStatus"/>
     
     <mapping class="com.dstevens.troupe.Troupe"/>
-    <mapping class="com.dstevens.user.User"/>
     <mapping class="com.dstevens.user.PlayerCharacterOwnership"/>
+    <mapping class="com.dstevens.user.User"/>
     <mapping class="com.dstevens.user.patronage.Patronage"/>
     <mapping class="com.dstevens.user.patronage.PatronagePaymentReceipt"/>
     <mapping class="com.dstevens.user.security.UserPasswordResetToken"/>
