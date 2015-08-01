@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
  
 @Controller
-public class AdminController {
+public class AdminPageController {
  
 	@RequestMapping(value = "/admin/main", method = RequestMethod.GET)
 	public ModelAndView mainPage() {
