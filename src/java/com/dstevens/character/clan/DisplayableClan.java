@@ -20,6 +20,10 @@ public class DisplayableClan {
 		this.id = id;
 		this.bloodlines = bloodlines;
 	}
+	
+	public static DisplayableClan shortFrom(Clan t) {
+		return new DisplayableClan(t.getId(), null);
+	}
 
 	public static DisplayableClan from(Clan t) {
 		return new DisplayableClan(t.getId(), 

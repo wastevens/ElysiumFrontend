@@ -53,6 +53,14 @@ public class DisplayableUser implements Comparable<DisplayableUser> {
 				patronage, membershipId, activePatronage);
 	}
 	
+	public static DisplayableUser listable(User user) {
+		String membershipId = null;
+		if(user.getPatronage() != null) {
+			membershipId = user.getPatronage().displayMembershipId();
+		}
+		return new DisplayableUser(user.getId(), null, null, user.getEmail(), null, null, null, membershipId, null);
+	}
+	
 	public User to() {
 		return new User(email, password, roles.stream().map((DisplayableRole t) -> t.to()).collect(Collectors.toSet())).withFirstName(firstName).withLastName(lastName);
 	}

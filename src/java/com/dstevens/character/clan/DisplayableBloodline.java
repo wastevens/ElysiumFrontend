@@ -23,6 +23,10 @@ public class DisplayableBloodline implements Comparable<DisplayableBloodline> {
 		this.id = id;
 		this.disciplines = disciplines;
 	}
+	
+	public static DisplayableBloodline shortFrom(Bloodline t) {
+		return new DisplayableBloodline(t.getId(), null);
+	}
 
 	public static DisplayableBloodline from(Bloodline t) {
 		return new DisplayableBloodline(t.getId(), displayableDisciplinesFor(t));

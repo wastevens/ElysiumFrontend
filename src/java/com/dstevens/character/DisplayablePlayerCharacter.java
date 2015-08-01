@@ -40,9 +40,9 @@ public class DisplayablePlayerCharacter {
 	public DisplayableClan clan;
 	public DisplayableBloodline bloodline;
 	public List<DisplayableDiscipline> inClanDisciplines;
-	public int physicalAttribute;
-	public int socialAttribute;
-	public int mentalAttribute;
+	public Integer physicalAttribute;
+	public Integer socialAttribute;
+	public Integer mentalAttribute;
 	public List<DisplayablePhysicalAttributeFocus> physicalAttributeFocuses;
 	public List<DisplayableSocialAttributeFocus> socialAttributeFocuses;
 	public List<DisplayableMentalAttributeFocus> mentalAttributeFocuses;
@@ -63,8 +63,8 @@ public class DisplayablePlayerCharacter {
 	}
     
     public DisplayablePlayerCharacter(Integer id, String name, DisplayableSetting setting, int approval, DisplayableClan clan, DisplayableBloodline bloodline, List<DisplayableDiscipline> inClanDisciplines, 
-    		                          int physicalAttribute,
-    		                          int socialAttribute, int mentalAttribute, List<DisplayablePhysicalAttributeFocus> physicalAttributeFocuses,
+    		                          Integer physicalAttribute, Integer socialAttribute, Integer mentalAttribute, 
+    		                          List<DisplayablePhysicalAttributeFocus> physicalAttributeFocuses,
     		                          List<DisplayableSocialAttributeFocus> socialAttributeFocuses, 
     		                          List<DisplayableMentalAttributeFocus> mentalAttributeFocuses, 
     		                          List<DisplayablePlayerCharacterTrait> skills,
@@ -100,6 +100,16 @@ public class DisplayablePlayerCharacter {
 		this.flaws = flaws;
     }
 	
+    public DisplayablePlayerCharacter(Integer id, String name, DisplayableSetting setting, int approval, DisplayableClan clan, DisplayableBloodline bloodline) {
+    	this(id, name, setting, approval, clan, bloodline, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+	}
+
+	public static DisplayablePlayerCharacter listable(PlayerCharacter t) {
+    	return new DisplayablePlayerCharacter(t.getId(), t.getName(), DisplayableSetting.from(t.getSetting()), t.getApprovalStatus().ordinal(),
+    			Optional.ofNullable(t.getClan()).map((Clan c) -> DisplayableClan.shortFrom(c)).orElse(null),
+    			Optional.ofNullable(t.getBloodline()).map((Bloodline b) -> DisplayableBloodline.shortFrom(b)).orElse(null));
+    }
+    
     public static DisplayablePlayerCharacter from(PlayerCharacter t) {
     	Skill[] allSkills = Skill.values();
     	Set<CharacterSkill> characterSkills = t.getSkills();
@@ -109,7 +119,6 @@ public class DisplayablePlayerCharacter {
 				characterSkills.add(new CharacterSkill(skill, 0, null, null));
 			}
 		}
-    	
     	
 		List<DisplayablePlayerCharacterTrait> displayableSkills = characterSkills.stream().map((CharacterSkill m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating(), m.trait().detailLevel(), m.getSpecialization(), m.getFocuses())).collect(Collectors.toList());
 		return new DisplayablePlayerCharacter(t.getId(), t.getName(), 

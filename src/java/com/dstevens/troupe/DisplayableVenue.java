@@ -21,6 +21,10 @@ public class DisplayableVenue {
 		this.id = id;
 		this.settings = setings;
 	}
+	
+	public static DisplayableVenue listable(Venue v) {
+		return new DisplayableVenue(v.getId(), null);
+	}
 
 	public static DisplayableVenue from(Venue v) {
 		return new DisplayableVenue(v.getId(), v.getSettings().stream().map((Setting s) -> DisplayableSetting.from(s)).collect(Collectors.toList()));

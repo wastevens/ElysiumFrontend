@@ -35,6 +35,10 @@ public class DisplayableTroupe implements Comparable<DisplayableTroupe> {
 		this.characters = characters;
 	}
 	
+	public static DisplayableTroupe listable(Troupe t) {
+		return new DisplayableTroupe(t.getId(), t.getName(), DisplayableVenue.listable(t.getVenue()), null, null);
+	}
+	
 	public static DisplayableTroupe from(Troupe t) {
 		return new DisplayableTroupe(t.getId(), t.getName(), DisplayableVenue.from(t.getVenue()), 
 				                     t.getStorytellers().stream().map((User u) -> DisplayableUser.fromOn(u, new Date())).collect(Collectors.toSet()), 
