@@ -46,7 +46,7 @@ alter table Flaws add constraint PlayerCharacter_Flaws_FK foreign key (character
 alter table Merits add constraint PlayerCharacter_Merits_FK foreign key (character_id) references PlayerCharacter (id);
 alter table Patronage_payments add constraint Patronage_PatronagePaymentReceipt_FK foreign key (Patronage_id) references Patronage (id);
 alter table PlayerCharacterOwnership add constraint PlayerCharacterOwnership_PlayerCharacter_FK foreign key (character_id) references PlayerCharacter (id);
-alter table PlayerCharacterOwnership_statusChanges add constraint FK_634bae9tq2au78wsfr3uq7f4e foreign key (PlayerCharacterOwnership_id) references PlayerCharacterOwnership (id);
+alter table PlayerCharacterOwnership_statusChanges add constraint PlayerCharacterOwnership_PlayerStatusChange_FK foreign key (PlayerCharacterOwnership_id) references PlayerCharacterOwnership (id);
 alter table PlayerCharacter_AppliedTraitChanges add constraint AppliedTraitChanges_PlayerCharacter_FK foreign key (appliedTraitChanges_id) references TraitChanges (id);
 alter table PlayerCharacter_AppliedTraitChanges add constraint PlayerCharacter_AppliedTraitChanges_FK foreign key (PlayerCharacter_id) references PlayerCharacter (id);
 alter table PlayerCharacter_ExperienceAward add constraint ExperienceAwards_PlayerCharacter_FK foreign key (experienceAwards_id) references ExperienceAward (id);

@@ -32,7 +32,7 @@ import static com.dstevens.collections.Lists.sort;
 @Entity
 @Table(name="PlayerCharacterOwnership")
 public class PlayerCharacterOwnership {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "tableGen")
 	@TableGenerator(name = "tableGen", pkColumnValue = "user", table="ID_Sequences", allocationSize=1 )
@@ -50,6 +50,7 @@ public class PlayerCharacterOwnership {
 	@ElementCollection
 	@JoinColumn(name="playerCharacterOwnership_id", referencedColumnName="id")
     @OrderColumn(name="order_by")
+	@ForeignKey(name="PlayerCharacterOwnership_PlayerStatusChange_FK", inverseName="PlayerStatusChange_PlayerCharacterOwnership_FK")
 	private final List<PlayerStatusChange> statusChanges;
 	
 	//Hibernate only
