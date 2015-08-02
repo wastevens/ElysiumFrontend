@@ -19,6 +19,7 @@
         <li class="active"><a href="#">Home</a></li>
         <li><a href="/admin/page/users">Manage Users</a></li>
         <li><a href="/admin/page/troupes">Manage Troupes</a></li>
+        <li><a href="/admin/page/events">Manage Events</a></li>
         <li><a href="javascript:formSubmit()">Logout</a></li>
       </ul>
     </div>
