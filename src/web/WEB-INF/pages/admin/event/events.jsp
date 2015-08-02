@@ -5,6 +5,8 @@
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-resource.js"></script>
 <script src="/js/admin/event.js"></script>
+<script src="/js/admin/services/eventRepository.js"></script>
+<script src="/js/services/authorization.js"></script>
 </head>
 
 <body ng-app="admin.event">
@@ -32,7 +34,7 @@
 </nav>
 
 <div class="container">
-	<manage-events></manage-events>
+	<list-events></list-events>
 </div>
 </body>
 </html>
