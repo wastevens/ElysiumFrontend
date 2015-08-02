@@ -1,3 +1,5 @@
+server.host=@SERVER_HOST@
+
 db.driver=@DB_DRIVER@
 db.host=@DB_HOST@
 db.name=@DB_NAME@

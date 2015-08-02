@@ -62,6 +62,8 @@
     <copy file="app.properties.template" tofile="${src.dir}/app.properties">
         <filterchain>
                <replacetokens>
+                   <token key="SERVER_HOST"   value="${s.SERVER_HOST}"/>
+                   
                    <token key="DB_DRIVER"   value="${s.DB_DRIVER}"/>
                    <token key="DB_HOST"     value="${s.DB_HOST}"/>
                    <token key="DB_NAME"     value="${s.DB_NAME}"/>
