@@ -2,6 +2,9 @@ create table AttributeValue (attribute_type varchar(31) not null, id integer not
 create table Backgrounds (id integer not null, rating integer, specialization varchar(255), background integer, character_id integer, primary key (id));
 create table Backgrounds_Focuses (CharacterBackground_id integer not null, focuses varchar(255));
 create table Disciplines (id integer not null, rating integer, trait integer not null, character_id integer, primary key (id));
+create table Event (id integer not null, name varchar(255), venue integer, troupe_id integer, primary key (id));
+create table EventStatusHistory (event_id integer not null, status integer, statusChanged datetime, order_by integer not null, primary key (event_id, order_by));
+create table Event_PlayerCharacters (event_id integer not null, playerCharacter_id integer not null, primary key (event_id, playerCharacter_id));
 create table ExperienceAward (id integer not null, awardedFor varchar(255), awardedOn datetime, experience integer, primary key (id));
 create table Flaws (id integer not null, specialization varchar(255), trait integer not null, character_id integer, primary key (id));
 create table Merits (id integer not null, specialization varchar(255), trait integer not null, character_id integer, primary key (id));
@@ -40,6 +43,10 @@ alter table User_Patronage add constraint User_Patronage_UC  unique (patronage_i
 alter table Backgrounds add constraint PlayerCharacter_Backgrounds_FK foreign key (character_id) references PlayerCharacter (id);
 alter table Backgrounds_Focuses add constraint CharacterBackground_focuses_FK foreign key (CharacterBackground_id) references Backgrounds (id);
 alter table Disciplines add constraint PlayerCharacter_Disciplines_FK foreign key (character_id) references PlayerCharacter (id);
+alter table Event add constraint Event_Troupe_FK foreign key (troupe_id) references Troupe (id);
+alter table EventStatusHistory add constraint Event_EventStatusHistory_FK foreign key (event_id) references Event (id);
+alter table Event_PlayerCharacters add constraint PlayerCharacters_Event_FK foreign key (playerCharacter_id) references PlayerCharacter (id);
+alter table Event_PlayerCharacters add constraint Event_PlayerCharacters_FK foreign key (event_id) references Event (id);
 alter table Flaws add constraint PlayerCharacter_Flaws_FK foreign key (character_id) references PlayerCharacter (id);
 alter table Merits add constraint PlayerCharacter_Merits_FK foreign key (character_id) references PlayerCharacter (id);
 alter table Patronage_payments add constraint Patronage_PatronagePaymentReceipt_FK foreign key (Patronage_id) references Patronage (id);

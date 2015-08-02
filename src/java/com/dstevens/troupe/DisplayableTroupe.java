@@ -38,6 +38,10 @@ public class DisplayableTroupe implements Comparable<DisplayableTroupe> {
 	public static DisplayableTroupe listable(Troupe t) {
 		return new DisplayableTroupe(t.getId(), t.getName(), DisplayableVenue.listable(t.getVenue()), null, null);
 	}
+
+	public static DisplayableTroupe idAndName(Troupe t) {
+		return new DisplayableTroupe(t.getId(), t.getName(), null, null, null);
+	}
 	
 	public static DisplayableTroupe from(Troupe t) {
 		return new DisplayableTroupe(t.getId(), t.getName(), DisplayableVenue.from(t.getVenue()), 

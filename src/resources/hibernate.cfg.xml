@@ -20,6 +20,8 @@
     <mapping class="com.dstevens.character.trait.distinction.merit.CharacterMerit"/>
     <mapping class="com.dstevens.character.trait.status.CharacterStatus"/>
     
+    <mapping class="com.dstevens.event.Event"/>
+    <mapping class="com.dstevens.event.EventStatusChange"/>
     <mapping class="com.dstevens.troupe.Troupe"/>
     <mapping class="com.dstevens.user.PlayerCharacterOwnership"/>
     <mapping class="com.dstevens.user.User"/>
