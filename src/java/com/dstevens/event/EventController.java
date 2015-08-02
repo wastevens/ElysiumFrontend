@@ -14,16 +14,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.dstevens.character.PlayerCharacterRepository;
+import com.dstevens.troupe.TroupeRepository;
 import com.google.gson.Gson;
 
 @Controller
 public class EventController {
 
+	private final PlayerCharacterRepository characterRepository;
+	private final TroupeRepository troupeRepository;
 	private final EventRepository eventRepository;
 
 	@Autowired
-	public EventController(EventRepository eventRepository) {
+	public EventController(EventRepository eventRepository, TroupeRepository troupeRepository, PlayerCharacterRepository characterRepository) {
 		this.eventRepository = eventRepository;
+		this.troupeRepository = troupeRepository;
+		this.characterRepository = characterRepository;
 	}
 	
 	@RequestMapping(value = "/events", method = RequestMethod.GET)
@@ -45,6 +51,6 @@ public class EventController {
 	@ResponseStatus(value=HttpStatus.CREATED)
 	@RequestMapping(value = "/events", method = RequestMethod.POST)
 	public @ResponseBody void  addEvent(@RequestBody final DisplayableEvent event) {
-		throw new RuntimeException("NYI");
+		eventRepository.save(event.to(troupeRepository, characterRepository));
 	}
 }

@@ -3,12 +3,12 @@ package com.dstevens.event;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.ForeignKey;
 
 import com.dstevens.character.PlayerCharacter;
@@ -22,7 +22,6 @@ public class TroupeEvent extends Event {
 	@OneToOne
 	@JoinColumn(name="troupe_id", referencedColumnName="id")
     @ForeignKey(name="TroupeEvent_Troupe_FK", inverseName="Troupe_TroupeEvent_FK")
-	@Column(name="troupe")
 	private final Troupe troupe;
 
     //Used only for hibernate
@@ -39,6 +38,11 @@ public class TroupeEvent extends Event {
 
 	public Troupe getTroupe() {
 		return troupe;
+	}
+	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }
