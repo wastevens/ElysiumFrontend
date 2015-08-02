@@ -1,7 +1,6 @@
 package com.dstevens.event;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -9,55 +8,47 @@ import com.dstevens.character.DisplayablePlayerCharacter;
 import com.dstevens.character.PlayerCharacter;
 import com.dstevens.troupe.DisplayableTroupe;
 import com.dstevens.troupe.DisplayableVenue;
-import com.dstevens.troupe.Troupe;
 
 public class DisplayableEvent implements Comparable<DisplayableEvent> {
 
     public Integer id;
     public String name;
     public DisplayableVenue venue;
-    public DisplayableEventStatus eventStatus;
-    public List<DisplayableEventStatusChange> eventStatusChanges;
     public DisplayableTroupe troupe;
+    public Date eventDate;
+    public DisplayableEventStatus eventStatus;
     public Set<DisplayablePlayerCharacter> attendingCharacters;
-	
 
 	public static DisplayableEvent from(Event t) {
 		Integer id = t.getId();
 		String name = t.getName();
-		DisplayableVenue venue = DisplayableVenue.listable(t.getVenue());
-		DisplayableEventStatus eventStatus = DisplayableEventStatus.from(t.getCurrentStatus());
-		List<DisplayableEventStatusChange> eventStatusChanges = t.getEventStatusChanges().stream().map((EventStatusChange foo) -> DisplayableEventStatusChange.from(foo)).sorted().collect(Collectors.toList());
-		DisplayableTroupe troupe = Optional.ofNullable(t.getTroupe()).map((Troupe c) -> DisplayableTroupe.idAndName(c)).orElse(null);
+		DisplayableEventStatus eventStatus = DisplayableEventStatus.from(t.getEventStatus());
+		Date eventDate = t.getEventDate();
 		Set<DisplayablePlayerCharacter> attendingCharacters = t.getAttendingCharacters().stream().map((PlayerCharacter pc) -> DisplayablePlayerCharacter.listable(pc)).collect(Collectors.toSet()); 
-		return new DisplayableEvent(id, name, venue, eventStatus, eventStatusChanges, troupe, attendingCharacters);
+		return new DisplayableEvent(id, name, eventStatus, eventDate, attendingCharacters);
 	}
     
-	public static DisplayableEvent listable(Event t) {
+	public static DisplayableEvent reference(Event t) {
 		Integer id = t.getId();
 		String name = t.getName();
-		DisplayableVenue venue = DisplayableVenue.listable(t.getVenue());
-		DisplayableEventStatus eventStatus = DisplayableEventStatus.from(t.getCurrentStatus());
-		List<DisplayableEventStatusChange> eventStatusChanges = null;
-		DisplayableTroupe troupe = Optional.ofNullable(t.getTroupe()).map((Troupe c) -> DisplayableTroupe.idAndName(c)).orElse(null);
+		DisplayableEventStatus eventStatus = DisplayableEventStatus.from(t.getEventStatus());
+		Date eventDate = t.getEventDate();
 		Set<DisplayablePlayerCharacter> attendingCharacters = null; 
-		return new DisplayableEvent(id, name, venue, eventStatus, eventStatusChanges, troupe, attendingCharacters);
+		return new DisplayableEvent(id, name, eventStatus, eventDate, attendingCharacters);
 	}
 	
 	@Deprecated
 	//Jackson only
 	public DisplayableEvent() {
-		this(null, null, null, null, null, null, null);
+		this(null, null, null, null, null);
 	}
 
-	public DisplayableEvent(Integer id, String name, DisplayableVenue venue, DisplayableEventStatus eventStatus, List<DisplayableEventStatusChange> eventStatusChanges, 
-			                DisplayableTroupe troupe, Set<DisplayablePlayerCharacter> attendingCharacters) {
+	public DisplayableEvent(Integer id, String name, DisplayableEventStatus eventStatus, 
+			                Date eventDate, Set<DisplayablePlayerCharacter> attendingCharacters) {
 		this.id = id;
 		this.name = name;
-		this.venue = venue;
 		this.eventStatus = eventStatus;
-		this.eventStatusChanges = eventStatusChanges;
-		this.troupe = troupe;
+		this.eventDate = eventDate;
 		this.attendingCharacters = attendingCharacters;
 	}
 

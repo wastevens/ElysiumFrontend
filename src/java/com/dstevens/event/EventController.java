@@ -29,7 +29,7 @@ public class EventController {
 	@RequestMapping(value = "/events", method = RequestMethod.GET)
 	public @ResponseBody String getEvents() {
 		List<DisplayableEvent> collect = StreamSupport.stream(eventRepository.findAll().spliterator(), false).
-				             map((Event t) -> DisplayableEvent.listable(t)).
+				             map((Event t) -> DisplayableEvent.reference(t)).
 				             sorted().
 				             collect(Collectors.toList());
 		return new Gson().toJson(collect);

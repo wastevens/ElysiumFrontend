@@ -16,7 +16,6 @@
 	<classpathentry kind="lib" path="lib/default/contenttype.jar"/>
 	<classpathentry kind="lib" path="lib/default/Courier.jar"/>
 	<classpathentry kind="lib" path="lib/default/dom4j.jar"/>
-	<classpathentry kind="lib" path="lib/default/Elysium.jar" sourcepath="lib/sources/Elysium-sources.jar"/>
 	<classpathentry kind="lib" path="lib/default/freemarker.jar"/>
 	<classpathentry kind="lib" path="lib/default/gson.jar" sourcepath="lib/sources/gson-sources.jar"/>
 	<classpathentry kind="lib" path="lib/default/guava.jar"/>
@@ -75,13 +74,16 @@
 	<classpathentry kind="lib" path="lib/default/xml-apis.jar"/>
 	<classpathentry kind="lib" path="lib/default/spring-web.jar" sourcepath="lib/sources/spring-web-sources.jar"/>
 	<classpathentry kind="lib" path="lib/default/ant.jar"/>
-	<classpathentry kind="lib" path="lib/default/TheWheel.jar"/>
 	<classpathentry kind="lib" path="lib/default/commons-codec.jar"/>
 	<classpathentry kind="lib" path="lib/default/httpclient.jar"/>
 	<classpathentry kind="lib" path="lib/default/httpcore.jar"/>
 	<classpathentry kind="lib" path="lib/test/testDefault/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/test/testDefault/mockito-all.jar"/>
 	<classpathentry kind="lib" path="lib/test/testDefault/spring-test.jar"/>
+	<classpathentry kind="lib" path="lib/default/commons-fileupload.jar"/>
+	<classpathentry kind="lib" path="lib/default/commons-io.jar"/>
+	<classpathentry kind="lib" path="lib/default/Elysium.jar"/>
+	<classpathentry kind="lib" path="lib/default/TheWheel.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
