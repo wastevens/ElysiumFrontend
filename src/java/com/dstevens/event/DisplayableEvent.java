@@ -1,5 +1,7 @@
 package com.dstevens.event;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +20,7 @@ public class DisplayableEvent implements Comparable<DisplayableEvent> {
     public String name;
     public DisplayableVenue venue;
     public DisplayableTroupe troupe;
-    public Date eventDate;
+    public String eventDate;
     public DisplayableEventStatus eventStatus;
     public Set<DisplayablePlayerCharacter> attendingCharacters;
 
@@ -30,7 +32,7 @@ public class DisplayableEvent implements Comparable<DisplayableEvent> {
 		Set<DisplayablePlayerCharacter> attendingCharacters = t.getAttendingCharacters().stream().map((PlayerCharacter pc) -> DisplayablePlayerCharacter.listable(pc)).collect(Collectors.toSet());
 		DisplayableVenue venue = (t instanceof VenueEvent ? DisplayableVenue.listable(((VenueEvent)t).getVenue()) : null);
 		DisplayableTroupe troupe = (t instanceof TroupeEvent ? DisplayableTroupe.listable(((TroupeEvent)t).getTroupe()) : null);
-		return new DisplayableEvent(id, name, eventStatus, eventDate, attendingCharacters, venue, troupe);
+		return new DisplayableEvent(id, name, eventStatus, displayableDate(eventDate), attendingCharacters, venue, troupe);
 	}
     
 	public static DisplayableEvent reference(Event t) {
@@ -41,7 +43,7 @@ public class DisplayableEvent implements Comparable<DisplayableEvent> {
 		Set<DisplayablePlayerCharacter> attendingCharacters = null; 
 		DisplayableVenue venue = (t instanceof VenueEvent ? DisplayableVenue.listable(((VenueEvent)t).getVenue()) : null);
 		DisplayableTroupe troupe = (t instanceof TroupeEvent ? DisplayableTroupe.listable(((TroupeEvent)t).getTroupe()) : null);
-		return new DisplayableEvent(id, name, eventStatus, eventDate, attendingCharacters, venue, troupe);
+		return new DisplayableEvent(id, name, eventStatus, displayableDate(eventDate), attendingCharacters, venue, troupe);
 	}
 	
 	public Event to(TroupeRepository troupeRepository, PlayerCharacterRepository characterRepository) {
@@ -56,12 +58,24 @@ public class DisplayableEvent implements Comparable<DisplayableEvent> {
 	
 	private Event toTroupeEvent(TroupeRepository troupeRepository, PlayerCharacterRepository characterRepository) {
 		Set<PlayerCharacter> attendance = attendingCharacters.stream().map((DisplayablePlayerCharacter pc) -> characterRepository.findWithId(pc.id)).collect(Collectors.toSet());
-		return new TroupeEvent(id, name, eventDate, eventStatus.to(), attendance, troupeRepository.findWithId(troupe.id));
+		return new TroupeEvent(id, name, eventDate(), eventStatus.to(), attendance, troupeRepository.findWithId(troupe.id));
 	}
 	
 	private Event toVenueEvent(PlayerCharacterRepository characterRepository) {
 		Set<PlayerCharacter> attendance = attendingCharacters.stream().map((DisplayablePlayerCharacter pc) -> characterRepository.findWithId(pc.id)).collect(Collectors.toSet());
-		return new VenueEvent(id, name, eventDate, eventStatus.to(), attendance, venue.to());
+		return new VenueEvent(id, name, eventDate(), eventStatus.to(), attendance, venue.to());
+	}
+	
+	private static String displayableDate(Date date) {
+		return new SimpleDateFormat("yyyy-MM-dd").format(date);
+	}
+	
+	private Date eventDate() {
+		try {
+			return new SimpleDateFormat("yyyy-MM-dd").parse(eventDate);
+		} catch (ParseException e) {
+			throw new IllegalStateException("Event date cannot be parsed!", e);
+		}
 	}
 	
 	@Deprecated
@@ -71,7 +85,7 @@ public class DisplayableEvent implements Comparable<DisplayableEvent> {
 	}
 
 	public DisplayableEvent(Integer id, String name, DisplayableEventStatus eventStatus, 
-			                Date eventDate, Set<DisplayablePlayerCharacter> attendingCharacters,
+			                String eventDate, Set<DisplayablePlayerCharacter> attendingCharacters,
 			                DisplayableVenue venue, DisplayableTroupe troupe) {
 		this.id = id;
 		this.name = name;
