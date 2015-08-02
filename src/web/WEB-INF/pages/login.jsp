@@ -1,6 +1,11 @@
-<link rel="stylesheet" href = "/css/bootstrap.min.css">
 <html>
-<head><title>Login Page</title></head>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<title>Login Page</title>
+</head>
 <body>
 	<h1 style="text-align: center">Login to Elysium</h1>
 	<div id="login-box" class="well col-md-4 col-md-offset-4">

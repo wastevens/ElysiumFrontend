@@ -1,7 +1,8 @@
 angular.module('filters.vampire', []).
 filter('venue', [function() {
 	return function(input) {
-		return venues[input.id];
+		if(input) return venues[input.id];
+		return "";
 	};
 }]).
 filter('setting', [function() {

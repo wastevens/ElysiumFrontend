@@ -1,2 +1,17 @@
-{{events}}
+<div class="row">
+  <div class="col-md-2"><b>Name</b></div>
+  <div class="col-md-2"><b>Date</b></div>
+  <div class="col-md-2"><b>Status</b></div>
+  <div class="col-md-2"><b>Troupe</b></div>
+  <div class="col-md-2"><b>Venue</b></div>
+</div>
+<div class="row" ng-repeat="event in events">
+  <div class="col-md-2">{{event.name}}</div>
+  <div class="col-md-2">{{event.eventDate}}</div>
+  <div class="col-md-2">{{event.eventStatus|eventStatus}}</div>
+  <div class="col-md-2">{{event.troupe.name}}</div>
+  <div class="col-md-2">{{event.venue|venue}}</div>
+</div>
+
+<br>
 <manage-event event="event"></manage-event>
