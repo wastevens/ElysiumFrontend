@@ -42,7 +42,7 @@
   </div>
 </nav>
 
-<div class="container-fluid">
+<div class="container-fluid" ng-controller="eventsController" >
 	<list-events></list-events>
 </div>
 </body>

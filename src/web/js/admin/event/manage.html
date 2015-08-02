@@ -1,6 +1,18 @@
-<form ng-submit="submit()" ng-controller="updateEvent">
-<table>
-  <tr><td colspan='2'><input name="submit" type="submit" value="submit" /></td></tr>
-</table>
-<br>{{event}}
+<form ng-submit="submit()">
+<div class="row">
+  <div class="col-md-2"><input type='text' ng-model='event.name' /></div>
+  <div class="col-md-2"><input type='text' ng-model='event.eventDate' /></div>
+  <div class="col-md-2">{{event.eventStatus|eventStatus}}</div>
+  <div class="col-md-2">{{event.troupe.name}}</div>
+  <div class="col-md-2">{{event.venue|venue}}</div>
+</div>
+
+<div class="row">
+  <div class="col-md-2"><strong>Name</strong></div>
+  <div class="col-md-2"><strong>Player</strong></div>
+</div>
+<div class="row" ng-repeat="character in event.attendingCharacters">
+  <div class="col-md-2">{{character.name}}</div>
+</div>
+<input name="submit" type="submit" value="submit" />
 </form>

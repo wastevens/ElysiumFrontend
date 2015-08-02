@@ -2,14 +2,15 @@ angular.module('admin.event.services', ['admin.services.events']);
 angular.module('admin.event.sources', ['admin.event.services']);
 
 angular.module('admin.event.controllers', ['admin.event.services', 'admin.event.sources']).
-controller('manageEvents', ['$scope', 'eventRepository', function($scope, eventRepository) {
+controller('eventsController', ['$scope', 'eventRepository', function($scope, eventRepository) {
+	$scope.showEvent = function(id) {
+		eventRepository.getEvent(id).then(function(event) {
+			$scope.event = event;
+		});
+	};
+	
 	$scope.submit = function() {
-		console.log("manage events submit")
-	}
-}]).
-controller('updateEvent', ['$scope', 'eventRepository', function($scope, eventRepository) {
-	$scope.submit = function() {
-		console.log("update event submit")
+		console.log("events controller submit")
 	}
 }]);
 
@@ -21,17 +22,6 @@ directive('listEvents', ['eventRepository', function(eventRepository) {
 			eventRepository.getEvents().then(function(events) {
 				scope.events = events;
 				scope.event = events[0];
-			});
-		},
-		templateUrl: '/js/admin/event/display.html'
-	};
-}]).
-directive('listActiveEvents', ['eventRepository', function(eventRepository) {
-	return {
-		restrict: 'E',
-		link: function(scope, iElement, iAttrs) {
-			eventRepository.getActiveEvents().then(function(events) {
-				scope.events = events;
 			});
 		},
 		templateUrl: '/js/admin/event/display.html'

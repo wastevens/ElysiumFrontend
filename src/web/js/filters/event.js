@@ -1,6 +1,9 @@
 angular.module('filters.event', []).
 filter('eventStatus', [function() {
 	return function(input) {
-		return eventStatus[input.id];
+		if(input) {
+			return eventStatus[input.id];
+		}
+		return "";
 	};
 }]);
