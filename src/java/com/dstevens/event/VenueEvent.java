@@ -23,9 +23,9 @@ public class VenueEvent extends Event {
 	private final Venue venue;
 
     @ManyToMany(cascade={CascadeType.ALL})
-	@JoinTable(name="TroupeEvent_Attendance", joinColumns = @JoinColumn(name="event_id"), 
+	@JoinTable(name="VenueEvent_Attendance", joinColumns = @JoinColumn(name="event_id"), 
 	           inverseJoinColumns = @JoinColumn(name="playerCharacterOwnership_id"))
-	@ForeignKey(name="TroupeEvent_PlayerCharacterOwnership_FK", inverseName="PlayerCharacterOwnership_TroupeEvent_FK")
+	@ForeignKey(name="VenueEvent_PlayerCharacterOwnership_FK", inverseName="PlayerCharacterOwnership_TroupeEvent_FK")
     private final Set<PlayerCharacterOwnership> attendance;
 	
     //Used only for hibernate
