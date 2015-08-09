@@ -62,9 +62,7 @@ public class User implements UserDetails {
     @ForeignKey(name="User_Roles_FK")
     private Set<Role> roles;
 
-	@OneToMany(cascade={CascadeType.ALL})
-	@JoinColumn(name="user_id", referencedColumnName="id")
-	@ForeignKey(name="User_PlayerCharacterOwnerships_FK", inverseName="PlayerCharacterOwnerships_User_FK")
+	@OneToMany(cascade={CascadeType.ALL}, mappedBy="user")
     private Set<PlayerCharacterOwnership> characters;
 	
     @Column(name="firstName")

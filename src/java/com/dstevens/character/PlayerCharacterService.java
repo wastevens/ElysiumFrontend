@@ -36,7 +36,7 @@ public class PlayerCharacterService {
 	
 	public PlayerCharacter createCharacter(User user, Troupe troupe, Setting setting, String characterName) {
 		PlayerCharacter character = repository.update(factory.createPlayerCharacter(characterName, setting).beginCreation());
-		userRepository.save(user.withCharacter(new PlayerCharacterOwnership(character, troupe.getVenue(), secondaryCharacterStatus())));
+		userRepository.save(user.withCharacter(new PlayerCharacterOwnership(user, character, troupe.getVenue(), secondaryCharacterStatus())));
 		troupeRepository.save(troupe.withCharacter(character));
 		return character;
 	}

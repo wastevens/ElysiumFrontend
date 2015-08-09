@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
@@ -35,9 +36,14 @@ public class PlayerCharacterOwnership {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "tableGen")
-	@TableGenerator(name = "tableGen", pkColumnValue = "user", table="ID_Sequences", allocationSize=1 )
+	@TableGenerator(name = "tableGen", pkColumnValue = "pc_ownership", table="ID_Sequences", allocationSize=1 )
 	@Column(name="id", nullable=false, unique=true)
     private final Integer id;
+	
+	@ManyToOne
+	@JoinColumn(name="user")
+	@ForeignKey(name="PlayerCharacterOwnership_User_FK", inverseName="User_PlayerCharacterOwnership_FK")
+	private final User user;
 	
 	@OneToOne
 	@JoinColumn(name="character_id", referencedColumnName="id")
@@ -56,16 +62,17 @@ public class PlayerCharacterOwnership {
 	//Hibernate only
     @Deprecated
 	public PlayerCharacterOwnership() {
-    	this(null, null, null);
+    	this(null, null, null, null, null);
 		
 	}
     
-    public PlayerCharacterOwnership(PlayerCharacter character, Venue venue, PlayerStatusChange statusChange) {
-    	this(null, character, venue, list(statusChange));
+    public PlayerCharacterOwnership(User user, PlayerCharacter character, Venue venue, PlayerStatusChange statusChange) {
+    	this(null, user, character, venue, list(statusChange));
     }
 	
-    private PlayerCharacterOwnership(Integer id, PlayerCharacter character, Venue venue, List<PlayerStatusChange> statusChanges) {
+    private PlayerCharacterOwnership(Integer id, User user, PlayerCharacter character, Venue venue, List<PlayerStatusChange> statusChanges) {
 		this.id = id;
+		this.user = user;
 		this.character = character;
 		this.venue = venue;
 		this.statusChanges = statusChanges;
