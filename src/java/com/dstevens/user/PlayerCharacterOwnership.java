@@ -81,6 +81,10 @@ public class PlayerCharacterOwnership {
 	public Integer getId() {
 		return id;
 	}
+	
+	public User getUser() {
+		return user;
+	}
 
 	public PlayerCharacter getCharacter() {
 		return character;

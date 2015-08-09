@@ -55,27 +55,32 @@ public class DisplayablePlayerCharacter {
 	public List<DisplayablePlayerCharacterTrait> thaumaturgicalRituals;
 	public List<DisplayablePlayerCharacterTrait> merits;
 	public List<DisplayablePlayerCharacterTrait> flaws;
-	
-	//Jackson only
-    @Deprecated
+
+	// Jackson only
+	@Deprecated
 	public DisplayablePlayerCharacter() {
-		this(null, null, null, -1, null, null, null, 0, 0, 0, null, null, null, null, null, null, null, null, null, null, null, null);
+		this(null, null, null, -1, null, null, null, 0, 0, 0, null, null, null,
+				null, null, null, null, null, null, null, null, null);
 	}
-    
-    public DisplayablePlayerCharacter(Integer id, String name, DisplayableSetting setting, int approval, DisplayableClan clan, DisplayableBloodline bloodline, List<DisplayableDiscipline> inClanDisciplines, 
-    		                          Integer physicalAttribute, Integer socialAttribute, Integer mentalAttribute, 
-    		                          List<DisplayablePhysicalAttributeFocus> physicalAttributeFocuses,
-    		                          List<DisplayableSocialAttributeFocus> socialAttributeFocuses, 
-    		                          List<DisplayableMentalAttributeFocus> mentalAttributeFocuses, 
-    		                          List<DisplayablePlayerCharacterTrait> skills,
-    		                          List<DisplayablePlayerCharacterTrait> backgrounds, 
-    		                          List<DisplayablePlayerCharacterTrait> disciplines, 
-    		                          List<DisplayablePlayerCharacterTrait> techniques, 
-    		                          List<DisplayablePlayerCharacterTrait> elderPowers, 
-    		                          List<DisplayablePlayerCharacterTrait> necromanticRituals,
-    		                          List<DisplayablePlayerCharacterTrait> thaumaturgicalRituals, 
-    		                          List<DisplayablePlayerCharacterTrait> merits,
-    		                          List<DisplayablePlayerCharacterTrait> flaws) {
+
+	public DisplayablePlayerCharacter(Integer id, String name,
+			DisplayableSetting setting, int approval, DisplayableClan clan,
+			DisplayableBloodline bloodline,
+			List<DisplayableDiscipline> inClanDisciplines,
+			Integer physicalAttribute, Integer socialAttribute,
+			Integer mentalAttribute,
+			List<DisplayablePhysicalAttributeFocus> physicalAttributeFocuses,
+			List<DisplayableSocialAttributeFocus> socialAttributeFocuses,
+			List<DisplayableMentalAttributeFocus> mentalAttributeFocuses,
+			List<DisplayablePlayerCharacterTrait> skills,
+			List<DisplayablePlayerCharacterTrait> backgrounds,
+			List<DisplayablePlayerCharacterTrait> disciplines,
+			List<DisplayablePlayerCharacterTrait> techniques,
+			List<DisplayablePlayerCharacterTrait> elderPowers,
+			List<DisplayablePlayerCharacterTrait> necromanticRituals,
+			List<DisplayablePlayerCharacterTrait> thaumaturgicalRituals,
+			List<DisplayablePlayerCharacterTrait> merits,
+			List<DisplayablePlayerCharacterTrait> flaws) {
 		this.id = id;
 		this.name = name;
 		this.setting = setting;
@@ -98,50 +103,112 @@ public class DisplayablePlayerCharacter {
 		this.thaumaturgicalRituals = thaumaturgicalRituals;
 		this.merits = merits;
 		this.flaws = flaws;
-    }
-	
-    public DisplayablePlayerCharacter(Integer id, String name, DisplayableSetting setting, int approval, DisplayableClan clan, DisplayableBloodline bloodline) {
-    	this(id, name, setting, approval, clan, bloodline, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+	}
+
+	public DisplayablePlayerCharacter(Integer id, String name,
+			DisplayableSetting setting, int approval, DisplayableClan clan,
+			DisplayableBloodline bloodline) {
+		this(id, name, setting, approval, clan, bloodline, null, null, null,
+				null, null, null, null, null, null, null, null, null, null,
+				null, null, null);
 	}
 
 	public static DisplayablePlayerCharacter listable(PlayerCharacter t) {
-    	return new DisplayablePlayerCharacter(t.getId(), t.getName(), DisplayableSetting.from(t.getSetting()), t.getApprovalStatus().ordinal(),
-    			Optional.ofNullable(t.getClan()).map((Clan c) -> DisplayableClan.shortFrom(c)).orElse(null),
-    			Optional.ofNullable(t.getBloodline()).map((Bloodline b) -> DisplayableBloodline.shortFrom(b)).orElse(null));
-    }
-    
-    public static DisplayablePlayerCharacter from(PlayerCharacter t) {
-    	Skill[] allSkills = Skill.values();
-    	Set<CharacterSkill> characterSkills = t.getSkills();
-    	for (Skill skill : allSkills) {
-			if(skill.detailLevel().equals(DetailLevel.REQUIRES_SPECIALIZATION) ||
-			  characterSkills.stream().noneMatch((CharacterSkill cs) -> cs.trait().equals(skill))) {
+		return new DisplayablePlayerCharacter(
+				t.getId(),
+				t.getName(),
+				DisplayableSetting.from(t.getSetting()),
+				t.getApprovalStatus().ordinal(),
+				Optional.ofNullable(t.getClan())
+						.map((Clan c) -> DisplayableClan.shortFrom(c))
+						.orElse(null),
+				Optional.ofNullable(t.getBloodline())
+						.map((Bloodline b) -> DisplayableBloodline.shortFrom(b))
+						.orElse(null));
+	}
+
+	public static DisplayablePlayerCharacter from(PlayerCharacter t) {
+		Skill[] allSkills = Skill.values();
+		Set<CharacterSkill> characterSkills = t.getSkills();
+		for (Skill skill : allSkills) {
+			if (skill.detailLevel().equals(DetailLevel.REQUIRES_SPECIALIZATION)
+					|| characterSkills.stream().noneMatch(
+							(CharacterSkill cs) -> cs.trait().equals(skill))) {
 				characterSkills.add(new CharacterSkill(skill, 0, null, null));
 			}
 		}
-    	
-		List<DisplayablePlayerCharacterTrait> displayableSkills = characterSkills.stream().map((CharacterSkill m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating(), m.trait().detailLevel(), m.getSpecialization(), m.getFocuses())).collect(Collectors.toList());
-		return new DisplayablePlayerCharacter(t.getId(), t.getName(), 
-				 DisplayableSetting.from(t.getSetting()), 
-                 t.getApprovalStatus().ordinal(), 
-                 Optional.ofNullable(t.getClan()).map((Clan c) -> DisplayableClan.from(c)).orElse(null), 
-                 Optional.ofNullable(t.getBloodline()).map((Bloodline b) -> DisplayableBloodline.from(b)).orElse(null),
-                 t.getInClanDisciplines().stream().map((Discipline d) -> DisplayableDiscipline.from(d)).collect(Collectors.toList()),
-                 t.getPhysicalAttribute(),
-                 t.getSocialAttribute(),
-                 t.getMentalAttribute(),
-                 sort(t.getPhysicalAttributeFocuses().stream().map((PhysicalAttributeFocus f) -> DisplayablePhysicalAttributeFocus.from(f)).collect(Collectors.toList())),
-                 sort(t.getSocialAttributeFocuses().stream().map((SocialAttributeFocus f) -> DisplayableSocialAttributeFocus.from(f)).collect(Collectors.toList())),
-                 sort(t.getMentalAttributeFocuses().stream().map((MentalAttributeFocus f) -> DisplayableMentalAttributeFocus.from(f)).collect(Collectors.toList())),
-                 sort(displayableSkills),
-                 sort(t.getBackgrounds().stream().map((CharacterBackground m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating(), m.trait().detailLevel(), m.getSpecialization(), m.getFocuses())).collect(Collectors.toList())),
-                 sort(t.getDisciplines().stream().map((CharacterDiscipline m) -> new DisplayablePlayerCharacterTrait(m.trait(), m.rating())).collect(Collectors.toList())),
-                 sort(t.getTechniques().stream().map((Technique m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),
-                 sort(t.getElderPowers().stream().map((ElderPower m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),
-                 sort(t.getNecromanticRituals().stream().map((NecromanticRitual m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),
-                 sort(t.getThaumaturgicalRituals().stream().map((ThaumaturgicalRitual m) -> new DisplayablePlayerCharacterTrait(m)).collect(Collectors.toList())),
-                 sort(t.getMerits().stream().map((CharacterMerit m) -> new DisplayablePlayerCharacterTrait(m.trait(), null, m.getSpecialization())).collect(Collectors.toList())),
-                 sort(t.getFlaws().stream().map((CharacterFlaw m) -> new DisplayablePlayerCharacterTrait(m.trait(), null, m.getSpecialization())).collect(Collectors.toList()))
-                 );
-    }
+
+		List<DisplayablePlayerCharacterTrait> displayableSkills = characterSkills
+				.stream()
+				.map((CharacterSkill m) -> new DisplayablePlayerCharacterTrait(
+						m.trait(), m.rating(), m.trait().detailLevel(), m
+								.getSpecialization(), m.getFocuses()))
+				.collect(Collectors.toList());
+		return new DisplayablePlayerCharacter(
+				t.getId(),
+				t.getName(),
+				DisplayableSetting.from(t.getSetting()),
+				t.getApprovalStatus().ordinal(),
+				Optional.ofNullable(t.getClan())
+						.map((Clan c) -> DisplayableClan.from(c)).orElse(null),
+				Optional.ofNullable(t.getBloodline())
+						.map((Bloodline b) -> DisplayableBloodline.from(b))
+						.orElse(null),
+				t.getInClanDisciplines().stream()
+						.map((Discipline d) -> DisplayableDiscipline.from(d))
+						.collect(Collectors.toList()),
+				t.getPhysicalAttribute(),
+				t.getSocialAttribute(),
+				t.getMentalAttribute(),
+				sort(t.getPhysicalAttributeFocuses()
+						.stream()
+						.map((PhysicalAttributeFocus f) -> DisplayablePhysicalAttributeFocus
+								.from(f)).collect(Collectors.toList())),
+				sort(t.getSocialAttributeFocuses()
+						.stream()
+						.map((SocialAttributeFocus f) -> DisplayableSocialAttributeFocus
+								.from(f)).collect(Collectors.toList())),
+				sort(t.getMentalAttributeFocuses()
+						.stream()
+						.map((MentalAttributeFocus f) -> DisplayableMentalAttributeFocus
+								.from(f)).collect(Collectors.toList())),
+				sort(displayableSkills),
+				sort(t.getBackgrounds()
+						.stream()
+						.map((CharacterBackground m) -> new DisplayablePlayerCharacterTrait(
+								m.trait(), m.rating(), m.trait().detailLevel(),
+								m.getSpecialization(), m.getFocuses()))
+						.collect(Collectors.toList())),
+				sort(t.getDisciplines()
+						.stream()
+						.map((CharacterDiscipline m) -> new DisplayablePlayerCharacterTrait(
+								m.trait(), m.rating()))
+						.collect(Collectors.toList())),
+				sort(t.getTechniques()
+						.stream()
+						.map((Technique m) -> new DisplayablePlayerCharacterTrait(
+								m)).collect(Collectors.toList())),
+				sort(t.getElderPowers()
+						.stream()
+						.map((ElderPower m) -> new DisplayablePlayerCharacterTrait(
+								m)).collect(Collectors.toList())),
+				sort(t.getNecromanticRituals()
+						.stream()
+						.map((NecromanticRitual m) -> new DisplayablePlayerCharacterTrait(
+								m)).collect(Collectors.toList())),
+				sort(t.getThaumaturgicalRituals()
+						.stream()
+						.map((ThaumaturgicalRitual m) -> new DisplayablePlayerCharacterTrait(
+								m)).collect(Collectors.toList())),
+				sort(t.getMerits()
+						.stream()
+						.map((CharacterMerit m) -> new DisplayablePlayerCharacterTrait(
+								m.trait(), null, m.getSpecialization()))
+						.collect(Collectors.toList())),
+				sort(t.getFlaws()
+						.stream()
+						.map((CharacterFlaw m) -> new DisplayablePlayerCharacterTrait(
+								m.trait(), null, m.getSpecialization()))
+						.collect(Collectors.toList())));
+	}
 }

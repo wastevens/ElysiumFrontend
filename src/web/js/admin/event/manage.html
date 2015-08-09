@@ -11,8 +11,9 @@
   <div class="col-md-2"><strong>Name</strong></div>
   <div class="col-md-2"><strong>Player</strong></div>
 </div>
-<div class="row" ng-repeat="character in event.attendingCharacters">
-  <div class="col-md-2">{{character.name}}</div>
+<div class="row" ng-repeat="attendee in event.attendees">
+  <div class="col-md-2">{{attendee.character.name}}</div>
+  <div class="col-md-2">{{attendee.user.email}}</div>
 </div>
 <input name="submit" type="submit" value="submit" />
 </form>
