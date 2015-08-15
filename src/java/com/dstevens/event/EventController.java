@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.dstevens.troupe.TroupeRepository;
+import com.dstevens.user.Role;
+import com.dstevens.user.User;
+import com.dstevens.web.config.RequestingUserProvider;
 import com.dstevens.web.config.ServerConfiguration;
 import com.google.gson.Gson;
 
@@ -27,12 +30,14 @@ public class EventController {
 	private final TroupeRepository troupeRepository;
 	private final EventRepository eventRepository;
 	private final ServerConfiguration serverConfiguration;
+	private final RequestingUserProvider userProvider;
 
 	@Autowired
-	public EventController(EventRepository eventRepository, TroupeRepository troupeRepository, ServerConfiguration serverConfiguration) {
+	public EventController(EventRepository eventRepository, TroupeRepository troupeRepository, ServerConfiguration serverConfiguration, RequestingUserProvider userProvider) {
 		this.eventRepository = eventRepository;
 		this.troupeRepository = troupeRepository;
 		this.serverConfiguration = serverConfiguration;
+		this.userProvider = userProvider;
 	}
 	
 	@RequestMapping(value = "/events", method = RequestMethod.GET)
@@ -54,7 +59,33 @@ public class EventController {
 	@ResponseStatus(value=HttpStatus.CREATED)
 	@RequestMapping(value = "/events", method = RequestMethod.POST)
 	public @ResponseBody String  addEvent(HttpServletRequest request, HttpServletResponse response, @RequestBody final DisplayableEvent event) {
-		Event savedEvent = eventRepository.save(event.to(troupeRepository));
+		Event eventToCreate = event.to(troupeRepository);
+		validateThatUserCanCreate(eventToCreate);
+		
+		Event savedEvent = eventRepository.save(eventToCreate);
 		return serverConfiguration.getHost() + "/events/" + savedEvent.getId(); 
+	}
+
+	private void validateThatUserCanCreate(Event event) {
+		if(event instanceof TroupeEvent) {
+			validateThatUserCanCreateTroupeEvent((TroupeEvent) event);
+		}
+		if(event instanceof VenueEvent) {
+			validateThatUserCanCreateVenueEvent((VenueEvent) event);
+		}
+	}
+
+	private void validateThatUserCanCreateVenueEvent(VenueEvent event) {
+		User user = userProvider.get();
+		if(!user.getRoles().contains(Role.ADMIN)) {
+			throw new IllegalArgumentException("Current user cannot create a venue event");
+		}
+	}
+
+	private void validateThatUserCanCreateTroupeEvent(TroupeEvent event) {
+		User user = userProvider.get();
+		if(!user.getRoles().contains(Role.ADMIN) && ! event.getTroupe().getStorytellers().contains(user)) {
+			throw new IllegalArgumentException("Current user cannot create a troupe event for troupe " + event.getTroupe().getId());
+		}
 	}
 }

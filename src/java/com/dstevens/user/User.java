@@ -20,9 +20,6 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.UniqueConstraint;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.ForeignKey;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,6 +29,8 @@ import org.springframework.stereotype.Component;
 
 import com.dstevens.character.PlayerCharacter;
 import com.dstevens.user.patronage.Patronage;
+import com.dstevens.utilities.Identified;
+import com.dstevens.utilities.IdentifiedObjectExtensions;
 
 import static com.dstevens.collections.Sets.set;
 import static com.dstevens.collections.Sets.setWith;
@@ -42,7 +41,7 @@ import static com.dstevens.collections.Sets.setWithout;
 @Table(name="User")
 @Component
 @Scope("session")
-public class User implements UserDetails {
+public class User implements UserDetails, Identified<Integer> {
 
 	private static final long serialVersionUID = -7180299088295506267L;
 
@@ -216,16 +215,16 @@ public class User implements UserDetails {
 	
 	@Override
 	public boolean equals(Object that) {
-		return EqualsBuilder.reflectionEquals(this, that);
+		return IdentifiedObjectExtensions.equals(this, that);
 	}
 	
 	@Override
 	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this);
+		return IdentifiedObjectExtensions.hashCodeFor(this);
 	}
 	
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
+		return IdentifiedObjectExtensions.toStringFor(this);
 	}
 }

@@ -46,12 +46,11 @@ public class ElysiumUserDetailsService implements UserDetailsService {
 		long duration = (24 * 60 * 60 * 1000);
 		Authorization token = new Authorization(authentication.getName(), new IdSupplier().get().replace(":", "-"), String.valueOf(currentTimeMillis + duration));
 		authorizations.put(token, authentication);
-		System.out.println(authorizations);
 		return token;
 	}
 
 	private Authorization findAuthorizationFor(Authentication authentication) {
-		Optional<Entry<Authorization, Authentication>> filter = authorizations.entrySet().stream().findFirst().filter(predicate(authentication));
+		Optional<Entry<Authorization, Authentication>> filter = authorizations.entrySet().stream().filter(predicate(authentication)).findFirst();
 		if(filter.isPresent()) {
 			return filter.get().getKey();
 		}
@@ -64,8 +63,7 @@ public class ElysiumUserDetailsService implements UserDetailsService {
 			@Override
 			public boolean test(Entry<Authorization, Authentication> t) {
 				Authentication value = t.getValue();
-				return value.getName().equals(authentication.getName()) && 
-					   value.getCredentials().equals(authentication.getCredentials());
+				return value.getName().equals(authentication.getName()) && value.getCredentials().equals(authentication.getCredentials());
 			}
 		};
 	}
