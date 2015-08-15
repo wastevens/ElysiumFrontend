@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.dstevens.character.PlayerCharacterRepository;
 import com.dstevens.troupe.TroupeRepository;
 import com.dstevens.web.config.ServerConfiguration;
 import com.google.gson.Gson;
@@ -25,16 +24,14 @@ import com.google.gson.Gson;
 @Controller
 public class EventController {
 
-	private final PlayerCharacterRepository characterRepository;
 	private final TroupeRepository troupeRepository;
 	private final EventRepository eventRepository;
 	private final ServerConfiguration serverConfiguration;
 
 	@Autowired
-	public EventController(EventRepository eventRepository, TroupeRepository troupeRepository, PlayerCharacterRepository characterRepository, ServerConfiguration serverConfiguration) {
+	public EventController(EventRepository eventRepository, TroupeRepository troupeRepository, ServerConfiguration serverConfiguration) {
 		this.eventRepository = eventRepository;
 		this.troupeRepository = troupeRepository;
-		this.characterRepository = characterRepository;
 		this.serverConfiguration = serverConfiguration;
 	}
 	
@@ -57,7 +54,7 @@ public class EventController {
 	@ResponseStatus(value=HttpStatus.CREATED)
 	@RequestMapping(value = "/events", method = RequestMethod.POST)
 	public @ResponseBody String  addEvent(HttpServletRequest request, HttpServletResponse response, @RequestBody final DisplayableEvent event) {
-		Event savedEvent = eventRepository.save(event.to(troupeRepository, characterRepository));
+		Event savedEvent = eventRepository.save(event.to(troupeRepository));
 		return serverConfiguration.getHost() + "/events/" + savedEvent.getId(); 
 	}
 }

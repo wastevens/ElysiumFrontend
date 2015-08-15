@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.dstevens.character.Setting;
 import com.dstevens.utilities.Identified;
+import com.dstevens.utilities.IdentityUtilities;
 
 import static com.dstevens.collections.Lists.list;
 
@@ -20,6 +21,11 @@ public enum Venue implements Identified<Integer> {
 		this.settings = settings;
     }
 
+    
+	public static Venue from(int id) {
+		return IdentityUtilities.withId(id, Venue.values());
+	}
+	
 	@Override
 	public Integer getId() {
 		return id;

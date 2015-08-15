@@ -6,10 +6,10 @@ import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.dstevens.character.PlayerCharacterRepository;
 import com.dstevens.troupe.DisplayableTroupe;
 import com.dstevens.troupe.DisplayableVenue;
 import com.dstevens.troupe.TroupeRepository;
+import com.dstevens.troupe.Venue;
 import com.dstevens.user.DisplayablePlayerCharacterOwnership;
 import com.dstevens.user.PlayerCharacterOwnership;
 
@@ -20,7 +20,9 @@ public class DisplayableEvent implements Comparable<DisplayableEvent> {
     public Integer id;
     public String name;
     public DisplayableVenue venue;
+    public Integer venueId;
     public DisplayableTroupe troupe;
+    public Integer troupeId;
     public String eventDate;
     public DisplayableEventStatus eventStatus;
     public Set<DisplayablePlayerCharacterOwnership> attendees;
@@ -57,22 +59,22 @@ public class DisplayableEvent implements Comparable<DisplayableEvent> {
 		return new DisplayableEvent(id, name, eventStatus, displayableDate(eventDate), null, venue, troupe);
 	}
 	
-	public Event to(TroupeRepository troupeRepository, PlayerCharacterRepository characterRepository) {
-		if(troupe != null) {
-			return toTroupeEvent(troupeRepository, characterRepository);
+	public Event to(TroupeRepository troupeRepository) {
+		if(troupeId != null) {
+			return toTroupeEvent(troupeRepository);
 		}
-		if(venue != null) {
-			return toVenueEvent(characterRepository);
+		if(venueId != null) {
+			return toVenueEvent();
 		}
 		throw new IllegalArgumentException("Unknown event type for " + this);
 	}
 	
-	private Event toTroupeEvent(TroupeRepository troupeRepository, PlayerCharacterRepository characterRepository) {
-		return new TroupeEvent(id, name, eventDate(), eventStatus.to(), troupeRepository.findWithId(troupe.id), set());
+	private Event toTroupeEvent(TroupeRepository troupeRepository) {
+		return new TroupeEvent(id, name, eventDate(), eventStatus.to(), troupeRepository.findWithId(troupeId), set());
 	}
 	
-	private Event toVenueEvent(PlayerCharacterRepository characterRepository) {
-		return new VenueEvent(id, name, eventDate(), eventStatus.to(), venue.to(), set());
+	private Event toVenueEvent() {
+		return new VenueEvent(id, name, eventDate(), eventStatus.to(), Venue.from(venueId), set());
 	}
 	
 	private static String displayableDate(Date date) {
