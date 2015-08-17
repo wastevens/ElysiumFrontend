@@ -1,3 +1,3 @@
-<select ng-model='disciplines.discipline' ng-disabled="disciplines.length <= 2" ng-change="change({originalDisciplineOrdinal: '{{disciplines.discipline.id}}'})" ng-options="discipline as (discipline|discipline) for discipline in disciplines">
+<select ng-model='disciplines.discipline' ng-disabled="disciplines.length <= 2" ng-change="change({originalDisciplineOrdinal: '{{disciplines.discipline.id}}'})" ng-options="discipline as (discipline.id|discipline) for discipline in disciplines">
 	<option value="">-- Choose Discipline --</option>
 </select>

@@ -1,3 +1,3 @@
-<select ng-model='clans.clan' ng-change="change()" required='true' ng-options="clan as (clan|clan) for clan in clans.list">
+<select ng-model='clans.clan' ng-change="change()" required='true' ng-options="clan as (clan.id|clan) for clan in clans.list">
     <option value="">-- Choose Clan --</option>
 </select>

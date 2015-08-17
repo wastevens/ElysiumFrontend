@@ -5,10 +5,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-resource.js"></script>
-<script src="/js/resources/en_US/vampire/settings.js"></script>
+<script src="/js/sources/displayableValues.js"></script>
 <script src="/js/sources/vampire.js"></script>
 <script src="/js/filters/vampire.js"></script>
 <script src="/js/services/traitRepository.js"></script>

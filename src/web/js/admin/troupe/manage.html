@@ -1,7 +1,7 @@
 <form ng-submit="submit()" ng-controller="updateTroupe">
 <table>
   <tr><th>Name</th><td><input type='text' ng-model='troupe.name' required='true' /></td></tr>
-  <tr><th>Venue</th><td><select ng-model='venue' name='venue' required='true' ng-options="venue as (venue|venue) for venue in venues"></select></td></tr>
+  <tr><th>Venue</th><td><select ng-model='venue' name='venue' required='true' ng-options="venue as (venue.id|venue) for venue in venues"></select></td></tr>
   
   <tr><th>Storytellers</th><td><select multiple ng-model='storytellers' name='storytellers' required='true' ng-options="storyteller.email for storyteller in all_storytellers track by storyteller.id"></tr>
   

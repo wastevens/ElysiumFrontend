@@ -8,7 +8,7 @@
 	<tr>
 		<td>Venue:</td>
 		<td>
-			<select ng-model='venue' name='venue' required='true' ng-options="venue as (venue|venue) for venue in venues"></select>
+			<select ng-model='venue' name='venue' required='true' ng-options="venue as (venue.id|venue) for venue in venues"></select>
 		</td>
 	</tr>
 	<tr>

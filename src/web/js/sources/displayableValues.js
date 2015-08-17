@@ -3,6 +3,25 @@ displayableValues['en_US'] = [[[]]];
 displayableValues['en_US']['Vampire'] = [[]];
 
 var i = -1;
+displayableValues['en_US']['Vampire']['Venue'] = [];
+displayableValues['en_US']['Vampire']['Venue'][++i] = "Camarilla-Anarch-Independent Alliance";           
+displayableValues['en_US']['Vampire']['Venue'][++i] = "Sabbat";  
+
+var i = -1;
+settings = [];
+displayableValues['en_US']['Vampire']['Setting'] = [];
+displayableValues['en_US']['Vampire']['Setting'][++i] = "Camarilla";           
+displayableValues['en_US']['Vampire']['Setting'][++i] = "Anarch";  
+displayableValues['en_US']['Vampire']['Setting'][++i] = "Sabbat";  
+displayableValues['en_US']['Vampire']['Setting'][++i] = "Independent Alliance";  
+
+var i = -1;
+displayableValues['en_US']['Vampire']['EventStatus'] = [];
+displayableValues['en_US']['Vampire']['EventStatus'][++i] = "Pending";
+displayableValues['en_US']['Vampire']['EventStatus'][++i] = "Active";
+displayableValues['en_US']['Vampire']['EventStatus'][++i] = "Concluded";
+
+var i = -1;
 displayableValues['en_US']['Vampire']['Clan'] = [];
 displayableValues['en_US']['Vampire']['Clan'][++i] = "Assamite";              
 displayableValues['en_US']['Vampire']['Clan'][++i] = "Brujah";                
@@ -253,6 +272,35 @@ displayableValues['en_US']['Vampire']['NecromanticRitual'][++i] = "Ritual of Xip
 displayableValues['en_US']['Vampire']['NecromanticRitual'][++i] = "Strength of Rotten Flesh";
 displayableValues['en_US']['Vampire']['NecromanticRitual'][++i] = "Chill of Oblivion";
 displayableValues['en_US']['Vampire']['NecromanticRitual'][++i] = "Weight of the Tomb";
+
+var i = -1;
+displayableValues['en_US']['Vampire']['Skill'] = [];
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Academics";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Animal Ken";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Athletics";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Awareness";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Brawl";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Computer";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Crafts";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Dodge";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Drive";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Empathy";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Firearms";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Intimidation";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Investigation";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Leadership";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Linguistics";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Lore";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Medicine";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Melee";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Occult";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Performance";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Science";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Security";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Stealth";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Streetwise";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Subterfuge";
+displayableValues['en_US']['Vampire']['Skill'][++i] = "Survival";
 
 var i = -1;
 displayableValues['en_US']['Vampire']['Background'] = [];

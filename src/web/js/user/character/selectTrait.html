@@ -1,5 +1,5 @@
 <table><tr ng-repeat="trait in traits">
-<td>{{trait|picker:filter}} <input type=text ng-show="trait.displayableDetailLevel && (trait.displayableDetailLevel.id == 3 || trait.displayableDetailLevel.id == 4)" size="9" ng-model="trait.specialization"></td>
+<td>{{trait.id|picker:filter}} <input type=text ng-show="trait.displayableDetailLevel && (trait.displayableDetailLevel.id == 3 || trait.displayableDetailLevel.id == 4)" size="9" ng-model="trait.specialization"></td>
 <td>
 	<select ng-model="trait.rating" ng-show="trait.id || trait.id == 0" ng-change="change({trait: trait})" ng-options="rating as rating for rating in ratings">
 		<option value="">-- {{ratingsTitle}} --</option>

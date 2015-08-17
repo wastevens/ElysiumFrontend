@@ -37,6 +37,6 @@ directive('manageEvent', [function() {
 	};
 }]);
 
-angular.module('user.event.filters', ['filters.vampire', 'filters.event']);
+angular.module('user.event.filters', ['filters.vampire']);
 
 angular.module('admin.event', ['admin.event.controllers', 'admin.event.directives', 'admin.event.services', 'admin.event.sources', 'user.event.filters']);

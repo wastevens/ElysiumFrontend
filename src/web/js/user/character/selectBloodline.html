@@ -1,3 +1,3 @@
-<select ng-model='bloodlines.bloodline' ng-change="change()" required='true' ng-options="bloodline as (bloodline|bloodline) for bloodline in bloodlines.list">
+<select ng-model='bloodlines.bloodline' ng-change="change()" required='true' ng-options="bloodline as (bloodline.id|bloodline) for bloodline in bloodlines.list">
     <option value="">-- Choose Bloodline --</option>
 </select>

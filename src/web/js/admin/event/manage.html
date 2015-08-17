@@ -2,18 +2,14 @@
 <div class="row">
   <div class="col-md-2"><input type='text' ng-model='event.name' /></div>
   <div class="col-md-2"><input type='text' ng-model='event.eventDate' /></div>
+  <div class="col-md-2">
+    <select ng-model="event.eventStatus" ng-options="eventStatus as eventStatus for eventStatus in eventStatuses">
+        <option value="">-- Event Status --</option>
+    </select>
+  </div>
   <div class="col-md-2">{{event.eventStatus|eventStatus}}</div>
   <div class="col-md-2">{{event.troupe.name}}</div>
   <div class="col-md-2">{{event.venue|venue}}</div>
-</div>
-
-<div class="row">
-  <div class="col-md-2"><strong>Name</strong></div>
-  <div class="col-md-2"><strong>Player</strong></div>
-</div>
-<div class="row" ng-repeat="attendee in event.attendees">
-  <div class="col-md-2">{{attendee.character.name}}</div>
-  <div class="col-md-2">{{attendee.user.email}}</div>
 </div>
 <input name="submit" type="submit" value="submit" />
 </form>

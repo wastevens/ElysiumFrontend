@@ -1,5 +1,5 @@
 <table><tr><td>
-	<select ng-model="trait" ng-options="trait as (trait|picker:filter) for trait in traits">
+	<select ng-model="trait" ng-options="trait as (trait.id|picker:filter) for trait in traits">
 		<option value="">-- Choose {{traitTitle}} --</option>
 	</select>
 	<input type=text ng-show="trait.displayableDetailLevel && (trait.displayableDetailLevel.id == 3 || trait.displayableDetailLevel.id == 4)" size="9" ng-model="trait.specialization">
