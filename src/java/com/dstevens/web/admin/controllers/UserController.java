@@ -6,10 +6,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -17,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,16 +41,20 @@ import com.dstevens.user.patronage.Patronage;
 import com.dstevens.user.patronage.PatronageRepository;
 import com.google.gson.Gson;
 
+import static com.dstevens.collections.Sets.set;
+
 @Controller
 public class UserController {
 
     private final UserRepository userRepository;
     private final PatronageRepository patronageRepository;
+	private final Supplier<PasswordEncoder> passwordEncoderSupplier;
 
     @Autowired
-    public UserController(UserRepository userRepository, PatronageRepository patronageRepository) {
+    public UserController(UserRepository userRepository, PatronageRepository patronageRepository, Supplier<PasswordEncoder> passwordEncoderSupplier) {
         this.userRepository = userRepository;
         this.patronageRepository = patronageRepository;
+		this.passwordEncoderSupplier = passwordEncoderSupplier;
     }
     
     @RequestMapping(value ="/admin/users/upload", method = RequestMethod.POST)
@@ -56,7 +64,14 @@ public class UserController {
         	Path path = createTempFile();
             try (BufferedReader reader = readFileInto(multipartFile, path)) {
             	List<String> lines = reader.lines().collect(Collectors.toList());
-            	return "You successfully uploaded users: " + lines;
+            	for (String line : lines) {
+					String[] pieces = line.split(",");
+					String email = pieces[0];
+					Integer patronageYear = Integer.parseInt(pieces[1]);
+					Date expirationDate = getExpirationDateFrom(pieces);
+					userRepository.save(new User(email, passwordEncoderSupplier.get().encode("password"), set(Role.USER)).withPatronage(new Patronage(patronageYear, expirationDate, "")));
+				}
+            	return "You successfully uploaded " + lines.size() + " users";
             } catch (IOException e) {
 				throw new IllegalStateException("Could not read lines from multipart file", e);
 			} finally {
@@ -66,6 +81,14 @@ public class UserController {
             return "You failed to upload users because the file was empty.";
         }
     }
+
+	private Date getExpirationDateFrom(String[] pieces) {
+		try {
+			return new SimpleDateFormat("yyyy-MM-dd").parse(pieces[2]);
+		} catch (ParseException e) {
+			throw new IllegalStateException("Failed to import user " + pieces[0] + ": Expiration date " + pieces[2] + " was improperly formatted");
+		}
+	}
 
 	private void silentlyDelete(Path path) {
 		try {
