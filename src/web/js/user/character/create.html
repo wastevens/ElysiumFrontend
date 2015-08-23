@@ -14,15 +14,11 @@
     <tr>
         <td>Setting:</td>
         <td>
-            <select ng-model='setting' name='setting' required='true' ng-options="setting as (setting|setting) for setting in settings"></select>
+            <select ng-model='setting' name='setting' required='true' ng-options="setting as (setting.id|setting) for setting in settings"></select>
         </td>
     </tr>
 	<tr>
 		<td colspan='2'><input name="submit" type="submit" value="submit" /></td>
 	</tr>
 </table>
-<br>{{troupes}}
-<br>{{troupe}}
-<br>{{settings}}
-<br>{{setting}}
 </form>
