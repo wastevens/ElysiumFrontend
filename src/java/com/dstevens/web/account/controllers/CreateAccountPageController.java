@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.dstevens.config.Authorization;
+import com.dstevens.mail.MailMessage;
 import com.dstevens.mail.MailMessageFactory;
 import com.dstevens.suppliers.ClockSupplier;
 import com.dstevens.user.ElysiumUserDetailsService;
@@ -36,6 +38,8 @@ import static com.dstevens.collections.Sets.set;
  
 @Controller
 public class CreateAccountPageController {
+	
+	private static final Logger logger = Logger.getLogger(CreateAccountPageController.class);
 	
 	private final UserDao userDao;
 	private final MailMessageFactory messageFactory;
@@ -105,20 +109,26 @@ public class CreateAccountPageController {
 				body.append("\nTheir paypal receipt id for paying for patronage is " + user.getPatronage().getPayments().get(0).getPaymentReceiptIdentifier());
 			}
 		}
-		messageFactory.message().
-		from("database@undergroundtheater.org", "UT Database").
-		to("board@undergroundtheater.org").
-		subject("A new Underground Theater User Account has been created").
-		body(body.toString()).
-		send();		
+		send(messageFactory.message().
+		     from("database@undergroundtheater.org", "UT Database").
+		     to("board@undergroundtheater.org").
+		     subject("A new Underground Theater User Account has been created").
+		     body(body.toString()));
 	}
 
 	private void sendConfirmatoryEmailTo(String email) {
-		messageFactory.message().
-			from("database@undergroundtheater.org", "UT Database").
-			to(email).
-			subject("Your Underground Theater User Account has been created").
-			body("Thank you for creating an account with Underground Theater's character database.").
-			send();
+		send(messageFactory.message().
+		     from("database@undergroundtheater.org", "UT Database").
+		     to(email).
+		     subject("Your Underground Theater User Account has been created").
+		     body("Thank you for creating an account with Underground Theater's character database."));
+	}
+	
+	private void send(MailMessage mailMessage) {
+		try {
+			mailMessage.send();
+		} catch(Exception e) {
+			logger.error("Failed to send " + mailMessage, e);
+		}
 	}
 }
