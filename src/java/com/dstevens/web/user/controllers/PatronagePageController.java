@@ -27,6 +27,7 @@ import com.dstevens.user.patronage.PatronagePaymentReceipt;
 import com.dstevens.user.patronage.PatronageRepository;
 import com.dstevens.user.patronage.PaymentType;
 import com.dstevens.web.config.RequestingUserProvider;
+import com.dstevens.web.user.payment.DoExpressCheckoutPaymentResponse;
 import com.dstevens.web.user.payment.GetExpressCheckoutDetailsResponse;
 import com.dstevens.web.user.payment.PaypalExpressCheckout;
 import com.google.gson.Gson;
@@ -77,14 +78,14 @@ public class PatronagePageController {
 	@RequestMapping(value = "/user/patronage/payments/paypal/confirm", method = RequestMethod.POST)
 	public ModelAndView paypalPaymentConfirmSuccess(HttpServletRequest request, HttpServletResponse response,  
 			                                        @RequestParam String token, @RequestParam String payerId, @RequestParam String amount) {
-		paypalExpressCheckout.doExpressCheckoutPayment(token, payerId, amount);
+		DoExpressCheckoutPaymentResponse expressCheckoutPayment = paypalExpressCheckout.doExpressCheckoutPayment(token, payerId, amount);
 		User user = requestingUserProvider.get();
 		Patronage patronage = user.getPatronage();
 		
 		if(patronage == null) {
 			patronage = createPatronageFor(user);
 		}
-		patronage.getPayments().add(paypalPayment());
+		patronage.getPayments().add(paypalPayment(expressCheckoutPayment));
 		patronageRepository.save(incrementExpirationDateOf(patronage));
 		return getPatronagePage();
 	}
@@ -112,7 +113,7 @@ public class PatronagePageController {
 		return clockSupplier.get().instant();
 	}
 
-	private PatronagePaymentReceipt paypalPayment() {
-		return new PatronagePaymentReceipt(PaymentType.PAYPAL, new BigDecimal(20), "paypal receipt identifier", Date.from(clockSupplier.get().instant()));
+	private PatronagePaymentReceipt paypalPayment(DoExpressCheckoutPaymentResponse expressCheckoutPayment) {
+		return new PatronagePaymentReceipt(PaymentType.PAYPAL, new BigDecimal(expressCheckoutPayment.getAmount()), expressCheckoutPayment.getPaypalIdentifier(), Date.from(clockSupplier.get().instant()));
 	}
 }
