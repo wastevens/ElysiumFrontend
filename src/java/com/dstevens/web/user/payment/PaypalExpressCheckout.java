@@ -1,6 +1,7 @@
 package com.dstevens.web.user.payment;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class PaypalExpressCheckout {
 	@Value("${paypal.user:platfo_1255077030_biz_api1.gmail.com}") private String user;
 	@Value("${paypal.password:1255077037}") private String password;
 	@Value("${paypal.signature:Abg0gYcQyxQvnf2HDJkKtA-p6pqhA1k-KTYE0Gcy1diujFio4io5Vqjf}") private String signature;
-	@Value("${paypal.version:78}") private String version;
+	@Value("${paypal.version:124.0}") private String version;
 	@Value("${paypal.returnHost:http://localhost:8080}") private String returnHost;
 	
 	public String setUpPayment(int amount) {
@@ -44,10 +45,16 @@ public class PaypalExpressCheckout {
 		nvps.add(new BasicNameValuePair("PAYMENTREQUEST_0_CURRENCYCODE", "USD"));
 		nvps.add(new BasicNameValuePair("cancelUrl", returnHost + "/user/main"));
 		nvps.add(new BasicNameValuePair("returnUrl", returnHost + "/user/page/patronage/payments/paypal/confirm"));
+		UrlEncodedFormEntity urlEncodedFormEntity;
+		try {
+			urlEncodedFormEntity = new UrlEncodedFormEntity(nvps);
+			post.setEntity(urlEncodedFormEntity);
+		} catch (UnsupportedEncodingException e) {
+			throw new IllegalStateException("Failed to encode name-value pairs: " + nvps, e);
+		}
 		
 		try(CloseableHttpResponse response = client.execute(post)) {
 			HttpEntity entity = response.getEntity();
-			post.setEntity(new UrlEncodedFormEntity(nvps));
 			List<NameValuePair> responsePairs = URLEncodedUtils.parse(EntityUtils.toString(entity), Charset.defaultCharset());
 			EntityUtils.consume(entity);
 			Map<String, String> responseMap = responsePairs.stream().collect(Collectors.toMap((NameValuePair nvp) -> nvp.getName(), (NameValuePair nvp) -> nvp.getValue()));
