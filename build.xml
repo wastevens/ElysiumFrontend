@@ -72,6 +72,7 @@
                    <token key="DB_PASSWORD" value="${s.DB_PASSWORD}"/>
                    
                    <token key="PAYPAL_URL"        value="${s.PAYPAL_URL}"/>
+                   <token key="PAYPAL_APIURL"     value="${s.PAYPAL_APIURL}"/>
                    <token key="PAYPAL_USER"       value="${s.PAYPAL_USER}"/>
                    <token key="PAYPAL_PASSWORD"   value="${s.PAYPAL_PASSWORD}"/>
                    <token key="PAYPAL_SIGNATURE"  value="${s.PAYPAL_SIGNATURE}"/>

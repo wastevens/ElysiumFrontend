@@ -11,9 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -30,6 +32,8 @@ import com.google.gson.Gson;
 
 @Controller
 public class PatronagePageController {
+	
+	@Value("${paypal.url:https://www.sandbox.paypal.com}") private String paypalHost;
 	
 	private final PatronageRepository patronageRepository;
 	private final RequestingUserProvider requestingUserProvider;
@@ -56,11 +60,17 @@ public class PatronagePageController {
 	
 	@RequestMapping(value = "/user/patronage/payments/paypal", method = RequestMethod.POST)
 	public RedirectView makePaypalPayment(HttpServletRequest request, HttpServletResponse response) {
-		return new RedirectView("https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=" + paypalExpressCheckout.setUpPayment(1));
+		return new RedirectView(paypalHost + "/cgi-bin/webscr?cmd=_express-checkout&token=" + paypalExpressCheckout.setExpressCheckout(1));
 	}
 	
 	@RequestMapping(value = "/user/page/patronage/payments/paypal/confirm", method = RequestMethod.GET)
-	public ModelAndView paypalPaymentConfirm(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView paypalPaymentConfirm(HttpServletRequest request, HttpServletResponse response, 
+			                                 @RequestParam(value = "token", required=true) String confirmationToken, 
+			                                 @RequestParam(value = "PayerID", required=true) String payerId) {
+		paypalExpressCheckout.getExpressCheckout(confirmationToken);
+		Integer amount = 1;
+		paypalExpressCheckout.doExpressCheckoutPayment(confirmationToken, payerId, amount);
+		
 		return new ModelAndView("/user/paypal_confirm");
 	}
 	

@@ -8,6 +8,7 @@ db.user=@DB_USER@
 db.password=@DB_PASSWORD@
 
 paypal.url=@PAYPAL_URL@
+paypal.apiurl=@PAYPAL_APIURL@
 paypal.user=@PAYPAL_USER@
 paypal.password=@PAYPAL_PASSWORD@
 paypal.signature=@PAYPAL_SIGNATURE@
