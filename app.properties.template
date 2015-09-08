@@ -20,3 +20,5 @@ mail.host=@MAIL_HOST@
 mail.port=@MAIL_PORT@
 mail.user=@MAIL_USER@
 mail.password=@MAIL_PASSWORD@
+
+patronage.donation=@PATRONAGE_DONATION@

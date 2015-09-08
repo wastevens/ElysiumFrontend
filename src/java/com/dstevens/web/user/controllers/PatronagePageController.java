@@ -27,6 +27,7 @@ import com.dstevens.user.patronage.PatronagePaymentReceipt;
 import com.dstevens.user.patronage.PatronageRepository;
 import com.dstevens.user.patronage.PaymentType;
 import com.dstevens.web.config.RequestingUserProvider;
+import com.dstevens.web.user.payment.GetExpressCheckoutDetailsResponse;
 import com.dstevens.web.user.payment.PaypalExpressCheckout;
 import com.google.gson.Gson;
 
@@ -34,6 +35,7 @@ import com.google.gson.Gson;
 public class PatronagePageController {
 	
 	@Value("${paypal.url:https://www.sandbox.paypal.com}") private String paypalHost;
+	@Value("${patronage.donation:20.00}") private String patronageDonationAmount;
 	
 	private final PatronageRepository patronageRepository;
 	private final RequestingUserProvider requestingUserProvider;
@@ -60,22 +62,22 @@ public class PatronagePageController {
 	
 	@RequestMapping(value = "/user/patronage/payments/paypal", method = RequestMethod.POST)
 	public RedirectView makePaypalPayment(HttpServletRequest request, HttpServletResponse response) {
-		return new RedirectView(paypalHost + "/cgi-bin/webscr?cmd=_express-checkout&token=" + paypalExpressCheckout.setExpressCheckout(1));
+		return new RedirectView(paypalHost + "/cgi-bin/webscr?cmd=_express-checkout&token=" + paypalExpressCheckout.setExpressCheckout(patronageDonationAmount));
 	}
 	
 	@RequestMapping(value = "/user/page/patronage/payments/paypal/confirm", method = RequestMethod.GET)
 	public ModelAndView paypalPaymentConfirm(HttpServletRequest request, HttpServletResponse response, 
-			                                 @RequestParam(value = "token", required=true) String confirmationToken, 
-			                                 @RequestParam(value = "PayerID", required=true) String payerId) {
-		paypalExpressCheckout.getExpressCheckout(confirmationToken);
-		Integer amount = 1;
-		paypalExpressCheckout.doExpressCheckoutPayment(confirmationToken, payerId, amount);
-		
-		return new ModelAndView("/user/paypal_confirm");
+			                                 @RequestParam String token) {
+		GetExpressCheckoutDetailsResponse expressCheckoutResponse = paypalExpressCheckout.getExpressCheckoutDetails(token);
+		ModelAndView confirmPage = new ModelAndView("/user/paypal_confirm");
+		confirmPage.addObject("GetExpressCheckoutDetailsResponse", expressCheckoutResponse);
+		return confirmPage;
 	}
 	
 	@RequestMapping(value = "/user/patronage/payments/paypal/confirm", method = RequestMethod.POST)
-	public ModelAndView paypalPaymentConfirmSuccess(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView paypalPaymentConfirmSuccess(HttpServletRequest request, HttpServletResponse response,  
+			                                        @RequestParam String token, @RequestParam String payerId, @RequestParam String amount) {
+		paypalExpressCheckout.doExpressCheckoutPayment(token, payerId, amount);
 		User user = requestingUserProvider.get();
 		Patronage patronage = user.getPatronage();
 		

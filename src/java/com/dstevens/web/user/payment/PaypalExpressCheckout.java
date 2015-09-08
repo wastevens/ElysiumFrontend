@@ -31,7 +31,7 @@ public class PaypalExpressCheckout {
 	@Value("${paypal.version:124.0}") private String version;
 	@Value("${paypal.returnHost:http://localhost:8080}") private String returnHost;
 	
-	public String setExpressCheckout(int amount) {
+	public String setExpressCheckout(String amount) {
 		CloseableHttpClient client = HttpClients.createDefault();
 		HttpPost post = new HttpPost(url);
 		List<NameValuePair> nvps = new ArrayList<>();
@@ -41,7 +41,7 @@ public class PaypalExpressCheckout {
 		nvps.add(new BasicNameValuePair("METHOD", "SetExpressCheckout"));
 		nvps.add(new BasicNameValuePair("VERSION", version));
 		nvps.add(new BasicNameValuePair("PAYMENTREQUEST_0_PAYMENTACTION", "SALE"));
-		nvps.add(new BasicNameValuePair("PAYMENTREQUEST_0_AMT", Integer.toString(amount)));
+		nvps.add(new BasicNameValuePair("PAYMENTREQUEST_0_AMT", amount));
 		nvps.add(new BasicNameValuePair("PAYMENTREQUEST_0_CURRENCYCODE", "USD"));
 		nvps.add(new BasicNameValuePair("cancelUrl", returnHost + "/user/main"));
 		nvps.add(new BasicNameValuePair("returnUrl", returnHost + "/user/page/patronage/payments/paypal/confirm"));
@@ -60,13 +60,13 @@ public class PaypalExpressCheckout {
 			if("Success".equalsIgnoreCase(responseMap.get("ACK"))) {
 				return responseMap.get("TOKEN");
 			}
-			throw new IllegalStateException("Did not get a success message from Paypal. NVPs were: " + nvps +  "; Response was " + responseMap);
+			throw new IllegalStateException("Did not get a success message from Paypal executing SetExpressCheckout.  Response was " + responseMap);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
 	}
 	
-	public String getExpressCheckout(String token) {
+	public GetExpressCheckoutDetailsResponse getExpressCheckoutDetails(String token) {
 		CloseableHttpClient client = HttpClients.createDefault();
 		HttpPost post = new HttpPost(url);
 		List<NameValuePair> nvps = new ArrayList<>();
@@ -90,18 +90,16 @@ public class PaypalExpressCheckout {
 			EntityUtils.consume(entity);
 			Map<String, String> responseMap = responsePairs.stream().collect(Collectors.toMap((NameValuePair nvp) -> nvp.getName(), (NameValuePair nvp) -> nvp.getValue()));
 			if("Success".equalsIgnoreCase(responseMap.get("ACK"))) {
-				System.out.println("Success!");
-				System.out.println(responseMap);
-				return responseMap.get("PAYERID");
+				return new GetExpressCheckoutDetailsResponse(responseMap);
 			}
-			throw new IllegalStateException("Did not get a success message from Paypal. NVPs were: " + nvps +  "; Response was " + responseMap);
+			throw new IllegalStateException("Did not get a success message from Paypal executing GetExpressCheckoutDetails.  Response was " + responseMap);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
 	}
 	
 	
-	public void doExpressCheckoutPayment(String token, String payerId, Integer amount) {
+	public void doExpressCheckoutPayment(String token, String payerId, String amount) {
 		CloseableHttpClient client = HttpClients.createDefault();
 		HttpPost post = new HttpPost(url);
 		List<NameValuePair> nvps = new ArrayList<>();
@@ -113,7 +111,7 @@ public class PaypalExpressCheckout {
 		nvps.add(new BasicNameValuePair("TOKEN", token));
 		nvps.add(new BasicNameValuePair("PAYERID", payerId));
 		nvps.add(new BasicNameValuePair("PAYMENTREQUEST_0_PAYMENTACTION", "SALE"));
-		nvps.add(new BasicNameValuePair("PAYMENTREQUEST_0_AMT", Integer.toString(amount)));
+		nvps.add(new BasicNameValuePair("PAYMENTREQUEST_0_AMT", amount));
 		nvps.add(new BasicNameValuePair("PAYMENTREQUEST_0_CURRENCYCODE", "USD"));
 		try {
 			UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(nvps);
@@ -128,11 +126,9 @@ public class PaypalExpressCheckout {
 			EntityUtils.consume(entity);
 			Map<String, String> responseMap = responsePairs.stream().collect(Collectors.toMap((NameValuePair nvp) -> nvp.getName(), (NameValuePair nvp) -> nvp.getValue()));
 			if("Success".equalsIgnoreCase(responseMap.get("ACK"))) {
-				System.out.println("Success!");
-				System.out.println(responseMap);
 				return;
 			}
-			throw new IllegalStateException("Did not get a success message from Paypal. NVPs were: " + nvps +  "; Response was " + responseMap);
+			throw new IllegalStateException("Did not get a success message from Paypal executing DoExpressCheckoutPayment.  Response was " + responseMap);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}

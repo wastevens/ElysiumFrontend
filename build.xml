@@ -84,6 +84,8 @@
                    <token key="MAIL_PORT"     value="${s.MAIL_PORT}"/>
                    <token key="MAIL_USER"     value="${s.MAIL_USER}"/>
                    <token key="MAIL_PASSWORD" value="${s.MAIL_PASSWORD}"/>
+                   
+                   <token key="PATRONAGE_DONATION" value="${s.PATRONAGE_DONATION}"/>
                </replacetokens>
         </filterchain>
     </copy>
