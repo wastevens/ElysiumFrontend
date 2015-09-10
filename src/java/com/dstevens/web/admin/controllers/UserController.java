@@ -12,7 +12,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -20,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,22 +37,21 @@ import com.dstevens.user.User;
 import com.dstevens.user.UserRepository;
 import com.dstevens.user.patronage.Patronage;
 import com.dstevens.user.patronage.PatronageRepository;
+import com.dstevens.web.account.controllers.AccountCreator;
 import com.google.gson.Gson;
-
-import static com.dstevens.collections.Sets.set;
 
 @Controller
 public class UserController {
 
     private final UserRepository userRepository;
     private final PatronageRepository patronageRepository;
-	private final Supplier<PasswordEncoder> passwordEncoderSupplier;
+	private final AccountCreator accountCreator;
 
     @Autowired
-    public UserController(UserRepository userRepository, PatronageRepository patronageRepository, Supplier<PasswordEncoder> passwordEncoderSupplier) {
+    public UserController(UserRepository userRepository, PatronageRepository patronageRepository, AccountCreator accountCreator) {
         this.userRepository = userRepository;
         this.patronageRepository = patronageRepository;
-		this.passwordEncoderSupplier = passwordEncoderSupplier;
+		this.accountCreator = accountCreator;
     }
     
     @RequestMapping(value ="/admin/users/upload", method = RequestMethod.POST)
@@ -69,7 +66,8 @@ public class UserController {
 					String email = pieces[0];
 					Integer patronageYear = Integer.parseInt(pieces[1]);
 					Date expirationDate = getExpirationDateFrom(pieces);
-					userRepository.save(new User(email, passwordEncoderSupplier.get().encode("password"), set(Role.USER)).withPatronage(new Patronage(patronageYear, expirationDate, "")));
+					User newUser = accountCreator.createUser(email, "password", "", "", "", "");
+					userRepository.save(newUser.withPatronage(new Patronage(patronageYear, expirationDate, "")));
 				}
             	return "You successfully uploaded " + lines.size() + " users";
             } catch (IOException e) {
