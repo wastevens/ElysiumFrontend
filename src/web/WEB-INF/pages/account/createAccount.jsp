@@ -6,9 +6,8 @@
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="/login">
-                <i class="glyphicon glyphicon-tower"></i>
-                elysium
-                <small> v0.1</small>
+                The Green Room
+                <small> v1.0</small>
             </a>
         </div>
 
@@ -16,7 +15,7 @@
 </nav>
 <header class="jumbotron">
     <div class="container text-center">
-        <h1>Sign up for an Elysium Account</h1>
+        <h1>Sign up for The Green Room</h1>
     </div>
 </header>
 <div class="container">

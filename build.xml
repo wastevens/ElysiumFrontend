@@ -86,6 +86,9 @@
                    <token key="MAIL_PASSWORD" value="${s.MAIL_PASSWORD}"/>
                    
                    <token key="PATRONAGE_DONATION" value="${s.PATRONAGE_DONATION}"/>
+                   <token key="APP_NAME" value="${s.APP_NAME}"/>
+                   <token key="APP_ORGANZATION" value="${s.APP_ORGANZATION}"/>
+                   <token key="APP_ORG_URL" value="${s.APP_ORG_URL}"/>
                </replacetokens>
         </filterchain>
     </copy>

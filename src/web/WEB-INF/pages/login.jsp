@@ -7,7 +7,7 @@
 <title>Login Page</title>
 </head>
 <body>
-	<h1 style="text-align: center">Login to Elysium</h1>
+	<h1 style="text-align: center">Login to The Green Room</h1>
 	<div id="login-box" class="well col-md-4 col-md-offset-4">
 		<form name="f" action="/login" method="post">
 			<c:if test="${not empty error}">

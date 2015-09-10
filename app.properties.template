@@ -22,3 +22,6 @@ mail.user=@MAIL_USER@
 mail.password=@MAIL_PASSWORD@
 
 patronage.donation=@PATRONAGE_DONATION@
+app.name=@APP_NAME@
+app.organization=@APP_ORGANZATION@
+app.org_url=@APP_ORG_URL@
