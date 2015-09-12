@@ -56,7 +56,7 @@ public class AccountCreator {
 			user = user.withPatronage(patronage);
 		}
 		User newUser = userDao.save(user);
-		sendConfirmatoryEmailTo(email);
+		sendConfirmatoryEmailTo(newUser);
 		sendAdminEmailFor(newUser);
 		return newUser;
 	}
@@ -77,10 +77,10 @@ public class AccountCreator {
 		     body(body.toString()));
 	}
 
-	private void sendConfirmatoryEmailTo(String email) {
+	private void sendConfirmatoryEmailTo(User user) {
 		send(messageFactory.message().
 		     from("services@undergroundtheater.org", "UT Database").
-		     to(email).
+		     to(user.getEmail()).
 		     subject("Your Underground Theater User Account has been created").
 		     body("Thank you for creating an account with Underground Theater's character database, The Green Room!"));
 	}
