@@ -31,14 +31,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.dstevens.config.controllers.BadRequestException;
 import com.dstevens.config.controllers.ResourceNotFoundException;
-import com.dstevens.user.UserCreator;
 import com.dstevens.user.DisplayableUser;
 import com.dstevens.user.Role;
 import com.dstevens.user.User;
+import com.dstevens.user.UserCreator;
 import com.dstevens.user.UserRepository;
+import com.dstevens.user.guards.UserInvalidException;
 import com.dstevens.user.patronage.Patronage;
 import com.dstevens.user.patronage.PatronageRepository;
 import com.google.gson.Gson;
+
+import static com.dstevens.collections.Lists.list;
 
 @Controller
 public class UserController {
@@ -58,26 +61,32 @@ public class UserController {
     @ResponseStatus(value=HttpStatus.CREATED)
     public @ResponseBody String importUsers(@RequestParam("users") MultipartFile multipartFile) {
         if (!multipartFile.isEmpty()) {
+        	List<String> lines = list();
         	Path path = createTempFile();
             try (BufferedReader reader = readFileInto(multipartFile, path)) {
-            	List<String> lines = reader.lines().collect(Collectors.toList());
-            	for (String line : lines) {
-					String[] pieces = line.split(",");
-					String email = pieces[0];
-					Integer patronageYear = Integer.parseInt(pieces[1]);
-					Date expirationDate = getExpirationDateFrom(pieces);
-					User newUser = accountCreator.createUser(email, "password", "", "", "", "");
-					userRepository.save(newUser.withPatronage(new Patronage(patronageYear, expirationDate, "")));
-				}
-            	return "You successfully uploaded " + lines.size() + " users";
+            	lines.addAll(reader.lines().collect(Collectors.toList()));
             } catch (IOException e) {
 				throw new IllegalStateException("Could not read lines from multipart file", e);
 			} finally {
 				silentlyDelete(path);
 			}
-        } else {
-            return "You failed to upload users because the file was empty.";
+            StringBuilder response = new StringBuilder();
+        	for (String line : lines) {
+				String[] pieces = line.split(",");
+				String email = pieces[0];
+				try {
+					User newUser = accountCreator.createUser(email, "password", "", "", "", "");
+					Integer patronageYear = Integer.parseInt(pieces[1]);
+					Date expirationDate = getExpirationDateFrom(pieces);
+					userRepository.save(newUser.withPatronage(new Patronage(patronageYear, expirationDate, "")));
+					response.append("Successfully created user '").append(email).append("'\n");
+				} catch(UserInvalidException e) {
+					response.append("Error creating user '").append(email).append("': ").append(e.getMessage()).append("\n");
+				}
+        	}
+        	return response.toString();
         }
+        throw new IllegalArgumentException("Failed to upload users because the file was empty.");
     }
 
 	private Date getExpirationDateFrom(String[] pieces) {

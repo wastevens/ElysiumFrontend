@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.Year;
 import java.util.Date;
+import java.util.List;
 import java.util.function.Supplier;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import com.dstevens.mail.MailMessage;
 import com.dstevens.mail.MailMessageFactory;
 import com.dstevens.suppliers.ClockSupplier;
+import com.dstevens.user.guards.UserCreationGuard;
+import com.dstevens.user.guards.UserInvalidException;
 import com.dstevens.user.patronage.Patronage;
 import com.dstevens.user.patronage.PatronagePaymentReceipt;
 import com.dstevens.user.patronage.PaymentType;
@@ -30,13 +33,15 @@ public class UserCreator {
 	private final MailMessageFactory messageFactory;
 	private final ClockSupplier clockSupplier;
 	private final Supplier<PasswordEncoder> passwordEncoderSupplier;
+	private final List<UserCreationGuard> guards;
 
 	@Autowired
-	public UserCreator(UserDao userDao, Supplier<PasswordEncoder> passwordEncoderSupplier, MailMessageFactory messageFactory, ClockSupplier clockSupplier) {
+	public UserCreator(UserDao userDao, Supplier<PasswordEncoder> passwordEncoderSupplier, MailMessageFactory messageFactory, ClockSupplier clockSupplier, List<UserCreationGuard> guards) {
 		this.userDao = userDao;
 		this.passwordEncoderSupplier = passwordEncoderSupplier;
 		this.messageFactory = messageFactory;
 		this.clockSupplier = clockSupplier;
+		this.guards = guards;
 	}
 	
 	public User createUser(String email,
@@ -44,8 +49,13 @@ public class UserCreator {
 			               String firstName,
 			               String lastName,
 			               String originalUsername,
-			               String paymentReceiptIdentifier) {
+			               String paymentReceiptIdentifier) throws UserInvalidException {
 		User user = new User(email, passwordEncoderSupplier.get().encode(password), set(Role.USER)).withFirstName(firstName).withLastName(lastName);
+		
+		for (UserCreationGuard guard : guards) {
+			guard.validate(user);
+		}
+		
 		Instant now = clockSupplier.get().instant();
 		if(!StringUtils.isBlank(originalUsername)) {
 			Patronage patronage = new Patronage(Year.now(clockSupplier.get()).getValue(), Date.from(now), null);

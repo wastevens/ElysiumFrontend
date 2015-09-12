@@ -1,4 +1,4 @@
-package com.dstevens.user;
+package com.dstevens.user.guards;
 
 public class UserInvalidException extends Exception {
 
