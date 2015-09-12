@@ -44,7 +44,7 @@ public class UserCreator {
 		this.guards = guards;
 	}
 	
-	public User createUser(String email, String password, String firstName, String lastName) throws UserInvalidException {
+	public User create(String email, String password, String firstName, String lastName) throws UserInvalidException {
 		User user = new User(email, passwordEncoderSupplier.get().encode(password), set(Role.USER)).withFirstName(firstName).withLastName(lastName);
 		
 		for (UserCreationGuard guard : guards) {
@@ -52,8 +52,8 @@ public class UserCreator {
 		}
 		
 		user = userDao.save(user);
-		sendConfirmatoryEmailTo(user);
-		sendAdminEmailFor(user);
+//		sendConfirmatoryEmailTo(user);
+//		sendAdminEmailFor(user);
 		return user;
 	}
 	
@@ -63,7 +63,7 @@ public class UserCreator {
 			               String lastName,
 			               String originalUsername,
 			               String paymentReceiptIdentifier) throws UserInvalidException {
-		User user = createUser(email, password, firstName, lastName);
+		User user = create(email, password, firstName, lastName);
 		Instant now = clockSupplier.get().instant();
 		if(!StringUtils.isBlank(originalUsername)) {
 			Patronage patronage = new Patronage(Year.now(clockSupplier.get()).getValue(), Date.from(now), null);

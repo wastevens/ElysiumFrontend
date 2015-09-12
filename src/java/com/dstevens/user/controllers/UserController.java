@@ -60,7 +60,7 @@ public class UserController {
 			String[] pieces = line.split(",");
 			String email = pieces[0];
 			try {
-				User user = accountCreator.createUser(email, "password", "", "");
+				User user = accountCreator.create(email, "password", "", "");
 				Integer patronageYear = Integer.parseInt(pieces[1]);
 				Date expirationDate = getExpirationDateFrom(pieces);
 				userRepository.save(user.withPatronage(new Patronage(patronageYear, expirationDate, "")));

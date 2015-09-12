@@ -6,14 +6,18 @@ import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.dstevens.user.guards.UserInvalidException;
+
 @Repository
 public class UserRepository {
 
-	private UserDao dao;
+	private final UserDao dao;
+	private final UserCreator creator;
 
 	@Autowired
-	public UserRepository(UserDao dao) {
+	public UserRepository(UserDao dao, UserCreator userCreator) {
 		this.dao = dao;
+		this.creator = userCreator;
 	}
 
 	public Iterable<User> findAllUndeleted() {
@@ -43,6 +47,9 @@ public class UserRepository {
 		return dao.save(user);
 	}
 	
+	public User create(String email, String password, String firstName, String lastName) throws UserInvalidException {
+		return creator.create(email, password, firstName, lastName);
+	}
 	
 	
 }
