@@ -1,6 +1,8 @@
 package com.dstevens.user;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.Year;
 import java.util.Date;
@@ -52,8 +54,6 @@ public class UserCreator {
 		}
 		
 		user = userDao.save(user);
-//		sendConfirmatoryEmailTo(user);
-//		sendAdminEmailFor(user);
 		return user;
 	}
 	
@@ -105,6 +105,24 @@ public class UserCreator {
 			mailMessage.send();
 		} catch(Exception e) {
 			logger.error("Failed to send " + mailMessage, e);
+		}
+	}
+
+	public User create(String email, String patronageYear, String patronageExpiration) throws UserInvalidException {
+		User user = create(email, "password", "", "");
+		sendConfirmatoryEmailTo(user);
+		sendAdminEmailFor(user);
+		if(!StringUtils.isBlank(patronageYear) && !StringUtils.isBlank(patronageExpiration)) {
+			return userDao.save(user.withPatronage(new Patronage(Integer.parseInt(patronageYear), dateFrom(patronageExpiration), "")));
+		}
+		return user;
+	}
+	
+	private Date dateFrom(String date) {
+		try {
+			return new SimpleDateFormat("yyyy-MM-dd").parse(date);
+		} catch (ParseException e) {
+			throw new IllegalStateException("Expiration date " + date + " was improperly formatted");
 		}
 	}
 }

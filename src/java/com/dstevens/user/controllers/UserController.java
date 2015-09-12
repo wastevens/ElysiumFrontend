@@ -1,7 +1,5 @@
 package com.dstevens.user.controllers;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -29,6 +27,7 @@ import com.dstevens.config.controllers.ResourceNotFoundException;
 import com.dstevens.user.DisplayableUser;
 import com.dstevens.user.Role;
 import com.dstevens.user.User;
+import com.dstevens.user.UserCreator;
 import com.dstevens.user.UserRepository;
 import com.dstevens.user.guards.UserInvalidException;
 import com.dstevens.user.patronage.Patronage;
@@ -42,45 +41,34 @@ public class UserController {
     private final UserRepository userRepository;
     private final PatronageRepository patronageRepository;
 	private final MultipartFileReader fileReader;
+	private final UserCreator userCreator;
 
     @Autowired
-    public UserController(UserRepository userRepository, PatronageRepository patronageRepository, MultipartFileReader fileReader) {
+    public UserController(UserRepository userRepository, PatronageRepository patronageRepository, MultipartFileReader fileReader, UserCreator userCreator) {
         this.userRepository = userRepository;
         this.patronageRepository = patronageRepository;
 		this.fileReader = fileReader;
+		this.userCreator = userCreator;
     }
     
     @RequestMapping(value ="/admin/users/upload", method = RequestMethod.POST)
     @ResponseStatus(value=HttpStatus.CREATED)
     public @ResponseBody String importUsers(@RequestParam("users") MultipartFile users) {
-        StringBuilder response = new StringBuilder();
-    	for (String line : fileReader.readLinesFrom(users)) {
+    	return StringUtils.join(fileReader.readLinesFrom(users).stream().map((String line) -> {
 			String[] pieces = line.split(",");
 			String email = pieces[0];
 			String patronageYear = pieces[1];
 			String patronageExpiration = pieces[2];
 			try {
-				User user = userRepository.create(email, "password", "", "");
-				if(!StringUtils.isBlank(patronageYear) && !StringUtils.isBlank(patronageExpiration)) {
-					userRepository.save(user.withPatronage(new Patronage(Integer.parseInt(patronageYear), dateFrom(patronageExpiration), "")));
-				}
-				response.append("Successfully created user '").append(email).append("'\n");
+				userCreator.create(email, patronageYear, patronageExpiration);
+				return new StringBuffer("Successfully created user '").append(email).append("").toString();
 			} catch(UserInvalidException e) {
-				response.append("Error creating user '").append(email).append("': ").append(e.getMessage()).append("\n");
+				return new StringBuffer("Error creating user '").append(email).append("': ").append(e.getMessage()).toString();
 			}
-    	}
-    	return response.toString();
+		}).collect(Collectors.toList()), "\n");
     }
 
-	private Date dateFrom(String date) {
-		try {
-			return new SimpleDateFormat("yyyy-MM-dd").parse(date);
-		} catch (ParseException e) {
-			throw new IllegalStateException("Expiration date " + date + " was improperly formatted");
-		}
-	}
-
-    @RequestMapping(value = "/admin/users", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/users", method = RequestMethod.POST)
     @ResponseStatus(value=HttpStatus.CREATED)
     public @ResponseBody String createUser(@RequestBody DisplayableUser displayableUser, HttpServletResponse response) {
         Patronage patronage = patronageRepository.findPatronageByMembershipId(displayableUser.membershipId);
@@ -89,9 +77,7 @@ public class UserController {
         }
         User user = userRepository.save(displayableUser.to());
         if(patronage != null) {
-            user = user.withPatronage(patronage);
-//            patronage = patronage.forUser(user);
-            user = userRepository.save(user);
+            user = userRepository.save(user.withPatronage(patronage));
         }
         addLocationHeader(response, user);
         return new Gson().toJson(DisplayableUser.fromOn(user, new Date()));
