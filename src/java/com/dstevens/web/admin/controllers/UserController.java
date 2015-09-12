@@ -1,11 +1,5 @@
 package com.dstevens.web.admin.controllers;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -39,9 +33,8 @@ import com.dstevens.user.UserRepository;
 import com.dstevens.user.guards.UserInvalidException;
 import com.dstevens.user.patronage.Patronage;
 import com.dstevens.user.patronage.PatronageRepository;
+import com.dstevens.web.utilities.MultipartFileReader;
 import com.google.gson.Gson;
-
-import static com.dstevens.collections.Lists.list;
 
 @Controller
 public class UserController {
@@ -49,44 +42,34 @@ public class UserController {
     private final UserRepository userRepository;
     private final PatronageRepository patronageRepository;
 	private final UserCreator accountCreator;
+	private final MultipartFileReader fileReader;
 
     @Autowired
-    public UserController(UserRepository userRepository, PatronageRepository patronageRepository, UserCreator accountCreator) {
+    public UserController(UserRepository userRepository, PatronageRepository patronageRepository, UserCreator accountCreator, MultipartFileReader fileReader) {
         this.userRepository = userRepository;
         this.patronageRepository = patronageRepository;
 		this.accountCreator = accountCreator;
+		this.fileReader = fileReader;
     }
     
     @RequestMapping(value ="/admin/users/upload", method = RequestMethod.POST)
     @ResponseStatus(value=HttpStatus.CREATED)
-    public @ResponseBody String importUsers(@RequestParam("users") MultipartFile multipartFile) {
-        if (!multipartFile.isEmpty()) {
-        	List<String> lines = list();
-        	Path path = createTempFile();
-            try (BufferedReader reader = readFileInto(multipartFile, path)) {
-            	lines.addAll(reader.lines().collect(Collectors.toList()));
-            } catch (IOException e) {
-				throw new IllegalStateException("Could not read lines from multipart file", e);
-			} finally {
-				silentlyDelete(path);
+    public @ResponseBody String importUsers(@RequestParam("users") MultipartFile users) {
+        StringBuilder response = new StringBuilder();
+    	for (String line : fileReader.readLinesFrom(users)) {
+			String[] pieces = line.split(",");
+			String email = pieces[0];
+			try {
+				User newUser = accountCreator.createUser(email, "password", "", "", "", "");
+				Integer patronageYear = Integer.parseInt(pieces[1]);
+				Date expirationDate = getExpirationDateFrom(pieces);
+				userRepository.save(newUser.withPatronage(new Patronage(patronageYear, expirationDate, "")));
+				response.append("Successfully created user '").append(email).append("'\n");
+			} catch(UserInvalidException e) {
+				response.append("Error creating user '").append(email).append("': ").append(e.getMessage()).append("\n");
 			}
-            StringBuilder response = new StringBuilder();
-        	for (String line : lines) {
-				String[] pieces = line.split(",");
-				String email = pieces[0];
-				try {
-					User newUser = accountCreator.createUser(email, "password", "", "", "", "");
-					Integer patronageYear = Integer.parseInt(pieces[1]);
-					Date expirationDate = getExpirationDateFrom(pieces);
-					userRepository.save(newUser.withPatronage(new Patronage(patronageYear, expirationDate, "")));
-					response.append("Successfully created user '").append(email).append("'\n");
-				} catch(UserInvalidException e) {
-					response.append("Error creating user '").append(email).append("': ").append(e.getMessage()).append("\n");
-				}
-        	}
-        	return response.toString();
-        }
-        throw new IllegalArgumentException("Failed to upload users because the file was empty.");
+    	}
+    	return response.toString();
     }
 
 	private Date getExpirationDateFrom(String[] pieces) {
@@ -97,32 +80,6 @@ public class UserController {
 		}
 	}
 
-	private void silentlyDelete(Path path) {
-		try {
-			Files.delete(path);
-		} catch (IOException e) {
-			System.err.println("Failed to cleanup temp file because " + e);
-			e.printStackTrace(System.err);
-		}
-	}
-
-	private Path createTempFile() {
-		try {
-			return Files.createTempFile("tempFile", ".csv");
-		} catch (IOException e) {
-			throw new IllegalStateException("Faile to create tempFile.csv", e);
-		}
-	}
-
-	private BufferedReader readFileInto(MultipartFile multipartFile, Path path) {
-		try {
-			Files.copy(multipartFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-			return new BufferedReader(new FileReader(path.toFile()));
-		} catch (IOException e) {
-			throw new IllegalStateException("Failed to read multipart file", e);
-		}
-	}
-	
     @RequestMapping(value = "/admin/users", method = RequestMethod.POST)
     @ResponseStatus(value=HttpStatus.CREATED)
     public @ResponseBody String createUser(@RequestBody DisplayableUser displayableUser, HttpServletResponse response) {
