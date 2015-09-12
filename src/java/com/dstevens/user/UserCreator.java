@@ -3,10 +3,12 @@ package com.dstevens.user;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
+import java.time.Clock;
 import java.time.Year;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Supplier;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +26,8 @@ import com.dstevens.user.patronage.Patronage;
 import com.dstevens.user.patronage.PatronagePaymentReceipt;
 import com.dstevens.user.patronage.PaymentType;
 
+import static com.dstevens.collections.Lists.list;
+
 import static com.dstevens.collections.Sets.set;
 
 @Service
@@ -36,6 +40,7 @@ public class UserCreator {
 	private final ClockSupplier clockSupplier;
 	private final Supplier<PasswordEncoder> passwordEncoderSupplier;
 	private final List<UserCreationGuard> guards;
+	private final ExecutorService executorService;
 
 	@Autowired
 	public UserCreator(UserDao userDao, Supplier<PasswordEncoder> passwordEncoderSupplier, MailMessageFactory messageFactory, ClockSupplier clockSupplier, List<UserCreationGuard> guards) {
@@ -44,6 +49,7 @@ public class UserCreator {
 		this.messageFactory = messageFactory;
 		this.clockSupplier = clockSupplier;
 		this.guards = guards;
+		this.executorService = Executors.newFixedThreadPool(10);
 	}
 	
 	public User create(String email, String password, String firstName, String lastName) throws UserInvalidException {
@@ -53,8 +59,7 @@ public class UserCreator {
 			guard.validate(user);
 		}
 		
-		user = userDao.save(user);
-		return user;
+		return saveAndSendEmailsFor(user);
 	}
 	
 	public User createUser(String email,
@@ -64,58 +69,24 @@ public class UserCreator {
 			               String originalUsername,
 			               String paymentReceiptIdentifier) throws UserInvalidException {
 		User user = create(email, password, firstName, lastName);
-		Instant now = clockSupplier.get().instant();
 		if(!StringUtils.isBlank(originalUsername)) {
-			Patronage patronage = new Patronage(Year.now(clockSupplier.get()).getValue(), Date.from(now), null);
+			Clock clock = clockSupplier.get();
+			Patronage patronage = new Patronage(Year.now(clock).getValue(), Date.from(clock.instant()), null);
 			patronage = patronage.withOriginalUsername(originalUsername.trim());
 			if(!StringUtils.isBlank(paymentReceiptIdentifier)) {
-				patronage = patronage.withPayment(new PatronagePaymentReceipt(PaymentType.PAYPAL, new BigDecimal("20.00"), paymentReceiptIdentifier, Date.from(now)));
+				patronage = patronage.withPayment(new PatronagePaymentReceipt(PaymentType.PAYPAL, new BigDecimal("20.00"), paymentReceiptIdentifier, Date.from(clock.instant())));
 			}
 			user = user.withPatronage(patronage);
 		}
-		return userDao.save(user);
-	}
-	
-	private void sendAdminEmailFor(User user) {
-		StringBuilder body = new StringBuilder();
-		body.append(user.getEmail() + " has just created an account on the database.");
-		if(user.getPatronage() != null) {
-			body.append("\nTheir original username in the old database is " + user.getPatronage().getOriginalUsername());
-			if(!user.getPatronage().getPayments().isEmpty()) {
-				body.append("\nTheir paypal receipt id for paying for patronage is " + user.getPatronage().getPayments().get(0).getPaymentReceiptIdentifier());
-			}
-		}
-		send(messageFactory.message().
-		     from("services@undergroundtheater.org", "UT Database").
-		     to("services@undergroundtheater.org").
-		     subject("A new Underground Theater User Account has been created: " + user.getEmail()).
-		     body(body.toString()));
-	}
-
-	private void sendConfirmatoryEmailTo(User user) {
-		send(messageFactory.message().
-		     from("services@undergroundtheater.org", "UT Database").
-		     to(user.getEmail()).
-		     subject("Your Underground Theater User Account has been created").
-		     body("Thank you for creating an account with Underground Theater's character database, The Green Room!"));
-	}
-	
-	private void send(MailMessage mailMessage) {
-		try {
-			mailMessage.send();
-		} catch(Exception e) {
-			logger.error("Failed to send " + mailMessage, e);
-		}
+		return saveAndSendEmailsFor(user);
 	}
 
 	public User create(String email, String patronageYear, String patronageExpiration) throws UserInvalidException {
 		User user = create(email, "password", "", "");
-		sendConfirmatoryEmailTo(user);
-		sendAdminEmailFor(user);
 		if(!StringUtils.isBlank(patronageYear) && !StringUtils.isBlank(patronageExpiration)) {
-			return userDao.save(user.withPatronage(new Patronage(Integer.parseInt(patronageYear), dateFrom(patronageExpiration), "")));
+			user = userDao.save(user.withPatronage(new Patronage(Integer.parseInt(patronageYear), dateFrom(patronageExpiration), "")));
 		}
-		return user;
+		return saveAndSendEmailsFor(user);
 	}
 	
 	private Date dateFrom(String date) {
@@ -124,5 +95,53 @@ public class UserCreator {
 		} catch (ParseException e) {
 			throw new IllegalStateException("Expiration date " + date + " was improperly formatted");
 		}
+	}
+	
+	private User saveAndSendEmailsFor(User user) {
+		user = userDao.save(user);
+		sendConfirmatoryEmailTo(user);
+		sendAdminEmailFor(user);
+		return user;
+	}
+	
+	private void sendAdminEmailFor(User user) {
+		List<String> lines = list(user.getEmail() + " has just created an account on the database.");
+		if(user.getPatronage() != null) {
+			lines.add("Their membership id is " + user.getPatronage().displayMembershipId());
+			if(!StringUtils.isBlank(user.getPatronage().getOriginalUsername())) {
+				lines.add("\nTheir original username in the old database is " + user.getPatronage().getOriginalUsername());
+			}
+			if(!user.getPatronage().getPayments().isEmpty()) {
+				lines.add("\nTheir paypal receipt id for paying for patronage is " + user.getPatronage().getPayments().get(0).getPaymentReceiptIdentifier());
+			}
+		}
+		send(messageFactory.message().
+		     from("services@undergroundtheater.org", "UT Database").
+		     to("services@undergroundtheater.org").
+		     subject("A new Underground Theater User Account has been created: " + user.getEmail()).
+		     body(StringUtils.join(lines, "\n")));
+	}
+
+	private void sendConfirmatoryEmailTo(User user) {
+		List<String> lines = list("Thank you for creating an account with Underground Theater's character database, The Green Room!");
+		if(user.getPatronage() != null) {
+			lines.add("Your membership id is " + user.getPatronage().displayMembershipId());
+		}
+		send(messageFactory.message().
+		     from("services@undergroundtheater.org", "UT Database").
+		     to(user.getEmail()).
+		     subject("Your Underground Theater User Account has been created").
+		     body(StringUtils.join(lines, "\n")));
+	}
+	
+	private void send(MailMessage mailMessage) {
+		executorService.execute(() -> {
+				try {
+					mailMessage.send();
+				} catch(Exception e) {
+					logger.error("Failed to send " + mailMessage, e);
+				}
+			}
+		);
 	}
 }
