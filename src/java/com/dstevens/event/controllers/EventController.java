@@ -1,4 +1,4 @@
-package com.dstevens.event;
+package com.dstevens.event.controllers;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.dstevens.event.DisplayableEvent;
+import com.dstevens.event.Event;
+import com.dstevens.event.EventRepository;
+import com.dstevens.event.TroupeEvent;
+import com.dstevens.event.VenueEvent;
 import com.dstevens.troupe.TroupeRepository;
 import com.dstevens.user.Role;
 import com.dstevens.user.User;
