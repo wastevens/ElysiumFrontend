@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.dstevens.config.Authorization;
-import com.dstevens.user.AccountCreator;
+import com.dstevens.user.UserCreator;
 import com.dstevens.user.ElysiumUserDetailsService;
 import com.dstevens.user.User;
 import com.dstevens.user.UserDao;
@@ -24,10 +24,10 @@ public class CreateAccountPageController {
 	
 	private final UserDao userDao;
 	private final ElysiumUserDetailsService userService;
-	private final AccountCreator accountCreator;
+	private final UserCreator accountCreator;
 
 	@Autowired
-	public CreateAccountPageController(UserDao userDao, ElysiumUserDetailsService userService, AccountCreator accountCreator) {
+	public CreateAccountPageController(UserDao userDao, ElysiumUserDetailsService userService, UserCreator accountCreator) {
 		this.userDao = userDao;
 		this.userService = userService;
 		this.accountCreator = accountCreator;

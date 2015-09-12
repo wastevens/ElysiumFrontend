@@ -31,7 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.dstevens.config.controllers.BadRequestException;
 import com.dstevens.config.controllers.ResourceNotFoundException;
-import com.dstevens.user.AccountCreator;
+import com.dstevens.user.UserCreator;
 import com.dstevens.user.DisplayableUser;
 import com.dstevens.user.Role;
 import com.dstevens.user.User;
@@ -45,10 +45,10 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final PatronageRepository patronageRepository;
-	private final AccountCreator accountCreator;
+	private final UserCreator accountCreator;
 
     @Autowired
-    public UserController(UserRepository userRepository, PatronageRepository patronageRepository, AccountCreator accountCreator) {
+    public UserController(UserRepository userRepository, PatronageRepository patronageRepository, UserCreator accountCreator) {
         this.userRepository = userRepository;
         this.patronageRepository = patronageRepository;
 		this.accountCreator = accountCreator;

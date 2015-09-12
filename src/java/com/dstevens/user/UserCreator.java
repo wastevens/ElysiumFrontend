@@ -22,9 +22,9 @@ import com.dstevens.user.patronage.PaymentType;
 import static com.dstevens.collections.Sets.set;
 
 @Service
-public class AccountCreator {
+public class UserCreator {
 
-	private static final Logger logger = Logger.getLogger(AccountCreator.class);
+	private static final Logger logger = Logger.getLogger(UserCreator.class);
 	
 	private final UserDao userDao;
 	private final MailMessageFactory messageFactory;
@@ -32,7 +32,7 @@ public class AccountCreator {
 	private final Supplier<PasswordEncoder> passwordEncoderSupplier;
 
 	@Autowired
-	public AccountCreator(UserDao userDao, Supplier<PasswordEncoder> passwordEncoderSupplier, MailMessageFactory messageFactory, ClockSupplier clockSupplier) {
+	public UserCreator(UserDao userDao, Supplier<PasswordEncoder> passwordEncoderSupplier, MailMessageFactory messageFactory, ClockSupplier clockSupplier) {
 		this.userDao = userDao;
 		this.passwordEncoderSupplier = passwordEncoderSupplier;
 		this.messageFactory = messageFactory;
