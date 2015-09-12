@@ -11,6 +11,7 @@ import java.util.stream.StreamSupport;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -59,11 +60,13 @@ public class UserController {
     	for (String line : fileReader.readLinesFrom(users)) {
 			String[] pieces = line.split(",");
 			String email = pieces[0];
+			String patronageYear = pieces[1];
+			String patronageExpiration = pieces[2];
 			try {
 				User user = accountCreator.create(email, "password", "", "");
-				Integer patronageYear = Integer.parseInt(pieces[1]);
-				Date expirationDate = getExpirationDateFrom(pieces);
-				userRepository.save(user.withPatronage(new Patronage(patronageYear, expirationDate, "")));
+				if(!StringUtils.isBlank(patronageYear) && !StringUtils.isBlank(patronageExpiration)) {
+					userRepository.save(user.withPatronage(new Patronage(Integer.parseInt(patronageYear), dateFrom(patronageExpiration), "")));
+				}
 				response.append("Successfully created user '").append(email).append("'\n");
 			} catch(UserInvalidException e) {
 				response.append("Error creating user '").append(email).append("': ").append(e.getMessage()).append("\n");
@@ -72,11 +75,11 @@ public class UserController {
     	return response.toString();
     }
 
-	private Date getExpirationDateFrom(String[] pieces) {
+	private Date dateFrom(String date) {
 		try {
-			return new SimpleDateFormat("yyyy-MM-dd").parse(pieces[2]);
+			return new SimpleDateFormat("yyyy-MM-dd").parse(date);
 		} catch (ParseException e) {
-			throw new IllegalStateException("Failed to import user " + pieces[0] + ": Expiration date " + pieces[2] + " was improperly formatted");
+			throw new IllegalStateException("Expiration date " + date + " was improperly formatted");
 		}
 	}
 
