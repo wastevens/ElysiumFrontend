@@ -1,4 +1,4 @@
-package com.dstevens.web.account.controllers;
+package com.dstevens.user;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -15,9 +15,6 @@ import org.springframework.stereotype.Service;
 import com.dstevens.mail.MailMessage;
 import com.dstevens.mail.MailMessageFactory;
 import com.dstevens.suppliers.ClockSupplier;
-import com.dstevens.user.Role;
-import com.dstevens.user.User;
-import com.dstevens.user.UserDao;
 import com.dstevens.user.patronage.Patronage;
 import com.dstevens.user.patronage.PatronagePaymentReceipt;
 import com.dstevens.user.patronage.PaymentType;
