@@ -69,6 +69,11 @@ public class UserCreator {
 			               String originalUsername,
 			               String paymentReceiptIdentifier) throws UserInvalidException {
 		User user = create(email, password, firstName, lastName);
+		user = addOptionalPatronageFor(user, originalUsername, paymentReceiptIdentifier);
+		return saveAndSendEmailsFor(user);
+	}
+
+	private User addOptionalPatronageFor(User user, String originalUsername, String paymentReceiptIdentifier) {
 		if(!StringUtils.isBlank(originalUsername)) {
 			Clock clock = clockSupplier.get();
 			Patronage patronage = new Patronage(Year.now(clock).getValue(), Date.from(clock.instant()), null);
@@ -78,7 +83,7 @@ public class UserCreator {
 			}
 			user = user.withPatronage(patronage);
 		}
-		return saveAndSendEmailsFor(user);
+		return user;
 	}
 
 	public User create(String email, String patronageYear, String patronageExpiration) throws UserInvalidException {
@@ -109,10 +114,10 @@ public class UserCreator {
 		if(user.getPatronage() != null) {
 			lines.add("Their membership id is " + user.getPatronage().displayMembershipId());
 			if(!StringUtils.isBlank(user.getPatronage().getOriginalUsername())) {
-				lines.add("\nTheir original username in the old database is " + user.getPatronage().getOriginalUsername());
+				lines.add("Their original username in the old database is " + user.getPatronage().getOriginalUsername());
 			}
 			if(!user.getPatronage().getPayments().isEmpty()) {
-				lines.add("\nTheir paypal receipt id for paying for patronage is " + user.getPatronage().getPayments().get(0).getPaymentReceiptIdentifier());
+				lines.add("Their paypal receipt id for paying for patronage is " + user.getPatronage().getPayments().get(0).getPaymentReceiptIdentifier());
 			}
 		}
 		send(messageFactory.message().
