@@ -29,7 +29,6 @@ import com.dstevens.config.controllers.ResourceNotFoundException;
 import com.dstevens.user.DisplayableUser;
 import com.dstevens.user.Role;
 import com.dstevens.user.User;
-import com.dstevens.user.UserCreator;
 import com.dstevens.user.UserRepository;
 import com.dstevens.user.guards.UserInvalidException;
 import com.dstevens.user.patronage.Patronage;
@@ -42,14 +41,12 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final PatronageRepository patronageRepository;
-	private final UserCreator accountCreator;
 	private final MultipartFileReader fileReader;
 
     @Autowired
-    public UserController(UserRepository userRepository, PatronageRepository patronageRepository, UserCreator accountCreator, MultipartFileReader fileReader) {
+    public UserController(UserRepository userRepository, PatronageRepository patronageRepository, MultipartFileReader fileReader) {
         this.userRepository = userRepository;
         this.patronageRepository = patronageRepository;
-		this.accountCreator = accountCreator;
 		this.fileReader = fileReader;
     }
     
@@ -63,7 +60,7 @@ public class UserController {
 			String patronageYear = pieces[1];
 			String patronageExpiration = pieces[2];
 			try {
-				User user = accountCreator.create(email, "password", "", "");
+				User user = userRepository.create(email, "password", "", "");
 				if(!StringUtils.isBlank(patronageYear) && !StringUtils.isBlank(patronageExpiration)) {
 					userRepository.save(user.withPatronage(new Patronage(Integer.parseInt(patronageYear), dateFrom(patronageExpiration), "")));
 				}
