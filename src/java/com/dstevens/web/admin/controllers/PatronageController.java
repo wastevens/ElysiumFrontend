@@ -90,9 +90,9 @@ public class PatronageController {
 		}
 		Patronage patronage = patronageRepository.save(requestBody.toPatronage(Year.now().getValue()));
 		if(user != null) {
+			user = userRepository.save(user.withPatronage(patronage));
 			patronage = patronage.forUser(user);
-			user = user.withPatronage(patronage);
-			patronage = patronageRepository.save(patronage);
+//			patronage = patronageRepository.save(patronage);
 		}
 		addPatronageLocationHeader(response, patronage);
 		return new Gson().toJson(DisplayablePatronage.fromOn(patronage, new Date()));

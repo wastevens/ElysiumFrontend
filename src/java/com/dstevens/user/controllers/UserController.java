@@ -60,10 +60,10 @@ public class UserController {
 			String[] pieces = line.split(",");
 			String email = pieces[0];
 			try {
-				User newUser = accountCreator.createUser(email, "password", "", "", "", "");
+				User user = accountCreator.createUser(email, "password", "", "");
 				Integer patronageYear = Integer.parseInt(pieces[1]);
 				Date expirationDate = getExpirationDateFrom(pieces);
-				userRepository.save(newUser.withPatronage(new Patronage(patronageYear, expirationDate, "")));
+				userRepository.save(user.withPatronage(new Patronage(patronageYear, expirationDate, "")));
 				response.append("Successfully created user '").append(email).append("'\n");
 			} catch(UserInvalidException e) {
 				response.append("Error creating user '").append(email).append("': ").append(e.getMessage()).append("\n");
@@ -90,7 +90,7 @@ public class UserController {
         User user = userRepository.save(displayableUser.to());
         if(patronage != null) {
             user = user.withPatronage(patronage);
-            patronage = patronage.forUser(user);
+//            patronage = patronage.forUser(user);
             user = userRepository.save(user);
         }
         addLocationHeader(response, user);
