@@ -1,4 +1,4 @@
-package com.dstevens.web.admin.controllers;
+package com.dstevens.user.controllers;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
