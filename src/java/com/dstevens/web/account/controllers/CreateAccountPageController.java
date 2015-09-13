@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.dstevens.config.Authorization;
-import com.dstevens.user.ElysiumUserDetailsService;
+import com.dstevens.config.ElysiumUserDetailsService;
 import com.dstevens.user.User;
 import com.dstevens.user.UserCreator;
 import com.dstevens.user.guards.UserInvalidException;

@@ -1,4 +1,4 @@
-package com.dstevens.user;
+package com.dstevens.config;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,8 +12,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.dstevens.config.Authorization;
 import com.dstevens.suppliers.IdSupplier;
+import com.dstevens.user.User;
+import com.dstevens.user.UserDao;
 
 import static com.dstevens.collections.Maps.map;
 

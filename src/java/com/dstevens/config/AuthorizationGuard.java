@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.dstevens.config.controllers.ForbiddenException;
-import com.dstevens.user.ElysiumUserDetailsService;
 
 import static com.dstevens.config.AuthorizationReader.authorizationIn;
 
