@@ -6,7 +6,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,8 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.dstevens.config.Authorization;
-import com.dstevens.mail.MailMessage;
-import com.dstevens.mail.MailMessageFactory;
+import com.dstevens.mail.MailMessageSupplier;
 import com.dstevens.user.ElysiumUserDetailsService;
 import com.dstevens.user.User;
 import com.dstevens.user.UserDao;
@@ -29,16 +27,14 @@ import com.dstevens.user.security.UserPasswordResetTokenService;
 @Controller
 public class ResetPasswordPageController {
 
-	private static final Logger logger = Logger.getLogger(ResetPasswordPageController.class);
-	
 	private final Supplier<PasswordEncoder> passwordEncoderSupplier;
 	private final UserDao userDao;
-	private final MailMessageFactory messageFactory;
+	private final MailMessageSupplier messageFactory;
 	private final UserPasswordResetTokenService passwordResetTokenService;
 	private final ElysiumUserDetailsService userService;
 
 	@Autowired
-	public ResetPasswordPageController(Supplier<PasswordEncoder> passwordEncoderSupplier, UserDao userDao, ElysiumUserDetailsService userService, MailMessageFactory messageFactory, UserPasswordResetTokenService passwordResetTokenService) {
+	public ResetPasswordPageController(Supplier<PasswordEncoder> passwordEncoderSupplier, UserDao userDao, ElysiumUserDetailsService userService, MailMessageSupplier messageFactory, UserPasswordResetTokenService passwordResetTokenService) {
 		this.passwordEncoderSupplier = passwordEncoderSupplier;
 		this.userDao = userDao;
 		this.userService = userService;
@@ -63,11 +59,11 @@ public class ResetPasswordPageController {
 		body.append("A password reset request for your email address was made of the Underground Theater character database.  If you did not make this request, feel free to ignore this message.\n");
 		body.append("If you would like to reset your password, please go to " + "http://localhost:8080/resetPassword\n");
 		body.append("Your password reset code is " + token);
-		send(messageFactory.message().
-			 from("database@undergroundtheater.org", "UT Database").
-			 to(email).
-			 subject("Password Reset Request for your Underground Theater Database account").
-			 body(body.toString()));
+		messageFactory.get().
+		 from("database@undergroundtheater.org", "UT Database").
+		 to(email).
+		 subject("Password Reset Request for your Underground Theater Database account").
+		 body(body.toString()).send();
 	}
 	
 	@RequestMapping(value = { "/resetPassword"}, method = RequestMethod.GET)
@@ -99,19 +95,12 @@ public class ResetPasswordPageController {
 	}
 
 	private void sendPasswordResetEmailTo(String email) {
-		send(messageFactory.message().
-			 from("database@undergroundtheater.org", "UT Database").
-		     to(email).
-		     subject("Your Underground Theater password has been changed").
-		     body("Your Underground Theater account's password has been changed."));
-	}
-	
-	private void send(MailMessage mailMessage) {
-		try {
-			mailMessage.send();
-		} catch(Exception e) {
-			logger.error("Failed to send " + mailMessage, e);
-		}
+		messageFactory.get().
+		               from("database@undergroundtheater.org", "UT Database").
+		               to(email).
+		               subject("Your Underground Theater password has been changed").
+		               body("Your Underground Theater account's password has been changed.").
+		               send();
 	}
 	
 }

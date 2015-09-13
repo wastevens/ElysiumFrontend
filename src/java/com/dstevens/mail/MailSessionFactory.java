@@ -11,7 +11,7 @@ import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MailSessionFactory {
+public class MailSessionFactory implements Supplier<Session> {
 
 	@Value("${mail.enabled:false}") private boolean enabled;
 	@Value("${mail.host:smtp.gmail.com}") private String smtpHost;
@@ -26,7 +26,7 @@ public class MailSessionFactory {
 		this.textEncryptor = textEncryptor;
 	}
 	
-	public Session createSession() {
+	public Session get() {
 		return new MailSessionBuilder().enabled(enabled).
 				                        withSMTP(smtpHost).
 								        withPort(port).
