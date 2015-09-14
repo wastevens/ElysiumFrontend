@@ -8,6 +8,8 @@
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-resource.js"></script>
 <script src="/js/sources/displayableValues.js"></script>
 <script src="/js/services/authorization.js"></script>
+<script src="/js/services/traitRepository.js"></script>
+<script src="/js/services/troupeRepository.js"></script>
 <script src="/js/sources/vampire.js"></script>
 <script src="/js/filters/vampire.js"></script>
 <script src="/js/admin/event.js"></script>
@@ -38,9 +40,9 @@
     </div>
   </div>
 </nav>
-
 <div class="container-fluid" ng-controller="eventsController" >
 	<list-events></list-events>
+	<manage-event event="event"></manage-event>
 </div>
 </body>
 </html>

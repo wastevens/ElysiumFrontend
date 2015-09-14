@@ -36,6 +36,8 @@ import com.dstevens.character.trait.power.magic.thaumaturgy.DisplayableThaumatur
 import com.dstevens.character.trait.power.magic.thaumaturgy.ThaumaturgicalRitual;
 import com.dstevens.character.trait.skill.DisplayableSkill;
 import com.dstevens.character.trait.skill.Skill;
+import com.dstevens.event.DisplayableEventStatus;
+import com.dstevens.event.EventStatus;
 import com.dstevens.troupe.DisplayableVenue;
 import com.dstevens.troupe.Venue;
 import com.google.gson.Gson;
@@ -56,6 +58,7 @@ public class TraitsController {
 	
 	private String vampireTraits(String type) {
 		switch(type.toLowerCase()) {
+		    case "eventstatus":              return new Gson().toJson(list(EventStatus.values()).stream().map((EventStatus t1) -> DisplayableEventStatus.from(t1)).collect(Collectors.toList()));
 		    case "venues":                   return new Gson().toJson(list(Venue.values()).stream().map((Venue t1) -> DisplayableVenue.from(t1)).collect(Collectors.toList()));
 		    case "settings":                 return new Gson().toJson(list(Setting.values()).stream().map((Setting t1) -> DisplayableSetting.from(t1)).collect(Collectors.toList()));
 		    case "clans":                    return new Gson().toJson(list(Clan.values()).stream().map((Clan t1) -> DisplayableClan.from(t1)).collect(Collectors.toList()));

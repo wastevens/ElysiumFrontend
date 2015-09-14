@@ -1,38 +1,47 @@
-angular.module('admin.event.services', ['admin.services.events']);
-angular.module('admin.event.sources', ['admin.event.services']);
+angular.module('admin.event.services', ['admin.services.events', 'services.traits', 'services.troupes']);
+angular.module('admin.event.sources', ['admin.event.services', 'sources.vampire']);
 
 angular.module('admin.event.controllers', ['admin.event.services', 'admin.event.sources']).
-controller('eventsController', ['$scope', 'eventRepository', function($scope, eventRepository) {
-	$scope.showEvent = function(id) {
-		eventRepository.getEvent(id).then(function(event) {
-			$scope.event = event;
-		});
-	};
+controller('eventsController', ['$scope', 'eventRepository', 'eventStatusSource', 'venueSource', 'troupeRepository', function($scope, eventRepository, eventStatusSource, venueSource, troupeRepository) {
+	$scope.events = [];
+	eventRepository.getEvents().then(function(events) {
+		$scope.events = events;
+	});
+	
+	$scope.eventStatuses = [];
+	eventStatusSource.get().then(function(eventStatuses) {
+		$scope.eventStatuses = eventStatuses;
+	});
+	
+	$scope.venues = [];
+	venueSource.get().then(function(venues) {
+		$scope.venues = venues;
+		if($scope.troupe && $scope.troupe.venue) {
+			$scope.venue = $scope.venues[$scope.troupe.venue.id];
+		}
+	});
+	
+	$scope.troupes = troupeRepository.getTroupes();  
 	
 	$scope.submit = function() {
-		console.log("events controller submit")
+		eventRepository.createEvent($scope.event).then(function(response) {
+			eventRepository.getEvents().then(function(events) {
+				$scope.events = events;
+			});
+		});
 	}
 }]);
 
-angular.module('admin.event.directives', ['admin.event.services']).
-directive('listEvents', ['eventRepository', function(eventRepository) {
+angular.module('admin.event.directives', ['admin.event.sources', 'admin.event.services']).
+directive('listEvents', ['eventRepository', 'eventStatusSource', function(eventRepository, eventStatusSource) {
 	return {
 		restrict: 'E',
-		link: function(scope, iElement, iAttrs) {
-			eventRepository.getEvents().then(function(events) {
-				scope.events = events;
-				scope.event = events[0];
-			});
-		},
 		templateUrl: '/js/admin/event/display.html'
 	};
 }]).
 directive('manageEvent', [function() {
 	return {
 		restrict: 'E',
-		scope: {
-			event: '='
-		},
 		templateUrl: '/js/admin/event/manage.html'
 	};
 }]);

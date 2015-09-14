@@ -1,4 +1,12 @@
 angular.module('sources.vampire', ['services.traits']).
+factory('eventStatusSource', ['traitsRepository', function(traitsRepository) {
+	var map = traitsRepository.getVampireTraits("eventstatus");
+	return {
+		get: function() {
+			return map;
+		}
+	}	
+}]).
 factory('venueSource', ['traitsRepository', function(traitsRepository) {
 	var map = traitsRepository.getVampireTraits("venues");
 	return {

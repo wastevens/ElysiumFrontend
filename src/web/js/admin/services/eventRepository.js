@@ -5,6 +5,9 @@ factory('eventRepository', ['$resource', '$http', function($resource, $http) {
 		getEvents: function() {
 			return $resource(this.url, {}).query().$promise;
 		},
+		createEvent: function(event) {
+			return $http.post(this.url, event);
+		},
 		getEventsWithStatus: function(status) {
 			return $resource(this.url + '/status/' + status, {}).query().$promise;
 		},

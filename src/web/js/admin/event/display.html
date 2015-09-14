@@ -8,9 +8,9 @@
 <div class="row" ng-repeat="event in events">
   <div class="col-md-2"><a ng-click="showEvent(event.id);">{{event.name}}</a></div>
   <div class="col-md-2">{{event.eventDate}}</div>
-  <div class="col-md-2">{{event.eventStatus|eventStatus}}</div>
+  <div class="col-md-2">{{event.eventStatus.id|eventStatus}}</div>
   <div class="col-md-2">{{event.troupe.name}}</div>
-  <div class="col-md-2">{{event.venue|venue}}</div>
+  <div class="col-md-2">{{event.venue.id|venue}}
+  </div>
 </div>
 <br>
-<manage-event event="event"></manage-event>

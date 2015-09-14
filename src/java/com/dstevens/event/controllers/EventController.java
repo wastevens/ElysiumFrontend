@@ -26,7 +26,6 @@ import com.dstevens.troupe.TroupeRepository;
 import com.dstevens.user.Role;
 import com.dstevens.user.User;
 import com.dstevens.web.config.RequestingUserProvider;
-import com.dstevens.web.config.ServerConfiguration;
 import com.google.gson.Gson;
 
 @Controller
@@ -34,14 +33,12 @@ public class EventController {
 
 	private final TroupeRepository troupeRepository;
 	private final EventRepository eventRepository;
-	private final ServerConfiguration serverConfiguration;
 	private final RequestingUserProvider userProvider;
 
 	@Autowired
-	public EventController(EventRepository eventRepository, TroupeRepository troupeRepository, ServerConfiguration serverConfiguration, RequestingUserProvider userProvider) {
+	public EventController(EventRepository eventRepository, TroupeRepository troupeRepository, RequestingUserProvider userProvider) {
 		this.eventRepository = eventRepository;
 		this.troupeRepository = troupeRepository;
-		this.serverConfiguration = serverConfiguration;
 		this.userProvider = userProvider;
 	}
 	
@@ -63,12 +60,12 @@ public class EventController {
 	
 	@ResponseStatus(value=HttpStatus.CREATED)
 	@RequestMapping(value = "/events", method = RequestMethod.POST)
-	public @ResponseBody String  addEvent(HttpServletRequest request, HttpServletResponse response, @RequestBody final DisplayableEvent event) {
+	public @ResponseBody String addEvent(HttpServletRequest request, HttpServletResponse response, @RequestBody final DisplayableEvent event) {
 		Event eventToCreate = event.to(troupeRepository);
 		validateThatUserCanCreate(eventToCreate);
 		
 		Event savedEvent = eventRepository.save(eventToCreate);
-		return serverConfiguration.getHost() + "/events/" + savedEvent.getId(); 
+		return new Gson().toJson(DisplayableEvent.from(savedEvent));
 	}
 
 	private void validateThatUserCanCreate(Event event) {
