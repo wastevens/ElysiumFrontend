@@ -23,6 +23,31 @@ controller('eventsController', ['$scope', 'eventRepository', 'eventStatusSource'
 	
 	$scope.troupes = troupeRepository.getTroupes();  
 	
+	$scope.showEvent = function(event) {
+		$scope.event = event;
+		if($scope.event.eventStatus) {
+			$scope.eventStatuses.forEach(function(eventStatus) {
+				if(eventStatus.id == $scope.event.eventStatus.id) {
+					$scope.event.eventStatus = eventStatus;
+				}
+			});
+		}
+		if($scope.event.venue) {
+			$scope.venues.forEach(function(venue) {
+				if(venue.id == $scope.event.venue.id) {
+					$scope.event.venue = venue;
+				}
+			});
+		}
+		if($scope.event.troupe) {
+			$scope.troupes.forEach(function(troupe) {
+				if(troupe.id == $scope.event.troupe.id) {
+					$scope.event.troupe = troupe;
+				}
+			});
+		}
+	}
+	
 	$scope.submit = function() {
 		eventRepository.createEvent($scope.event).then(function(response) {
 			eventRepository.getEvents().then(function(events) {

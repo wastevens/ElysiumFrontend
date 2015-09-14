@@ -6,7 +6,7 @@
   <div class="col-md-2"><strong>Venue</strong></div>
 </div>
 <div class="row" ng-repeat="event in events">
-  <div class="col-md-2"><a ng-click="showEvent(event.id);">{{event.name}}</a></div>
+  <div class="col-md-2"><a ng-click="showEvent(event);">{{event.name}}</a></div>
   <div class="col-md-2">{{event.eventDate}}</div>
   <div class="col-md-2">{{event.eventStatus.id|eventStatus}}</div>
   <div class="col-md-2">{{event.troupe.name}}</div>
