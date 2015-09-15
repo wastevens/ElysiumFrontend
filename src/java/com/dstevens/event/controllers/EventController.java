@@ -4,9 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -60,15 +57,25 @@ public class EventController {
 	
 	@ResponseStatus(value=HttpStatus.CREATED)
 	@RequestMapping(value = "/events", method = RequestMethod.POST)
-	public @ResponseBody String addEvent(HttpServletRequest request, HttpServletResponse response, @RequestBody final DisplayableEvent event) {
+	public @ResponseBody String addEvent(@RequestBody final DisplayableEvent event) {
 		Event eventToCreate = event.to(troupeRepository);
-		validateThatUserCanCreate(eventToCreate);
+		validateThatUserCanActOn(eventToCreate);
 		
 		Event savedEvent = eventRepository.save(eventToCreate);
 		return new Gson().toJson(DisplayableEvent.from(savedEvent));
 	}
+	
+	@ResponseStatus(value=HttpStatus.OK)
+	@RequestMapping(value = "/events/{id}", method = RequestMethod.PUT)
+	public @ResponseBody String updateEvent(@PathVariable Integer id, @RequestBody final DisplayableEvent event) {
+		Event eventToUpdate = event.to(troupeRepository);
+		validateThatUserCanActOn(eventToUpdate);
+		
+		Event savedEvent = eventRepository.save(eventToUpdate);
+		return new Gson().toJson(DisplayableEvent.from(savedEvent));
+	}
 
-	private void validateThatUserCanCreate(Event event) {
+	private void validateThatUserCanActOn(Event event) {
 		if(event instanceof TroupeEvent) {
 			validateThatUserCanCreateTroupeEvent((TroupeEvent) event);
 		}

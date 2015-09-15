@@ -1,24 +1,24 @@
-<form ng-submit="submit('Hello, world')">
+<form ng-submit="create(newEvent)">
 <div class="row">
-  <div class="col-md-2"><input type='text' ng-model='event.name' /></div>
-  <div class="col-md-2"><input type='text' ng-model='event.eventDate' /></div>
+  <div class="col-md-2"><input type='text' ng-model='newEvent.name' /></div>
+  <div class="col-md-2"><input type='text' ng-model='newEvent.eventDate' /></div>
   <div class="col-md-2"> 
-    <select ng-model="event.eventStatus" ng-options="eventStatus as (eventStatus.id|eventStatus) for eventStatus in eventStatuses">
+    <select ng-model="newEvent.eventStatus" ng-options="eventStatus as (eventStatus.id|eventStatus) for eventStatus in eventStatuses">
         <option value="">-- Event Status --</option>
     </select>
   </div>
   
   <div class="col-md-2"> 
-    <select ng-model="event.troupe" ng-options="troupe as (troupe.name) for troupe in troupes">
+    <select ng-model="newEvent.troupe" ng-options="troupe as (troupe.name) for troupe in troupes">
         <option value="">-- Troupe --</option>
     </select>
   </div>
   
   <div class="col-md-2"> 
-    <select ng-model="event.venue" ng-options="venue as (venue.id|venue) for venue in venues">
+    <select ng-model="newEvent.venue" ng-options="venue as (venue.id|venue) for venue in venues">
         <option value="">-- Venue --</option>
     </select>
   </div>
+<br/><div class="col-md-12"><input name="submit" type="submit" value="submit" /></div>
 </div>
-<input name="submit" type="submit" value="submit" />
 </form>

@@ -42,7 +42,7 @@
 </nav>
 <div class="container-fluid" ng-controller="eventsController" >
 	<list-events></list-events>
-	<!--  <manage-event event="event"></manage-event>  -->
+	<manage-event event="event"></manage-event>
 </div>
 </body>
 </html>
