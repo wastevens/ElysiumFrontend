@@ -3,9 +3,14 @@ angular.module('admin.event.sources', ['admin.event.services', 'sources.vampire'
 
 angular.module('admin.event.controllers', ['admin.event.services', 'admin.event.sources']).
 controller('eventsController', ['$scope', 'eventRepository', 'eventStatusSource', 'venueSource', 'troupeRepository', function($scope, eventRepository, eventStatusSource, venueSource, troupeRepository) {
+	$scope.displayEvents = [];
+	
 	$scope.events = [];
 	eventRepository.getEvents().then(function(events) {
 		$scope.events = events;
+		$scope.events.forEach(function(event) {
+			$scope.displayEvents[event.id] = true;
+		});
 	});
 	
 	$scope.eventStatuses = [];
@@ -46,12 +51,16 @@ controller('eventsController', ['$scope', 'eventRepository', 'eventStatusSource'
 				}
 			});
 		}
+		$scope.displayEvents[event.id] = false;
 	}
 	
-	$scope.submit = function() {
-		eventRepository.createEvent($scope.event).then(function(response) {
+	$scope.submit = function(event) {
+		eventRepository.createEvent(event).then(function(response) {
 			eventRepository.getEvents().then(function(events) {
 				$scope.events = events;
+				$scope.events.forEach(function(event) {
+					$scope.displayEvents[event.id] = true;
+				});
 			});
 		});
 	}

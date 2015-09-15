@@ -6,11 +6,34 @@
   <div class="col-md-2"><strong>Venue</strong></div>
 </div>
 <div class="row" ng-repeat="event in events">
-  <div class="col-md-2"><a ng-click="showEvent(event);">{{event.name}}</a></div>
-  <div class="col-md-2">{{event.eventDate}}</div>
-  <div class="col-md-2">{{event.eventStatus.id|eventStatus}}</div>
-  <div class="col-md-2">{{event.troupe.name}}</div>
-  <div class="col-md-2">{{event.venue.id|venue}}
+  <div class="col-md-12" ng-show="displayEvents[event.id]">
+    <div class="col-md-2"><a ng-click="showEvent(event);">{{event.name}}</a></div>
+    <div class="col-md-2">{{event.eventDate}}</div>
+    <div class="col-md-2">{{event.eventStatus.id|eventStatus}}</div>
+    <div class="col-md-2">{{event.troupe.name}}</div>
+    <div class="col-md-4">{{event.venue.id|venue}}</div>
+  </div>
+  <div class="col-md-12" ng-hide="displayEvents[event.id]">
+    <form ng-submit="submit(event)">
+      <div class="col-md-2"><input type='text' ng-model='event.name' /></div>
+      <div class="col-md-2"><input type='text' ng-model='event.eventDate' /></div>
+      <div class="col-md-2">
+        <select ng-model="event.eventStatus" ng-options="eventStatus as (eventStatus.id|eventStatus) for eventStatus in eventStatuses">
+          <option value="">-- Event Status --</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select ng-model="event.troupe" ng-options="troupe as (troupe.name) for troupe in troupes">
+          <option value="">-- Troupe --</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <select ng-model="event.venue" ng-options="venue as (venue.id|venue) for venue in venues">
+          <option value="">-- Venue --</option>
+        </select>
+      </div>
+      <br/><div class="col-md-2"><input name="submit" type="submit" value="submit" /></div>
+    </form>
   </div>
 </div>
 <br>
