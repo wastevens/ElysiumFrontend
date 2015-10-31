@@ -18,7 +18,9 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Home</a></li>
         <li><a href="/user/page/patronage">Manage Patronage</a></li>
+        <!-- /* Disabled for development testing:
         <li><a href="/user/page/characters">Manage Characters</a></li>
+        */ -->
         <li><a href="javascript:formSubmit()">Logout</a></li>
       </ul>
     </div>

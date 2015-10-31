@@ -16,22 +16,19 @@
 			<c:if test="${not empty message}">
 				<div style="color:blue,font-style:bold">${message}</div>
 			</c:if>
-		    <table>
-			<tr><td>Email Address:</td><td><input type='text' name='username' value=''></td></tr>
-			<tr><td>Password:</td><td><input type='password' name='password' /></td></tr>
-            <tr><td>
-                <button class="btn btn-info" name="submit" type="submit" value="submit">
-                    <span class="glyphicon glyphicon-save"></span> Submit
-                </button>
-            </td></tr>
-		   </table>
+			<h3>Login</h3>
+				<label>Email Address:</label><input type='text' name='username' value='' required autofocus /><br/>
+				<label>Password:</label><input type='password' name='password' required /><br/>
+				<button class="btn btn-info" name="submit" type="submit" value="submit">
+					<span class="glyphicon glyphicon-save"></span> Submit
+				</button>
+				<button class="btn btn-info" onclick="window.location.href='/requestPasswordReset'">
+                	<span class="glyphicon glyphicon-save"></span> Password Reset
+            	</button>
+            	<button class="btn btn-info" onclick="window.location.href='/createAccount'">
+                	<span class="glyphicon glyphicon-save"></span> Create Account
+            	</button>
 		</form>
-            <button class="btn btn-info" onclick="window.location.href='/requestPasswordReset'">
-                <span class="glyphicon glyphicon-save"></span> Password Reset
-            </button>
-            <button class="btn btn-info" onclick="window.location.href='/createAccount'">
-                <span class="glyphicon glyphicon-save"></span> Create Account
-            </button>
 	</div>
 	<script>
 		function formSubmit(formId) {
